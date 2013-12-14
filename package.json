@@ -1,0 +1,29 @@
+{
+  "name": "iotkit-agent",
+  "version": "0.0.1",
+  "description": "Edge agent to abstract cloud connectivity complexities",
+  "main": "server.js",
+  "dependencies" : {
+    "mqtt" : "*",
+    "getmac": "*",
+    "winston": "*"
+  },
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/enableiot/iotkit-agent.git"
+  },
+  "keywords": [
+    "iotkit",
+    "agent"
+  ],
+  "author": "Intel, CPG",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/enableiot/iotkit-agent/issues"
+  },
+  "homepage": "https://github.com/enableiot/iotkit-agent"
+}
