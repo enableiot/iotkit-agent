@@ -2,8 +2,10 @@ var mqtt = require('mqtt'),
     os = require("os"),
     fs =  require("fs"),
     mac = require("getmac"),
+    express = require("express"),
     winston = require('winston');
 
+// Logging
 var logger = new (winston.Logger)({
   transports: [
     new (winston.transports.Console)({ 
@@ -25,7 +27,8 @@ var device_id = 'd-' + os.hostname().toLowerCase(); // default
 var account_id, broker_topic;
 
 // Message endpoint variables
-var SERVER_PORT = process.env.SERVER_PORT || 1883;
+var SERVER_MQTT_PORT = process.env.SERVER_MQTT_PORT || 1883;
+var SERVER_REST_PORT = process.env.SERVER_REST_PORT || 8080;
 var BROKER_HOST = process.env.BROKER_HOST || 'data.enableiot.com';
 var BROKER_PORT = process.env.BROKER_PORT || 8884;
 var BROKER_DATA_TOPIC = process.env.BROKER_DATA_TOPIC || "data";
@@ -62,7 +65,12 @@ var makeItem = function(name, value){
     return item;
 }
 
-var makeMetrics = function(src, metric, value){
+var makeMetrics = function(src, val){
+
+    if (!val) throw "Null val";
+    if (!val.metric) throw "Null val.metric";
+    if (!val.value) throw "Null val.value";
+
     var msg = {
         "msg_type": "metrics_msg",
         "sender_id": device_id,
@@ -76,22 +84,63 @@ var makeMetrics = function(src, metric, value){
         ]
     };
     // Add metrics to the message
-    msg.data_source[0].metrics[0] = makeItem(metric, value);
+    msg.data_source[0].metrics[0] = makeItem(val.metric, val.value);
 
     // If in debug than print to console, else send to broker
     logger.info('Message: ', msg);
     broker.publish(broker_topic, JSON.stringify(msg));
 }
 
-
+// ************************************************************
 // Local variables
+// ************************************************************
 account_id = BROKER_OPTS.username;
 broker_topic = BROKER_DATA_TOPIC + "/" + account_id + "/" + device_id
 broker = mqtt.createSecureClient(BROKER_PORT, BROKER_HOST, BROKER_OPTS);
 
+// ************************************************************
+// REST Server
+// ************************************************************
+var rest = express();
+logger.info('Starting REST broker on %s ...', SERVER_REST_PORT);
+rest.configure(function() {
+    rest.use(express.favicon());
+    rest.use(express.logger('dev'));
+    rest.use(express.json());
+    rest.use(express.urlencoded());
+    rest.use(express.methodOverride());
+    rest.use(express.errorHandler());
+});
 
-// Server
-logger.info('Starting MQTT broker on %s ...', SERVER_PORT);
+rest.get('/', function (request, response) {
+    response.json({
+      namespace: 'sensor', 
+      payload: '{"metric": "metric name", "value"; 0.00}'
+    });
+});
+
+rest.put('/:device', function (request, response) {
+    
+    var device = request.params.device;
+    var msg = request.body;
+
+    logger.info('REST Topic: %s Payload: ', device, msg);
+    
+    try {
+        makeMetrics(device, msg);
+        response.send(200);
+    } catch (ex) {
+        logger.error('Error on rest: %s', ex);
+        response.send(404);
+    }
+});
+
+rest.listen(SERVER_REST_PORT);
+
+// ************************************************************
+// MQTT Server
+// ************************************************************
+logger.info('Starting MQTT broker on %s ...', SERVER_MQTT_PORT);
 mqtt.createServer(function(client) {
 
   logger.info('Server created...');
@@ -103,12 +152,8 @@ mqtt.createServer(function(client) {
   });
 
   client.on('publish', function(packet) {
-    var topic = packet.topic;
-    var topicParts = topic.split('/');
-    logger.info('Topic: %s Payload: %s', packet.topic, packet.payload);
-    if (topicParts.length == 2){
-        makeMetrics(topicParts[0], topicParts[1], packet.payload);
-    }
+    logger.info('MQTT Topic: %s Payload: %s', packet.topic, packet.payload);
+    makeMetrics(packet.topic, JSON.parse(packet.payload));
   });
 
   client.on('pingreq', function(packet) {
@@ -124,5 +169,5 @@ mqtt.createServer(function(client) {
     logger.error('MQTT Error: %s', err);
   });
 
-}).listen(SERVER_PORT);
+}).listen(SERVER_MQTT_PORT);
 

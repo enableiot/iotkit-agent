@@ -6,7 +6,8 @@
   "dependencies" : {
     "mqtt" : "*",
     "getmac": "*",
-    "winston": "*"
+    "winston": "*",
+    "express": "3.x"
   },
   "scripts": {
     "test": "node server.js",
