@@ -2,7 +2,7 @@
 
 Edge agent to abstract cloud connectivity complexities. It allows edge developers to focus on writing their experiments and interacting with their I/O parameters. When sending data to the cloud, the message formatting and security is implemented in the agent so only the message payload has to be provided.   
 
-![Agent Topology](../blob/master/images/agent-topo.png?raw=true)
+![Agent Topology](../master/images/agent-topo.png?raw=true)
 
 ## Installation
 
