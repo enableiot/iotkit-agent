@@ -1,10 +1,10 @@
 {
   "name": "iotkit-agent",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Edge agent to abstract cloud connectivity complexities",
   "main": "server.js",
-  "dependencies" : {
-    "mqtt" : "*",
+  "dependencies": {
+    "mqtt": "*",
     "getmac": "*",
     "winston": "*",
     "express": "3.x"
