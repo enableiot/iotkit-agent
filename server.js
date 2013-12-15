@@ -3,7 +3,8 @@ var mqtt = require('mqtt'),
     fs =  require("fs"),
     mac = require("getmac"),
     express = require("express"),
-    winston = require('winston');
+    winston = require('winston'),
+    dgram = require("dgram");
 
 // Logging
 var logger = new (winston.Logger)({
@@ -29,6 +30,7 @@ var account_id, broker_topic;
 // Message endpoint variables
 var SERVER_MQTT_PORT = process.env.SERVER_MQTT_PORT || 1883;
 var SERVER_REST_PORT = process.env.SERVER_REST_PORT || 8080;
+var SERVER_UDP_PORT = process.env.SERVER_UDP_PORT || 41234;
 var BROKER_HOST = process.env.BROKER_HOST || 'data.enableiot.com';
 var BROKER_PORT = process.env.BROKER_PORT || 8884;
 var BROKER_DATA_TOPIC = process.env.BROKER_DATA_TOPIC || "data";
@@ -136,6 +138,37 @@ rest.put('/:device', function (request, response) {
 });
 
 rest.listen(SERVER_REST_PORT);
+
+// ************************************************************
+// UDP Server
+// ************************************************************
+
+var server = dgram.createSocket("udp4");
+
+server.on("error", function (err) {
+  logger.error('Error on rest: %s', err.stack);
+  server.close();
+});
+
+server.on("message", function (msg, rinfo) {
+  logger.info('UDP message from %s:%d', rinfo.address, rinfo.port);
+  try {
+    var doc = JSON.parse(msg);
+    if (!doc.src) throw 'UDP: Null src';
+    else makeMetrics(doc.src, doc);
+  } catch (ex) {
+      logger.error('Error on udp: %s', ex);
+  } 
+  
+});
+
+server.on("listening", function () {
+  var addr = server.address();
+  logger.info('Starting UDP Server on %s:%d', addr.address, addr.port);
+});
+
+server.bind(SERVER_UDP_PORT);
+
 
 // ************************************************************
 // MQTT Server
