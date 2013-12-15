@@ -34,6 +34,15 @@ Most development framework have an integrated web request object. Here is a curl
          
 > Note the /test-device portion indicates the data source (i.e. sensor)
 
+### UDP
+
+Even if your development framework does not support MQTT client or Web Request patterns, you can still use UDP to send data to the Cloud using basic UDP message. Here is a curl example (tests/udp-test.sh):
+
+    echo -n '{ "src": "d1234", "metric": "temp", "value": 26.7}' | \
+         nc -4u -w1 'localhost' 41234
+         
+> Note the addition of src data to go around the lack of namespace like topic in MQTT and URL in REST (i.e. sensor)
+
 ## Message
 
 When integrating the IoT Kit Agent you only have to provide the metric information, everything else will be provided by the agent before your message is relayed to the cloud. Here is the basic structure you must submit to the agent:
