@@ -10,6 +10,16 @@ In the iotkit-agent directory run:
 
     npm install
     
+Also, to assure the agent is running all the time you need to install "forever" globally
+
+    sudo npm install forever -g
+    
+## Run
+
+To start the agent service simply edit configuration in the server.sh file and execute it:
+
+    server.sh
+    
 ## Client API usage
 
 Currently the iotkit-agent supports two forms of API: MQTT and REST. The specific framework integration can be found in the [IoT Kit Sample repo](https://github.com/enableiot/iotkit-samples), here are some quick ways you can test the agent from command line.
