@@ -4,41 +4,29 @@ var mqtt = require('mqtt'),
     mac = require("getmac"),
     express = require("express"),
     winston = require('winston'),
-    dgram = require("dgram");
+    logger = require('./log'),
+    dgram = require("dgram"),
+    conf = process.env;
 
-// Logging
-var logger = new (winston.Logger)({
-  transports: [
-    new (winston.transports.Console)({ 
-        level: 'verbose',
-        colorize: true
-    }),
-    new (winston.transports.File)({ 
-        filename: process.env.AGENT_LOG_FILE || './agent.log',
-        colorize: true,
-        level: 'warn'
-    })
-  ]
-});
-
+// Start
 logger.info('Configuring agent...');
 
 // Local variables
-var device_id = 'd-' + os.hostname().toLowerCase(); // default
 var account_id, broker_topic;
+var device_id = 'd-' + os.hostname().toLowerCase(); // default
 
 // Message endpoint variables
-var SERVER_MQTT_PORT = process.env.SERVER_MQTT_PORT || 1883;
-var SERVER_REST_PORT = process.env.SERVER_REST_PORT || 8080;
-var SERVER_UDP_PORT = process.env.SERVER_UDP_PORT || 41234;
-var BROKER_HOST = process.env.BROKER_HOST || 'data.enableiot.com';
-var BROKER_PORT = process.env.BROKER_PORT || 8884;
-var BROKER_DATA_TOPIC = process.env.BROKER_DATA_TOPIC || "data";
+var SERVER_MQTT_PORT = conf.SERVER_MQTT_PORT || 1883;
+var SERVER_REST_PORT = conf.SERVER_REST_PORT || 8080;
+var SERVER_UDP_PORT = conf.SERVER_UDP_PORT || 41234;
+var BROKER_HOST = conf.BROKER_HOST || 'data.enableiot.com';
+var BROKER_PORT = conf.BROKER_PORT || 8884;
+var BROKER_DATA_TOPIC = conf.BROKER_DATA_TOPIC || "data";
 var BROKER_OPTS = {
-   keyPath: process.env.BROKER_HOST_KEY || 'certs/client.key',
-   certPath: process.env.BROKER_HOST_CERT || 'certs/client.crt',
-   username: process.env.BROKER_HOST_USR || 'username',
-   password: process.env.BROKER_HOST_PSW || 'password',
+   keyPath: conf.BROKER_HOST_KEY || 'certs/client.key',
+   certPath: conf.BROKER_HOST_CERT || 'certs/client.crt',
+   username: conf.BROKER_HOST_USR || 'username',
+   password: conf.BROKER_HOST_PSW || 'password',
    keepalive: 30000
 }
 
@@ -168,7 +156,6 @@ server.on("listening", function () {
 });
 
 server.bind(SERVER_UDP_PORT);
-
 
 // ************************************************************
 // MQTT Server

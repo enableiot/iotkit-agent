@@ -1,10 +1,7 @@
 #!/bin/bash
 
-export MSG='{ "src": "d1234", "metric": "temp", "value": 26.7}'
-export HOST='localhost'
-export PORT=41234
-
-echo -n $MSG | nc -4u -w1 $HOST $PORT
+echo -n '{ "src": "d1234", "metric": "temp", "value": 26.7}' | \
+     nc -4u -w1 'localhost' 41234
 
 
 # where
