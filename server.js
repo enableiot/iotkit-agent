@@ -4,9 +4,24 @@ var mqtt = require('mqtt'),
     mac = require("getmac"),
     express = require("express"),
     winston = require('winston'),
-    logger = require('./log'),
     dgram = require("dgram"),
     conf = process.env;
+
+
+// Log
+var logger = new (winston.Logger)({
+  transports: [
+    new (winston.transports.Console)({ 
+        level: conf.CONSOLE_LOG_LEVEL || 'verbose',
+        colorize: true
+    }),
+    new (winston.transports.File)({ 
+        filename: process.env.AGENT_LOG_FILE || './agent.log',
+        level: conf.FILE_LOG_LEVEL || 'warn'
+    })
+  ],
+  exitOnError: false
+});
 
 // Start
 logger.info('Configuring agent...');
@@ -14,6 +29,8 @@ logger.info('Configuring agent...');
 // Local variables
 var account_id, broker_topic;
 var device_id = 'd-' + os.hostname().toLowerCase(); // default
+logger.info('Device Id: %s', device_id);
+
 
 // Message endpoint variables
 var SERVER_MQTT_PORT = conf.SERVER_MQTT_PORT || 1883;
