@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -n '{ "src": "d1234", "metric": "temp", "value": 26.7}' | \
+echo -n '{ "src": "test-udp-device", "metric": "temp", "value": 26.7}' | \
      nc -4u -w1 'localhost' 41234
 
 

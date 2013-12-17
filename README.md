@@ -62,4 +62,4 @@ When integrating the IoT Kit Agent you only have to provide the metric informati
       "value": 26.7
     }
     
-The "metric" is the dimension of the metric (e.g. temperature, speed, voracity etc.) and the value is the corresponding humber to that metric.
+The "metric" is the dimension of the metric (e.g. temperature, speed, voracity etc.) and the value is the corresponding number to that metric.
