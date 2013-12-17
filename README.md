@@ -51,7 +51,7 @@ Even if your development framework does not support MQTT client or Web Request p
     echo -n '{ "src": "d1234", "metric": "temp", "value": 26.7}' | \
          nc -4u -w1 'localhost' 41234
          
-> Note the addition of src data to go around the lack of namespace like topic in MQTT and URL in REST (i.e. sensor)
+> Note the addition of src data to go around the lack of name-space like topic in MQTT and URL in REST (i.e. sensor)
 
 ## Message
 
@@ -63,3 +63,5 @@ When integrating the IoT Kit Agent you only have to provide the metric informati
     }
     
 The "metric" is the dimension of the metric (e.g. temperature, speed, voracity etc.) and the value is the corresponding number to that metric.
+
+More information about the message format can be found at the [iotkit-samples](https://github.com/enableiot/iotkit-samples/wiki)
