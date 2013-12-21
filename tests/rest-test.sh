@@ -1,9 +1,10 @@
 #!/bin/bash
 
-curl -i -X PUT http://127.0.0.1:8080/test-rest-device \
+curl -i -X PUT http://127.0.0.1:8080 \
 	  -H 'Content-Type: application/json' \
-     --data '{"metric": "temp", "value": 26.7}' 
+     --data '{"d": "air-temp", "m": 26.7, "u": "C"}'
 
 # where
-# test-device is the sensor
-# data is the JSON structure with metric and value 
+# topic (-t) is a sensor info (not used currently)
+# message (-m) is the JSON structure with dimension, metric and unit
+# see: https://github.com/enableiot/iotkit-samples/wiki/Metric-Data-Flow-v2
