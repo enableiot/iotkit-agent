@@ -1,10 +1,10 @@
 #!/bin/bash
 
-echo -n '{ "src": "test-udp-device", "metric": "temp", "value": 26.7}' | \
+echo -n '{"d": "air-temp", "m": 26.7, "u": "C"}' | \
      nc -4u -w1 'localhost' 41234
 
 
 # where
-# message (-m) is the JSON structure with metric and value 
-# note, UDP message has to include src as there is no way 
-# to pass it in otherwise 
+# topic (-t) is a sensor info (not used currently)
+# message (-m) is the JSON structure with dimension, metric and unit
+# see: https://github.com/enableiot/iotkit-samples/wiki/Metric-Data-Flow-v2
