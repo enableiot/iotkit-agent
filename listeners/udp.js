@@ -11,7 +11,7 @@ exports.init = function(logger, onMessage) {
   });
 
   server.on("message", function (msg, rinfo) {
-    logger.info('UDP message from %s:%d', rinfo.address, rinfo.port);
+    logger.debug('UDP message from %s:%d', rinfo.address, rinfo.port);
     try {
       onMessage(JSON.parse(msg));
     } catch (ex) {

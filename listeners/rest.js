@@ -16,7 +16,7 @@ exports.init = function(logger, onMessage) {
 
   rest.put('/', function (request, response) {
       var msg = request.body;
-      logger.info('REST Payload: ', msg);
+      logger.debug('REST Payload: ', msg);
       try {
           onMessage(msg);
           response.send(200);
