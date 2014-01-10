@@ -24,6 +24,7 @@ utils.getDeviceId(function(id){
     logger.info("Starting listeners...");
     require("./listeners/rest").init(logger, msgHandler);
     require("./listeners/udp").init(logger, msgHandler);
+    require("./listeners/tcp").init(logger, msgHandler);
     require("./listeners/mqtt").init(logger, msgHandler);
 
 });
