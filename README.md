@@ -42,6 +42,7 @@ Currently the `iotkit-agent` supports the following protocols:
 * MQTT
 * REST 
 * UDP
+* TCP
 
 ### Message Format
 
@@ -78,9 +79,15 @@ Most development framework have an integrated Web Request object. Here is a curl
          
 #### UDP
 
-Even if your development framework does not support MQTT client or Web Request, you can still use UDP to send data to the Cloud. Here is a curl example `tests/udp-test.sh`:
+Even if your development framework does not support MQTT client or Web Request, you can still use UDP to send data to the Cloud. Here is a command line example `tests/udp-test.sh`:
 
     echo -n '{ "s": "temp-sensor", "m": "air-temp", "v": 26.7 }' | \
-         nc -4u -w1 'localhost' 41234
+         nc -4u -w1 127.0.0.1 41234
          
+#### UDP
 
+If assuring the message delivery to the `iotkit-agent` is important to you (yes, I'm talking about you UDP) you can use a simple TCP socket connection to send data to the Cloud. Here is a command line example `tests/tcp-test.sh`:
+
+    echo -n '{"s": "temp-sensor", "m": "air-temp", "v": 26.7}' | \
+         nc 127.0.0.1 7070
+         
