@@ -84,7 +84,7 @@ Even if your development framework does not support MQTT client or Web Request, 
     echo -n '{ "s": "temp-sensor", "m": "air-temp", "v": 26.7 }' | \
          nc -4u -w1 127.0.0.1 41234
          
-#### UDP
+#### TCP
 
 If assuring the message delivery to the `iotkit-agent` is important to you (yes, I'm talking about you UDP) you can use a simple TCP socket connection to send data to the Cloud. Here is a command line example `tests/tcp-test.sh`:
 
