@@ -33,5 +33,7 @@ To start the agent service simply execute the `start-agent.sh` file:
 ### Stop
 
     ./stop-agent.sh
-    
-    
+
+## Usage
+
+For instructions how to use the `iotkit-agent` please the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
