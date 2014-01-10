@@ -16,6 +16,8 @@ utils.getDeviceId(function(id){
     logger.info("Cloud connector for: ", id);
     var cloud = require("./lib/cloud").init(logger, id);
 
+    cloud.ping(id, utils.getIPs());
+
     var msgHandler = function(msg){
         logger.debug("JSON Message: ", msg);
         cloud.send(msg);
