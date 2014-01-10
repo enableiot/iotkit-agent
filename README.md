@@ -1,67 +1,86 @@
 # iotkit-agent
 
-Edge agent to abstract cloud connectivity complexities. It allows edge developers to focus on writing their experiments and interacting with their I/O parameters. When sending data to the cloud, the message formatting and security is implemented in the agent so only the message payload has to be provided.   
+Edge agent to abstract cloud connectivity complexities. It allows edge developers to focus on writing their experiments and interacting with I/O parameters. When sending data to the cloud, the message formatting and security is implemented in the agent so only the message payload has to be provided.   
 
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
 
-## Installation
+## Deployment
+
+> This portion of the read me is only required for the initial deployment of the `iotkit-agent`. In many the SD card provided with your board will already come configured with this agent, in which case you can move on to the Usage portion of this read me.
+
+### Installation
 
 In the iotkit-agent directory run:
 
     npm install
     
-Also, to assure the agent is running all the time you need to install "forever" globally
+### Configuration
 
-    sudo npm install forever -g
+The `iotkit-agent`, by default, requires only two arguments: IoT Kit username and password. You either define these arguments in `start-agent.sh` script, or, define the two environment variables and the `iotkit-agent` will automatically use them:
+
+
+    export IOTKIT_AGENT_USR="example-user"
+    export IOTKIT_AGENT_PSW="example-password"
     
-## Run
-
-To start the agent service simply edit configuration in the server.sh file and execute it:
-
-    server.sh
+> Just remember to either source the file where you defined these values or just restart your console to make sure `iotkit-agent` will see these values.
     
-## Client API usage
+### Start
 
-Currently the iotkit-agent supports two forms of API: MQTT and REST. The specific framework integration can be found in the [IoT Kit Sample repo](https://github.com/enableiot/iotkit-samples), here are some quick ways you can test the agent from command line.
+To start the agent service simply execute the `start-agent.sh` file:
 
-### MQTT
+    ./start-agent.sh
+    
+### Stop
 
-Any development framework supporting MQTT client can use local agent. Here is a mosquitto_pub example (tests/mqtt-test.sh):
+    ./stop-agent.sh
+    
+    
+## Usage
 
-    mosquitto_pub -h '127.0.0.1' \
-                  -t 'test-device' \
-                  -m '{"metric": "temp", "value": 26.7}'
+Currently the `iotkit-agent` supports the following protocols: 
+
+* MQTT
+* REST 
+* UDP
+
+### Message Format
+
+When integrating the IoT Kit Agent you only have to provide the metric information, everything else will be provided by the agent before your message is relayed to the cloud. Regardless of the protocol used, the `iotkit-agent` expect the inbound message to be in following simple format:
+
+    { "s": "temp-sensor", "m": "air-temp", "v": 26.7 }
+
+Where in:
+
+* s - is the source of this measurement
+* m - is the name of this measurement
+* v - is the value of this measurement
+
+## Protocol-specific API
+
+Many development frameworks have their own implementation of each one of these protocols. The following command-line examples should give you an idea how to access `iotkit-agent` API:
+
+#### MQTT
+
+Any development framework supporting MQTT client can use local agent. Here is a mosquitto_pub example `tests/mqtt-test.sh`:
+
+    mosquitto_pub -t 'data' \
+                  -m '{ "s": "temp-sensor", "m": "air-temp", "v": 26.7 }'
                   
-> Note the /test-device portion indicates the data source (i.e. sensor)
+> Note the -t [topic] is required but it can be anything
 
-### REST (HTTP)
+#### REST (HTTP)
 
-Most development framework have an integrated web request object. Here is a curl example (tests/rest-test.sh):
+Most development framework have an integrated Web Request object. Here is a curl example `tests/rest-test.sh`:
 
-    curl -i -X PUT http://127.0.0.1:8080/test-device \
+    curl -i -X PUT http://127.0.0.1:8080/ \
     	  -H 'Content-Type: application/json' \
-         --data '{"metric": "temp", "value": 26.7}' 
+         --data '{ "s": "temp-sensor", "m": "air-temp", "v": 26.7 }' 
          
-> Note the /test-device portion indicates the data source (i.e. sensor)
+#### UDP
 
-### UDP
+Even if your development framework does not support MQTT client or Web Request, you can still use UDP to send data to the Cloud. Here is a curl example `tests/udp-test.sh`:
 
-Even if your development framework does not support MQTT client or Web Request patterns, you can still use UDP to send data to the Cloud using basic UDP message. Here is a curl example (tests/udp-test.sh):
-
-    echo -n '{ "src": "d1234", "metric": "temp", "value": 26.7}' | \
+    echo -n '{ "s": "temp-sensor", "m": "air-temp", "v": 26.7 }' | \
          nc -4u -w1 'localhost' 41234
          
-> Note the addition of src data to go around the lack of name-space like topic in MQTT and URL in REST (i.e. sensor)
 
-## Message
-
-When integrating the IoT Kit Agent you only have to provide the metric information, everything else will be provided by the agent before your message is relayed to the cloud. Here is the basic structure you must submit to the agent:
-
-    {
-      "metric": "temp", 
-      "value": 26.7
-    }
-    
-The "metric" is the dimension of the metric (e.g. temperature, speed, voracity etc.) and the value is the corresponding number to that metric.
-
-More information about the message format can be found at the [iotkit-samples](https://github.com/enableiot/iotkit-samples/wiki)

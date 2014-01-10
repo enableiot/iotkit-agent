@@ -1,0 +1,48 @@
+{	
+
+	"client": {
+		"ping_cron": "*/1 * * * *",
+		"data_cron": "*/1 * * * *"
+	},
+
+	"cloud": { 
+		"api_access_key": "0000-1111-2222-3333-4444",
+		"endpoint": "api.enableiot.com",
+		"port": 1883,
+		"options": {
+			"clientId": null,
+		   "keepalive": 59000
+		}
+	},
+
+
+	"log": {
+		"console": { 
+	        "level": "debug",
+	        "colorize": true,
+	        "timestamp": true
+	    },
+	    "file": {
+	    	"filename": "./iotkit.log",
+	    	"level": "warn",
+	      "timestamp": true
+	    }
+	},
+
+
+	"provider": {
+		"src": "./provider/os/os-provider.js",
+		"args": {
+			"user_access_token": ""
+		}
+	},
+
+
+	"consumer": {
+		"src": "./consumers/console/console-consumer.js",
+		"args": {
+			
+		}
+	}
+
+}
