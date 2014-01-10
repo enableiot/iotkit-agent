@@ -10,8 +10,8 @@
     "express": "3.x"
   },
   "scripts": {
-    "test": "node server.js",
-    "start": "node server.js"
+    "test": "node agent",
+    "start": "node agent"
   },
   "repository": {
     "type": "git",
