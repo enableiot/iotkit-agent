@@ -20,6 +20,7 @@ then
 else
    echo "   initializing..."
    sudo npm install forever -g
+   npm install
 fi
 
 
