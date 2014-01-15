@@ -16,8 +16,36 @@ In the iotkit-agent directory run:
     
 ### Configuration
 
-The `iotkit-agent`, by default, requires only two arguments: IoT Kit username and password. You either define these arguments in `start-agent.sh` script, or, define the two environment variables and the `iotkit-agent` will automatically use them:
+The `iotkit-agent`, by default, requires only two arguments: IoT Kit username and password. There are three ways you can define these information:
 
+* Hard-coded in to the `start-agent.sh` script
+* Configuration file (cloud.json) in root of the application
+* Environment variables 
+
+
+#### Hardcoded 
+
+Edit `start-agent.sh` script:
+
+    export BROKER_HOST_USR="example-user"
+    export BROKER_HOST_PSW="example-password"
+
+> Not ideal, as this file will be overwritten when applicant is updated.
+
+#### Configuration File
+
+Drop configuration file in the root of the `iotkit-agent` application:
+
+    {
+      username: 'testuser',
+      password: 'password'
+    }
+    
+> The configuration file must be named `cloud.json` and include valid JSON in the above format. 
+
+#### Environment Variables 
+
+Define two arguments as environment variables and the `iotkit-agent` will automatically use them:
 
     export IOTKIT_AGENT_USR="example-user"
     export IOTKIT_AGENT_PSW="example-password"
