@@ -10,7 +10,7 @@ var mqtt = require('mqtt'),
 
 utils.getDeviceId(function(id){
 
-    logger.info("Cloud connector for: ", id);
+    logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
     var cloud = require("./lib/cloud").init(conf, logger, id);
 
