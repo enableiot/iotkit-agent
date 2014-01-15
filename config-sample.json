@@ -1,0 +1,14 @@
+{
+	"host": "mqtt.enableiot.com",
+	"port": 8884,
+	"qos": 1,
+	"key": "./certs/new-client.key",
+	"crt": "./certs/new-client.crt",
+	"username": "newdevice",
+	"password": "iotkit",
+	"mqtt_port_listen": 1883,
+	"rest_port_listen": 9090,
+	"tcp_port_listen": 7070,
+	"tcp_host_listen": "127.0.0.1",
+	"udp_port_listen": 41234
+}

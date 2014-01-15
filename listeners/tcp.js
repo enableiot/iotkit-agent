@@ -1,10 +1,9 @@
-var net = require('net'),
-    conf = process.env;
+var net = require('net');
 
-exports.init = function(logger, onMessage) {
+exports.init = function(conf, logger, onMessage) {
 
-  var tcpServerPort = conf.SERVER_TCP_PORT || 7070;
-  var tcpServerHost = conf.SERVER_TCP_HOST || "127.0.0.1";
+  var tcpServerPort = conf.tcp_port_listen || 7070;
+  var tcpServerHost = conf.tcp_host_listen || "127.0.0.1";
 
   var server = net.createServer(function (socket) {
 
