@@ -1,9 +1,8 @@
-var dgram = require("dgram"),
-    conf = process.env;
+var dgram = require("dgram");
 
-exports.init = function(logger, onMessage) {
+exports.init = function(conf, logger, onMessage) {
 
-  var udpServerPort = conf.SERVER_UDP_PORT || 41234;
+  var udpServerPort = conf.udp_port_listen || 41234;
   var server = dgram.createSocket("udp4");
 
   server.on("error", function (err) {

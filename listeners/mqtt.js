@@ -1,10 +1,9 @@
-var mqtt = require('mqtt'),
-    conf = process.env;
+var mqtt = require('mqtt');
 
-exports.init = function(logger, onMessage) {
+exports.init = function(conf, logger, onMessage) {
 
 
-  var mqttServerPort = conf.SERVER_MQTT_PORT || 1883;
+  var mqttServerPort = conf.mqtt_port_listen || 1883;
   var mqttServer = mqtt.createServer(function(client) {
 
     client.on('connect', function(packet) {

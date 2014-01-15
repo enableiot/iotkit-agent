@@ -1,10 +1,9 @@
-var express = require("express"),
-    conf = process.env;
+var express = require("express");
 
 
-exports.init = function(logger, onMessage) {
+exports.init = function(conf, logger, onMessage) {
 
-  var httpServerPort = conf.SERVER_REST_PORT || 8080;
+  var httpServerPort = conf.rest_port_listen || 9090;
   var rest = express();
   rest.configure(function() {
       rest.use(express.favicon());

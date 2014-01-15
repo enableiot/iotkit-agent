@@ -12,22 +12,7 @@ if [ -f *.log ]; then
    rm *.log
 fi
 
-# check if forever was installed 
-echo "forever: " 
-if [[ -n $(npm list -g -parseable forever) ]]
-then
-   echo "   ok"
-else
-   echo "   initializing..."
-   sudo npm install forever -g
-   npm install
-fi
-
-
 export BASE_DIR="${PWD}"
-export BROKER_HOST_USR="${IOTKIT_AGENT_USR}"
-export BROKER_HOST_PSW="${IOTKIT_AGENT_PSW}"
-
 
 forever start -m 1 \
               -a -l "${BASE_DIR}/forever.log" \
