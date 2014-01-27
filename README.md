@@ -1,5 +1,7 @@
 # iotkit-agent
 
+> Note, the agent will be undergoing some modification in preparation for upcoming event. The tag `0.7.0` is the last stable version.
+
 Edge agent to abstract cloud connectivity complexities. It allows edge developers to focus on writing their experiments and interacting with I/O parameters. When sending data to the cloud, the message formatting and security is implemented in the agent so only the message payload has to be provided.   
 
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
