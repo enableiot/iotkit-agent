@@ -12,6 +12,13 @@ Edge agent to abstract cloud connectivity complexities. It allows edge developer
 
 ### Installation
 
+Installation
+
+Clone the iotkit-agent project
+    
+    git clone https://github.com/enableiot/iotkit-agent.git
+    cd iotkit-agent
+
 In the iotkit-agent directory run:
 
     ./setup-agent.sh
