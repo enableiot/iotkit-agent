@@ -14,11 +14,11 @@ utils.getDeviceId(function(id){
     var conf = utils.getConfig();
     var cloud = require("./lib/cloud").init(conf, logger, id);
 
-    cloud.ping(id, utils.getIPs());
+    cloud.reg();
 
     var msgHandler = function(msg){
         logger.debug("JSON Message: ", msg);
-        cloud.send(msg);
+        cloud.metric(msg);
     };
 
     logger.info("Starting listeners...");
