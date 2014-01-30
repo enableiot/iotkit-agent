@@ -8,18 +8,19 @@ var mqtt = require('mqtt'),
     logger = require("./lib/logger").init(),
     utils = require("./lib/utils").init(logger);
 
+var sensorList = {};
+
 utils.getDeviceId(function(id){
 
     logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
     var cloud = require("./lib/cloud").init(conf, logger, id);
+    var agentMessage = require("./lib/agent-message");
+    agentMessage.init(logger, cloud, sensorList);
 
-    cloud.reg();
+    cloud.reg(sensorList);
 
-    var msgHandler = function(msg){
-        logger.debug("JSON Message: ", msg);
-        cloud.metric(msg);
-    };
+    var msgHandler = agentMessage.messageHandler;
 
     logger.info("Starting listeners...");
     require("./listeners/rest").init(conf, logger, msgHandler);
