@@ -14,8 +14,12 @@ exports.init = function(conf, logger, onMessage) {
 
     client.on('publish', function(packet) {
       logger.debug('MQTT Topic: %s Payload: %s', packet.topic, packet.payload);
-      onMessage(JSON.parse(packet.payload));
-    });
+      try {
+        onMessage(JSON.parse(packet.payload));
+      } catch (ex) {
+        logger.error('MQTT Error on message: %s', ex);
+      }
+  });
 
     client.on('pingreq', function(packet) {
       client.pingresp();
