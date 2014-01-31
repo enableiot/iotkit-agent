@@ -1,11 +1,9 @@
 {
-	"host": "data.enableiot.com",
+	"host": "broker.enableiot.com",
 	"port": 8884,
 	"qos": 1,
 	"key": "./certs/client.key",
 	"crt": "./certs/client.crt",
-	"username": "newdevice",
-	"password": "iotkit",
 	"mqtt_port_listen": 1883,
 	"rest_port_listen": 9090,
 	"tcp_port_listen": 7070,
