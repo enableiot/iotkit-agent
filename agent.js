@@ -7,10 +7,12 @@ utils.getDeviceId(function(id){
 
     logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
-    var cloud = require("./lib/cloud").init(conf, logger, id);
     
-    var sensorsListRepo = require("./lib/sensors-list-repository");
-    sensorsList = sensorsListRepo.getSensorsList() || {};
+    var sensorsStore = require("./lib/sensors-store");
+    sensorsStore.init(logger);
+    sensorsList = sensorsStore.getSensorsList() || {};
+    
+    var cloud = require("./lib/cloud").init(conf, logger, id, sensorsStore);
     
     var agentMessage = require("./lib/agent-message");
     agentMessage.init(logger, cloud, sensorsList);
