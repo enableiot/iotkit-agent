@@ -1,0 +1,21 @@
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+	var socket = io.connect('http://localhost:9009');
+	socket.on('agent-logs', function(data) {
+		$("<div />").text(data).prependTo("#logs");
+		var position = $("#logs").get(0).scrollHeight;
+		$("#logs").animate({
+			scrollTop : position
+		}, 500);
+	});
+</script>
+</head>
+<body>
+	<div id='logs' style='height: 100%; font-family: sans-serif; background: none repeat scroll 0% 0% darkgray; font-weight: bold; width: 100%; padding: 5px;'>
+		<span>Waiting for agent logs...</span>
+	</div>
+</body>
+</html>
