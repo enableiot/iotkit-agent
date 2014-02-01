@@ -7,7 +7,8 @@
     "mqtt": "*",
     "getmac": "*",
     "winston": "*",
-    "express": "3.x"
+    "express": "3.x",
+    "socket.io": "*"
   },
   "scripts": {
     "test": "node agent",
