@@ -14,7 +14,8 @@ exports.init = function(conf, logger, onMessage) {
       try {
         onMessage(JSON.parse(data)); 
       } catch (ex) {
-        logger.error('TCP Error on message: %s', ex);
+        logger.error('TCP Error on message: %s', ex.message);
+        logger.error(ex.stack);
       } 
     });
 

@@ -14,7 +14,8 @@ exports.init = function(conf, logger, onMessage) {
     try {
       onMessage(JSON.parse(msg));
     } catch (ex) {
-        logger.error('UDP Error on message: %s', ex);
+        logger.error('UDP Error on message: %s', ex.message);
+        logger.error(ex.stack);
     } 
   });
 
