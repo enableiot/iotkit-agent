@@ -10,7 +10,7 @@ echo "============================================"
 echo "copying startup script"
 if [[ -d /etc/rc5.d/ ]]
 then
-	cp -f S85start-iotkit-agent.sh /etc/rc5.d/
+	cp -f ./S85start-iotkit-agent.sh /etc/rc5.d/
 else
 	echo "no /etc/rc5.d directory - startup script not copied"
 fi

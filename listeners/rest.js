@@ -20,7 +20,8 @@ exports.init = function(conf, logger, onMessage) {
           onMessage(msg);
           response.send(200);
       } catch (ex) {
-          logger.error('REST Error: ', ex);
+          logger.error('REST Error: ', ex.message);
+          logger.error(ex.stack);
           response.send(500);
       }
   });

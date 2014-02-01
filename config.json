@@ -1,12 +1,20 @@
 {
 	"host": "broker.enableiot.com",
 	"port": 8884,
+	
 	"qos": 1,
+	"retain": true,
+
 	"key": "./certs/client.key",
 	"crt": "./certs/client.crt",
+
 	"mqtt_port_listen": 1883,
 	"rest_port_listen": 9090,
+	"udp_port_listen": 41234,
 	"tcp_port_listen": 7070,
 	"tcp_host_listen": "127.0.0.1",
-	"udp_port_listen": 41234
+
+	"reg_topic": "/server/registration",
+   "status_topic": "/server/registration_status",
+   "metric_topic": "server/metric/"
 }
