@@ -1,5 +1,5 @@
-var logger = require("./lib/logger").init(),
-    utils = require("./lib/utils").init(logger);
+var utils = require("./lib/utils").init(),
+	logger = require("./lib/logger").init(utils);
 
 utils.getDeviceId(function(id){
 
