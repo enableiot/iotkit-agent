@@ -18,6 +18,6 @@
    	"status_topic": "/server/registration_status",   
    	"metric_topic": "server/metric/",
    		
-   	"log_viewer": "off",
+   	"log_viewer": "on",
    	"log_viewer_port": 9009
 }

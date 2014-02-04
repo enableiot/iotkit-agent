@@ -1,6 +1,10 @@
 {
   "name": "iotkit-agent",
+<<<<<<< HEAD
   "version": "0.12.0",
+=======
+  "version": "0.11.1",
+>>>>>>> e8f0df0223d11cfebd705cae70159c121322d7f2
   "description": "Edge agent to abstract cloud connectivity complexities",
   "main": "server.js",
   "dependencies": {
