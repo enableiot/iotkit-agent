@@ -6,6 +6,14 @@ echo "============================================"
 echo " IoT Kit Agent - Setup"
 echo "============================================"
 
+# clanton has no sudo
+if [[ `which sudo` = "" ]];
+then
+	SUDO=""
+else
+	SUDO="sudo"
+fi
+
 # inject the file which starts the agent into the init process at run level 5
 echo "copying startup script"
 if [[ -d /etc/rc5.d/ ]]
@@ -19,10 +27,10 @@ fi
 echo "forever: " 
 if [[ -n $(npm list -g -parseable forever) ]]
 then
-   echo "   ok"
+    echo "   ok"
 else
-   echo "   initializing..."
-   sudo npm install forever -g
+    echo "   installing ..."
+    $SUDO npm install forever -g   	
 fi
 
 # installing local packages
