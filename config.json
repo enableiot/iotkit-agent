@@ -15,9 +15,9 @@
 	"tcp_host_listen": "127.0.0.1",
 
 	"reg_topic": "/server/registration",
-   	"status_topic": "/server/registration_status",   
-   	"metric_topic": "server/metric/",
+   "status_topic": "/server/registration_status",   
+   "metric_topic": "server/metric/",
    		
-   	"log_viewer": "on",
-   	"log_viewer_port": 9009
+   "log_viewer": "off",
+   "log_viewer_port": 9090
 }
