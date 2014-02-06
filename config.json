@@ -19,5 +19,5 @@
    "metric_topic": "server/metric/",
    		
    "log_viewer": "off",
-   "log_viewer_port": 9090
+   "log_viewer_port": 9009
 }
