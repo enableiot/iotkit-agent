@@ -1,9 +1,8 @@
 # iotkit-agent
 
-The IoT Kit Agent abstract cloud connectivity complexities. It allows developers to focus on application developments and interacting with I/O devices (sensors, actuators and tags). The local IoT Kit Agent when sending data to the cloud transparently implements the necessary message formats and transport security as well as device registration.
+The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows developers to focus on application development and logic for their devices (sensors, actuators and tags). IoT Kit Agent transparently implements the necessary message format and security during both the device registration and data submission. 
 
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
-
 
 ## Installation
 
@@ -11,11 +10,14 @@ Clone the iotkit-agent project:
     
     git clone https://github.com/enableiot/iotkit-agent.git
     
+Install using npm:
+
+    npm install iotkit-agent
+    mv node_modules/iotkit-agent ./iotkit-agent
+    
 Or simply download zip of the latest version:
 
     wget -O iotkit-agent.zip https://github.com/enableiot/iotkit-agent/archive/master.zip | unzip iotkit-agent.zip
-    
-> Note, this will not work until the iotkit-agent repo is open
     
 Once you have a copy of the iotkit-agent locally, execute the setup script:
 
@@ -28,15 +30,17 @@ Once you have a copy of the iotkit-agent locally, execute the setup script:
 
 The `iotkit-agent`, by default, has sufficient defaults to register itself in the Cloud.
     
-> You can configure many parameters of the iotkit-agent in the `config.json` file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
+> You can configure many parameters of the `iotkit-agent` in the `config.json` file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
         
 ### Start
 
-To start the agent service simply execute the `start-agent.sh` file:
+To start the `iotkit-agent` service simply execute the start script:
 
     ./start-agent.sh
     
 ### Stop
+
+Yep, you quest it, run the stop script:
 
     ./stop-agent.sh
 
