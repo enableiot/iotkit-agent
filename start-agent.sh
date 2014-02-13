@@ -3,12 +3,11 @@
 
 echo ""
 echo "============================================"
-echo " IoT Kit Agent"
+echo "IoT Kit Agent" 
 echo "============================================"
 
 # reset logs directory
 if [ -f *.log ]; then
-	echo "   clearing logs..." 
    rm *.log
 fi
 
@@ -20,9 +19,12 @@ forever start -m 1 \
               --minUptime 1s \
               --spinSleepTime 3s agent.js
 
-echo "done"
-echo ""
 
+echo ""
+echo "Device Id:" 
+node device-id
+echo ""
+echo "============================================"
 
    
 

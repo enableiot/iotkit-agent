@@ -25,28 +25,8 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+var utils = require("./lib/utils").init();
 
-var winston = require('winston'),
-    conf = process.env;
-
-exports.init = function(utils) {
-
-  var logTransports = [
-    new (winston.transports.Console)({ 
-          level: conf.CONSOLE_LOG_LEVEL || 'warn',
-          colorize: true,
-          timestamp: true
-    }),
-    new (winston.transports.File)({ 
-          filename: conf.AGENT_LOG_FILE || './agent.log',
-          level: conf.FILE_LOG_LEVEL || 'warn',
-          timestamp: true
-    })
-  ];
-
-  return new (winston.Logger)({
-    transports: logTransports,
-    exitOnError: false
-  });
-  
-};  
+utils.getDeviceId(function(id){
+	console.log(id);
+});
