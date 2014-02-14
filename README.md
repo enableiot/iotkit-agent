@@ -22,11 +22,11 @@ Once you have a copy of the iotkit-agent locally, execute the setup script:
 
 The `iotkit-agent`, by default, has sufficient defaults to register itself in the Cloud.
     
-> You can configure many parameters of the `iotkit-agent` in the `config.json` file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
+> You can configure many parameters of the iotkit-agent in the `config.json` file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
         
 ### Start
 
-To start the `iotkit-agent` service simply execute the start script:
+To start the iotkit-agent service simply execute the start script:
 
     ./start-agent.sh
     
@@ -38,7 +38,14 @@ Yep, you quest it, run the stop script:
 
 ## Usage
 
-For instructions how to use the `iotkit-agent` please the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
+For instructions how to use the iotkit-agent please the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
+
+## Certificates
+
+> Do not use the default certificates in production
+
+The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
+
 
 ## License
 
