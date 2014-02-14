@@ -20,9 +20,9 @@ Once you have a copy of the iotkit-agent locally, execute the setup script:
     
 ### Configuration
 
-The `iotkit-agent`, by default, has sufficient defaults to register itself in the Cloud.
+The iotkit-agent, by default, has sufficient defaults to register itself in the Cloud.
     
-> You can configure many parameters of the iotkit-agent in the `config.json` file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
+> You can configure many parameters of the iotkit-agent in the config file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
         
 ### Start
 
