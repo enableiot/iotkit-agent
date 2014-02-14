@@ -4,7 +4,7 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
 
-## Installation
+### Installation
 
 Install using npm:
 
