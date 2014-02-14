@@ -6,18 +6,10 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 ## Installation
 
-Clone the iotkit-agent project:
-    
-    git clone https://github.com/enableiot/iotkit-agent.git
-    
 Install using npm:
 
     npm install iotkit-agent
-    mv node_modules/iotkit-agent ./iotkit-agent
-    
-Or simply download zip of the latest version:
-
-    wget -O iotkit-agent.zip https://github.com/enableiot/iotkit-agent/archive/master.zip | unzip iotkit-agent.zip
+    mv node_modules/iotkit-agent ./
     
 Once you have a copy of the iotkit-agent locally, execute the setup script:
 
