@@ -40,6 +40,12 @@ Yep, you quest it, run the stop script:
 
 For instructions how to use the iotkit-agent please the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
 
+## Test
+
+The iotkit-agent project uses [mocha](http://visionmedia.github.io/mocha/) as its test framework. To ran all tests:
+
+    mocha
+
 ## Certificates
 
 > Do not use the default certificates in production

@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var utils = require("./lib/utils").init(),
-	logger = require("./lib/logger").init(utils);
+	  logger = require("./lib/logger").init(utils);
 
 utils.getDeviceId(function(id){
 
@@ -47,7 +47,8 @@ utils.getDeviceId(function(id){
         agentMessage.init(logger, cloud, sensorsList);
     
     // register device
-    cloud.reg(sensorsList, agentMessage.registrationCompleted);
+    // @TODO: cloud.reg takes only one arg
+    cloud.reg(sensorsList);
 
     // create a local pub handler
     var msgHandler = agentMessage.messageHandler;
