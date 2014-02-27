@@ -6,8 +6,8 @@ echo "============================================"
 echo " IoT Kit Agent - Setup"
 echo "============================================"
 
-# clanton has no sudo
-if [[ `which sudo` = "" ]];
+# if not root, try to use sudo
+if [[ `whoami` != "root" ]];
 then
 	SUDO=""
 else
