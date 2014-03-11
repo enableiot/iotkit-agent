@@ -19,6 +19,7 @@ describe('iotkit-agent', function() {
    	utils.getDeviceId(function(id){
       	assert(id, 'id is null');
       	this.deviceId = id;
+        console.log(id);
       	done();
    	});
    });
