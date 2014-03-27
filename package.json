@@ -6,7 +6,6 @@
   "dependencies": {
     "mqtt": "*",
     "getmac": "*",
-    "winston": "*",
     "express": "3.x"
   },
   "bin": {

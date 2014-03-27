@@ -28,7 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var utils = require("../lib/utils").init(),
-    logger = require("../lib/logger").init(utils);
+    Logger = require("../lib/logger")
+    , logger = new Logger('info');
 
 utils.getDeviceId(function(id) {
 
