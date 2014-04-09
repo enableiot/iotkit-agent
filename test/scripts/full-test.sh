@@ -20,7 +20,7 @@ while [ true ]; do
   for i in {1..10}
   do
     val=$(shuf -i 0-40 -n 1)
-    data='{"s": "temp-sensor-'$i'", v": '$val'.2 }'
+    data='{"s": "temp-sensor-'$i'", "v": '$val'.2 }'
     echo -n $data | nc 127.0.0.1 7070
   done
   echo -n "."
