@@ -45,20 +45,26 @@ utils.getDeviceId(function(id){
     // configure message provider
     var agentMessage = require("./lib/agent-message");
         agentMessage.init(logger, cloud, sensorsList);
-    
-    // register device
-    // @TODO: cloud.reg takes only one arg
-    cloud.reg(sensorsList);
 
-    // create a local pub handler
-    var msgHandler = agentMessage.messageHandler;
+    cloud.activate(function(err){
+        if (!err) {
+            // register device
+            // @TODO: cloud.reg takes only one arg
+            cloud.reg(sensorsList);
 
-    logger.info("Starting listeners...");
-    require("./listeners/rest").init(conf, logger, msgHandler);
-    require("./listeners/udp").init(conf, logger, msgHandler);
-    require("./listeners/tcp").init(conf, logger, msgHandler);
-    require("./listeners/mqtt").init(conf, logger, msgHandler);
+            // create a local pub handler
+            var msgHandler = agentMessage.messageHandler;
 
+            logger.info("Starting listeners...");
+            require("./listeners/rest").init(conf, logger, msgHandler);
+            require("./listeners/udp").init(conf, logger, msgHandler);
+            require("./listeners/tcp").init(conf, logger, msgHandler);
+            require("./listeners/mqtt").init(conf, logger, msgHandler);
+
+        } else {
+            logger.info("Error in activation...");
+        }
+    });
 });
 
 
