@@ -1,12 +1,14 @@
 {
-    "host": "127.0.0.1",
-    "port": 1883,
-
-    "qos": 1,
-    "retain": true,
-
-    "key": "./certs/client.key",
-    "crt": "./certs/client.crt",
+    "broker" : {
+        "host": "127.0.0.1",
+        "port": 1883,
+        "qos": 1,
+        "retain": true,
+        "secure": false,
+        "key": "./certs/client.key",
+        "crt": "./certs/client.crt",
+        "retries": 10
+    },
 
     "mqtt_port_listen": 1884,
     "rest_port_listen": 9090,
@@ -17,8 +19,6 @@
     "activation_code": "nfmel1jt",
     "apikey": "174e00sg40",
     "device_token": "",
-
-    "secure" : false,
 
     "reg_topic": "/server/registration",
     "status_topic": "data/registration_status",

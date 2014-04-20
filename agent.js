@@ -36,46 +36,30 @@ utils.getDeviceId(function(id) {
     // configure sensor store
     var sensorsStore = require("./lib/sensors-store");
         sensorsStore.init(logger);
-    
     var sensorsList = sensorsStore.getSensorsList();
 
-    var brokerConnector = new broker(conf, logger);
+    var brokerConnector = new broker(conf.broker, logger);
     brokerConnector.connect(function(err) {
         if (!err) {
-            var cloud = require("./lib/cloud").init(conf, logger, id, sensorsStore);
+            var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id, sensorsStore);
             cloud.activate(function(err) {
                 if (!err) {
+                    var agentMessage = require("./lib/agent-message");
+                    agentMessage.init(logger, cloud, sensorsList);
                     // register device
                     // @TODO: cloud.reg takes only one arg
                     cloud.reg(sensorsList);
+                    // create a local pub handler
+                    var msgHandler = agentMessage.messageHandler;
+                    logger.info("Starting listeners...");
+                    require("./listeners/rest").init(conf, logger, msgHandler);
+                    require("./listeners/udp").init(conf, logger, msgHandler);
+                    require("./listeners/tcp").init(conf, logger, msgHandler);
+                    require("./listeners/mqtt").init(conf, logger, msgHandler);
+                } else {
+                    logger.info("Error in activation...");
                 }
             });
-        }
-    });
-    // create a cloud connector
-    var cloud = require("./lib/cloud").init(conf, logger, id, sensorsStore);
-    
-    // configure message provider
-    var agentMessage = require("./lib/agent-message");
-        agentMessage.init(logger, cloud, sensorsList);
-
-    cloud.activate(function(err){
-        if (!err) {
-            // register device
-            // @TODO: cloud.reg takes only one arg
-            cloud.reg(sensorsList);
-
-            // create a local pub handler
-            var msgHandler = agentMessage.messageHandler;
-
-            logger.info("Starting listeners...");
-            require("./listeners/rest").init(conf, logger, msgHandler);
-            require("./listeners/udp").init(conf, logger, msgHandler);
-            require("./listeners/tcp").init(conf, logger, msgHandler);
-            require("./listeners/mqtt").init(conf, logger, msgHandler);
-
-        } else {
-            logger.info("Error in activation...");
         }
     });
 });
