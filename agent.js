@@ -24,21 +24,34 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
+"use strict";
 var utils = require("./lib/utils").init(),
-	  logger = require("./lib/logger").init(utils);
+    logger = require("./lib/logger").init(utils),
+    broker = require("./lib/broker");
 
-utils.getDeviceId(function(id){
+utils.getDeviceId(function(id) {
 
     logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
-    
-    // configure sensor store 
+    // configure sensor store
     var sensorsStore = require("./lib/sensors-store");
         sensorsStore.init(logger);
     
     var sensorsList = sensorsStore.getSensorsList();
-    
+
+    var brokerConnector = new broker(conf, logger);
+    brokerConnector.connect(function(err) {
+        if (!err) {
+            var cloud = require("./lib/cloud").init(conf, logger, id, sensorsStore);
+            cloud.activate(function(err) {
+                if (!err) {
+                    // register device
+                    // @TODO: cloud.reg takes only one arg
+                    cloud.reg(sensorsList);
+                }
+            });
+        }
+    });
     // create a cloud connector
     var cloud = require("./lib/cloud").init(conf, logger, id, sensorsStore);
     

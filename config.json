@@ -18,6 +18,8 @@
     "apikey": "174e00sg40",
     "device_token": "",
 
+    "secure" : false,
+
     "reg_topic": "/server/registration",
     "status_topic": "data/registration_status",
     "device": "devices/{deviceid}",
