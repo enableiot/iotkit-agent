@@ -1,6 +1,6 @@
 {
     "broker" : {
-        "host": "127.0.0.1",
+        "host": "dev-broker.us.enableiot.com",
         "port": 1883,
         "qos": 1,
         "retain": true,
@@ -16,8 +16,8 @@
     "tcp_port_listen": 7070,
     "tcp_host_listen": "127.0.0.1",
 
-    "activation_code": "pXgxNfqz",
-    "apikey": "kb0iemixbu",
+    "activation_code": "7JWiclV0",
+    "apikey": "uxfUyUBDu4",
 
 
     "reg_topic": "/server/registration",

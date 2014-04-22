@@ -30,7 +30,7 @@ var utils = require("./lib/utils").init(),
     broker = require("./lib/broker");
 
 utils.getDeviceId(function(id) {
-
+    id = "ammarch-vm2";
     logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
     // configure sensor store
@@ -48,7 +48,7 @@ utils.getDeviceId(function(id) {
                     agentMessage.init(logger, cloud, sensorsList);
                     // register device
                     // @TODO: cloud.reg takes only one arg
-                    cloud.update();
+                    //cloud.update();
                    // cloud.regComponent(sensorsList);
 
                     // create a local pub handler
