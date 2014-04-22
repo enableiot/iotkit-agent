@@ -49,6 +49,7 @@ utils.getDeviceId(function(id) {
                     // register device
                     // @TODO: cloud.reg takes only one arg
                     cloud.reg(sensorsList);
+
                     // create a local pub handler
                     var msgHandler = agentMessage.messageHandler;
                     logger.info("Starting listeners...");

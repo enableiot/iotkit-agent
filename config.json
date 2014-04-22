@@ -16,15 +16,16 @@
     "tcp_port_listen": 7070,
     "tcp_host_listen": "127.0.0.1",
 
-    "activation_code": "nfmel1jt",
-    "apikey": "174e00sg40",
-    "device_token": "",
+    "activation_code": "vEIXJClE",
+    "apikey": "kb0iemixbu",
+
 
     "reg_topic": "/server/registration",
     "status_topic": "data/registration_status",
     "device": "devices/{deviceid}",
     "device_status": "devices/{deviceid}/activation_status",
     "device_activation": "devices/{deviceid}/activation",
-    "device_metadata": "devices/{deviceid}/METADATA",
-    "metric_topic": "server/metric/{accountid}/{deviceid}"
+    "device_metadata": "devices/{deviceid}/metadata",
+    "metric_topic": "server/metric/{accountid}/{deviceid}",
+    "device_components" :  "devices/{deviceid}/components"
 }
