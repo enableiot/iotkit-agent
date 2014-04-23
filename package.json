@@ -26,5 +26,21 @@
   "bugs": {
     "url": "https://github.com/enableiot/iotkit-agent/issues"
   },
-  "homepage": "https://github.com/enableiot/iotkit-agent"
+  "homepage": "https://github.com/enableiot/iotkit-agent",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "mocha": "^1.18.2",
+    "istanbul": "^0.2.7",
+    "rewire": "^2.0.0",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-simple-mocha": "^0.4.0",
+    "mocha-teamcity-reporter": "0.0.2",
+    "jshint-teamcity": "^1.0.4",
+    "asserts": "^4.0.0",
+    "chai": "^1.9.1",
+    "grunt-contrib-compress": "^0.8.0",
+    "grunt-mocha-istanbul": "^1.4.0",
+    "grunt-istanbul": "^0.2.5"
+  }
 }
