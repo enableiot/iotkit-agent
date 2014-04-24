@@ -1,14 +1,14 @@
 {
-    "POST":{
+    "REG" : {
         "name": "component",
         "type": "object",
         "additionalProperties": false,
         "properties": {
-            "name": {
+            "n": {
                 "type": "string",
                 "required": true
             },
-            "type": {
+            "t": {
                 "type": "string",
                 "required": true
             }

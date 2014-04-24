@@ -1,0 +1,29 @@
+/**
+ * Created by ammarch on 4/24/14.
+ */
+{
+    "SUBMIT" : {
+    "name": "data",
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+            "v": {
+               "required": true
+            },
+            "n": {
+                "type": "string",
+                "required": true
+            },
+            "loc": {
+                "type": "array",
+                "minItems": 3,
+                "items": {"type": "numeric" },
+                "required": false
+            },
+            "on": {
+                "type": "numeric",
+                 "required": false
+            }
+        }
+    }
+}
