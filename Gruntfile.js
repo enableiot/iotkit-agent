@@ -31,24 +31,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-        simplemocha: {
-			options: {
-                globals: ['should'],
-                timeout: 3000,
-                ignoreLeaks: false,
-                ui: 'bdd',
-                reporter: 'spec'
-			},
-			dev: {
-                src: ['test/**/*.js']
-			},
-			teamcity: {
-                src: ['test/**/*.js'],
-				options: {
-					reporter: 'mocha-teamcity-reporter'
-				}
-			}
-        },
         compress: {
             teamcity: {
                 options: {
@@ -100,7 +82,6 @@ module.exports = function(grunt) {
 
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-simple-mocha');
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Default task(s).

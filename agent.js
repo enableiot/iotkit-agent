@@ -46,10 +46,6 @@ utils.getDeviceId(function(id) {
                 if (!err) {
                     var agentMessage = require("./lib/agent-message");
                     agentMessage.init(logger, cloud, sensorsList);
-                    // register device
-                    // @TODO: cloud.reg takes only one arg
-                    //cloud.update();
-                   // cloud.regComponent(sensorsList);
 
                     // create a local pub handler
                     var msgHandler = agentMessage.messageHandler;
