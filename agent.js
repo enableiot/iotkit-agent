@@ -27,10 +27,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(utils),
-    broker = require("./lib/broker");
+    broker = require("./lib/broker"),
+    common = require("./lib/common").init(logger);
 
-utils.getDeviceId(function(id) {
-    id = "ammarch-vm2";
+utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
     // configure sensor store
@@ -42,7 +42,7 @@ utils.getDeviceId(function(id) {
     brokerConnector.connect(function(err) {
         if (!err) {
             var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id, sensorsStore);
-            cloud.activate(function(err) {
+            cloud.activate(function (err) {
                 if (!err) {
                     var agentMessage = require("./lib/agent-message");
                     agentMessage.init(logger, cloud, sensorsList);

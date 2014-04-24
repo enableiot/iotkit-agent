@@ -7,7 +7,9 @@
     "mqtt": "*",
     "getmac": "*",
     "winston": "*",
-    "express": "3.x"
+    "express": "3.x",
+    "json-schema": "^0.2.2",
+    "node-uuid": "^1.4.1"
   },
   "scripts": {
     "start": "node agent",

@@ -29,7 +29,6 @@ var mqtt = require('mqtt');
 
 exports.init = function(conf, logger, onMessage) {
 
-
   var mqttServerPort = conf.mqtt_port_listen || 1883;
   var mqttServer = mqtt.createServer(function(client) {
 
