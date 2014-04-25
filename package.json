@@ -42,6 +42,7 @@
     "chai": "^1.9.1",
     "grunt-contrib-compress": "^0.8.0",
     "grunt-mocha-istanbul": "^1.4.0",
-    "grunt-istanbul": "^0.2.5"
+    "grunt-istanbul": "^0.2.5",
+    "grunt-license-finder": "^0.1.3"
   }
 }
