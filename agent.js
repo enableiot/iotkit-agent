@@ -26,34 +26,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
 var utils = require("./lib/utils").init(),
-    logger = require("./lib/logger").init(utils),
+    logger = require("./lib/logger").init(),
     broker = require("./lib/broker");
-    //common = require("./lib/common").init(logger);
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
     var conf = utils.getConfig();
     // configure sensor store
-    var sensorsStore = require("./lib/sensors-store");
-        sensorsStore.init(logger);
-    var sensorsList = sensorsStore.getSensorsList();
-
     var brokerConnector = new broker(conf.broker, logger);
     brokerConnector.connect(function(err) {
         if (!err) {
-            var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id, sensorsStore);
+            var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id);
             cloud.activate(function (err) {
                 if (!err) {
-                    var agentMessage = require("./lib/agent-message");
-                    agentMessage.init(logger, cloud, sensorsList);
-
-                    // create a local pub handler
-                    var msgHandler = agentMessage.messageHandler;
+                    var agentMessage = require("./lib/agent-message").init(cloud, logger);
                     logger.info("Starting listeners...");
-                    require("./listeners/rest").init(conf, logger, msgHandler);
-                    require("./listeners/udp").init(conf, logger, msgHandler);
-                    require("./listeners/tcp").init(conf, logger, msgHandler);
-                    require("./listeners/mqtt").init(conf, logger, msgHandler);
+                    require("./listeners/rest").init(conf, logger, agentMessage.handler);
+                    require("./listeners/udp").init(conf, logger, agentMessage.handler);
+                    require("./listeners/tcp").init(conf, logger, agentMessage.handler);
+                    require("./listeners/mqtt").init(conf, logger, agentMessage.handler);
                 } else {
                     logger.info("Error in activation...");
                 }

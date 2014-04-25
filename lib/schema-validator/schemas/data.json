@@ -1,14 +1,11 @@
-/**
- * Created by ammarch on 4/24/14.
- */
 {
-    "SUBMIT" : {
-    "name": "data",
+    "SUBMIT": {
+        "name": "data",
         "type": "object",
         "additionalProperties": true,
         "properties": {
             "v": {
-               "required": true
+                "required": true
             },
             "n": {
                 "type": "string",
@@ -17,12 +14,14 @@
             "loc": {
                 "type": "array",
                 "minItems": 3,
-                "items": {"type": "numeric" },
+                "items": {
+                    "type": "numeric"
+                },
                 "required": false
             },
             "on": {
                 "type": "numeric",
-                 "required": false
+                "required": false
             }
         }
     }

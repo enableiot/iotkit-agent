@@ -52,7 +52,6 @@ describe(fileToTest, function(){
         assert.lengthOf(store.data, 0, "None data shall at data store");
         done();
     });
-
     it('Shall save data to file in JSON format>', function(done) {
         var storeName = "sensorTest-list.json";
         var data = [];

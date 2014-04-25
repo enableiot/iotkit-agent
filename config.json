@@ -17,7 +17,8 @@
     "tcp_host_listen": "127.0.0.1",
 
     "activation_code": "7JWiclV0",
-    "apikey": "uxfUyUBDu4",
+    "api_key": "uxfUyUBDu4",
+    "token_file": "token.json",
 
 
     "reg_topic": "/server/registration",
@@ -27,5 +28,6 @@
     "device_activation": "devices/{deviceid}/activation",
     "device_metadata": "devices/{deviceid}/metadata",
     "metric_topic": "server/metric/{accountid}/{deviceid}",
-    "device_components" :  "devices/{deviceid}/components"
+    "device_components_add" :  "devices/{deviceid}/components/add",
+    "device_component_del": "devices/{deviceid}/components/delete"
 }

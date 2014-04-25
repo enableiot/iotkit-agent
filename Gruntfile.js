@@ -47,17 +47,12 @@ module.exports = function(grunt) {
                 }
             },
         mocha_istanbul: {
-            coverage: {
-                src: 'test', // the folder, not the files,
-                options: {
-                    mask: '*test.js'
-                }
-            },
-            teamcity: {
+             teamcity: {
                 src: 'test/', // the folder, not the files
                 options: {
                     ui: 'bdd',
                     coverage: true,
+                    recursive: true,
                     reporter: 'mocha-teamcity-reporter',
                     mask: '*Tests.js',
                     /*check: {
