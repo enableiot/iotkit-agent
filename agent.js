@@ -27,8 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(utils),
-    broker = require("./lib/broker"),
-    common = require("./lib/common").init(logger);
+    broker = require("./lib/broker");
+    //common = require("./lib/common").init(logger);
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);

@@ -6,11 +6,13 @@
         "properties": {
             "n": {
                 "type": "string",
-                "required": true
+                "required": true,
+                "minLength": 4
             },
             "t": {
                 "type": "string",
-                "required": true
+                "required": true,
+                "minLength": 4
             }
         }
     }

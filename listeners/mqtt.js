@@ -47,11 +47,11 @@ exports.init = function(conf, logger, onMessage) {
       }
   });
 
-    client.on('pingreq', function(packet) {
+    client.on('pingreq', function() {
       client.pingresp();
     });
 
-    client.on('disconnect', function(packet) {
+    client.on('disconnect', function() {
       client.stream.end();
     });
 
