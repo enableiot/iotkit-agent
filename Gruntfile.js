@@ -59,7 +59,7 @@ module.exports = function(grunt) {
                     ui: 'bdd',
                     coverage: true,
                     reporter: 'mocha-teamcity-reporter',
-                    mask: '*test.js',
+                    mask: '*Tests.js',
                     /*check: {
                         lines: 70,
                         statements: 70,
