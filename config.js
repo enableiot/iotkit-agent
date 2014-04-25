@@ -1,4 +1,9 @@
-{
+/**
+ * Created by ammarch on 4/25/14.
+ */
+
+/* default configuration handled with dynamic environment */
+var config = {
     "broker" : {
         "host": "dev-broker.us.enableiot.com",
         "port": 1883,
@@ -30,4 +35,10 @@
     "metric_topic": "server/metric/{accountid}/{deviceid}",
     "device_components_add" :  "devices/{deviceid}/components/add",
     "device_component_del": "devices/{deviceid}/components/delete"
+};
+
+/* override for local development if NODE_ENV is defined to local */
+if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
+    config.broker.host = "127.0.0.1";
 }
+module.exports = config;

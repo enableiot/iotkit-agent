@@ -27,11 +27,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
-    broker = require("./lib/broker");
+    broker = require("./lib/broker"),
+    conf = require('./config');
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
-    var conf = utils.getConfig();
     // configure sensor store
     var brokerConnector = new broker(conf.broker, logger);
     brokerConnector.connect(function(err) {
