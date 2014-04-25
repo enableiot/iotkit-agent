@@ -12,6 +12,16 @@ module.exports = function(grunt) {
                       'lib/**/*.js',
                       'listeners/**/*.js']
         },
+        license_finder: {
+            default_options: {
+                options: {
+                    production: false,
+                    directory: process.cwd(),
+                    csv: true,
+                    out: 'licenses.csv'
+                }
+            }
+        },
         jshint: {
 			options: {
 				jshintrc: '<%= dirs.jshint %>/config.json',
@@ -47,14 +57,19 @@ module.exports = function(grunt) {
                 }
             },
         mocha_istanbul: {
-             teamcity: {
+            coverage: {
+                src: 'test', // the folder, not the files,
+                options: {
+                    mask: '*test.js'
+                }
+            },
+            teamcity: {
                 src: 'test/', // the folder, not the files
                 options: {
                     ui: 'bdd',
                     coverage: true,
-                    recursive: true,
                     reporter: 'mocha-teamcity-reporter',
-                    mask: '*Tests.js',
+                    mask: '*test.js',
                     /*check: {
                         lines: 70,
                         statements: 70,
@@ -74,6 +89,7 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-mocha-istanbul');
+    grunt.loadNpmTasks('grunt-license-finder');
 
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-contrib-jshint');
