@@ -19,6 +19,10 @@
                 },
                 "required": false
             },
+            "att" :{
+                "type": "object",
+                "required": false
+            },
             "on": {
                 "type": "numeric",
                 "required": false
