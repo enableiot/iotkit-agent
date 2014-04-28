@@ -27,8 +27,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
+    Message = require('./lib/agent-message'),
     broker = require("./lib/broker"),
+    Listener = require("./listeners/"),
     conf = require('./config');
+
+
+process.on("uncaughtException", function(err) {
+    logger.error("UncaughtException:", err.message);
+    logger.error(err.stack);
+    // let the process exit so that forever can restart it
+    process.exit(1);
+});
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
@@ -39,14 +49,14 @@ utils.getDeviceId(function (id) {
             var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id);
             cloud.activate(function (err) {
                 if (!err) {
-                    var agentMessage = require("./lib/agent-message").init(cloud, logger);
+                    var agentMessage = Message.init(cloud, logger);
                     logger.info("Starting listeners...");
-                    require("./listeners/rest").init(conf, logger, agentMessage.handler);
-                    require("./listeners/udp").init(conf, logger, agentMessage.handler);
-                    require("./listeners/tcp").init(conf, logger, agentMessage.handler);
-                    require("./listeners/mqtt").init(conf, logger, agentMessage.handler);
+                    Listener.REST.init(conf, logger, agentMessage.handler);
+                    Listener.UDP.init(conf, logger, agentMessage.handler);
+                    Listener.TCP.init(conf, logger, agentMessage.handler);
+                    Listener.MQTT.init(conf, logger, agentMessage.handler);
                 } else {
-                    logger.info("Error in activation...");
+                    logger.error("Error in activation...");
                 }
             });
         }
@@ -54,9 +64,3 @@ utils.getDeviceId(function (id) {
 });
 
 
-process.on("uncaughtException", function(err) {
-  logger.error("UncaughtException:", err.message);
-  logger.error(err.stack);
-  // let the process exit so that forever can restart it
-  process.exit(1); 
-});
