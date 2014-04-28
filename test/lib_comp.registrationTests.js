@@ -51,7 +51,7 @@ describe(fileToTest, function(){
         assert.isFalse(process, "Message Shall be not processed Msg - invalid n Value");
         done();
     });
-    it('Shall Return True if it a valid Registration Message >', function(done) {
+    it('Shall Return True if it a valid Registration Message if the Component already exist>', function(done) {
         var okMessage = {
             n: "Sensor Name",
             t: "SensorType.v1"
@@ -77,7 +77,7 @@ describe(fileToTest, function(){
         assert.isTrue(process, "Message Shall be processed Msg ");
         done();
     });
-    it('Shall Add Sensor to Store  >', function(done) {
+    it('Shall Add Sensor to Store if the component does not exist >', function(done) {
         var okMessage = {
             n: "Sensor Name",
             t: "SensorType.v1"
@@ -90,7 +90,7 @@ describe(fileToTest, function(){
                 assert.property(data, "type", "The object is invalid");
                 assert.equal(data.name, okMessage.n, "Invalid Conversion of Name Property ");
                 assert.equal(data.type, okMessage.t, "Invalid Conversion of Type Property ");
-                return true;
+                return null;
             },
             add: function (data) {
                 assert.isObject(data, "Shall be and Registration Object Representation");
@@ -103,19 +103,14 @@ describe(fileToTest, function(){
                 return data;
             },
             save: function (data) {
-                assert.isObject(data, "Shall be and Registration Object Representation");
-                assert.property(data, "name", "The object is missing Name");
-                assert.property(data, "type", "The object is missing Type");
-                assert.property(data, "cid" , "The object has missing CID");
-                assert.equal(data.name, okMessage.n, "Invalid Conversion of Name Property ");
-                assert.equal(data.type, okMessage.t, "Invalid Conversion of Type Property ");
-                assert.equal(data.cid, myCID, "Invalid Conversion of Type Property ");
-                return data;
+                assert.isUndefined(data, "Data shall no be passed");
+                return true;
             }
         };
         connector.regComponent = function (sensor) {
             assert.isObject(sensor, "The Sensor shall be register");
 
+            return true;
         };
 
         var handler = toTest.init(connector, store, logger);

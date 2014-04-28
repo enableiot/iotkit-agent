@@ -78,8 +78,38 @@ describe(fileToTest, function(){
         };
         var handler = toTest.init(connector, store, logger);
         var process = handler.submission(okMessage);
-
         assert.isTrue(process, "Message Shall be processed Msg ");
+        done();
+    });
+    it('Shall Return False if it a valid Registration Message but the Component not exist >', function(done) {
+        var okMessage = {
+            n: "Sensor Name",
+            v: 1000,
+            on: 1234567890
+        };
+        var ci = { cid: "thisCID",
+            n: okMessage.n,
+            t: "thisT"};
+        var store = {
+            byName: function (name) {
+                assert.isString(name, "Shall be the name of the Component");
+                assert.equal(name, okMessage.n, "Invalid Conversion of Name Property ");
+                return null;
+            }
+        };
+
+        connector.dataSubmit = function (metric) {
+            assert.isObject(metric, " Shall be an object");
+            assert.property(metric, "on", "It is required the ON Message");
+            assert.equal(metric.on, okMessage.on, "The TimeStamp were not propagated");
+            assert.equal(metric.count, 1, " The count shall be 1");
+            //         done();
+            return;
+        };
+        var handler = toTest.init(connector, store, logger);
+        var process = handler.submission(okMessage);
+
+        assert.isFalse(process, "Message Shall be processed Msg ");
         done();
     });
 
