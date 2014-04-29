@@ -8,7 +8,7 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 Install using npm:
 
-    npm install iotkit-agent
+    npm install iotkit-agent --production
     mv node_modules/iotkit-agent ./
     
 Once you have a copy of the iotkit-agent locally, execute the setup script:

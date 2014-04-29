@@ -12,7 +12,7 @@ if [ -f agent.log ] || [ -f forever.log ]; then
 fi
 
 export BASE_DIR="${PWD}"
-FOREVER=${BASE_DIR}/node_modules/forever/bin/forever
+FOREVER=${BASE_DIR}/node_modules/.bin/forever
 
 ${FOREVER} start -m 1 \
               -a -l "${BASE_DIR}/forever.log" \
