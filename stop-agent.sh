@@ -1,4 +1,6 @@
 #!/bin/bash
 
+export BASE_DIR="${PWD}"
+FOREVER=${BASE_DIR}/node_modules/forever/bin/forever
 
-forever stop agent.js
+${FOREVER} stop agent.js

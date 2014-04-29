@@ -9,7 +9,8 @@
     "winston": "*",
     "express": "3.x",
     "json-schema": "^0.2.2",
-    "node-uuid": "^1.4.1"
+    "node-uuid": "^1.4.1",
+    "forever": "^0.11.1"
   },
   "scripts": {
     "start": "node agent",
