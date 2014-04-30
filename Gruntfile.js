@@ -20,6 +20,14 @@ module.exports = function(grunt) {
                     csv: true,
                     out: 'licenses.csv'
                 }
+            },
+            production : {
+                options: {
+                    production: true,
+                    directory: process.cwd(),
+                    csv: true,
+                    out: 'licenses_production.csv'
+                }
             }
         },
         jshint: {
@@ -57,6 +65,24 @@ module.exports = function(grunt) {
                 }
             },
         mocha_istanbul: {
+           local: {
+               src: 'test/', // the folder, not the files
+               options: {
+                   ui: 'bdd',
+                   coverage: true,
+                   recursive: true,
+                   reporter: 'list',
+                   mask: '*Tests.js',
+                   check: {
+                    lines: 70,
+                    statements: 70,
+                    function: 70
+                    },
+                   root: '.', // define where the cover task should consider the root of libraries that are covered by tests
+                   coverageFolder: 'dist/coverage/nodejs',
+                   reportFormats: ['lcov']
+               }
+           },
            teamcity: {
                 src: 'test/', // the folder, not the files
                 options: {
@@ -91,7 +117,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint:dev', 'simplemocha:dev']);
+    grunt.registerTask('default', ['jshint:local', 'mocha_istanbul:local']);
 
     grunt.registerTask('teamcity_codevalidation', ['jshint:teamcity',
                                                    'mocha_istanbul:teamcity']);
