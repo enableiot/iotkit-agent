@@ -24,6 +24,7 @@ var config = {
     "activation_code": "7JWiclV0",
     "api_key": "uxfUyUBDu4",
     "token_file": "token.json",
+    "device_loc" : [31.34, 64.22047, 10],
 
 
     "reg_topic": "/server/registration",

@@ -4,10 +4,10 @@
   "description": "Edge agent to abstract complexities",
   "main": "server.js",
   "dependencies": {
-    "mqtt": "*",
-    "getmac": "*",
-    "winston": "*",
-    "express": "3.x",
+    "mqtt": "^0.3.8",
+    "getmac": "^1.0.6",
+    "winston": "^0.7.3",
+    "express": "^3.5.2",
     "json-schema": "^0.2.2",
     "node-uuid": "^1.4.1",
     "forever": "^0.11.1"
