@@ -56,9 +56,11 @@ utils.getDeviceId(function (id) {
                     Listener.TCP.init(conf, logger, agentMessage.handler);
                     Listener.MQTT.init(conf, logger, agentMessage.handler);
                 } else {
-                    logger.error("Error in activation...");
+                    logger.error("Error in activation...", err);
                 }
             });
+        } else {
+            logger.error("Connector Fail to connect...", err);
         }
     });
 });
