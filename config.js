@@ -26,6 +26,7 @@ var config = {
     "token_file": "token.json",
     "device_loc" : [31.34, 64.22047, 10],
 
+    "gatway_id": null,
 
     "reg_topic": "/server/registration",
     "status_topic": "data/registration_status",
