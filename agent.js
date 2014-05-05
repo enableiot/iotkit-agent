@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
     Message = require('./lib/agent-message'),
-    broker = require("./lib/broker"),
+    Broker = require("./lib/mqtt-connector/connector"),
     Listener = require("./listeners/"),
     conf = require('./config');
 
@@ -43,7 +43,7 @@ process.on("uncaughtException", function(err) {
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
     // configure sensor store
-    var brokerConnector = new broker(conf.broker, logger);
+    var brokerConnector = new Broker(conf.broker, logger);
     brokerConnector.connect(function(err) {
         if (!err) {
             var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id);
