@@ -23,16 +23,6 @@ else
 	echo "no /etc/rc5.d directory - startup script not copied"
 fi
 
-# check if forever was installed 
-#echo "forever: "
-#if [[ -n $(npm list -g -parseable forever) ]]
-#then
-#    echo "   ok"
-#else
-#    echo "   installing ..."
-#    $SUDO npm install forever -g
-#fi
-
 # installing local packages
 npm install --production
 
