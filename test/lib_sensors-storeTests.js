@@ -1,12 +1,12 @@
 /**
  * Created by ammarch on 4/14/14.
  */
-var assert =  require('chai').assert,
+var path = require('path'),
+    assert =  require('chai').assert,
     rewire = require('rewire');
 var fileToTest = "../lib/sensors-store.js";
 
 describe(fileToTest, function(){
-    var toTest = rewire(fileToTest);
     var logger = {
         info : function() {},
         error : function() {},
@@ -15,95 +15,175 @@ describe(fileToTest, function(){
     console.debug = function() {
         console.log(arguments);
     };
-    var common = {
-        readFileToJson : function (){},
-        writeToJson: function(){}
-    };
 
 
-    it('Shall load a data from filename specified >', function(done) {
-        var dataFile = [{name: 1, type:2, cid: 3},
-                        {name: 21, type:22, cid: 23},
-                        {name: 31, type:32, cid: 33}];
+    describe("Stora shall Read/Write from source", function () {
+        var common = {
+            readFileToJson : function (){},
+            writeToJson: function(){}
+        };
+        var toTest;
+        before(function(done) {
+            toTest = rewire(fileToTest);
+            done();
+        });
+        after(function (done){
+            toTest = null;
+            done();
+        });
 
-        var storeName = "sensorTest-list.json";
-        common.readFileToJson = function (fullPath) {
-            var str =  "/data/" + storeName;
-            assert.isString(fullPath, "The fullname is not String");
-            assert.include(fullPath, str, "The store Name and Data is not include");
-            return dataFile;
-        };
-        toTest.__set__("common", common);
-        var store = toTest.init(storeName, logger);
-        assert.lengthOf(store.data, dataFile.length, "The Data load is not the same");
-        assert.deepEqual(store.data, dataFile, "The Data store are missing data");
-        done();
-    });
-    it('Shall Initialize with Empty Array when not data were save >', function(done) {
-        var storeName = "sensorTest-list.json";
-        common.readFileToJson = function (fullPath) {
-            var str =  "/data/" + storeName;
-            assert.isString(fullPath, "The fullname is not String");
-            assert.include(fullPath, str, "The store Name and Data is not include");
-            return null;
-        };
-        toTest.__set__("common", common);
-        var store = toTest.init(storeName, logger);
-        assert.lengthOf(store.data, 0, "None data shall at data store");
-        done();
-    });
-    it('Shall save data to file in JSON format>', function(done) {
-        var storeName = "sensorTest-list.json";
-        var data = [];
-        common.readFileToJson = function (fullPath) {
-            var str =  "/data/" + storeName;
-            assert.isString(fullPath, "The fullname is not String");
-            assert.include(fullPath, str, "The store Name and Data is not include");
-            return null;
-        };
-        function checkArray (dataToSave) {
-            for (var i= 0; i< 100;i++){
+        it('Shall load a data from filename specified >', function (done) {
+            var dataFile = [
+                {name: 1, type: 2, cid: 3},
+                {name: 21, type: 22, cid: 23},
+                {name: 31, type: 32, cid: 33}
+            ];
+
+            var storeName = "sensorTest-list.json";
+            common.readFileToJson = function (fullPath) {
+                var str = "/data/" + storeName;
+                assert.isString(fullPath, "The fullname is not String");
+                assert.include(fullPath, str, "The store Name and Data is not include");
+                return dataFile;
+            };
+            toTest.__set__("common", common);
+            var store = toTest.init(storeName, logger);
+            assert.lengthOf(store.data, dataFile.length, "The Data load is not the same");
+            assert.deepEqual(store.data, dataFile, "The Data store are missing data");
+            done();
+        });
+        it('Shall Initialize with Empty Array when not data were save >', function (done) {
+            var storeName = "sensorTest-list.json";
+            common.readFileToJson = function (fullPath) {
+                var str = "/data/" + storeName;
+                assert.isString(fullPath, "The fullname is not String");
+                assert.include(fullPath, str, "The store Name and Data is not include");
+                return null;
+            };
+            toTest.__set__("common", common);
+            var store = toTest.init(storeName, logger);
+            assert.lengthOf(store.data, 0, "None data shall at data store");
+            done();
+        });
+        it('Shall save data to file in JSON format>', function (done) {
+            var storeName = "sensorTest-list.json";
+            var data = [];
+            common.readFileToJson = function (fullPath) {
+                var str = "/data/" + storeName;
+                assert.isString(fullPath, "The fullname is not String");
+                assert.include(fullPath, str, "The store Name and Data is not include");
+                return null;
+            };
+            function checkArray(dataToSave) {
+                for (var i = 0; i < 100; i++) {
+                    var d = i * 1000;
+                    var sD = {name: d, type: d};
+                    assert.equal(dataToSave[i].name, sD.name, "The name is missing at store");
+                    assert.equal(dataToSave[i].type, sD.type, "The Type is missing at store");
+                    assert.lengthOf(dataToSave[i].cid, 36, "The cid has not the length expected");
+
+                }
+            }
+
+            common.writeToJson = function (fullPath, dataToSave) {
+                var str = "/data/" + storeName;
+                assert.isString(fullPath, "The fullname is not String");
+                assert.include(fullPath, str, "The store Name and Data is not include");
+                assert.lengthOf(dataToSave, 100, "Some Data is missing");
+                checkArray(dataToSave);
+                return null;
+            };
+            toTest.__set__("common", common);
+            var store = toTest.init(storeName, logger);
+            assert.lengthOf(store.data, 0, "None data shall at data store");
+            for (var i = 0; i < 100; i++) {
                 var d = i * 1000;
                 var sD = {name: d, type: d};
-                assert.equal(dataToSave[i].name, sD.name, "The name is missing at store");
-                assert.equal(dataToSave[i].type, sD.type, "The Type is missing at store");
-                assert.lengthOf(dataToSave[i].cid, 36, "The cid has not the length expected");
-
+                var sIn = store.add(sD);
+                sD.cid = sIn.cid;
+                data.push(sD);
             }
-       }
-        common.writeToJson = function (fullPath, dataToSave) {
-            var str =  "/data/" + storeName;
-            assert.isString(fullPath, "The fullname is not String");
-            assert.include(fullPath, str, "The store Name and Data is not include");
-            assert.lengthOf(dataToSave, 100, "Some Data is missing");
-            checkArray(dataToSave);
-            return null;
-        };
-        toTest.__set__("common", common);
-        var store = toTest.init(storeName, logger);
-        assert.lengthOf(store.data, 0, "None data shall at data store");
-        for (var i = 0; i < 100; i++) {
-            var d = i * 1000;
-            var sD = {name: d, type: d};
-            var sIn = store.add(sD);
-            sD.cid = sIn.cid;
-            data.push(sD);
-        }
-        store.save();
+            store.save();
 
-        done();
+            done();
 
+        });
     });
-    it('Shall return a sensor by CID >', function(done) {
-        done();
-    });
-    it('Shall return a sensor by Name >', function(done) {
-        done();
-    });
-    it('Shall return a sensor by Type >', function(done) {
-        done();
-    });
-    it('Shall return a sensor if exist >', function(done) {
-        done();
+    describe(" Store Intreface ", function () {
+        var myComm;
+        var toTest= null;
+        var storeName = "sensorTest-list.json";
+        before(function(done) {
+            toTest = rewire(fileToTest);
+            myComm = require('../lib/common');
+            var dataFile = [
+                {name: 1, type: 2, cid: 3},
+                {name: 21, type: 22, cid: 23},
+                {name: 31, type: 32, cid: 33}
+            ];
+
+            var f = path.join(__dirname, '../data/' + storeName);
+            myComm.writeToJson(f, dataFile);
+            done();
+        });
+        after(function(done){
+           toTest = null;
+           done();
+        });
+
+        it('Shall return a sensor by CID >', function (done) {
+            //toTest.__set__("common", common);
+            var store = toTest.init(storeName, logger);
+            var c = store.byCid(23);
+            assert.equal(c.cid, 23, "The component is not the expected");
+            assert.equal(c.name, 21, "The component is not the expected");
+            assert.equal(c.type, 22, "The component is not the expected");
+            c = store.byCid(33);
+            assert.equal(c.cid, 33, "The component is not the expected");
+            assert.equal(c.name, 31, "The component is not the expected");
+            assert.equal(c.type, 32, "The component is not the expected");
+            c = store.byCid("33");
+            assert.isNull(c, "it shall return a null value");
+            done();
+        });
+        it('Shall return a sensor by Name >', function (done) {
+            var store = toTest.init(storeName, logger);
+            var c = store.byName(1);
+            assert.equal(c.cid, 3,  "The component is not the expected");
+            assert.equal(c.name, 1, "The component is not the expected");
+            assert.equal(c.type, 2, "The component is not the expected");
+            c = store.byName(31);
+            assert.equal(c.cid, 33, "The component is not the expected");
+            assert.equal(c.name, 31, "The component is not the expected");
+            assert.equal(c.type, 32, "The component is not the expected");
+            c = store.byName("33");
+            assert.isNull(c, "it shall return a null value");
+            done();
+        });
+        it('Shall return a sensor by Type >', function (done) {
+            var store = toTest.init(storeName, logger);
+            var c = store.byType(2);
+            assert.equal(c.cid, 3,  "The component is not the expected");
+            assert.equal(c.name, 1, "The component is not the expected");
+            assert.equal(c.type, 2, "The component is not the expected");
+            c = store.byType(32);
+            assert.equal(c.cid, 33, "The component is not the expected");
+            assert.equal(c.name, 31, "The component is not the expected");
+            assert.equal(c.type, 32, "The component is not the expected");
+            c = store.byType();
+            assert.isNull(c, "it shall return a null value");
+            done();
+        });
+        it('Shall return a sensor if exist >', function (done) {
+
+            var store = toTest.init(storeName, logger);
+            var c = store.exist({name: 2, type: 3});
+            assert.isNull(c, "it shall return a null value");
+            c = store.exist({name: 1, type: 2});
+            assert.equal(c.cid, 3,  "The component is not the expected");
+            assert.equal(c.name, 1, "The component is not the expected");
+            assert.equal(c.type, 2, "The component is not the expected");
+            done();
+        });
     });
 });

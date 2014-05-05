@@ -34,7 +34,7 @@ var config = {
     "device_status": "devices/{deviceid}/activation_status",
     "device_activation": "devices/{deviceid}/activation",
     "device_metadata": "devices/{deviceid}/metadata",
-    "metric_topic": "server/metric/{accountid}/{deviceid}",
+    "metric_topic": "server/metric/{accountid}/{gatewayid}",
     "device_components_add" :  "devices/{deviceid}/components/add",
     "device_component_del": "devices/{deviceid}/components/delete"
 };
