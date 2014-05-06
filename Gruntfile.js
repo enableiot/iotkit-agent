@@ -79,7 +79,7 @@ module.exports = function(grunt) {
                     function: 70
                     },
                    root: '.', // define where the cover task should consider the root of libraries that are covered by tests
-                   coverageFolder: 'dist/coverage/nodejs',
+                   coverageFolder: 'dist/coverage',
                    reportFormats: ['lcov']
                }
            },
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
                         function: 70
                     },*/
                     root: '.', // define where the cover task should consider the root of libraries that are covered by tests
-                    coverageFolder: 'dist/coverage/nodejs',
+                    coverageFolder: 'dist/coverage',
                     reportFormats: ['lcov', 'teamcity']
                 }
             }
