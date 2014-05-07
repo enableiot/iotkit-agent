@@ -21,12 +21,12 @@ var config = {
     "tcp_port_listen": 7070,
     "tcp_host_listen": "127.0.0.1",
 
-    "activation_code": "P8aETbtW",
-    "api_key": "jEvlAF7zuJ",
+    "activation_code": "rywZL2ja",
+    "api_key": "KMXBwOgRmT",
     "token_file": "token.json",
     "device_loc" : [31.34, 64.22047, 10],
 
-    "gatway_id": null,
+    "gateway_id": null,
 
     "reg_topic": "/server/registration",
     "status_topic": "data/registration_status",
