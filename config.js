@@ -5,7 +5,7 @@
 /* default configuration handled with dynamic environment */
 var config = {
     "broker" : {
-        "host": "dev-broker.us.enableiot.com",
+        "host": "ci-broker.us.enableiot.com",
         "port": 1883,
         "qos": 1,
         "retain": true,
@@ -21,8 +21,8 @@ var config = {
     "tcp_port_listen": 7070,
     "tcp_host_listen": "127.0.0.1",
 
-    "activation_code": "7JWiclV0",
-    "api_key": "uxfUyUBDu4",
+    "activation_code": "P8aETbtW",
+    "api_key": "jEvlAF7zuJ",
     "token_file": "token.json",
     "device_loc" : [31.34, 64.22047, 10],
 
