@@ -62,9 +62,6 @@ utils.getDeviceId(function (id) {
             });
         } else {
             logger.error("Connector Fail to connect...", err);
-
         }
     });
 });
-
-
