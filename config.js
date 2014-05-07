@@ -12,7 +12,7 @@ var config = {
         "secure": false,
         "key": "./certs/client.key",
         "crt": "./certs/client.crt",
-        "retries": 10
+        "retries": 30
     },
 
     "mqtt_port_listen": 1884,
@@ -21,13 +21,13 @@ var config = {
     "tcp_port_listen": 7070,
     "tcp_host_listen": "127.0.0.1",
 
-    "activation_code": "rywZL2ja",
-    "api_key": "KMXBwOgRmT",
+    "activation_code": "jtGZHWJP",
+    "api_key": "jEvlAF7zuJ",
     "token_file": "token.json",
-    "device_loc" : [31.34, 64.22047, 10],
+    "device_loc" : [88.34, 64.22047, -20],
 
     "gateway_id": null,
-
+    "activation_retries" : 10,
     "reg_topic": "/server/registration",
     "status_topic": "data/registration_status",
     "device": "devices/{deviceid}",
