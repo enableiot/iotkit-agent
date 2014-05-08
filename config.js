@@ -28,8 +28,7 @@ var config = {
 
     "gateway_id": null,
     "activation_retries" : 10,
-    "reg_topic": "/server/registration",
-    "status_topic": "data/registration_status",
+
     "device": "devices/{deviceid}",
     "device_status": "devices/{deviceid}/activation_status",
     "device_activation": "devices/{deviceid}/activation",

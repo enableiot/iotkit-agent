@@ -27,13 +27,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var express = require("express");
 
-
 exports.init = function(conf, logger, onMessage) {
 
   var httpServerPort = conf.rest_port_listen || 9090;
   var rest = express();
   rest.configure(function() {
       rest.use(express.favicon());
+      rest.engine('html', ejs.renderFile);
+      rest.set('views', __dirname + '/ui');
+      rest.set('view engine', 'html');
       rest.use(express.json());
       rest.use(express.urlencoded());
       rest.use(express.methodOverride());
@@ -53,9 +55,16 @@ exports.init = function(conf, logger, onMessage) {
       }
   });
 
+   rest.get('/setup', function(req, res){
+        res.render('setup', {iotAgent: {"deviceid": "testing"}});
+   });
+
+
   rest.listen(httpServerPort);
+
+
+
   logger.info("REST listener started on port: ", httpServerPort);
   return rest;
-
 };
 

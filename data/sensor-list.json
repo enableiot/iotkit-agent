@@ -1,1 +1,7 @@
-[]
+[
+    {
+        "name": "Temperature Sensor 12355",
+        "type": "temperature.v1.0",
+        "cid": "78e83fe4-a450-4d1d-b245-0e401866888a"
+    }
+]
