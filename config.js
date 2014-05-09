@@ -20,14 +20,16 @@ var config = {
     "udp_port_listen": 41234,
     "tcp_port_listen": 7070,
     "tcp_host_listen": "127.0.0.1",
+    "activation_retries" : 10,
 
     "activation_code": "jtGZHWJP",
     "api_key": "jEvlAF7zuJ",
-    "token_file": "token.json",
-    "device_loc" : [88.34, 64.22047, -20],
 
+    "token_file": "token.json",
+
+    "device_loc" : [88.34, 64.22047, -20],
     "gateway_id": null,
-    "activation_retries" : 10,
+
 
     "device": "devices/{deviceid}",
     "device_status": "devices/{deviceid}/activation_status",

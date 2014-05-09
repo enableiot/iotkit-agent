@@ -25,7 +25,8 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var express = require("express");
+var express = require("express"),
+    ejs = require('ejs');
 
 exports.init = function(conf, logger, onMessage) {
 
@@ -47,7 +48,7 @@ exports.init = function(conf, logger, onMessage) {
       logger.debug('REST Payload: ', msg);
       try {
           onMessage(msg);
-          response.send(200);
+          response.send(201);
       } catch (ex) {
           logger.error('REST Error: ', ex.message);
           logger.error(ex.stack);
@@ -55,14 +56,7 @@ exports.init = function(conf, logger, onMessage) {
       }
   });
 
-   rest.get('/setup', function(req, res){
-        res.render('setup', {iotAgent: {"deviceid": "testing"}});
-   });
-
-
   rest.listen(httpServerPort);
-
-
 
   logger.info("REST listener started on port: ", httpServerPort);
   return rest;

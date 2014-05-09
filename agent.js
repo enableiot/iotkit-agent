@@ -32,13 +32,14 @@ var utils = require("./lib/utils").init(),
     Listener = require("./listeners/"),
     conf = require('./config');
 
-
 process.on("uncaughtException", function(err) {
     logger.error("UncaughtException:", err.message);
     logger.error(err.stack);
     // let the process exit so that forever can restart it
     process.exit(1);
 });
+
+
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
