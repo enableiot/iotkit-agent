@@ -25,8 +25,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var express = require("express"),
-    ejs = require('ejs');
+var express = require("express");
 
 exports.init = function(conf, logger, onMessage) {
 
@@ -34,9 +33,6 @@ exports.init = function(conf, logger, onMessage) {
   var rest = express();
   rest.configure(function() {
       rest.use(express.favicon());
-      rest.engine('html', ejs.renderFile);
-      rest.set('views', __dirname + '/ui');
-      rest.set('view engine', 'html');
       rest.use(express.json());
       rest.use(express.urlencoded());
       rest.use(express.methodOverride());
