@@ -20,4 +20,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "${BUILD_PREFIX}grunt test was executed without errors. Your lucky ... so far ..."
+echo "${BUILD_PREFIX}grunt test was executed without errors. You're lucky ... so far ..."

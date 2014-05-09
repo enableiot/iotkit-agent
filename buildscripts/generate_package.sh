@@ -42,7 +42,7 @@ echo Building ${COMPONENT} for $ENV environment
 tar -zcvf ${COMPONENT}.tar.gz package.json app.js config.js dashboard engine iot-entities lib templates
 if [ $? -ne 0 ] 
 then
-    echo "${BUILD_PREFIX_ERROR}You failed again. Package generation failed. Aborting."
+    echo "${BUILD_PREFIX_ERROR}Failed again. Package generation failed. Aborting."
     exit 1
 else
     if [ ! -d buildscripts/build ]
@@ -58,11 +58,11 @@ echo "${BUILD_PREFIX}Now upload to S3. I'm so good .."
 s3cmd sync buildscripts/build/${COMPONENT}.tar.gz s3://dpeak/artifacts/$ENV/${COMPONENT}.tar.gz
 if [ $? -ne 0 ] 
 then
-    echo "${BUILD_PREFIX_ERROR}You failed again. S3 upload failed. Aborting."
+    echo "${BUILD_PREFIX_ERROR}Failed again. S3 upload failed. Aborting."
     exit 1
 fi
 
-echo "${BUILD_PREFIX}${COMPONENT} package was generated and uploaded to S3 without errors. Your lucky ... so far ..."
+echo "${BUILD_PREFIX}${COMPONENT} package was generated and uploaded to S3 without errors. You're lucky ... so far ..."
 
 
 
