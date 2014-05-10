@@ -30,7 +30,9 @@ var utils = require("./lib/utils").init(),
     Message = require('./lib/agent-message'),
     Broker = require("./lib/mqtt-connector/connector"),
     Listener = require("./listeners/"),
-    conf = require('./config');
+    conf = require('./config'),
+    server = require('./ui/server').init(conf,logger),
+    ui = require('./ui/routes/ui.v1');
 
 process.on("uncaughtException", function(err) {
     logger.error("UncaughtException:", err.message);
@@ -39,7 +41,7 @@ process.on("uncaughtException", function(err) {
     process.exit(1);
 });
 
-
+ui.register(server);
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
@@ -58,7 +60,6 @@ utils.getDeviceId(function (id) {
                     Listener.MQTT.init(conf, logger, agentMessage.handler);
                 } else {
                     logger.error("Error in activation...", err);
-
                 }
             });
         } else {
