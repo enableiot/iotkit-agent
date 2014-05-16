@@ -31,7 +31,7 @@ var utils = require("./lib/utils").init(),
     Broker = require("./lib/mqtt-connector/connector"),
     Listener = require("./listeners/"),
     conf = require('./config'),
-    server = require('./ui/server').init(conf,logger),
+    server = require('./ui/server').init(conf, logger),
     ui = require('./ui/routes/ui.v1');
 
 process.on("uncaughtException", function(err) {
@@ -42,6 +42,12 @@ process.on("uncaughtException", function(err) {
 });
 
 ui.register(server);
+/*utils.getDeviceId(function (id) {
+
+});*/
+
+
+
 
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);

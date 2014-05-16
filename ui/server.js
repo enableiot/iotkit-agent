@@ -7,7 +7,7 @@ var express = require("express"),
     ejs = require('ejs');
 
 module.exports.init = function(conf, logger) {
-    var httpServerPort = conf.rest_port_listen || 9090;
+    var httpServerPort = conf.http_port_server || 9090;
     var server = express();
     server.configure(function() {
         server.use(express.favicon());

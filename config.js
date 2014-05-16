@@ -5,7 +5,7 @@
 /* default configuration handled with dynamic environment */
 var config = {
     "broker" : {
-        "host": "ci-broker.us.enableiot.com",
+        "host": "dev-broker.us.enableiot.com",
         "port": 1883,
         "qos": 1,
         "retain": true,
@@ -15,6 +15,7 @@ var config = {
         "retries": 30
     },
 
+    "http_port_server": 9091,
     "mqtt_port_listen": 1884,
     "rest_port_listen": 9090,
     "udp_port_listen": 41234,
@@ -22,8 +23,8 @@ var config = {
     "tcp_host_listen": "127.0.0.1",
     "activation_retries" : 10,
 
-    "activation_code": "jtGZHWJP",
-    "api_key": "jEvlAF7zuJ",
+    "activation_code": "mYZtt4Qw",
+    "api_key": "Fkas0CWzDe",
 
     "token_file": "token.json",
 
@@ -44,4 +45,5 @@ var config = {
 if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
     config.broker.host = "127.0.0.1";
 }
+
 module.exports = config;
