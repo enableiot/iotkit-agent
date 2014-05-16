@@ -2,6 +2,8 @@
  * Created by ammarch on 4/25/14.
  */
 
+var key = require('./certs/agent-ids.json');
+
 /* default configuration handled with dynamic environment */
 var config = {
     "broker" : {
@@ -23,8 +25,8 @@ var config = {
     "tcp_host_listen": "127.0.0.1",
     "activation_retries" : 10,
 
-    "activation_code": "mYZtt4Qw",
-    "api_key": "Fkas0CWzDe",
+    "activation_code": key.act_code,
+    "api_key": key.api_key,
 
     "token_file": "token.json",
 

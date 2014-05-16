@@ -3,7 +3,8 @@ var VERSION = '/v1/ui';
 var admin = require('../handler/admin');
 
 module.exports = {
-   register:  function (app) {
+    register:  function (app) {
         app.get('/setup', admin.setup);
-   }
+        app.post('/setup', admin.setdata);
+    }
 };
