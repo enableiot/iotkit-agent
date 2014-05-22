@@ -28,7 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
     Message = require('./lib/agent-message'),
-    Broker = require("./lib/mqtt-connector/connector"),
+    activator = require("./lib/activate"),
+//    Broker = require("./lib/mqtt-connector/connector"),
     Listener = require("./listeners/"),
     conf = require('./config'),
     server = require('./ui/server').init(conf, logger),
@@ -40,18 +41,24 @@ process.on("uncaughtException", function(err) {
     // let the process exit so that forever can restart it
     process.exit(1);
 });
-
 ui.register(server);
-/*utils.getDeviceId(function (id) {
-
-});*/
-
-
-
-
+utils.getDeviceId(function (id) {
+    activator.activate(id, function (cloud) {
+        if (cloud) {
+            var agentMessage = Message.init(cloud, logger);
+            logger.info("Starting listeners...");
+            Listener.REST.init(conf, logger, agentMessage.handler);
+            Listener.UDP.init(conf, logger, agentMessage.handler);
+            Listener.TCP.init(conf, logger, agentMessage.handler);
+            Listener.MQTT.init(conf, logger, agentMessage.handler);
+        } else {
+            logger.error("Error in activation...", err);
+        }
+    });
+});
+/*
 utils.getDeviceId(function (id) {
     logger.info("IoT Kit Cloud Agent: ", id);
-    // configure sensor store
     var brokerConnector = new Broker(conf.broker, logger);
     brokerConnector.connect(function(err) {
         if (!err) {
@@ -73,3 +80,4 @@ utils.getDeviceId(function (id) {
         }
     });
 });
+*/

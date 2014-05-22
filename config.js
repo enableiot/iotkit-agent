@@ -26,7 +26,8 @@ var config = {
     "activation_retries" : 10,
 
     "activation_code": key.act_code,
-    "api_key": key.api_key,
+
+    "device_id" : key.device_id,
 
     "token_file": "token.json",
 
