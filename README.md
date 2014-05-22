@@ -42,9 +42,11 @@ For instructions how to use the iotkit-agent please the [iotkit-samples repo](ht
 
 ## Test
 
-The iotkit-agent project uses [mocha](http://visionmedia.github.io/mocha/) as its test framework. To ran all tests:
+The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. To ran all tests:
 
-    mocha
+> Install all dev-dependence running
+    npm install 
+    grunt
 
 ## Certificates
 
