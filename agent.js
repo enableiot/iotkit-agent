@@ -29,7 +29,6 @@ var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
     Message = require('./lib/agent-message'),
     activator = require("./lib/activate"),
-//    Broker = require("./lib/mqtt-connector/connector"),
     Listener = require("./listeners/"),
     conf = require('./config'),
     server = require('./ui/server').init(conf, logger),
@@ -52,32 +51,7 @@ utils.getDeviceId(function (id) {
             Listener.TCP.init(conf, logger, agentMessage.handler);
             Listener.MQTT.init(conf, logger, agentMessage.handler);
         } else {
-            logger.error("Error in activation...", err);
+            logger.error("Error in activation...");
         }
     });
 });
-/*
-utils.getDeviceId(function (id) {
-    logger.info("IoT Kit Cloud Agent: ", id);
-    var brokerConnector = new Broker(conf.broker, logger);
-    brokerConnector.connect(function(err) {
-        if (!err) {
-            var cloud = require("./lib/cloud").init(conf, brokerConnector, logger, id);
-            cloud.activate(function (err) {
-                if (!err) {
-                    var agentMessage = Message.init(cloud, logger);
-                    logger.info("Starting listeners...");
-                    Listener.REST.init(conf, logger, agentMessage.handler);
-                    Listener.UDP.init(conf, logger, agentMessage.handler);
-                    Listener.TCP.init(conf, logger, agentMessage.handler);
-                    Listener.MQTT.init(conf, logger, agentMessage.handler);
-                } else {
-                    logger.error("Error in activation...", err);
-                }
-            });
-        } else {
-            logger.error("Connector Fail to connect...", err);
-        }
-    });
-});
-*/
