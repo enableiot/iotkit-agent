@@ -20,9 +20,14 @@ Once you have a copy of the iotkit-agent locally, execute the setup script:
     
 ### Configuration
 
-The iotkit-agent, by default, has sufficient defaults to register itself in the Cloud.
-    
-> You can configure many parameters of the iotkit-agent in the config file located in the root folder, but, unless you are sure you know what they mean, these are best left unchanged.
+The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.enableiot.com). After, the registration copy the autorization code 
+and execute
+
+    node admin activate <activation_code>     
+
+> You can configure deviceId of the iotkit-agent 
+        
+    node admin setDeviceId <new name>        
         
 ### Start
 
@@ -45,6 +50,7 @@ For instructions how to use the iotkit-agent please the [iotkit-samples repo](ht
 The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. To ran all tests:
 
 > Install all dev-dependence running
+
     npm install 
     grunt
 
