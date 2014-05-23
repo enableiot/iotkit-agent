@@ -1,4 +1,4 @@
-l#!/bin/bash
+#!/bin/bash
 
 
 echo ""
