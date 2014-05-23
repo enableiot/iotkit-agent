@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var logger = require("../lib/logger").init(),
     utils = require("../lib/utils").init(),
-    spath = require('path'),
+    path = require('path'),
     common = require('../lib/common');
 
 module.exports.show = function show () {

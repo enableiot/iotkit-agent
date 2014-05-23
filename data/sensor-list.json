@@ -1,7 +1,12 @@
 [
     {
-        "name": "Temperature Sensor 12355",
+        "name": "Temperature kitchen",
         "type": "temperature.v1.0",
-        "cid": "78e83fe4-a450-4d1d-b245-0e401866888a"
+        "cid": "5cf3e639-b95f-48fc-b9fd-68475fa44d53"
+    },
+    {
+        "name": "humidity kitchen",
+        "type": "humidity.v1.0",
+        "cid": "15e74b1a-f60e-43b8-b648-ad993df984ac"
     }
 ]
