@@ -30,6 +30,8 @@ var logger = require("../lib/logger").init(),
     path = require('path'),
     common = require('../lib/common');
 
+var filename = "agent-ids.json";
+
 module.exports.show = function show () {
     utils.getDeviceId(function (id) {
         console.log(id);
@@ -42,11 +44,18 @@ module.exports.save = function save () {
         process.exit(1);
     }
     var device_id = arguments[0];
-    var filename = "agent-ids.json";
+
     var fullFilename = path.join(__dirname, '../certs/' +  filename);
     var data = common.readFileToJson(fullFilename)
     logger.info("The old device Id was : ", data.device_id);
     logger.info("The New device Id is : ", device_id);
     data.device_id = device_id;
+    return common.writeToJson(fullFilename, data);
+};
+
+module.exports.reset = function reset () {
+    var fullFilename = path.join(__dirname, '../certs/' +  filename);
+    var data = common.readFileToJson(fullFilename);
+    data.device_id = false;
     return common.writeToJson(fullFilename, data);
 };

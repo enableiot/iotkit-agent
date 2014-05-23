@@ -26,6 +26,9 @@ switch (command) {
     case 'setDeviceId':
         device.save.apply(null, arg);
         break;
+    case 'resetDeviceId':
+        device.reset.apply(this, arg);
+        break;
     case 'addMetric':
         break;
     default:
