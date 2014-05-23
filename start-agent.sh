@@ -1,4 +1,4 @@
-#!/bin/bash
+l#!/bin/bash
 
 
 echo ""
@@ -23,7 +23,7 @@ ${FOREVER} start -m 1 \
 
 echo ""
 echo "Device Id:" 
-node device-id
+node admin device-id
 echo ""
 echo "============================================"
 
