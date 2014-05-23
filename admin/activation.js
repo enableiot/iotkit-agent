@@ -18,10 +18,10 @@ module.exports.save = function save () {
     var filename = "agent-ids.json";
     var fullFilename = path.join(__dirname, '../certs/' +  filename);
     logger.info("Code to Set : ", code);
-    var act = {
-        activation_code: code
-    };
-    return common.writeToJson(fullFilename, act);
+
+    var data = common.readFileToJson(fullFilename);
+    data.act_code = code;
+    return common.writeToJson(fullFilename, data);
 };
 
 module.exports.activate = function activate() {

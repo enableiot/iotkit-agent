@@ -25,7 +25,7 @@ var config = {
     "tcp_host_listen": "127.0.0.1",
     "activation_retries" : 10,
 
-    "activation_code": key.activation_code,
+    "activation_code": key.act_code,
 
     "device_id" : key.device_id,
 
