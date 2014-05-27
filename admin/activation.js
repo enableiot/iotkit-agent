@@ -33,6 +33,7 @@ module.exports.activate = function activate() {
     utils.getDeviceId(function (id) {
         activator.activate(id, code, function () {
             activator.disconnect();
+            process.exit(0);            
         });
     });
 };
