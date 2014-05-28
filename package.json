@@ -4,14 +4,15 @@
   "description": "Edge agent to abstract complexities",
   "main": "server.js",
   "dependencies": {
-    "mqtt": "^0.3.8",
-    "getmac": "^1.0.6",
-    "winston": "^0.7.3",
+    "ejs": "^1.0.0",
     "express": "^3.5.2",
-    "json-schema": "^0.2.2",
-    "node-uuid": "^1.4.1",
     "forever": "^0.11.1",
-    "ejs": "^1.0.0"
+    "getmac": "^1.0.6",
+    "json-schema": "^0.2.2",
+    "mqtt": "^0.3.8",
+    "node-uuid": "^1.4.1",
+    "request": "^2.36.0",
+    "winston": "https://registry.npmjs.org/winston/-/winston-0.7.3.tgz"
   },
   "scripts": {
     "start": "node agent",
