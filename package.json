@@ -12,7 +12,9 @@
     "mqtt": "^0.3.8",
     "node-uuid": "^1.4.1",
     "request": "^2.36.0",
-    "winston": "https://registry.npmjs.org/winston/-/winston-0.7.3.tgz"
+    "ejs": "^1.0.0",
+    "request": "^2.36.0",
+    "async": "^0.9.0"
   },
   "scripts": {
     "start": "node agent",

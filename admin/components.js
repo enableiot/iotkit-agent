@@ -25,39 +25,22 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var logger = require("../lib/logger").init(),
-    utils = require("../lib/utils").init(),
-    path = require('path'),
+var path = require('path'),
     common = require('../lib/common');
 
-var filename = "agent-ids.json";
+var filename = "sensor-list.json";
 
-function showDeviceId () {
-    utils.getDeviceId(function (id) {
-        console.log(id);
-    });
-}
-
-function saveDeviceId (device_id) {
-    var fullFilename = path.join(__dirname, '../certs/' +  filename);
-    var data = common.readFileToJson(fullFilename);
-    logger.info("The old device Id was : ", data.device_id);
-    logger.info("The New device Id is : ", device_id);
-    data.device_id = device_id;
-    return common.writeToJson(fullFilename, data);
-}
-
-module.exports.device = function () {
-    if (arguments.length < 1) {
-        showDeviceId();
-    } else {
-        saveDeviceId(arguments[0]);
-    }
-};
 
 module.exports.reset = function reset () {
-    var fullFilename = path.join(__dirname, '../certs/' +  filename);
-    var data = common.readFileToJson(fullFilename);
-    data.device_id = false;
+    var fullFilename = path.join(__dirname, '../data/' +  filename);
+    var data = [];
     return common.writeToJson(fullFilename, data);
+};
+
+module.exports.getComponentsList = function () {
+
+};
+
+module.exports.getCatalogList = function () {
+
 };

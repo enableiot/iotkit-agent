@@ -5,31 +5,36 @@
  * Created by ammarch on 5/21/14.
  */
 var auth = require('./activation'),
-    device = require('./device');
+    device = require('./device'),
+    components = require('./components');
 /*var metric = require('./metric');*/
 var command = process.argv[2];
 var arg = process.argv.slice(3);
 
+
 switch (command) {
-    case 'savecode':
-        auth.save.apply(null, arg);
+    case 'save-code':
+        auth.saveCode.apply(null, arg);
+        break;
+    case 'reset-code':
+        auth.restCode.apply(null, arg);
         break;
     case 'activate':
         auth.activate.apply(null, arg);
         break;
-    case 'resettoken':
-        auth.reset.apply(this, arg);
+    case 'reset-token':
+        auth.resetToken.apply(this, arg);
         break;
     case 'device-id':
-        device.show.apply(this, arg);
+        device.device.apply(this, arg);
         break;
-    case 'setDeviceId':
-        device.save.apply(null, arg);
-        break;
-    case 'resetDeviceId':
+    case 'reset-device-id':
         device.reset.apply(this, arg);
         break;
-    case 'addMetric':
+    case 'add-metric':
+        break;
+    case 'reset-components':
+        components.reset.apply(this, arg);
         break;
     default:
         console.log ("Command : ", command , " not supported ");
