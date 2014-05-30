@@ -19,4 +19,4 @@ sensors-list.json
 *.orig
 */coverage/*
 */dist/*
-certs/token.json
+
