@@ -1,0 +1,9 @@
+[Unit]
+Description=My script
+
+[Service]
+ExecStart=/home/root/iotkit-agent/start-agent.sh
+
+[Install]
+WantedBy=multi-user.target 
+
