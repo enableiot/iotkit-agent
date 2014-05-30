@@ -37,7 +37,7 @@ To start the iotkit-agent service simply execute the start script:
     
 ### Stop
 
-Yep, you guessed it, run the stop script:
+Yep, you quest it, run the stop script:
 
     ./stop-agent.sh
 
