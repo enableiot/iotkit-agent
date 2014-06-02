@@ -30,9 +30,7 @@ var utils = require("./lib/utils").init(),
     Cloud = require("./api/cloud.proxy"),
     Message = require('./lib/agent-message'),
     Listener = require("./listeners/"),
-    conf = require('./config'),
-    server = require('./ui/server').init(conf, logger),
-    ui = require('./ui/routes/ui.v1');
+    conf = require('./config');
 
 process.on("uncaughtException", function(err) {
     logger.error("UncaughtException:", err.message);
@@ -40,7 +38,6 @@ process.on("uncaughtException", function(err) {
     // let the process exit so that forever can restart it
     process.exit(1);
 });
-ui.register(server);
 utils.getDeviceId(function (id) {
     var cloud = Cloud.init(conf, logger, id);
     cloud.activate(function (status) {
