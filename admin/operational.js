@@ -58,16 +58,9 @@ module.exports = {
     addCommand : function (program) {
         program.option('-a, --activate <activaton code>', 'activate and send metadata');
         program.option('-i, --initialize', 'reset both the token and the components list')
-   /*     program.option('-c, --savecode <activaton code>', 'add activation code to agent');
-        program.option('-C, --resetcode', 'clear added code');*/
         program.option('-R, --resettoken', 'clear Device Token');
     },
     runCommand: function (program) {
-       /* if (program.savecode) {
-            saveCode(program.savecode);
-        } else if (program.resetcode) {
-            saveCode(false);
-        }*/
         if (program.resettoken){
             resetToken();
         } else if (program.activate) {
