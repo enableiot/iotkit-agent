@@ -9,7 +9,7 @@ var logger = require("../lib/logger").init(),
     activator = require("../lib/activate"),
     path = require('path');
 
-module.exports.save = function save () {
+module.exports.saveCode = function save () {
     if (arguments.length < 1) {
         logger.error("Not enough arguments : ", arguments);
         process.exit(1);
@@ -33,11 +33,14 @@ module.exports.activate = function activate() {
     utils.getDeviceId(function (id) {
         activator.activate(id, code, function () {
             activator.disconnect();
-            process.exit(0);            
+            process.exit(0);
         });
     });
 };
-module.exports.reset = function reset () {
+module.exports.restCode = function () {
+    module.exports.saveCode(false);
+};
+module.exports.resetToken = function reset () {
     var dataTokenReset =  {
         "deviceToken": false,
         "accountId": false

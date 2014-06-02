@@ -27,8 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
+    Cloud = require("./api/cloud.proxy"),
     Message = require('./lib/agent-message'),
-    activator = require("./lib/activate"),
     Listener = require("./listeners/"),
     conf = require('./config'),
     server = require('./ui/server').init(conf, logger),
@@ -42,8 +42,9 @@ process.on("uncaughtException", function(err) {
 });
 ui.register(server);
 utils.getDeviceId(function (id) {
-    activator.activate(id, function (cloud) {
-        if (cloud) {
+    var cloud = Cloud.init(conf, logger, id);
+    cloud.activate(function (status) {
+        if (status === 0) {
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
             Listener.REST.init(conf, logger, agentMessage.handler);
@@ -51,7 +52,8 @@ utils.getDeviceId(function (id) {
             Listener.TCP.init(conf, logger, agentMessage.handler);
             Listener.MQTT.init(conf, logger, agentMessage.handler);
         } else {
-            logger.error("Error in activation...");
+            logger.error("Error in activation... err # : ", status);
+            process.exit(status);
         }
     });
 });
