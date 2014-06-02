@@ -1,14 +1,13 @@
 {
     "listeners": {
-        "http_port_server": 9091,
-        "mqtt_port_listen": 1884,
-        "rest_port_listen": 9090,
-        "udp_port_listen": 41234,
-        "tcp_port_listen": 7070
+        "mqtt_port": 1884,
+        "rest_port": 9090,
+        "udp_port": 41234,
+        "tcp_port": 7070
     },
     "activation_retries": 10,
     "activation_code": null,
-    "device_id": null,
+    "device_id": false,
     "token_file": "token.json",
     "device_loc": [
         88.34,
@@ -19,11 +18,11 @@
     "default_connector": "rest",
     "connector": {
         "mqtt": {
-            "host": "broker.us.enableiot.com",
-            "port": 8883,
+            "host": "dev-broker.us.enableiot.com",
+            "port": 1883,
             "qos": 1,
             "retain": false,
-            "secure": true,
+            "secure": false,
             "key": "./certs/enableiot_agent.key",
             "crt": "./certs/enableiot_agent.crt",
             "retries": 30,
@@ -38,7 +37,7 @@
             }
         },
         "rest": {
-            "host": "dashboard.us.enableiot.com",
+            "host": "dev-dashboard.us.enableiot.com",
             "port": 443,
             "protocol": "https",
             "strictSSL": false,
