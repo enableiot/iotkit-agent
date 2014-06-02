@@ -4,17 +4,18 @@
 var config = require('../../config');
 
 var ConnectionOptions = require('./iot.connection.def.js');
+var apiconf = config.connector.rest;
 
 var IoTKiT = {};
 /**
  * Connection attributes to redirect to Intel Identity Main Page
  */
 function GetTokenOption () {
-    this.pathname = config.api.auth.token;
+    this.pathname = apiconf.auth.token;
     ConnectionOptions.call(this);
     this.method = 'POST';
-    this.body =  JSON.stringify({username: config.api.auth.usr,
-                                 password: config.api.auth.pass});
+    this.body =  JSON.stringify({username: apiconf.auth.usr,
+                                 password: apiconf.auth.pass});
     this.headers = {
         "Content-type" : "application/json"
     };

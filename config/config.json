@@ -1,0 +1,57 @@
+{
+    "listeners": {
+        "http_port_server": 9091,
+        "mqtt_port_listen": 1884,
+        "rest_port_listen": 9090,
+        "udp_port_listen": 41234,
+        "tcp_port_listen": 7070
+    },
+    "activation_retries": 10,
+    "activation_code": null,
+    "device_id": null,
+    "token_file": "token.json",
+    "device_loc": [
+        88.34,
+        64.22047,
+        -20
+    ],
+    "gateway_id": null,
+    "default_connector": "rest",
+    "connector": {
+        "mqtt": {
+            "host": "broker.us.enableiot.com",
+            "port": 8883,
+            "qos": 1,
+            "retain": false,
+            "secure": true,
+            "key": "./certs/enableiot_agent.key",
+            "crt": "./certs/enableiot_agent.crt",
+            "retries": 30,
+            "topic": {
+                "device": "devices/{deviceid}",
+                "device_status": "devices/{deviceid}/activation_status",
+                "device_activation": "devices/{deviceid}/activation",
+                "device_metadata": "devices/{deviceid}/metadata",
+                "metric_topic": "server/metric/{accountid}/{gatewayid}",
+                "device_component_add": "devices/{deviceid}/components/add",
+                "device_component_del": "devices/{deviceid}/components/delete"
+            }
+        },
+        "rest": {
+            "host": "dashboard.us.enableiot.com",
+            "port": 443,
+            "protocol": "https",
+            "strictSSL": false,
+            "path": {
+                "device": {
+                    "act": "/v1/api/devices/{deviceid}/activation",
+                    "update": "/v1/api/devices/{deviceid}",
+                    "components": "/v1/api/devices/{deviceid}/components"
+                },
+                "submit": {
+                    "data": "/v1/api/data/{deviceid}"
+                }
+            }
+        }
+    }
+}

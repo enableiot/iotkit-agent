@@ -30,7 +30,7 @@ var logger = require("../lib/logger").init(),
     path = require('path'),
     common = require('../lib/common');
 
-var filename = "agent-ids.json";
+/*var filename = "config.json";*/
 
 function showDeviceId () {
     utils.getDeviceId(function (id) {
@@ -38,26 +38,34 @@ function showDeviceId () {
     });
 }
 
-function saveDeviceId (device_id) {
-    var fullFilename = path.join(__dirname, '../certs/' +  filename);
+/*function saveDeviceId (device_id) {
+    var fullFilename = path.join(__dirname, '../config/' +  filename);
     var data = common.readFileToJson(fullFilename);
     logger.info("The old device Id was : ", data.device_id);
     logger.info("The New device Id is : ", device_id);
     data.device_id = device_id;
     return common.writeToJson(fullFilename, data);
-}
+}*/
 
-module.exports.device = function () {
-    if (arguments.length < 1) {
-        showDeviceId();
-    } else {
-        saveDeviceId(arguments[0]);
+
+module.exports = {
+    addCommand : function (program) {
+        program.option('-d, --deviceid', 'show the device id');
+      /*  program.option('-s, --setdeviceid <devideid>', 'override the device id');
+        program.option('-D, --cleardeviceid', 'clear the device id override');*/
+    },
+    runCommand: function (program) {
+        if (program.deviceid) {
+            showDeviceId();
+        } /*else if (program.setdeviceid) {
+            logger.info("Deviceid will override by : ", program.setdeviceid);
+            saveDeviceId(program.setdeviceid);
+        } else if (program.cleardeviceid) {
+            logger.info("Clearing the Device ID  override");
+            saveDeviceId(false);
+        }
+        if (program.initialize) {
+            saveDeviceId(false);
+        }*/
     }
-};
-
-module.exports.reset = function reset () {
-    var fullFilename = path.join(__dirname, '../certs/' +  filename);
-    var data = common.readFileToJson(fullFilename);
-    data.device_id = false;
-    return common.writeToJson(fullFilename, data);
 };

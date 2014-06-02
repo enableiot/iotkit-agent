@@ -2,7 +2,7 @@ var assert =  require('chai').assert,
     rewire = require('rewire');
 
 
-var fileToTest = "../lib/mqtt-connector/connector";
+var fileToTest = "../api/mqtt/connector";
 
 describe(fileToTest, function(){
     var toTest = rewire(fileToTest);
