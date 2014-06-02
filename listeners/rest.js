@@ -29,7 +29,7 @@ var express = require("express");
 
 exports.init = function(conf, logger, onMessage) {
 
-  var httpServerPort = conf.rest_port_listen || 9090;
+  var httpServerPort = conf.listeners.rest_port || 9090;
   var rest = express();
   rest.configure(function() {
       rest.use(express.favicon());
