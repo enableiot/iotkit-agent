@@ -68,7 +68,7 @@ module.exports = {
         } else if (program.resetcode) {
             saveCode(false);
         }*/
-        if (program.resetoken){
+        if (program.resettoken){
             resetToken();
         } else if (program.activate) {
             logger.info("activate and send metadata");
