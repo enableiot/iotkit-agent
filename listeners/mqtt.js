@@ -25,11 +25,45 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var mqtt = require('mqtt');
+var mqtt = require('mqtt'),
+    common = require('../lib/common'),
+    path = require("path");
 
-exports.init = function(conf, logger, onMessage) {
+/**
+ * @description Build a path replacing patter {} by the data arguments
+ * if more the one {} pattern is present it shall be use Array
+ * @param path string the represent a URL path
+ * @param data Array or string,
+ * @returns {*}
+ */
+var buildPath = function (path, data) {
+    var re = /{\w+}/;
+    var pathReplace = path;
+    if (Array.isArray(data)) {
+        data.forEach(function (value) {
+            pathReplace = pathReplace.replace(re, value);
+        });
+    } else {
+        pathReplace = pathReplace.replace(re, data);
+    }
+    return pathReplace;
+};
+
+exports.init = function(conf, logger, onMessage, deviceId) {
 
   var mqttServerPort = conf.listeners.mqtt_port || 1883;
+
+  var filename = conf.token_file || "token.json";
+  var fullFilename = path.join(__dirname, '../certs/' +  filename);
+  var secret = common.readFileToJson(fullFilename);
+  var metric_topic = conf.metric_topic || "server/metric/{accountid}/{gatewayid}";
+
+  var tlsArgs = {
+        keyPath: conf.broker.key || './certs/client.key',
+        certPath: conf.broker.crt || './certs/client.crt',
+        keepalive: 59000
+    };
+
   var mqttServer = mqtt.createServer(function(client) {
 
     client.on('connect', function(packet) {
@@ -46,6 +80,35 @@ exports.init = function(conf, logger, onMessage) {
         logger.error('MQTT Error on message: %s', ex);
       }
   });
+
+    client.on('subscribe', function(packet) {
+        try {
+            // create a new client object to the new online broker
+            // subscribe
+
+            var newclient;
+            var topic = packet.subscriptions[0].topic;
+
+            if(conf.broker.secure){
+                newclient = mqtt.createSecureClient(conf.broker.port, conf.broker.host, tlsArgs);
+            } else {
+                newclient = mqtt.createClient(conf.broker.port, conf.broker.host);
+            }
+
+            if(topic === 'data'){
+                newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]));
+            } else {
+                newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
+            }
+
+            newclient.on('message', function (topic, message) {
+                client.publish({"topic": topic, "payload": message});
+            });
+        } catch (ex) {
+            logger.error('Error on message: %s', ex.message);
+            logger.error(ex.stack);
+        }
+    });
 
     client.on('pingreq', function() {
       client.pingresp();

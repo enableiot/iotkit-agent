@@ -47,7 +47,7 @@ utils.getDeviceId(function (id) {
             Listener.REST.init(conf, logger, agentMessage.handler);
             Listener.UDP.init(conf, logger, agentMessage.handler);
             Listener.TCP.init(conf, logger, agentMessage.handler);
-            Listener.MQTT.init(conf, logger, agentMessage.handler);
+            Listener.MQTT.init(conf, logger, agentMessage.handler, id);
         } else {
             logger.error("Error in activation... err # : ", status);
             process.exit(status);
