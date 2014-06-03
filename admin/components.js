@@ -103,21 +103,20 @@ module.exports = {
             .command('register <comp_name> <catalogid>')
             .description('Display registered components.')
             .action(registerComponents);
+        program
+            .command('resetcomponents')
+            .description('clear the component lists.')
+            .action(resetComponents);
+        program
+            .command('observation  <comp_name> <value>')
+            .description('Display registered components.')
+            .action(registerObservation);
 
-        program.option('-L, --resetcomponents', 'clear the component lists');
-        program.option('-n, --catalog', 'display the domain catalog');
-        program.option('-o, --observation  <comp_name> <value>', 'displa');
+
     },
-
     runCommand: function (program) {
-        if (program.resetcomponents) {
+       if (program.initialize) {
             resetComponents();
-
-        } else if (program.initialize) {
-            resetComponents();
-
-        } else if (program.observation) {
-            registerObservation(program.observation, program.args[0]);
         }
     }
 };
