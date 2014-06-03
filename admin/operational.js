@@ -32,20 +32,7 @@ var logger = require("../lib/logger").init(),
     config = require('../config'),
     path = require('path');
 
-var saveCode = function () {
-    if (arguments.length < 1) {
-        logger.error("Not enough arguments : ", arguments);
-        process.exit(1);
-    }
-    var code = arguments[0];
-    var filename = "agent-ids.json";
-    var fullFilename = path.join(__dirname, '../certs/' +  filename);
-    var data = common.readFileToJson(fullFilename);
 
-    logger.info("Code to Set : ", code);
-    data.activation_code = code;
-    return common.writeToJson(fullFilename, data);
-};
 var resetToken = function () {
     var dataTokenReset =  {
         "deviceToken": false,
@@ -114,7 +101,6 @@ module.exports = {
         }
         if (program.initialize) {
             resetToken();
-            saveCode(false);
         }
         if (program.test) {
             testConnection();

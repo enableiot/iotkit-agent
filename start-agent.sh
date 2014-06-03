@@ -48,7 +48,7 @@ ${FOREVER} start -m 1 \
 
 echo ""
 echo "Device Id:" 
-node admin device-id
+node admin -d
 echo ""
 echo "============================================"
 

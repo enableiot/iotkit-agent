@@ -65,6 +65,10 @@ function registerComponents (comp, cataloged) {
     });
 }
 
+function registerObservation (comp, value) {
+
+}
+
 
 
 module.exports.getComponentsList = function () {

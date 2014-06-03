@@ -43,7 +43,6 @@ function writeConfig (data) {
     var fullFilename = getConfigName();
     common.writeToJson(fullFilename, data);
 }
-
 var saveToConfig = function () {
     if (arguments.length < 2) {
         logger.error("Not enough arguments : ", arguments);
@@ -61,7 +60,7 @@ var saveToConfig = function () {
                 data[k[0]] = configSaver(data[k[0]], keys);
             } else {
                 data[k[0]] = value;
-                logger.info("Config Key : ", data);
+                logger.debug("Config Key : ", data);
             }
             return data;
         } else {
@@ -102,12 +101,14 @@ module.exports = {
         program.option('-C, --resetcode', 'clear added code');
         program.option('-s, --setdeviceid <devideid>', 'override the device id');
         program.option('-D, --cleardeviceid', 'clear the device id override');
+
     },
     runCommand: function (program) {
         if (program.connector) {
             saveToConfig("default_connector", program.connector);
         } else if (program.initialize) {
             saveToConfig("default_connector", "rest");
+            saveToConfig("activation_code", null);
         }
         if (program.host) {
             setHostFor(program.host);
