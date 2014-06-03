@@ -2,7 +2,7 @@
 var httpClient = require('../../lib/httpClient');
 var DeviceDef = require('./device.def');
 var AuthDef = require('./iot.auth');
-
+var async = require('async');
 /**
  * It passes to a callback the access token
  */
@@ -24,19 +24,6 @@ module.exports.submitData = function (data, callback) {
     var submitDataOpt = new DeviceDef.DeviceSubmitDataOption(data);
     return httpClient.httpRequest(submitDataOpt, callback);
 };
-
-function mCallback (callback, wait) {
-    var waitFor = wait || 1;
-    var finalCall = callback;
-    var count = 0;
-    var inCallback = function (data) {
-        count++;
-        if (waitFor === count) {
-                finalCall(data);
-            }
-        };
-    return inCallback;
-}
 /**
  * The function will Register all components to Analytics using POST
  * if the body is an Array it will send individual post since the bulk api is
@@ -45,28 +32,27 @@ function mCallback (callback, wait) {
  * @param callback
  */
 module.exports.registerComponents = function (data, callback){
-    var compOpt;
-    function regComponent(data, cb) {
-        compOpt = new DeviceDef.DeviceComponentOption(data);
-        httpClient.httpRequest(compOpt, cb);
-        }
-
     var tmp = data.body;
     delete data.body;
-    //TODO this shall be replace when the bulk operation be ready.
-    if (Array.isArray(tmp)) {
-        var c = mCallback(callback, tmp.length);
-        var i,
-            length = tmp.length;
-        for (i = 0; i < length; i++) {
-            data.body = tmp[i];
-            regComponent(data, c);
-        }
-    } else {
-        data.body = tmp;
-        regComponent(data, mCallback(callback));
+    //TODO this shall be replace with Parallel
+    // when the bulk operation be ready.
+    if (!Array.isArray(tmp)) {
+        tmp = [tmp];
     }
-
+    async.parallel(tmp.map(function (comp) {
+            var tempData = JSON.parse(JSON.stringify(data));
+            tempData.body = comp;
+            return function (done) {
+               var compOpt = new DeviceDef.DeviceComponentOption(tempData);
+               httpClient.httpRequest(compOpt, function(err, response){
+                    done(null, response);
+               });
+            };
+       }), function (err, response) {
+            console.info("Components Attributes Send To Analytics UI ");
+            callback(null, response);
+        }
+    );
 };
 /**
  *

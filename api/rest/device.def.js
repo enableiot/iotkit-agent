@@ -7,13 +7,15 @@ var ConnectionOptions = require('./iot.connection.def.js');
 var PUT_METHOD = 'PUT';
 var POST_METHOD = 'POST';
 
+var apiconf = config.connector.rest;
+
 //variable to be returned
 var IoTKiT = {};
 /**
  * Connection attributes to redirect to Intel Itendtity Main Page
  */
 function DeviceActivateOption(data) {
-    this.pathname = common.buildPath(config.api.device.act, data.deviceId);
+    this.pathname = common.buildPath(apiconf.path.device.act, data.deviceId);
     ConnectionOptions.call(this);
     this.method = PUT_METHOD;
     this.body =  JSON.stringify(data.body);
@@ -26,7 +28,7 @@ DeviceActivateOption.prototype.constructor = DeviceActivateOption;
 IoTKiT.DeviceActivateOption = DeviceActivateOption;
 
 function DeviceMetadataOption (data) {
-    this.pathname = common.buildPath(config.api.device.update, data.deviceId);
+    this.pathname = common.buildPath(apiconf.path.device.update, data.deviceId);
     ConnectionOptions.call(this);
     this.method = PUT_METHOD;
     this.headers = {
@@ -45,7 +47,7 @@ IoTKiT.DeviceMetadataOption = DeviceMetadataOption;
  * @constructor
  * */
 function DeviceComponentOption (data) {
-    this.pathname = common.buildPath(config.api.device.components, data.deviceId);
+    this.pathname = common.buildPath(apiconf.path.device.components, data.deviceId);
     ConnectionOptions.call(this);
     this.method = POST_METHOD;
     this.headers = {
@@ -65,7 +67,7 @@ IoTKiT.DeviceComponentOption = DeviceComponentOption;
  * @constructor
  */
 function DeviceSubmitDataOption (data) {
-    this.pathname = common.buildPath(config.api.submit.data, data.deviceId);
+    this.pathname = common.buildPath(apiconf.path.submit.data, data.deviceId);
     ConnectionOptions.call(this);
     this.method = POST_METHOD;
     this.headers = {

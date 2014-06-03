@@ -29,12 +29,12 @@ var mqtt = require('mqtt');
 
 module.exports = function Broker(conf, logger) {
     var me = this;
-    me.host = conf.host || 'localhost';
-    me.port = conf.port || 8884;
+    me.host = conf.host;
+    me.port = conf.port;
     me.secure = conf.secure;
     me.tlsArgs = {
-        keyPath: conf.key || './certs/client.key',
-        certPath: conf.crt || './certs/client.crt',
+        keyPath: conf.key,
+        certPath: conf.crt,
         keepalive: 59000
     };
     me.max_retries = conf.retries || 30;
@@ -146,9 +146,6 @@ module.exports = function Broker(conf, logger) {
                     toCallBack();
                }
             });
-
-                toReturn();
-            }
         }
         if (!me.connected()) {
             me.connect(function(err) {
@@ -186,7 +183,7 @@ module.exports = function Broker(conf, logger) {
             options = options || me.pubArgs;
         }
         function publishCallback() {
-            me.logger.info('Publishing : T => ', topic, " MSG => ", message);
+            me.logger.debug('Publishing : T => ', topic, " MSG => ", message);
             me.client.publish(topic, JSON.stringify(message), options, callback);
         }
         if (!me.connected()) {
@@ -204,5 +201,4 @@ module.exports = function Broker(conf, logger) {
     me.connected = function () {
         return me.client.connected;
     };
-
 };

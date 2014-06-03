@@ -4,7 +4,6 @@
   "description": "Edge agent to abstract complexities",
   "main": "server.js",
   "dependencies": {
-    "ejs": "^1.0.0",
     "express": "^3.5.2",
     "forever": "^0.11.1",
     "getmac": "^1.0.6",
@@ -12,9 +11,12 @@
     "mqtt": "^0.3.8",
     "node-uuid": "^1.4.1",
     "request": "^2.36.0",
-    "ejs": "^1.0.0",
-    "request": "^2.36.0",
-    "async": "^0.9.0"
+    "async": "^0.9.0",
+    "commander": "^2.2.0",
+    "winston": "^0.7.3"
+  },
+  "bin": {
+    "iotkit-agent": "./bin/agent.js"
   },
   "scripts": {
     "start": "node agent",

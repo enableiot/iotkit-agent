@@ -1,41 +1,58 @@
-/**
- * Created by ammarch on 5/21/14.
+/*
+ Copyright (c) 2013, Intel Corporation
+
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice,
+ this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+ * Neither the name of Intel Corporation nor the names of its contributors
+ may be used to endorse or promote products derived from this software
+ without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-/**
- * Created by ammarch on 5/21/14.
- */
-var auth = require('./activation'),
+
+"use strict";
+var admin= require('commander'),
+    pkgJson = require('../package.json'),
+    auth = require('./operational'),
     device = require('./device'),
-    components = require('./components');
-/*var metric = require('./metric');*/
-var command = process.argv[2];
-var arg = process.argv.slice(3);
+    components = require('./components'),
+    configurator = require('./configurator');
+
+admin.version(pkgJson.version);
+/*
+Add commando as option
+ */
+auth.addCommand(admin);
+device.addCommand(admin);
+components.addCommand(admin);
+configurator.addCommand(admin);
+
+admin.parse(process.argv);
+/*
+Run if the command were specified at parameter
+ */
+auth.runCommand(admin);
+device.runCommand(admin);
+components.runCommand(admin);
+configurator.runCommand(admin);
 
 
-switch (command) {
-    case 'save-code':
-        auth.saveCode.apply(null, arg);
-        break;
-    case 'reset-code':
-        auth.restCode.apply(null, arg);
-        break;
-    case 'activate':
-        auth.activate.apply(null, arg);
-        break;
-    case 'reset-token':
-        auth.resetToken.apply(this, arg);
-        break;
-    case 'device-id':
-        device.device.apply(this, arg);
-        break;
-    case 'reset-device-id':
-        device.reset.apply(this, arg);
-        break;
-    case 'add-metric':
-        break;
-    case 'reset-components':
-        components.reset.apply(this, arg);
-        break;
-    default:
-        console.log ("Command : ", command , " not supported ");
-}
+
+
+
+

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
 Copyright (c) 2013, Intel Corporation
 
@@ -25,14 +26,12 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
-var utils = require("./lib/utils").init(),
-    logger = require("./lib/logger").init(),
-    Cloud = require("./api/cloud.proxy"),
-    Message = require('./lib/agent-message'),
-    Listener = require("./listeners/"),
-    conf = require('./config'),
-    server = require('./ui/server').init(conf, logger),
-    ui = require('./ui/routes/ui.v1');
+var utils = require("../lib/utils").init(),
+    logger = require("../lib/logger").init(),
+    Cloud = require("../api/cloud.proxy"),
+    Message = require('../lib/agent-message'),
+    Listener = require("../listeners/"),
+    conf = require('../config');
 
 process.on("uncaughtException", function(err) {
     logger.error("UncaughtException:", err.message);
@@ -40,7 +39,6 @@ process.on("uncaughtException", function(err) {
     // let the process exit so that forever can restart it
     process.exit(1);
 });
-ui.register(server);
 utils.getDeviceId(function (id) {
     var cloud = Cloud.init(conf, logger, id);
     cloud.activate(function (status) {

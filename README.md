@@ -56,12 +56,17 @@ The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visi
 
 ## Notes about "admin"
 
-node admin savecode <code>- save the activation code – the agent will activate on startup using this code, if the existing token is empty
-node admin activate <code> – activate using the activation code, if the existing token is empty and send device metadata to the cloud
-node admin resettoken – reset the security token, enabling activation again
-node admin device_id - get the current device id – either from the MAC or — if previously set — the ID that was set
-node admin setDeviceId <device_id> - set the device_id to be sent (default is the MAC address)
-node admin resetDeviceId – reset the device_id override, which will use the MAC
+<code> node admin savecode [code]</code> - save the activation code – the agent will activate on startup using this code, if the existing token is empty
+
+<code> node admin activate [code]</code> – activate using the activation code, if the existing token is empty and send device metadata to the cloud
+
+<code> node admin resettoken</code> – reset the security token, enabling activation again
+
+<code> node admin device_id</code> - get the current device id – either from the MAC or — if previously set — the ID that was set
+
+<code> node admin setDeviceId [device_id]</code> - set the device_id to be sent (default is the MAC address)
+
+<code> node admin resetDeviceId</code> – reset the device_id override, which will use the MAC
 
 
 ## Certificates

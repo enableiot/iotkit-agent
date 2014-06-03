@@ -4,23 +4,23 @@
 "use strict";
 var url = require('url');
 var config = require('../../config');
-//variable to be returned
 
+var apiconf = config.connector.rest;
 /**
  * Top of the hierarchy. Common attributes to every
  * Connection Options
  */
 function ConnectionOptions() {
-    if (config.rest.proxy && config.rest.proxy.host) {
-        this.proxy = config.rest.proxy.host + ":" + config.rest.proxy.port;
+    if (apiconf.proxy && apiconf.proxy.host) {
+        this.proxy = apiconf.proxy.host + ":" + apiconf.proxy.port;
     }
     var urlT =  {
-        hostname: config.rest.host,
-        port: config.rest.port,
+        hostname: apiconf.host,
+        port: apiconf.port,
         pathname: this.pathname,
-        protocol: config.rest.protocol
+        protocol: apiconf.protocol
     };
-    if (config.rest.strictSSL === false) {
+    if (apiconf.strictSSL === false) {
         this.strictSSL = false;
     }
     this.url = url.format(urlT);

@@ -51,7 +51,7 @@ var buildPath = function (path, data) {
 
 exports.init = function(conf, logger, onMessage, deviceId) {
 
-  var mqttServerPort = conf.mqtt_port_listen || 1883;
+  var mqttServerPort = conf.listeners.mqtt_port || 1883;
 
   var filename = conf.token_file || "token.json";
   var fullFilename = path.join(__dirname, '../certs/' +  filename);
