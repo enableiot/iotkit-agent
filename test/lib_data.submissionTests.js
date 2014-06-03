@@ -96,12 +96,13 @@ describe(fileToTest, function(){
             }
         };
 
-        connector.dataSubmit = function (metric) {
+        connector.dataSubmit = function (metric, callback) {
             assert.isObject(metric, " Shall be an object");
             assert.property(metric, "on", "It is required the ON Message");
             assert.equal(metric.on, okMessage.on, "The TimeStamp were not propagated");
             assert.equal(metric.count, 1, " The count shall be 1");
    //         done();
+            callback(true);
             return;
         };
         var handler = toTest.init(connector, store, logger);
@@ -128,14 +129,14 @@ describe(fileToTest, function(){
             }
         };
 
-        connector.dataSubmit = function (metric) {
+        connector.dataSubmit = function (metric, callback) {
             assert.isObject(metric, " Shall be an object");
             assert.property(metric, "on", "It is required the ON Message");
             assert.equal(metric.on, okMessage.on, "The TimeStamp were not propagated");
             assert.equal(metric.count, 1, " The count shall be 1");
             //         done();
-            return;
-        };
+            callback();
+         };
         var handler = toTest.init(connector, store, logger);
         handler.submission(okMessage, function (process){
             assert.isFalse(process, "Message Shall be processed Msg ");

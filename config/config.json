@@ -47,7 +47,7 @@
             "port": 443,
             "protocol": "https",
             "strictSSL": false,
-            "path": {
+             "path": {
                 "device": {
                     "act": "/v1/api/devices/{deviceid}/activation",
                     "update": "/v1/api/devices/{deviceid}",

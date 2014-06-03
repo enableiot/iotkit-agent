@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var assert =  require('chai').assert,
     rewire = require('rewire');
-var fileToTest = "../lib/Metric.data.js";
+var fileToTest = "../lib/data/Metric.data.js";
 
 describe(fileToTest, function(){
     var toTest = rewire(fileToTest);
@@ -48,7 +48,7 @@ describe(fileToTest, function(){
         assert.isArray(mMet.data, "The Data Array were not proper initialized");
         done();
     });
-    it('Shall Convert Metric Obj to MQTT >', function(done) {
+  /*  it('Shall Convert Metric Obj to MQTT >', function(done) {
         var Metric  = toTest.init(util)
         var mMetricon = new Metric();
         var message = {
@@ -152,5 +152,5 @@ describe(fileToTest, function(){
         assert.lengthOf(mMet.data, mMet.count, "The length of data is not the expected");
 
         done();
-    });
+    });*/
 });
