@@ -3,7 +3,7 @@
  */
 var fs = require('fs'),
     logger = require("../lib/logger").init(),
-    configpath = './config.json';
+    configpath = './config/config.json';
 
 if (!fs.existsSync(configpath)) {
   var config = require('/etc/iotkit-agent/config.json');
