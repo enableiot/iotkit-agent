@@ -134,12 +134,12 @@ IoTKitCloud.prototype.disconnect = function () {
   me.proxy.disconnect();
 };
 
-IoTKitCloud.prototype.dataSubmit = function (metric) {
+IoTKitCloud.prototype.dataSubmit = function (metric, callback) {
     var me = this;
     metric.accountId = me.secret.accountId;
     metric.did = me.deviceId;
     me.logger.debug("Metric doc: %j", metric, {});
-    me.proxy.data(metric);
+    me.proxy.data(metric, callback);
 
 };
 IoTKitCloud.prototype.regComponent = function(comp, callback) {

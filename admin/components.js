@@ -64,9 +64,29 @@ function registerComponents (comp, cataloged) {
         });
     });
 }
-
 function registerObservation (comp, value) {
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(conf, logger, id);
+        cloud.activate(function (status) {
+            var r = 0;
+            if (status === 0) {
+                var agentMessage = Message.init(cloud, logger);
+                var msg = {
+                    "n": comp,
+                    "v": value
+                };
+                agentMessage.handler(msg, function (stus){
+                    logger.info("Observation Sent", stus);
+                    process.exit(r)
+                });
 
+            } else {
+                logger.error("Error in the Observation Submission process ...", status);
+                process.exit(1)
+            }
+
+        });
+    });
 }
 
 
@@ -83,6 +103,7 @@ module.exports = {
         program.option('-l, --register <comp_name> <cataloged>', 'display the components registered');
         program.option('-L, --resetcomponents', 'clear the component lists');
         program.option('-n, --catalog', 'display the domain catalog');
+        program.option('-o, --observation  <comp_name> <value>', 'displa');
     },
 
     runCommand: function (program) {
@@ -94,6 +115,8 @@ module.exports = {
         } else if (program.initialize) {
             resetComponents();
 
+        } else if (program.observation) {
+            registerObservation(program.observation, program.args[0]);
         }
     }
 };
