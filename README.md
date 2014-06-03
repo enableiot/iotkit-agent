@@ -20,7 +20,7 @@ Once you have a copy of the iotkit-agent locally, execute the setup script:
     
 ### Configuration
 
-The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.enableiot.com). After, the registration copy the autorization code 
+The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.enableiot.com). After, the registration copy the activation code 
 and execute
 
     node admin activate <activation_code>     
@@ -43,7 +43,7 @@ Yep, you guessed it, run the stop script:
 
 ## Usage
 
-For instructions how to use the iotkit-agent please the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
+For instructions how to use the iotkit-agent please see the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
 
 ## Test
 
@@ -78,7 +78,7 @@ The IoT Kit Agent includes default certificates to provide "out of the box" conn
 
 ## License
 
-Copyright (c) 2013, Intel Corporation
+Copyright (c) 2014, Intel Corporation
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
