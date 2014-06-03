@@ -36,13 +36,11 @@ var IoTKiT = {};
  */
 function GetTokenOption () {
     this.pathname = apiconf.auth.token;
+    this.token = null;
     ConnectionOptions.call(this);
     this.method = 'POST';
     this.body =  JSON.stringify({username: apiconf.auth.usr,
                                  password: apiconf.auth.pass});
-    this.headers = {
-        "Content-type" : "application/json"
-    };
 }
 GetTokenOption.prototype = new ConnectionOptions();
 GetTokenOption.prototype.constructor = GetTokenOption;

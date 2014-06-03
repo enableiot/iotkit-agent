@@ -42,7 +42,7 @@ function IoTKitCloud(conf, logger, deviceId, customProxy){
     me.deviceId = deviceId;
     me.gatewayId = conf.gateway_id || deviceId;
     me.activationCode = conf.activation_code;
-    me.logger.info('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
+    me.logger.debug('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
 }
 IoTKitCloud.prototype.isActivated = function () {
     var me = this;
@@ -149,12 +149,21 @@ IoTKitCloud.prototype.regComponent = function(comp) {
 };
 IoTKitCloud.prototype.desRegComponent = function(comp) {
     var me = this;
-    var doc =  JSON.parse(JSON.stringify(comp)); //HardCopy to remove reference bind
+  /*  var doc =  JSON.parse(JSON.stringify(comp)); //HardCopy to remove reference bind
     doc.deviceToken = me.secret.deviceToken;
     me.logger.debug("DesReg Component doc: %j", doc, {});
     me.client.publish(buildPath(me.topics.device_component_del, me.deviceId),
                                 doc,
-                                me.pubArgs);
+                                me.pubArgs);*/
+};
+
+IoTKitCloud.prototype.test = function(callback) {
+    var me = this;
+    me.logger.info("Trying to Connect IotKit Analytics");
+    me.proxy.health(function (result) {
+          me.logger.debug("Response ", result)
+          callback(result);
+    });
 };
 
 exports.init = function(conf, logger, deviceId) {

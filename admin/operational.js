@@ -75,6 +75,26 @@ var activate = function () {
         });
     });
 };
+function testConnection () {
+    var host = config.connector[config.default_connector].host;
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(config, logger, id);
+        cloud.test(function (res) {
+            var r = 0;
+            if (res) {
+                logger.info("Connected to %s", host);
+                logger.info("Connected to Env %s", res.currentSetting);
+                logger.info("Connected to Build %s", res.build);
+                logger.debug("Full response %j", res );
+            } else {
+                logger.error("Not Connection to %s", host);
+                r = 1;
+            }
+            process.exit(r)
+        });
+    })
+}
+
 
 
 module.exports = {
@@ -82,6 +102,8 @@ module.exports = {
         program.option('-a, --activate <activaton code>', 'activate and send metadata');
         program.option('-i, --initialize', 'reset both the token and the components list')
         program.option('-R, --resettoken', 'clear Device Token');
+        program.option('-t, --test', 'try to reach the mqtt or rest server over the network (whichever is configured) and indicate whether there is network connectivity.');
+
     },
     runCommand: function (program) {
         if (program.resettoken){
@@ -93,6 +115,9 @@ module.exports = {
         if (program.initialize) {
             resetToken();
             saveCode(false);
+        }
+        if (program.test) {
+            testConnection();
         }
 
     }

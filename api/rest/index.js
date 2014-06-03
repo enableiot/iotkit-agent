@@ -27,5 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 module.exports = {
-    devices: require('./iot.devices')
+    devices: require('./iot.devices'),
+    admin: require('./iot.admin')
 };
