@@ -74,11 +74,9 @@ var saveToConfig = function () {
     }
     return true;
 };
-var setHostFor = function () {
+var setHostFor = function (host_value, port_value) {
     var data = readConfig();
     var proxy;
-    var host_value = arguments[0][0];
-    var port_value = arguments[0][1];
     if (data) {
        proxy = data["default_connector"];
        logger.info("Config Key : ", proxy, " value ", host_value);
@@ -90,40 +88,67 @@ var setHostFor = function () {
        }
     }
 };
-function listHostPort (val) {
-    return val.split(':');
-}
+
 module.exports = {
     addCommand : function (program) {
-        program.option('-p, --connector <proxy>', 'set the proxy to connect Iot Analytics using [mqtt|rest]');
-        program.option('-H, --host <host:port>', 'set the host to connect Iot Analytics using the proxy', listHostPort);
-        program.option('-c, --savecode <activaton code>', 'add activation code to agent');
-        program.option('-C, --resetcode', 'clear added code');
-        program.option('-s, --setdeviceid <devideid>', 'override the device id');
-        program.option('-D, --cleardeviceid', 'clear the device id override');
+        program
+            .command('protocol <protocol>')
+            .description('Set the protocol to \'mqtt\' or \'rest\'')
+            .action(function(protocol){
+                if (protocol == 'mqtt' || protocol == 'rest') {
+                    saveToConfig("default_connector", protocol);
+                    logger.info("protocol set to: " + protocol);
+                } else {
+                    logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\'", protocol);
+            saveToConfig("activation_code", null);
+                }
+            });
 
-    },
-    runCommand: function (program) {
-        if (program.connector) {
-            saveToConfig("default_connector", program.connector);
-        } else if (program.initialize) {
-            saveToConfig("default_connector", "rest");
-            saveToConfig("activation_code", null);
-        }
-        if (program.host) {
-            setHostFor(program.host);
-        }
-        if (program.savecode) {
-            saveToConfig("activation_code", program.savecode);
-        } else if (program.resetcode) {
-            saveToConfig("activation_code", null);
-        }
-        if (program.setdeviceid) {
-            logger.info("Deviceid will override by : ", program.setdeviceid);
-            saveToConfig("device_id", program.setdeviceid);
-        } else if (program.cleardeviceid) {
-            logger.info("Clearing the Device ID  override");
-            saveToConfig("device_id", false);
-        }
+        program
+            .command('host <host> <port>')
+            .description('Set the cloud hostname and port for the current protocol')
+            .action(setHostFor);
+
+        program
+            .command('device-id')
+            .description('Display the device id')
+            .action(function() {
+                utils.getDeviceId(function (id) {
+                    logger.info("Device ID: %s", id);
+                });
+            });
+
+        program
+            .command('set-device-id <id>')
+            .description('Override the device id')
+            .action(function(id) {
+                saveToConfig("device_id", id);
+                logger.info("Device ID set to: %s", id);
+            });
+
+        program
+            .command('clear-device-id')
+            .description('Revert to using the default device id')
+            .action(function() {
+                saveToConfig("device_id", false);
+                logger.info("Device ID cleared.");
+            });
+
+        program
+            .command('save-code <activaton code>')
+            .description('Add activation code to agent')
+            .action(function(activation_code) {
+                saveToConfig("activation_code", activation_code);
+                logger.info("Activation code saved.");
+            });
+
+        program
+            .command('reset-code')
+            .description('Clear activation code of agent')
+            .action(function() {
+                saveToConfig("activation_code", null);
+                logger.info("Activation code cleared.");
+            });
+
     }
 };
