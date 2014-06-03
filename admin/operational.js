@@ -41,12 +41,8 @@ var resetToken = function () {
     var fullFilename = path.join(__dirname, '../certs/' +  config.token_file);
     return common.writeToJson(fullFilename, dataTokenReset);
 };
-var activate = function () {
-    if (arguments.length < 1) {
-        logger.error("Not enough arguments : ", arguments);
-        process.exit(1);
-    }
-    var code = arguments[0];
+var activate = function (code) {
+    logger.info("Activation started ...");
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(config, logger, id);
         cloud.activate(code, function (err) {
@@ -62,6 +58,7 @@ var activate = function () {
         });
     });
 };
+
 function testConnection () {
     var host = config.connector[config.default_connector].host;
     utils.getDeviceId(function (id) {
@@ -82,29 +79,30 @@ function testConnection () {
     })
 }
 
-
-
 module.exports = {
     addCommand : function (program) {
-        program.option('-a, --activate <activaton code>', 'activate and send metadata');
         program.option('-i, --initialize', 'reset both the token and the components list')
         program.option('-R, --resettoken', 'clear Device Token');
-        program.option('-t, --test', 'try to reach the mqtt or rest server over the network (whichever is configured) and indicate whether there is network connectivity.');
+
+        program
+            .command('test')
+            .description('try to reach the mqtt or rest server over the network (whichever is configured) and indicate whether there is network connectivity')
+            .action(function(options) {
+                testConnection();
+            });
+
+        program
+            .command('activate <code>')
+            .description('Activates the device')
+            .action(activate);
 
     },
     runCommand: function (program) {
         if (program.resettoken){
             resetToken();
-        } else if (program.activate) {
-            logger.info("activate and send metadata");
-            activate(program.activate);
         }
         if (program.initialize) {
             resetToken();
         }
-        if (program.test) {
-            testConnection();
-        }
-
     }
 };
