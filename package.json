@@ -15,6 +15,9 @@
     "commander": "^2.2.0",
     "winston": "^0.7.3"
   },
+  "bin": {
+    "iotkit-agent": "./bin/agent.js"
+  },
   "scripts": {
     "start": "node agent",
     "test": "mocha"
