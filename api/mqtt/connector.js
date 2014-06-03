@@ -26,17 +26,21 @@
  */
 "use strict";
 var mqtt = require('mqtt');
+var path = require('path');
+
 
 module.exports = function Broker(conf, logger) {
     var me = this;
     me.host = conf.host;
     me.port = conf.port;
     me.secure = conf.secure;
-    me.tlsArgs = {
-        keyPath: conf.key,
-        certPath: conf.crt,
-        keepalive: 59000
-    };
+    if (me.secure) {
+        me.tlsArgs = {
+            keyPath: path.join(process.env.APP_ROOT, conf.key),
+            certPath: path.join(process.env.APP_ROOT, conf.crt),
+            keepalive: 59000
+        };
+    }
     me.max_retries = conf.retries || 30;
     me.messageHandler = [];
     me.logger = logger;
@@ -45,7 +49,6 @@ module.exports = function Broker(conf, logger) {
         qos: conf.qos || 1,
         retain: conf.retain
     };
-    me.connecting = false;
     me.client =  {
         connected: false
     };
@@ -64,7 +67,7 @@ module.exports = function Broker(conf, logger) {
     me.connect = function(done) {
         var retries = 0;
         try {
-            if (me.secure) {
+           if (me.secure) {
                 me.logger.info("Trying with Secure Connection to", me.host, ":", me.port, "with ", me.tlsArgs);
                 me.client = mqtt.createSecureClient(me.port, me.host, me.tlsArgs);
             }
@@ -82,6 +85,7 @@ module.exports = function Broker(conf, logger) {
                 me.logger.info("Waiting for MQTTConnector to connect # ", retries);
                 if (retries < me.max_retries) {
                     setTimeout(waitForConnection, 1500);
+                
                 } else {
                     me.logger.info('MQTTConnector: Error Connecting to ', me.host, ':', me.port);
                     done(new Error("Connection Error", 1001));
