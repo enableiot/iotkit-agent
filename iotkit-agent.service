@@ -1,0 +1,12 @@
+[Unit]
+Description=iotkit-agent
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/iotkit-agent
+Restart=always
+RestartSec=10s
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
