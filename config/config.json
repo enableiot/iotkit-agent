@@ -15,17 +15,17 @@
         -20
     ],
     "logger": {
-        "LEVEL" : "info"
+        "LEVEL": "info"
     },
     "gateway_id": null,
-    "default_connector": "rest",
+    "default_connector": "mqtt",
     "connector": {
         "mqtt": {
             "host": "dev-broker.us.enableiot.com",
-            "port": 1883,
+            "port": 8883,
             "qos": 1,
             "retain": false,
-            "secure": false,
+            "secure": true,
             "key": "./certs/enableiot_agent.key",
             "crt": "./certs/enableiot_agent.crt",
             "retries": 30,
@@ -36,7 +36,9 @@
                 "device_metadata": "devices/{deviceid}/metadata",
                 "metric_topic": "server/metric/{accountid}/{gatewayid}",
                 "device_component_add": "devices/{deviceid}/components/add",
-                "device_component_del": "devices/{deviceid}/components/delete"
+                "device_component_del": "devices/{deviceid}/components/delete",
+                "health": "health/{deviceid}",
+                "health_status": "health/{deviceid}/server_status"
             }
         },
         "rest": {
@@ -53,11 +55,11 @@
                 "submit": {
                     "data": "/v1/api/data/{deviceid}"
                 },
-                "cmpcatalog" : {
-                    "catalog" : "/v1/api/cmpcatalog",
-                    "component" : "/v1/api/cmpcatalog/{componentId}"
+                "cmpcatalog": {
+                    "catalog": "/v1/api/cmpcatalog",
+                    "component": "/v1/api/cmpcatalog/{componentId}"
                 },
-                "health" : "/v1/api/health"
+                "health": "/v1/api/health"
             }
         }
     }

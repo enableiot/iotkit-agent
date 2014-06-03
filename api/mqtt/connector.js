@@ -36,8 +36,8 @@ module.exports = function Broker(conf, logger) {
     me.secure = conf.secure;
     if (me.secure) {
         me.tlsArgs = {
-            keyPath: path.join(process.env.APP_ROOT, conf.key),
-            certPath: path.join(process.env.APP_ROOT, conf.crt),
+            keyPath: conf.key,
+            certPath: conf.crt,
             keepalive: 59000
         };
     }

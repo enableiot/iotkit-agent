@@ -159,7 +159,7 @@ IoTKitCloud.prototype.desRegComponent = function(comp) {
 IoTKitCloud.prototype.test = function(callback) {
     var me = this;
     me.logger.info("Trying to Connect IotKit Analytics");
-    me.proxy.health(function (result) {
+    me.proxy.health(me.deviceId, function (result) {
           me.logger.debug("Response ", result)
           callback(result);
     });
