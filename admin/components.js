@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var path = require('path'),
     Cloud = require("../api/cloud.proxy"),
     conf = require('../config'),
+    Message = require('../lib/agent-message'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(),
     common = require('../lib/common');
@@ -42,21 +43,24 @@ var resetComponents = function () {
 function registerComponents (comp, cataloged) {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(conf, logger, id);
-        cloud.activate(code, function (err) {
+        cloud.activate(function (status) {
             var r = 0;
-            cloud.disconnect();
-            if (!err) {
+            if (status === 0) {
                 var agentMessage = Message.init(cloud, logger);
-                agentMessage.handler();
-
-                logger.info("Device Activated ");
+                var msg = {
+                        "n": comp,
+                        "t": cataloged
+                        };
+                agentMessage.handler(msg, function (stus){
+                    logger.info("Components registered", stus);
+                    process.exit(r)
+                });
 
             } else {
-
-                logger.error("Error in the activation process ...", err);
-                r = 1;
+                logger.error("Error in the activation process ...", status);
+                process.exit(1)
             }
-            process.exit(r)
+
         });
     });
 }
@@ -69,20 +73,17 @@ module.exports.getComponentsList = function () {
 module.exports.getCatalogList = function () {
 
 };
-function compList (val) {
-    console.log("The arguments ", arguments);
-}
 module.exports = {
 
     addCommand : function (program) {
-        program.option('-l, --register <comp_name> <cataloged>', 'display the components registered', compList);
+        program.option('-l, --register <comp_name> <cataloged>', 'display the components registered');
         program.option('-L, --resetcomponents', 'clear the component lists');
         program.option('-n, --catalog', 'display the domain catalog');
     },
 
     runCommand: function (program) {
         if (program.register) {
-            registerComponents(program.register, program.args)
+            registerComponents(program.register, program.args[0])
         } else if (program.resetcomponents) {
             resetComponents();
 
