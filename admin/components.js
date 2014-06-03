@@ -40,7 +40,8 @@ var resetComponents = function () {
     return common.writeToJson(fullFilename, data);
 };
 
-function registerComponents (comp, cataloged) {
+var registerComponents = function (comp, catalogid) {
+    logger.info("Starting registration ..." );
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(conf, logger, id);
         cloud.activate(function (status) {
@@ -49,16 +50,16 @@ function registerComponents (comp, cataloged) {
                 var agentMessage = Message.init(cloud, logger);
                 var msg = {
                         "n": comp,
-                        "t": cataloged
+                        "t": catalogid
                         };
                 agentMessage.handler(msg, function (stus){
                     logger.info("Components registered", stus);
-                    process.exit(r)
+                    process.exit(r);
                 });
 
             } else {
                 logger.error("Error in the activation process ...", status);
-                process.exit(1)
+                process.exit(1);
             }
 
         });
@@ -89,8 +90,6 @@ function registerObservation (comp, value) {
     });
 }
 
-
-
 module.exports.getComponentsList = function () {
 
 };
@@ -100,16 +99,18 @@ module.exports.getCatalogList = function () {
 module.exports = {
 
     addCommand : function (program) {
-        program.option('-l, --register <comp_name> <cataloged>', 'display the components registered');
+        program
+            .command('register <comp_name> <catalogid>')
+            .description('Display registered components.')
+            .action(registerComponents);
+
         program.option('-L, --resetcomponents', 'clear the component lists');
         program.option('-n, --catalog', 'display the domain catalog');
         program.option('-o, --observation  <comp_name> <value>', 'displa');
     },
 
     runCommand: function (program) {
-        if (program.register) {
-            registerComponents(program.register, program.args[0])
-        } else if (program.resetcomponents) {
+        if (program.resetcomponents) {
             resetComponents();
 
         } else if (program.initialize) {

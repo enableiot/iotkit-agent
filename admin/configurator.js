@@ -74,7 +74,7 @@ var saveToConfig = function () {
     }
     return true;
 };
-var setHostFor = function (host_value, port_value) {
+var setHostFor = function (host_value) {
     var data = readConfig();
     var proxy;
     if (data) {
@@ -82,10 +82,6 @@ var setHostFor = function (host_value, port_value) {
        logger.info("Config Key : ", proxy, " value ", host_value);
        var host_key = 'connector.' + proxy + '.host';
        saveToConfig(host_key, host_value);
-       if ( port_value ) {
-           var port_key = 'connector.' + proxy + '.port';
-           saveToConfig(port_key, port_value);
-       }
     }
 };
 
@@ -105,8 +101,8 @@ module.exports = {
             });
 
         program
-            .command('host <host> <port>')
-            .description('Set the cloud hostname and port for the current protocol')
+            .command('host <host>')
+            .description('Set the cloud hostname for the current protocol')
             .action(setHostFor);
 
         program
