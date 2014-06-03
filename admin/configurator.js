@@ -43,7 +43,6 @@ function writeConfig (data) {
     var fullFilename = getConfigName();
     common.writeToJson(fullFilename, data);
 }
-
 var saveToConfig = function () {
     if (arguments.length < 2) {
         logger.error("Not enough arguments : ", arguments);
@@ -61,7 +60,7 @@ var saveToConfig = function () {
                 data[k[0]] = configSaver(data[k[0]], keys);
             } else {
                 data[k[0]] = value;
-                logger.info("Config Key : ", data);
+                logger.debug("Config Key : ", data);
             }
             return data;
         } else {
@@ -97,6 +96,7 @@ module.exports = {
                     logger.info("protocol set to: " + protocol);
                 } else {
                     logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\'", protocol);
+            saveToConfig("activation_code", null);
                 }
             });
 
