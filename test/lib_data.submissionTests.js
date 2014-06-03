@@ -53,28 +53,32 @@ describe(fileToTest, function(){
                 return true;
             };
         var handler = toTest.init(connector, store, logger);
-        var process = handler.submission(wrongMessage);
-        assert.isFalse(process, "Message Shall be not processed  invalid n key");
-        wrongMessage = {
-            n: "Sensor Name",
-            tw: "SensorType.v1"
-        };
-        process = handler.submission(wrongMessage);
-        assert.isFalse(process, "Message Shall be not processed Msg - invalid t key");
-        wrongMessage = {
-            n: 1,
-            v: "SensorType.v1"
-        };
-        process = handler.submission(wrongMessage);
-        assert.isFalse(process, "Message Shall be not processed Msg - invalid n Value");
-        wrongMessage = {
-            n: "",
-            v: "SensorType.v1"
-        };
-        process = handler.submission(wrongMessage);
-        assert.isFalse(process, "Message Shall be not processed Msg - invalid n Value");
-        done();
-    });
+        var process = handler.submission(wrongMessage, function (process){
+            assert.isFalse(process, "Message Shall be not processed  invalid n key")
+            //  assert.isFalse(process, "Message Shall be not processed  invalid n key");
+            wrongMessage = {
+                n: "Sensor Name",
+                tw: "SensorType.v1"
+            };
+            handler.submission(wrongMessage, function(process){
+                assert.isFalse(process, "Message Shall be not processed Msg - invalid t key");
+                wrongMessage = {
+                    n: 1,
+                    v: "SensorType.v1"
+                };
+                handler.submission(wrongMessage, function(process){
+                    wrongMessage = {
+                        n: "",
+                        v: "SensorType.v1"
+                    };
+                    handler.submission(wrongMessage ,function(process) {
+                        assert.isFalse(process, "Message Shall be not processed Msg - invalid n Value");
+                        done();
+                    });
+                });
+            });
+        });
+     });
     it('Shall Return True if it a valid Registration Message >', function(done) {
         var okMessage = {
             n: "Sensor Name",
@@ -101,9 +105,11 @@ describe(fileToTest, function(){
             return;
         };
         var handler = toTest.init(connector, store, logger);
-        var process = handler.submission(okMessage);
-        assert.isTrue(process, "Message Shall be processed Msg ");
-        done();
+        handler.submission(okMessage, function(status){
+            assert.isTrue(status, "Message Shall be processed Msg ");
+            done();
+        });
+
     });
     it('Shall Return False if it a valid Registration Message but the Component not exist >', function(done) {
         var okMessage = {
@@ -131,10 +137,10 @@ describe(fileToTest, function(){
             return;
         };
         var handler = toTest.init(connector, store, logger);
-        var process = handler.submission(okMessage);
-
-        assert.isFalse(process, "Message Shall be processed Msg ");
-        done();
+        handler.submission(okMessage, function (process){
+            assert.isFalse(process, "Message Shall be processed Msg ");
+            done();
+        });
     });
 
 });

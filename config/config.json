@@ -18,7 +18,7 @@
         "LEVEL": "info"
     },
     "gateway_id": null,
-    "default_connector": "mqtt",
+    "default_connector": "rest",
     "connector": {
         "mqtt": {
             "host": "dev-broker.us.enableiot.com",
@@ -36,6 +36,7 @@
                 "device_metadata": "devices/{deviceid}/metadata",
                 "metric_topic": "server/metric/{accountid}/{gatewayid}",
                 "device_component_add": "devices/{deviceid}/components/add",
+                "device_component_status": "devices/{deviceid}/components/status",
                 "device_component_del": "devices/{deviceid}/components/delete",
                 "health": "health/{deviceid}",
                 "health_status": "health/{deviceid}/server_status"

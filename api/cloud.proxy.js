@@ -98,9 +98,12 @@ IoTKitCloud.prototype.activate = function (code, callback) {
          * since every start/stop the HW could change.
         */
        if (status === 0) {
-           me.update();
+           me.update(function() {
+               toCall(status);
+           });
+       } else {
+           toCall(status);
        }
-       toCall(status);
     }
     if (!me.isActivated()) {
         var ActMessage = {
@@ -139,13 +142,13 @@ IoTKitCloud.prototype.dataSubmit = function (metric) {
     me.proxy.data(metric);
 
 };
-IoTKitCloud.prototype.regComponent = function(comp) {
+IoTKitCloud.prototype.regComponent = function(comp, callback) {
     var me = this;
     var doc = JSON.parse(JSON.stringify(comp)); //HardCopy to remove reference bind
     doc.deviceToken = me.secret.deviceToken;
     doc.deviceId =  me.deviceId;
     me.logger.debug("Reg Component doc: %j", doc, {});
-    me.proxy.addComponent(doc);
+    me.proxy.addComponent(doc, callback);
 };
 IoTKitCloud.prototype.desRegComponent = function(comp) {
     var me = this;

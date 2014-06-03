@@ -68,7 +68,8 @@ module.exports = function Broker(conf, logger) {
         var retries = 0;
         try {
            if (me.secure) {
-                me.logger.info("Trying with Secure Connection to", me.host, ":", me.port, "with ", me.tlsArgs);
+                me.logger.info("Trying with Secure Connection to", me.host, ":", me.port);
+                me.logger.debug("with ", me.tlsArgs);
                 me.client = mqtt.createSecureClient(me.port, me.host, me.tlsArgs);
             }
             else {
