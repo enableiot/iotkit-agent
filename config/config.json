@@ -14,6 +14,9 @@
         64.22047,
         -20
     ],
+    "logger": {
+        "LEVEL" : "info"
+    },
     "gateway_id": null,
     "default_connector": "rest",
     "connector": {
@@ -49,7 +52,12 @@
                 },
                 "submit": {
                     "data": "/v1/api/data/{deviceid}"
-                }
+                },
+                "cmpcatalog" : {
+                    "catalog" : "/v1/api/cmpcatalog",
+                    "component" : "/v1/api/cmpcatalog/{componentId}"
+                },
+                "health" : "/v1/api/health"
             }
         }
     }

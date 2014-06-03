@@ -24,6 +24,13 @@ function ConnectionOptions() {
         this.strictSSL = false;
     }
     this.url = url.format(urlT);
+    this.headers = {
+                    "Content-type" : "application/json"
+                    };
+    if (this.token) {
+       this.headers["Authorization"] = "Bearer " + this.token;
+    }
+    delete this.token;
 }
 
 module.exports = ConnectionOptions;

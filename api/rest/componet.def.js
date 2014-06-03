@@ -6,6 +6,7 @@ var ConnectionOptions = require('./iot.connection.def.js');
 
 var PUT_METHOD = 'PUT';
 var POST_METHOD = 'POST';
+var GET_METHOD = 'GET';
 
 var apiconf = config.connector.rest;
 
@@ -14,11 +15,11 @@ var IoTKiT = {};
 /**
  * Connection attributes to redirect to Intel Itendtity Main Page
  */
-function DeviceActivateOption(data) {
+function CatalogOption(data) {
     this.pathname = common.buildPath(apiconf.path.device.act, data.deviceId);
     this.token = null;
     ConnectionOptions.call(this);
-    this.method = PUT_METHOD;
+    this.method = GET_METHOD;
     this.body =  JSON.stringify(data.body);
 }
 DeviceActivateOption.prototype = new ConnectionOptions();
