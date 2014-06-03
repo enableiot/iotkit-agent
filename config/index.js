@@ -1,7 +1,18 @@
 /**
  * Created by ammarch on 6/2/14.
  */
-var config = require('./config.json');
+var fs = require('fs'),
+    logger = require("../lib/logger").init(),
+    configpath = './config.json';
+
+if (!fs.existsSync(configpath)) {
+  var config = require('/etc/iotkit-agent/config.json');
+  logger.debug("Using system config file");
+}
+else {
+  var config = require('./config.json');
+  logger.debug("Using local config file");
+}
 
 /* override for local development if NODE_ENV is defined to local */
 if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
