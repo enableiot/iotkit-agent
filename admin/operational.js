@@ -81,28 +81,24 @@ function testConnection () {
 
 module.exports = {
     addCommand : function (program) {
-        program.option('-i, --initialize', 'reset both the token and the components list')
-        program.option('-R, --resettoken', 'clear Device Token');
-
         program
             .command('test')
-            .description('try to reach the mqtt or rest server over the network (whichever is configured) and indicate whether there is network connectivity')
+            .description('Try to reach the mqtt or rest server over the network (whichever is configured) and indicates whether there is network connectivity.')
             .action(function(options) {
                 testConnection();
             });
 
         program
             .command('activate <code>')
-            .description('Activates the device')
+            .description('Activates the device.')
             .action(activate);
 
-    },
-    runCommand: function (program) {
-        if (program.resettoken){
-            resetToken();
-        }
-        if (program.initialize) {
-            resetToken();
-        }
+        program
+            .command('initialize')
+            .description('Resets both the token and the components list.')
+            .action(function(options) {
+                resetToken();
+                logger.info("Initialized");
+            });
     }
 };
