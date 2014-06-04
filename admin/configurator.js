@@ -85,6 +85,11 @@ var setHostFor = function (host_value) {
        saveToConfig(host_key, host_value);
     }
 };
+var setProxy = function (host_proxy, port_proxy) {
+    saveToConfig("connector.rest.proxy.host", host_proxy);
+    saveToConfig("connector.rest.proxy.port", port_proxy);
+    logger.info("Set Proxy data");
+};
 
 module.exports = {
     addCommand : function (program) {
@@ -146,6 +151,11 @@ module.exports = {
                 saveToConfig("activation_code", null);
                 logger.info("Activation code cleared.");
             });
+
+        program
+            .command('set-proxy <host> <port>')
+            .description('Set Proxy For Rest Protocol')
+            .action(setProxy);
 
     }
 };
