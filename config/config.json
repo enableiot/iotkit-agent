@@ -21,7 +21,7 @@
     "default_connector": "rest",
     "connector": {
         "mqtt": {
-            "host": "dev-broker.us.enableiot.com",
+            "host": "broker.us.enableiot.com",
             "port": 8883,
             "qos": 1,
             "retain": false,
@@ -43,7 +43,7 @@
             }
         },
         "rest": {
-            "host": "dev-dashboard.us.enableiot.com",
+            "host": "dashboard.us.enableiot.com",
             "port": 443,
             "protocol": "https",
             "strictSSL": false,
