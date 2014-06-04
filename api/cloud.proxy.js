@@ -170,6 +170,14 @@ IoTKitCloud.prototype.test = function(callback) {
     });
 };
 
+IoTKitCloud.prototype.catalog = function (callback) {
+    var me = this;
+    me.proxy.getCatalog(me.secret.deviceToken , function (result) {
+        me.logger.debug("Catalog Response : %j ", result);
+        callback(result);
+    });
+};
+
 exports.init = function(conf, logger, deviceId) {
     return new IoTKitCloud(conf, logger, deviceId);
 };

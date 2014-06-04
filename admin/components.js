@@ -93,9 +93,14 @@ function registerObservation (comp, value) {
 module.exports.getComponentsList = function () {
 
 };
-module.exports.getCatalogList = function () {
-
-};
+function getCatalogList  () {
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(conf, logger, id);
+        cloud.catalog(function (catalog) {
+             logger.info("Get Catalog result :  ", catalog);
+        });
+    });
+}
 module.exports = {
 
     addCommand : function (program) {
@@ -111,8 +116,10 @@ module.exports = {
             .command('observation  <comp_name> <value>')
             .description('Display registered components.')
             .action(registerObservation);
-
-
+        program
+            .command('catalog')
+            .description('Display Catalog of Device Account.')
+            .action(getCatalogList);
     },
     runCommand: function (program) {
        if (program.initialize) {

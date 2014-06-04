@@ -48,5 +48,5 @@ function HealthOption(data) {
 HealthOption.prototype = new ConnectionOptions();
 HealthOption.prototype.constructor = HealthOption;
 IoTKiT.HealthOption = HealthOption;
-
+    
 module.exports = IoTKiT;
