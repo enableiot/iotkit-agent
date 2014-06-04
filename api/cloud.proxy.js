@@ -119,14 +119,29 @@ IoTKitCloud.prototype.activate = function (code, callback) {
 
 IoTKitCloud.prototype.update = function(callback) {
     var me = this;
+    msg.metadataExtended(me.gatewayId , function (doc) {
+        doc.deviceToken = me.secret.deviceToken;
+        doc.deviceId = me.deviceId;
+        me.logger.info ("Attributes to send ", doc);
+        me.proxy.attributes(doc, function () {
+            me.logger.debug("attributes has returned from ", me.proxy.type);
+            if (callback) {
+                callback();
+            }
+        });
+    });
+
+};
+IoTKitCloud.prototype.updateOld = function(callback) {
+    var me = this;
     var doc = new msg.Metadata(me.gatewayId);
     doc.deviceToken = me.secret.deviceToken;
     doc.deviceId = me.deviceId;
     me.proxy.attributes(doc, function () {
         me.logger.debug("attributes has returned from ", me.proxy.type);
-       if (callback) {
-           callback();
-       }
+        if (callback) {
+            callback();
+        }
     });
 };
 IoTKitCloud.prototype.disconnect = function () {
@@ -138,6 +153,7 @@ IoTKitCloud.prototype.dataSubmit = function (metric, callback) {
     var me = this;
     metric.accountId = me.secret.accountId;
     metric.did = me.deviceId;
+    metric.gatewayId = me.gatewayId;
     metric.deviceToken = me.secret.deviceToken;
     me.logger.debug("Metric doc: %j", metric, {});
     me.proxy.data(metric, callback);

@@ -157,7 +157,11 @@ module.exports = function Broker(conf, logger) {
                 if (!err) {
                     connectCallback();
                 } else {
+
                     me.logger.error(err);
+                    if (toCallBack) {
+                        toCallBack(err);
+                    }
                 }
             });
         } else {
@@ -197,6 +201,9 @@ module.exports = function Broker(conf, logger) {
                     publishCallback();
                 } else {
                     me.logger.error(err);
+                    if (callback) {
+                        callback(err);
+                     }
                 }
             });
         } else {
