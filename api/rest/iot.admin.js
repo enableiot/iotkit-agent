@@ -29,6 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var httpClient = require('../../lib/httpClient');
 var AdminDef = require('./admin.def');
 var CatalogDef = require('./component.def');
+
 /**
  * It passes to a callback the access token
  */
@@ -39,4 +40,8 @@ module.exports.health = function(callback) {
 module.exports.getCatalog = function (data, callback) {
     var catalog = new CatalogDef.CatalogOption(data);
     return httpClient.httpRequest(catalog, callback);
+};
+module.exports.getExternalInfo = function (callback) {
+    var external = new AdminDef.ExternalInfoOption();
+    return httpClient.httpRequest(external, callback);
 };

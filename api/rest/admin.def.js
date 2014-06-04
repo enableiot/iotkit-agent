@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var config = require('../../config');
 var common = require('../../lib/common');
+var url = require('url');
 
 var ConnectionOptions = require('./iot.connection.def.js');
 var GET_METHOD = 'GET';
@@ -48,5 +49,23 @@ function HealthOption(data) {
 HealthOption.prototype = new ConnectionOptions();
 HealthOption.prototype.constructor = HealthOption;
 IoTKiT.HealthOption = HealthOption;
-    
+
+function ExternalInfoOption(data) {
+    this.pathname = '';
+    this.token = null;
+    ConnectionOptions.call(this);
+    var urlT =  {
+            hostname: 'ipinfo.io',
+            port: 80,
+            protocol: 'http'
+    };
+    this.url = url.format(urlT);
+    this.method = GET_METHOD;
+}
+ExternalInfoOption.prototype = new ConnectionOptions();
+ExternalInfoOption.prototype.constructor = ExternalInfoOption;
+IoTKiT.ExternalInfoOption = ExternalInfoOption;
+
+
+
 module.exports = IoTKiT;
