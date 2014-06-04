@@ -153,6 +153,7 @@ IoTKitCloud.prototype.dataSubmit = function (metric, callback) {
     var me = this;
     metric.accountId = me.secret.accountId;
     metric.did = me.deviceId;
+    metric.gatewayId = me.gatewayId;
     metric.deviceToken = me.secret.deviceToken;
     me.logger.debug("Metric doc: %j", metric, {});
     me.proxy.data(metric, callback);

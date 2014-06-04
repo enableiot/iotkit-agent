@@ -109,7 +109,7 @@ module.exports = {
             .description('Display registered components.')
             .action(registerComponents);
         program
-            .command('resetcomponents')
+            .command('reset-components')
             .description('clear the component lists.')
             .action(resetComponents);
         program
