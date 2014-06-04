@@ -38,6 +38,8 @@ process.on("uncaughtException", function(err) {
     // let the process exit so that forever can restart it
     process.exit(1);
 });
+
+
 utils.getDeviceId(function (id) {
     var cloud = Cloud.init(conf, logger, id);
     cloud.activate(function (status) {

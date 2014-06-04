@@ -36,14 +36,18 @@ exports.init = function(conf, logger, onMessage) {
 
     logger.debug('TCP connection from %s:%d', 
       socket.remoteAddress, socket.remotePort);
-    
+    var datat = '';
     socket.on('data', function(data) {
-      try {
-        onMessage(JSON.parse(data)); 
-      } catch (ex) {
-        logger.error('TCP Error on message: %s', ex.message);
-        logger.error(ex.stack);
-      } 
+        datat += data;
+    });
+    socket.on('end', function(){
+        try {
+            onMessage(JSON.parse(datat));
+            datat = '';
+        } catch (ex) {
+            logger.error('TCP Error on message: %s', ex.message);
+            logger.error(ex.stack);
+        }
     });
 
   });

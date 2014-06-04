@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var logger = require("../lib/logger").init(),
     common = require('../lib/common'),
+    utils = require("../lib/utils").init(),
     path = require('path');
 
 function getConfigName () {
