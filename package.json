@@ -16,6 +16,7 @@
     "winston": "^0.7.3"
   },
   "bin": {
+    "iotkit-admin": "./bin/admin.js",
     "iotkit-agent": "./bin/agent.js"
   },
   "scripts": {
