@@ -3,15 +3,19 @@
  */
 var fs = require('fs'),
     logger = require("../lib/logger").init(),
-    configpath = './config/config.json';
+    localConf = "./config.json",
+    systemConf = "/etc/iotkit-agent/config.json";
 
-if (!fs.existsSync(configpath)) {
-  var config = require('/etc/iotkit-agent/config.json');
+if (fs.existsSync("./config/" + localConf)) {
+  var config = require(localConf);
+  logger.debug("Using local config file");
+}
+else if (fs.existsSync(systemConf)) {
+  var config = require(systemConf);
   logger.debug("Using system config file");
 }
 else {
-  var config = require('./config.json');
-  logger.debug("Using local config file");
+  logger.error("Failed to find conig file");
 }
 
 /* override for local development if NODE_ENV is defined to local */
