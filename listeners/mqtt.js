@@ -56,7 +56,15 @@ exports.init = function(conf, logger, onMessage, deviceId) {
 
   var filename = conf.token_file || "token.json";
   var fullFilename = path.join(__dirname, '../certs/' +  filename);
-  var secret = common.readFileToJson(fullFilename);
+  var secret = { };
+    if (fs.existsSync(fullFilename)) {
+        secret = common.readFileToJson(fullFilename);
+    } else {
+        //consider from system folder /usr/share/iotkit-agent/certs
+        fullFilename = '/usr/share/iotkit-agent/certs/' +  filename;
+        secret = common.readFileToJson(fullFilename);
+    }
+
   var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{gatewayid}";
 
     var tlsArgs = { };
@@ -70,8 +78,8 @@ exports.init = function(conf, logger, onMessage, deviceId) {
     } else {
         // load from /usr/share
         tlsArgs = {
-            keyPath: '/usr/share/iotkit-agent/certs/client.key',
-            certPath: '/usr/share/iotkit-agent/certs/client.crt',
+            keyPath: '/usr/share/iotkit-agent/certs/enableiot_agent.key',
+            certPath: '/usr/share/iotkit-agent/certs/enableiot_agent.crt',
             keepalive: 59000
         };
     }
@@ -109,11 +117,14 @@ exports.init = function(conf, logger, onMessage, deviceId) {
 
             if(topic === 'data'){
                 newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]));
+                logger.info('Subscribed to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]));
             } else {
                 newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
+                logger.info('Subscribing to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
             }
 
             newclient.on('message', function (topic, message) {
+                logger.info('Received a message on subscribed topic: ' + topic);
                 client.publish({"topic": topic, "payload": message});
             });
         } catch (ex) {
