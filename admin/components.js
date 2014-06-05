@@ -45,6 +45,15 @@ var resetComponents = function () {
     return common.writeToJson(fullFilename, data);
 };
 
+var resetToken = function () {
+    var dataTokenReset =  {
+        "deviceToken": false,
+        "accountId": false
+    };
+    var fullFilename = path.join(__dirname, '../certs/' +  conf.token_file);
+    return common.writeToJson(fullFilename, dataTokenReset);
+};
+
 var registerComponents = function (comp, catalogid) {
     logger.info("Starting registration ..." );
     utils.getDeviceId(function (id) {
@@ -83,12 +92,12 @@ function registerObservation (comp, value) {
                 };
                 agentMessage.handler(msg, function (stus){
                     logger.info("Observation Sent", stus);
-                    process.exit(r)
+                    process.exit(r);
                 });
 
             } else {
                 logger.error("Error in the Observation Submission process ...", status);
-                process.exit(1)
+                process.exit(1);
             }
 
         });
@@ -134,10 +143,13 @@ module.exports = {
             .command('components')
             .description('Display Components Register at Devices.')
             .action(getComponentsList);
-    },
-    runCommand: function (program) {
-       if (program.initialize) {
-            resetComponents();
-        }
+        program
+            .command('initialize')
+            .description('Resets both the token and the components list.')
+            .action(function(options) {
+                resetToken();
+                resetComponents();
+                logger.info("Initialized");
+            });
     }
 };
