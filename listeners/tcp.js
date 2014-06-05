@@ -29,7 +29,7 @@ var net = require('net');
 
 exports.init = function(conf, logger, onMessage) {
 
-  var tcpServerPort = conf.listeners.tcp_port || 7070;
+  var tcpServerPort = conf.tcp_port || 7070;
   var tcpServerHost = "127.0.0.1";
 
   var server = net.createServer(function (socket) {

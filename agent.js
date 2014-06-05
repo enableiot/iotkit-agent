@@ -28,7 +28,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var utils = require("./lib/utils").init(),
     logger = require("./lib/logger").init(),
     Cloud = require("./api/cloud.proxy"),
+    Control = require ("./api/control.proxy"),
     Message = require('./lib/agent-message'),
+    updServer = require('./lib/server/udp'),
     Listener = require("./listeners/"),
     conf = require('./config');
 
@@ -39,16 +41,20 @@ process.on("uncaughtException", function(err) {
     process.exit(1);
 });
 
+var udp = updServer.singleton(conf.listeners.udp_port, logger);
 
 utils.getDeviceId(function (id) {
     var cloud = Cloud.init(conf, logger, id);
     cloud.activate(function (status) {
-        if (status === 0) {
+       if (status === 0) {
+            var ctrl = Control.init(conf, logger, id);
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
             //Listener.REST.init(conf, logger, agentMessage.handler);
-            Listener.UDP.init(conf, logger, agentMessage.handler);
-            Listener.TCP.init(conf, logger, agentMessage.handler);
+            udp.listen(agentMessage.handler);
+            ctrl.bind(udp);
+          //  Listener.UDP.init(conf.listeners, logger, agentMessage.handler);
+            Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
             //Listener.MQTT.init(conf, logger, agentMessage.handler);
         } else {
             logger.error("Error in activation... err # : ", status);

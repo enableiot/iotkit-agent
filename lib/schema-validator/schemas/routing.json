@@ -1,0 +1,17 @@
+{
+    "ROUTE": {
+        "name": "rinfo",
+        "type": "object",
+        "properties": {
+            "n": {
+                "type": "string",
+                "required": true,
+                "minLength": 4
+            },
+            "r": {
+                "type": "object",
+                "required": false
+            }
+        }
+    }
+}
