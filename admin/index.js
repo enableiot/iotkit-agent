@@ -35,7 +35,7 @@ var admin= require('commander'),
 
 admin.version(pkgJson.version);
 /*
-Add commando as option
+ * Add commando as option
  */
 auth.addCommand(admin);
 //device.addCommand(admin);
@@ -44,8 +44,20 @@ configurator.addCommand(admin);
 
 admin.parse(process.argv);
 /*
-Run if the command were specified at parameter
+ * Run if the command were specified at parameter
  */
 //device.runCommand(admin);
 
+/*
+ * Help and verions also as commands
+ */
 if (!admin.args.length) admin.help();
+admin
+    .command('help')
+    .description('output usage information')
+    .action(admin.help());
+admin
+    .command('version')
+    .description('output the version number')
+    .action(admin.version(pkgJson.version));
+
