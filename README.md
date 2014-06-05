@@ -57,8 +57,7 @@ The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visi
 ## Notes about "admin" command
 > node admin help
 
-    test   Try to reach the mqtt or rest server over the network 
-           (whichever is configured) and indicates whether there is network connectivity.
+    test   Try to reach the server (using the current protocol).
                              
     activate Activates the device.
 

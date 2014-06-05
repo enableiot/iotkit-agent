@@ -65,15 +65,13 @@ IoTKitCloud.prototype.activationComplete = function (callback) {
         toCall = callback;
 
     var handler = function (data) {
-        me.logger.info('Activation Data Recv: %s', data);
+        me.logger.debug('Activation Data Recv: %s', data);
         if (data && (data.status === 0)) {
             me.secret.deviceToken = data.deviceToken;
             me.secret.accountId = data.accountId;
             me.activationCompleted = true;
-            me.logger.info('Saving device token ');
+            me.logger.info('Saving device token...');
             common.writeToJson(me.fullFilename, me.secret);
-        } else {
-            me.logger.error('Token Not Recv: %s');
         }
         toCall(data.status);
     };
@@ -110,10 +108,15 @@ IoTKitCloud.prototype.activate = function (code, callback) {
                     deviceId: me.deviceId,
                     code: code || me.activationCode
                 };
-        me.logger.debug('Device is NOT active...trying activation');
+        if (ActMessage.code == null) {
+            me.logger.error("Device has not been activated, and activation code has not been set - exiting");
+            process.exit(1);
+        }
+        me.logger.info('Activating ...');
         me.proxy.activation(ActMessage, me.activationComplete(complete));
     } else {
-        complete(0);
+        // skip the update since we were already activated
+        toCall(0);
     }
 };
 
@@ -122,7 +125,7 @@ IoTKitCloud.prototype.update = function(callback) {
     msg.metadataExtended(me.gatewayId , function (doc) {
         doc.deviceToken = me.secret.deviceToken;
         doc.deviceId = me.deviceId;
-        me.logger.info ("Attributes to send ", doc);
+        me.logger.info("Sending attributes...");
         me.proxy.attributes(doc, function () {
             me.logger.debug("attributes has returned from ", me.proxy.type);
             if (callback) {
@@ -179,7 +182,7 @@ IoTKitCloud.prototype.desRegComponent = function(comp) {
 
 IoTKitCloud.prototype.test = function(callback) {
     var me = this;
-    me.logger.info("Trying to Connect IotKit Analytics");
+    me.logger.info("Trying to connect to host ...");
     me.proxy.health(me.deviceId, function (result) {
           me.logger.debug("Response ", result)
           callback(result);

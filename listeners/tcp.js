@@ -34,8 +34,7 @@ exports.init = function(conf, logger, onMessage) {
 
   var server = net.createServer(function (socket) {
 
-    logger.debug('TCP connection from %s:%d', 
-      socket.remoteAddress, socket.remotePort);
+    logger.debug('TCP connection from %s:%d',   socket.remoteAddress, socket.remotePort);
     var datat = '';
     socket.on('data', function(data) {
         datat += data;

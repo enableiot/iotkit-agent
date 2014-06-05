@@ -102,7 +102,7 @@ module.exports = {
                     logger.info("protocol set to: " + protocol);
                 } else {
                     logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\'", protocol);
-            saveToConfig("activation_code", null);
+                    // do not clear the previous protocol
                 }
             });
 
