@@ -26,20 +26,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var fs = require('fs'),
-    logger = require("../lib/logger").init(),
     localConf = "./config.json",
     systemConf = "/etc/iotkit-agent/config.json";
 
+
+var config = {};
+
 if (fs.existsSync("./config/" + localConf)) {
-    var config = require(localConf);
-    logger.debug("Using local config file");
+    config = require(localConf);
+//    console.log("Using local config file");
 }
 else if (fs.existsSync(systemConf)) {
-    var config = require(systemConf);
-    logger.debug("Using system config file");
+    config = require(systemConf);
+//    console.log("Using system config file");
 }
 else {
-    logger.error("Failed to find conig file");
+    console.error("Failed to find config file");
 }
 
 /* override for local development if NODE_ENV is defined to local */
