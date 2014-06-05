@@ -26,11 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var logger = require("../lib/logger").init(),
-    common = require('../lib/common'),
     Cloud = require("../api/cloud.proxy"),
     utils = require("../lib/utils").init(),
-    config = require('../config'),
-    path = require('path');
+    config = require('../config');
 
 var activate = function (code) {
     logger.debug("Activation started ...");
@@ -65,7 +63,7 @@ function testConnection () {
             }
             process.exit(r);
         });
-    })
+    });
 }
 
 module.exports = {
@@ -73,7 +71,7 @@ module.exports = {
         program
             .command('test')
             .description('Try to reach the server (using the current protocol).')
-            .action(function(options) {
+            .action(function() {
                 testConnection();
             });
 

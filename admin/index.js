@@ -51,7 +51,9 @@ admin.parse(process.argv);
 /*
  * Help and verions also as commands
  */
-if (!admin.args.length) admin.help();
+if (!admin.args.length) {
+    admin.help();
+}
 admin
     .command('help')
     .description('output usage information')

@@ -37,6 +37,7 @@ module.exports = function(grunt) {
                       'device-id.js',
                       'device-info.js',
                       'lib/**/*.js',
+                      'admin/**/*.js',
                       'listeners/**/*.js']
         },
         license_finder: {

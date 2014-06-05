@@ -25,10 +25,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var logger = require("../lib/logger").init(),
-    utils = require("../lib/utils").init(),
-    path = require('path'),
-    common = require('../lib/common');
+var utils = require("../lib/utils").init();
 
 /*var filename = "config.json";*/
 
