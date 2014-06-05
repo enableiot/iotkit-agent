@@ -51,13 +51,9 @@ admin.parse(process.argv);
 /*
  * Help and verions also as commands
  */
-if (!admin.args.length) {
+if (!admin.args.length || admin.args[0] === 'help') {
     admin.help();
 }
-admin
-    .command('help')
-    .description('output usage information')
-    .action(admin.help());
 admin
     .command('version')
     .description('output the version number')
