@@ -13,7 +13,8 @@
     "request": "^2.36.0",
     "async": "^0.9.0",
     "commander": "^2.2.0",
-    "winston": "^0.7.3"
+    "winston": "^0.7.3",
+    "cli-table": "^0.3.0"
   },
   "scripts": {
     "start": "node agent",

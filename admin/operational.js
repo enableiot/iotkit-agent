@@ -32,15 +32,6 @@ var logger = require("../lib/logger").init(),
     config = require('../config'),
     path = require('path');
 
-
-var resetToken = function () {
-    var dataTokenReset =  {
-        "deviceToken": false,
-        "accountId": false
-    };
-    var fullFilename = path.join(__dirname, '../certs/' +  config.token_file);
-    return common.writeToJson(fullFilename, dataTokenReset);
-};
 var activate = function (code) {
     logger.debug("Activation started ...");
     utils.getDeviceId(function (id) {
@@ -52,7 +43,7 @@ var activate = function (code) {
                 logger.error("Error in the activation process ...", err);
                 r = 1;
             }
-            process.exit(r)
+            process.exit(r);
         });
     });
 };
@@ -72,7 +63,7 @@ function testConnection () {
                 logger.error("Connection failed to %s", host);
                 r = 1;
             }
-            process.exit(r)
+            process.exit(r);
         });
     })
 }
@@ -90,13 +81,5 @@ module.exports = {
             .command('activate <code>')
             .description('Activates the device.')
             .action(activate);
-
-        program
-            .command('initialize')
-            .description('Resets both the token and the components list.')
-            .action(function(options) {
-                resetToken();
-                logger.info("Initialized");
-            });
     }
 };

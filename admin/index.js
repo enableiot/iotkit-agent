@@ -47,6 +47,5 @@ admin.parse(process.argv);
 Run if the command were specified at parameter
  */
 //device.runCommand(admin);
-components.runCommand(admin);
 
 if (!admin.args.length) admin.help();
