@@ -46,10 +46,10 @@ utils.getDeviceId(function (id) {
         if (status === 0) {
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
-            Listener.REST.init(conf, logger, agentMessage.handler);
+            //Listener.REST.init(conf, logger, agentMessage.handler);
             Listener.UDP.init(conf, logger, agentMessage.handler);
             Listener.TCP.init(conf, logger, agentMessage.handler);
-            Listener.MQTT.init(conf, logger, agentMessage.handler);
+            //Listener.MQTT.init(conf, logger, agentMessage.handler);
         } else {
             logger.error("Error in activation... err # : ", status);
             process.exit(status);
