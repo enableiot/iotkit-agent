@@ -105,8 +105,9 @@ function getCatalogList  () {
         var cloud = Cloud.init(conf, logger, id);
         cloud.catalog(function (catalog) {
             var table = new Component.Table(catalog);
-            logger.info("Catalog Retrieved ");
+            logger.info("# of Component @ Catalog : ", catalog.length);
             console.log(table.toString());
+            process.exit(0);
         });
     });
 }

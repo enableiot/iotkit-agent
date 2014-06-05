@@ -188,7 +188,11 @@ IoTKitCloud.prototype.test = function(callback) {
 
 IoTKitCloud.prototype.catalog = function (callback) {
     var me = this;
-    me.proxy.getCatalog(me.secret.deviceToken , function (result) {
+    var data = {
+            deviceToken: me.secret.deviceToken,
+            deviceId: me.deviceId
+        };
+    me.proxy.getCatalog(data , function (result) {
         me.logger.debug("Catalog Response : %j ", result);
         var length = result.length;
         for (var i = 0; i < length; ++i) {

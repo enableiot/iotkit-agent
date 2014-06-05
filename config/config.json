@@ -39,7 +39,9 @@
                 "device_component_status": "devices/{deviceid}/components/status",
                 "device_component_del": "devices/{deviceid}/components/delete",
                 "health": "health/{deviceid}",
-                "health_status": "health/{deviceid}/server_status"
+                "health_status": "health/{deviceid}/server_status",
+                "cmpcatalog": "cmpcatalog/{deviceid}",
+                "cmpcatalog_status": "cmpcatalog/{deviceid}/component_status"
             }
         },
         "rest": {
