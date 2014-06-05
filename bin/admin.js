@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 Copyright (c) 2014, Intel Corporation
 
@@ -28,10 +30,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var admin= require('commander'),
     pkgJson = require('../package.json'),
-    auth = require('./operational'),
-   // device = require('./device'),
-    components = require('./components'),
-    configurator = require('./configurator');
+    auth = require('../admin/operational'),
+    // device = require('../admin/device'),
+    components = require('../admin/components'),
+    configurator = require('../admin/configurator');
 
 admin.version(pkgJson.version);
 /*
@@ -46,7 +48,9 @@ admin.parse(process.argv);
 /*
 Run if the command were specified at parameter
  */
+auth.runCommand(admin);
 //device.runCommand(admin);
 components.runCommand(admin);
+configurator.runCommand(admin);
 
 if (!admin.args.length) admin.help();
