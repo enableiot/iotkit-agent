@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var msg = require('../lib/cloud-message'),
+    fs = require('fs'),
     common = require('../lib/common'),
     path = require("path"),
     proxyConnector = require('../lib/proxies').getProxyConnector();
@@ -36,6 +37,10 @@ function IoTKitCloud(conf, logger, deviceId, customProxy){
     me.logger = logger;
     me.filename = conf.token_file || "token.json";
     me.fullFilename = path.join(__dirname, '../certs/' +  me.filename);
+    if(!fs.existsSync(me.fullFilename)){
+        //use from /usr/share/iotkit-agent/
+        me.fullFilename = '/usr/share/iotkit-agent/certs/' +  me.filename;
+    }
     me.secret = common.readFileToJson(me.fullFilename);
     me.proxy = customProxy || proxyConnector;
     me.max_retries = conf.activation_retries || 10;
