@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var mqtt = require('mqtt'),
+    fs = require('fs'),
     common = require('../lib/common'),
     path = require("path");
 
@@ -58,11 +59,22 @@ exports.init = function(conf, logger, onMessage, deviceId) {
   var secret = common.readFileToJson(fullFilename);
   var metric_topic = conf.metric_topic || "server/metric/{accountid}/{gatewayid}";
 
-  var tlsArgs = {
-        keyPath: conf.broker.key || './certs/client.key',
-        certPath: conf.broker.crt || './certs/client.crt',
-        keepalive: 59000
-    };
+    var tlsArgs = { };
+    var verifyCertKeyPath = conf.connector.mqtt.key || './certs/client.key';
+    if (fs.existsSync(verifyCertKeyPath)) {
+        tlsArgs = {
+            keyPath: conf.connector.mqtt.key || './certs/client.key',
+            certPath: conf.connector.mqtt.crt || './certs/client.crt',
+            keepalive: 59000
+        };
+    } else {
+        // load from /usr/share
+        tlsArgs = {
+            keyPath: '/usr/share/iotkit-agent/certs/client.key',
+            certPath: '/usr/share/iotkit-agent/certs/client.crt',
+            keepalive: 59000
+        };
+    }
 
   var mqttServer = mqtt.createServer(function(client) {
 
