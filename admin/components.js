@@ -31,11 +31,16 @@ var path = require('path'),
     Message = require('../lib/agent-message'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(),
+    Component = require('../lib/data/Components'),
     common = require('../lib/common');
 
 var filename = "sensor-list.json";
+function getStoreFileName () {
+    return path.join(__dirname, '../data/' +  filename);
+}
+
 var resetComponents = function () {
-    var fullFilename = path.join(__dirname, '../data/' +  filename);
+    var fullFilename = getStoreFileName();
     var data = [];
     return common.writeToJson(fullFilename, data);
 };
@@ -90,19 +95,23 @@ function registerObservation (comp, value) {
     });
 }
 
-module.exports.getComponentsList = function () {
-
-};
+function getComponentsList () {
+    var com = common.readFileToJson(getStoreFileName());
+    var table = new Component.Register(com);
+    console.log(table.toString());
+}
 function getCatalogList  () {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(conf, logger, id);
         cloud.catalog(function (catalog) {
-             logger.info("Get Catalog result :  ", catalog);
+            var table = new Component.Table(catalog);
+            logger.info("Catalog Retrieved ");
+            console.log(table.toString());
         });
     });
 }
-module.exports = {
 
+module.exports = {
     addCommand : function (program) {
         program
             .command('register <comp_name> <catalogid>')
@@ -120,6 +129,10 @@ module.exports = {
             .command('catalog')
             .description('Display Catalog of Device Account.')
             .action(getCatalogList);
+        program
+            .command('components')
+            .description('Display Components Register at Devices.')
+            .action(getComponentsList);
     },
     runCommand: function (program) {
        if (program.initialize) {

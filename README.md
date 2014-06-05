@@ -54,20 +54,35 @@ The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visi
     npm install 
     grunt
 
-## Notes about "admin"
+## Notes about "admin" command
+> node admin help
 
-<code> node admin savecode [code]</code> - save the activation code – the agent will activate on startup using this code, if the existing token is empty
+    test   Try to reach the mqtt or rest server over the network 
+           (whichever is configured) and indicates whether there is network connectivity.
+                             
+    activate Activates the device.
 
-<code> node admin activate [code]</code> – activate using the activation code, if the existing token is empty and send device metadata to the cloud
+    initialize Resets both the token and the components list.
 
-<code> node admin resettoken</code> – reset the security token, enabling activation again
+    register <comp_name> <catalogid> </code> - Display registered components.
 
-<code> node admin device_id</code> - get the current device id – either from the MAC or — if previously set — the ID that was set
+    reset-components clear the component lists.
 
-<code> node admin setDeviceId [device_id]</code> - set the device_id to be sent (default is the MAC address)
+    observation <comp_name> <value> Display registered components.
 
-<code> node admin resetDeviceId</code> – reset the device_id override, which will use the MAC
+    catalog Display Catalog for the Device Account.
 
+    protocol <protocol> Set the protocol to 'mqtt' or 'rest'
+
+    host <host> Set the cloud hostname for the current protocol
+
+    device-id Display the device id
+
+    set-device-id <id> Override the device id
+
+    clear-device-id Revert to using the default device id
+
+    set-proxy <host> <port> Proxy For Rest Protocol
 
 ## Certificates
 
