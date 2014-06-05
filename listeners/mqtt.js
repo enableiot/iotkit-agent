@@ -57,7 +57,7 @@ exports.init = function(conf, logger, onMessage, deviceId) {
   var filename = conf.token_file || "token.json";
   var fullFilename = path.join(__dirname, '../certs/' +  filename);
   var secret = common.readFileToJson(fullFilename);
-  var metric_topic = conf.metric_topic || "server/metric/{accountid}/{gatewayid}";
+  var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{gatewayid}";
 
     var tlsArgs = { };
     var verifyCertKeyPath = conf.connector.mqtt.key || './certs/client.key';
@@ -101,10 +101,10 @@ exports.init = function(conf, logger, onMessage, deviceId) {
             var newclient;
             var topic = packet.subscriptions[0].topic;
 
-            if(conf.broker.secure){
-                newclient = mqtt.createSecureClient(conf.broker.port, conf.broker.host, tlsArgs);
+            if(conf.connector.mqtt.secure){
+                newclient = mqtt.createSecureClient(conf.connector.mqtt.port, conf.connector.mqtt.host, tlsArgs);
             } else {
-                newclient = mqtt.createClient(conf.broker.port, conf.broker.host);
+                newclient = mqtt.createClient(conf.connector.mqtt.port, conf.connector.mqtt.host);
             }
 
             if(topic === 'data'){
