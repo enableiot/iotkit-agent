@@ -18,18 +18,25 @@ Once you have a copy of the iotkit-agent locally, execute the setup script:
     
 > You only have to run the setup once
     
-### Configuration
+### Configuring and Activating the Agent
 
-The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.enableiot.com). After, the registration copy the activation code 
-and execute
+The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.enableiot.com).
+To be able to register in iotkit-dashbord, it is required to use the Device ID.
+You can obtain the Device ID executing this command:
+
+    node admin device-id
+
+Or, you can set a different Device ID with this command:
+
+    node admin set-device-id <device_id>
+
+After the registration, copy the activation code
+and execute:
 
     node admin activate <activation_code>     
 
-> You can configure deviceId of the iotkit-agent 
         
-    node admin setDeviceId <new name>        
-        
-### Start
+### Starting the Agent
 
 To start the iotkit-agent service simply execute the start script:
 
@@ -37,7 +44,7 @@ To start the iotkit-agent service simply execute the start script:
     
 ### Stop
 
-Yep, you guessed it, run the stop script:
+Yes, you guessed it, run the stop script:
 
     ./stop-agent.sh
 

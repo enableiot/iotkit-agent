@@ -78,7 +78,8 @@ var registerComponents = function (comp, catalogid) {
 
         });
     });
-}
+};
+
 function registerObservation (comp, value) {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(conf, logger, id);
@@ -146,7 +147,7 @@ module.exports = {
         program
             .command('initialize')
             .description('Resets both the token and the components list.')
-            .action(function(options) {
+            .action(function() {
                 resetToken();
                 resetComponents();
                 logger.info("Initialized");

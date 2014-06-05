@@ -101,7 +101,7 @@ module.exports = {
             .command('protocol <protocol>')
             .description('Set the protocol to \'mqtt\' or \'rest\'')
             .action(function(protocol){
-                if (protocol == 'mqtt' || protocol == 'rest') {
+                if (protocol === 'mqtt' || protocol === 'rest') {
                     saveToConfig("default_connector", protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {
