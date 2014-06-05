@@ -76,7 +76,7 @@ module.exports.registerComponents = function (data, callback){
                });
             };
        }), function (err, response) {
-            console.info("Components Attributes Send To Analytics UI ");
+            console.info("Attributes sent");
             callback(null, response);
         }
     );

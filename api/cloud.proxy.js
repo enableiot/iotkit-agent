@@ -112,7 +112,7 @@ IoTKitCloud.prototype.activate = function (code, callback) {
             me.logger.error("Device has not been activated, and activation code has not been set - exiting");
             process.exit(1);
         }
-        me.logger.info('Device has not been activated - activating ...');
+        me.logger.info('Activating ...');
         me.proxy.activation(ActMessage, me.activationComplete(complete));
     } else {
         // skip the update since we were already activated

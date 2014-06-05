@@ -53,12 +53,12 @@ var registerComponents = function (comp, catalogid) {
                         "t": catalogid
                         };
                 agentMessage.handler(msg, function (stus){
-                    logger.info("Components registered", stus);
+                    logger.info("Component registered", stus);
                     process.exit(r);
                 });
 
             } else {
-                logger.error("Error in the activation process ...", status);
+                logger.error("Error in the registration process ...", status);
                 process.exit(1);
             }
 
@@ -113,7 +113,7 @@ module.exports = {
             .description('clear the component lists.')
             .action(resetComponents);
         program
-            .command('observation  <comp_name> <value>')
+            .command('observation <comp_name> <value>')
             .description('Display registered components.')
             .action(registerObservation);
         program

@@ -81,7 +81,7 @@ module.exports = {
     addCommand : function (program) {
         program
             .command('test')
-            .description('Try to reach the mqtt or rest server over the network (whichever is configured) and indicates whether there is network connectivity.')
+            .description('Try to reach the server (using the current protocol).')
             .action(function(options) {
                 testConnection();
             });
