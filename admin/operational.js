@@ -42,15 +42,13 @@ var resetToken = function () {
     return common.writeToJson(fullFilename, dataTokenReset);
 };
 var activate = function (code) {
-    logger.info("Activation started ...");
+    logger.debug("Activation started ...");
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(config, logger, id);
         cloud.activate(code, function (err) {
             var r = 0;
             cloud.disconnect();
-            if (!err) {
-                logger.info("Device Activated ");
-            } else {
+            if (err) {
                 logger.error("Error in the activation process ...", err);
                 r = 1;
             }
@@ -67,11 +65,11 @@ function testConnection () {
             var r = 0;
             if (res) {
                 logger.info("Connected to %s", host);
-                logger.info("Connected to Env %s", res.currentSetting);
-                logger.info("Connected to Build %s", res.build);
+                logger.info("Environment: %s", res.currentSetting);
+                logger.info("Build: %s", res.build);
                 logger.debug("Full response %j", res );
             } else {
-                logger.error("Not Connection to %s", host);
+                logger.error("Connection failed to %s", host);
                 r = 1;
             }
             process.exit(r)
