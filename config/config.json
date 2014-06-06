@@ -50,6 +50,7 @@
             "port": 443,
             "protocol": "https",
             "strictSSL": false,
+            "timeout": 10000,
             "proxy": {
                 "host": false,
                 "port": false

@@ -94,6 +94,11 @@ var setProxy = function (host_proxy, port_proxy) {
     saveToConfig("connector.rest.proxy.port", port_proxy);
     logger.info("Set Proxy data");
 };
+var resetProxy = function () {
+    saveToConfig("connector.rest.proxy.host", false);
+    saveToConfig("connector.rest.proxy.port", false);
+    logger.info("Set Proxy data");
+};
 
 module.exports = {
     addCommand : function (program) {
@@ -157,9 +162,14 @@ module.exports = {
             });
 
         program
-            .command('proxy <host> <port>')
+            .command('set-proxy <host> <port>')
             .description('Set Proxy For REST Protocol')
             .action(setProxy);
+
+        program
+            .command('reset-proxy')
+            .description('Clear Proxy For REST Protocol')
+            .action(resetProxy);
 
     }
 };

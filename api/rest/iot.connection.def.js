@@ -47,6 +47,7 @@ function ConnectionOptions() {
     if (apiconf.strictSSL === false) {
         this.strictSSL = false;
     }
+    this.timeout = apiconf.timeout;
     this.url = url.format(urlT);
     this.headers = {
                     "Content-type" : "application/json"
