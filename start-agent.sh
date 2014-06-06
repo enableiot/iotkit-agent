@@ -43,7 +43,7 @@ ${FOREVER} start -m 1 \
               -a -l "${BASE_DIR}/forever.log" \
               --sourceDir $BASE_DIR \
               --minUptime 1s \
-              --spinSleepTime 3s agent.js
+              --spinSleepTime 3s iotkit-agent.js
 
 
 echo ""
