@@ -27,4 +27,4 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 "use strict";
-var admin = require("./admin");
+var admin = require("./bin/admin");
