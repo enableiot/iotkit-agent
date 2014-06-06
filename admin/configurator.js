@@ -105,6 +105,11 @@ var setProxy = function (host_proxy, port_proxy) {
     saveToConfig("connector.rest.proxy.port", port_proxy);
     logger.info("Set Proxy data");
 };
+var resetProxy = function () {
+    saveToConfig("connector.rest.proxy.host", false);
+    saveToConfig("connector.rest.proxy.port", false);
+    logger.info("Set Proxy data");
+};
 
 module.exports = {
     addCommand : function (program) {
@@ -123,12 +128,12 @@ module.exports = {
 
         program
             .command('host <host> [<port>]')
-            .description('Set the cloud hostname for the current protocol')
+            .description('Sets the cloud hostname for the current protocol.')
             .action(setHostFor);
 
         program
             .command('device-id')
-            .description('Display the device id')
+            .description('Displays the device id.')
             .action(function() {
                 utils.getDeviceId(function (id) {
                     logger.info("Device ID: %s", id);
@@ -137,7 +142,7 @@ module.exports = {
 
         program
             .command('set-device-id <id>')
-            .description('Override the device id')
+            .description('Overrides the device id.')
             .action(function(id) {
                 saveToConfig("device_id", id);
                 logger.info("Device ID set to: %s", id);
@@ -145,7 +150,7 @@ module.exports = {
 
         program
             .command('clear-device-id')
-            .description('Revert to using the default device id')
+            .description('Reverts to using the default device id.')
             .action(function() {
                 saveToConfig("device_id", false);
                 logger.info("Device ID cleared.");
@@ -153,7 +158,7 @@ module.exports = {
 
         program
             .command('save-code <activaton code>')
-            .description('Add activation code to agent')
+            .description('Adds the activation code to the device.')
             .action(function(activation_code) {
                 saveToConfig("activation_code", activation_code);
                 logger.info("Activation code saved.");
@@ -161,7 +166,7 @@ module.exports = {
 
         program
             .command('reset-code')
-            .description('Clear activation code of agent')
+            .description('Clears the activation code of the device.')
             .action(function() {
                 saveToConfig("activation_code", null);
                 logger.info("Activation code cleared.");
@@ -169,8 +174,13 @@ module.exports = {
 
         program
             .command('proxy <host> <port>')
-            .description('Set Proxy For REST Protocol')
+            .description('Sets proxy For REST protocol.')
             .action(setProxy);
+
+        program
+            .command('reset-proxy')
+            .description('Clears proxy For REST protocol.')
+            .action(resetProxy);
 
     }
 };
