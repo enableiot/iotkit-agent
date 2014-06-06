@@ -14,7 +14,8 @@
     "async": "^0.9.0",
     "commander": "^2.2.0",
     "winston": "^0.7.3",
-    "cli-table": "^0.3.0"
+    "cli-table": "^0.3.0",
+    "json-socket": "^0.1.2"
   },
   "scripts": {
     "start": "node agent",
