@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 /*
 Copyright (c) 2014, Intel Corporation
 
@@ -27,14 +26,14 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
-var utils = require("./lib/utils").init(),
-    logger = require("./lib/logger").init(),
-    Cloud = require("./api/cloud.proxy"),
-    Control = require ("./api/control.proxy"),
-    Message = require('./lib/agent-message'),
-    updServer = require('./lib/server/udp'),
-    Listener = require("./listeners/"),
-    conf = require('./config');
+var utils = require("../lib/utils").init(),
+    logger = require("../lib/logger").init(),
+    Cloud = require("../api/cloud.proxy"),
+    Control = require ("../api/control.proxy"),
+    Message = require('../lib/agent-message'),
+    updServer = require('../lib/server/udp'),
+    Listener = require("../listeners/"),
+    conf = require('../config');
 
 process.on("uncaughtException", function(err) {
     logger.error("UncaughtException:", err.message);
@@ -52,12 +51,20 @@ utils.getDeviceId(function (id) {
             var ctrl = Control.init(conf, logger, id);
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
+            
+            //iotagent-master branch - Anil
             //Listener.REST.init(conf, logger, agentMessage.handler);
             udp.listen(agentMessage.handler);
             ctrl.bind(udp);
           //  Listener.UDP.init(conf.listeners, logger, agentMessage.handler);
             Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
             //Listener.MQTT.init(conf, logger, agentMessage.handler);
+
+            //Brendan changes....comented - Anil
+            //Listener.REST.init(conf, logger, agentMessage.handler);
+            //Listener.UDP.init(conf, logger, agentMessage.handler);
+            //Listener.TCP.init(conf, logger, agentMessage.handler);
+            //Listener.MQTT.init(conf, logger, agentMessage.handler, id);
         } else {
             logger.error("Error in activation... err # : ", status);
             process.exit(status);

@@ -25,11 +25,65 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var mqtt = require('mqtt');
+var mqtt = require('mqtt'),
+    fs = require('fs'),
+    common = require('../lib/common'),
+    path = require("path");
 
-exports.init = function(conf, logger, onMessage) {
+/**
+ * @description Build a path replacing patter {} by the data arguments
+ * if more the one {} pattern is present it shall be use Array
+ * @param path string the represent a URL path
+ * @param data Array or string,
+ * @returns {*}
+ */
+var buildPath = function (path, data) {
+    var re = /{\w+}/;
+    var pathReplace = path;
+    if (Array.isArray(data)) {
+        data.forEach(function (value) {
+            pathReplace = pathReplace.replace(re, value);
+        });
+    } else {
+        pathReplace = pathReplace.replace(re, data);
+    }
+    return pathReplace;
+};
+
+exports.init = function(conf, logger, onMessage, deviceId) {
 
   var mqttServerPort = conf.listeners.mqtt_port || 1883;
+
+  var filename = conf.token_file || "token.json";
+  var fullFilename = path.join(__dirname, '../certs/' +  filename);
+  var secret = { };
+    if (fs.existsSync(fullFilename)) {
+        secret = common.readFileToJson(fullFilename);
+    } else {
+        //consider from system folder /usr/share/iotkit-agent/certs
+        fullFilename = '/usr/share/iotkit-agent/certs/' +  filename;
+        secret = common.readFileToJson(fullFilename);
+    }
+
+  var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{gatewayid}";
+
+    var tlsArgs = { };
+    var verifyCertKeyPath = conf.connector.mqtt.key || './certs/client.key';
+    if (fs.existsSync(verifyCertKeyPath)) {
+        tlsArgs = {
+            keyPath: conf.connector.mqtt.key || './certs/client.key',
+            certPath: conf.connector.mqtt.crt || './certs/client.crt',
+            keepalive: 59000
+        };
+    } else {
+        // load from /usr/share
+        tlsArgs = {
+            keyPath: '/usr/share/iotkit-agent/certs/enableiot_agent.key',
+            certPath: '/usr/share/iotkit-agent/certs/enableiot_agent.crt',
+            keepalive: 59000
+        };
+    }
+
   var mqttServer = mqtt.createServer(function(client) {
 
     client.on('connect', function(packet) {
@@ -46,6 +100,38 @@ exports.init = function(conf, logger, onMessage) {
         logger.error('MQTT Error on message: %s', ex);
       }
   });
+
+    client.on('subscribe', function(packet) {
+        try {
+            // create a new client object to the new online broker
+            // subscribe
+
+            var newclient;
+            var topic = packet.subscriptions[0].topic;
+
+            if(conf.connector.mqtt.secure){
+                newclient = mqtt.createSecureClient(conf.connector.mqtt.port, conf.connector.mqtt.host, tlsArgs);
+            } else {
+                newclient = mqtt.createClient(conf.connector.mqtt.port, conf.connector.mqtt.host);
+            }
+
+            if(topic === 'data'){
+                newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]));
+                logger.info('Subscribed to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]));
+            } else {
+                newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
+                logger.info('Subscribing to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
+            }
+
+            newclient.on('message', function (topic, message) {
+                logger.info('Received a message on subscribed topic: ' + topic);
+                client.publish({"topic": topic, "payload": message});
+            });
+        } catch (ex) {
+            logger.error('Error on message: %s', ex.message);
+            logger.error(ex.stack);
+        }
+    });
 
     client.on('pingreq', function() {
       client.pingresp();
