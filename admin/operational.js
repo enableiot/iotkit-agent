@@ -70,7 +70,7 @@ module.exports = {
     addCommand : function (program) {
         program
             .command('test')
-            .description('Try to reach the server (using the current protocol).')
+            .description('Tries to reach the server (using the current protocol).')
             .action(function() {
                 testConnection();
             });
