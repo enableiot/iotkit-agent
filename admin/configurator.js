@@ -157,8 +157,8 @@ module.exports = {
             });
 
         program
-            .command('set-proxy <host> <port>')
-            .description('Set Proxy For Rest Protocol')
+            .command('proxy <host> <port>')
+            .description('Set Proxy For REST Protocol')
             .action(setProxy);
 
     }
