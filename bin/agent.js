@@ -42,29 +42,20 @@ process.on("uncaughtException", function(err) {
     process.exit(1);
 });
 
-var udp = updServer.singleton(conf.listeners.udp_port, logger);
+
 
 utils.getDeviceId(function (id) {
     var cloud = Cloud.init(conf, logger, id);
     cloud.activate(function (status) {
        if (status === 0) {
+            var udp = updServer.singleton(conf.listeners.udp_port, logger);
             var ctrl = Control.init(conf, logger, id);
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
-            
-            //iotagent-master branch - Anil
-            //Listener.REST.init(conf, logger, agentMessage.handler);
             udp.listen(agentMessage.handler);
             ctrl.bind(udp);
-          //  Listener.UDP.init(conf.listeners, logger, agentMessage.handler);
             Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
-            //Listener.MQTT.init(conf, logger, agentMessage.handler);
 
-            //Brendan changes....comented - Anil
-            //Listener.REST.init(conf, logger, agentMessage.handler);
-            //Listener.UDP.init(conf, logger, agentMessage.handler);
-            //Listener.TCP.init(conf, logger, agentMessage.handler);
-            //Listener.MQTT.init(conf, logger, agentMessage.handler, id);
         } else {
             logger.error("Error in activation... err # : ", status);
             process.exit(status);
