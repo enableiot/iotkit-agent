@@ -56,8 +56,8 @@ IoTKitControl.prototype.controlAction = function () {
         var comp = me.store.byCid(message.componentId);
         if (comp) {
             var actuation = {
-                n: comp.name,
-                cmd: message.command,
+                component: comp.name,
+                command: message.command,
                 argv: message.params
             };
             me.send(actuation);
