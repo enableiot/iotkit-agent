@@ -7,7 +7,7 @@
     },
     "activation_retries": 10,
     "activation_code": null,
-    "device_id": null,
+    "device_id": false,
     "token_file": "token.json",
     "device_loc": [
         88.34,
@@ -42,7 +42,7 @@
                 "health_status": "health/{deviceid}/server_status",
                 "cmpcatalog": "cmpcatalog/{deviceid}",
                 "cmpcatalog_status": "cmpcatalog/{deviceid}/component_status",
-                "control_command": "control/{gwid}"
+                "control_command": "device/{gwid}/control"
             }
         },
         "rest": {
