@@ -7,7 +7,7 @@
     },
     "activation_retries": 10,
     "activation_code": null,
-    "device_id": "pepepe",
+    "device_id": null,
     "token_file": "token.json",
     "device_loc": [
         88.34,
@@ -15,7 +15,7 @@
         -20
     ],
     "logger": {
-        "LEVEL": "debug"
+        "LEVEL": "info"
     },
     "gateway_id": null,
     "default_connector": "rest",
