@@ -27,4 +27,5 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
-var agent = require("./bin/agent");
+var utils = require("./bin/agent");
+
