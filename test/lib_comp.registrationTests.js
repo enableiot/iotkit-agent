@@ -130,9 +130,12 @@ describe(fileToTest, function(){
                 assert.isObject(data, "Shall be and Registration Object Representation");
                 assert.property(data, "name", "The object is missing Name");
                 assert.property(data, "type", "The object is missing Type");
-                assert.notProperty(data, "cid" , "The object has an CID");
                 assert.equal(data.name, okMessage.n, "Invalid Conversion of Name Property ");
                 assert.equal(data.type, okMessage.t, "Invalid Conversion of Type Property ");
+                data.cid =  data.cid  || myCID;
+                return data;
+            },
+            createId: function (data) {
                 data.cid = myCID;
                 return data;
             },
