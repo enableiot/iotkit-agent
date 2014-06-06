@@ -139,7 +139,7 @@ describe(fileToTest, function(){
          };
         var handler = toTest.init(connector, store, logger);
         handler.submission(okMessage, function (process){
-            assert.isFalse(process, "Message Shall be processed Msg ");
+            assert.isTrue(process, "Message Shall be processed Msg ");
             done();
         });
     });
