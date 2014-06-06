@@ -25,7 +25,24 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var config = require('./config.json');
+var fs = require('fs'),
+    localConf = "./config.json",
+    systemConf = "/etc/iotkit-agent/config.json";
+
+
+var config = {};
+
+if (fs.existsSync("./config/" + localConf)) {
+    config = require(localConf);
+//    console.log("Using local config file");
+}
+else if (fs.existsSync(systemConf)) {
+    config = require(systemConf);
+//    console.log("Using system config file");
+}
+else {
+    console.error("Failed to find config file");
+}
 
 /* override for local development if NODE_ENV is defined to local */
 if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {

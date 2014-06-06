@@ -5,7 +5,6 @@
   "main": "server.js",
   "dependencies": {
     "express": "^3.5.2",
-    "forever": "^0.11.1",
     "getmac": "^1.0.6",
     "json-schema": "^0.2.2",
     "mqtt": "^0.3.8",
@@ -16,6 +15,10 @@
     "winston": "^0.7.3",
     "cli-table": "^0.3.0",
     "json-socket": "^0.1.2"
+  },
+  "bin": {
+    "iotkit-admin": "./bin/admin.js",
+    "iotkit-agent": "./bin/agent.js"
   },
   "scripts": {
     "start": "node agent",

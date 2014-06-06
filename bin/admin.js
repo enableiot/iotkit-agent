@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 Copyright (c) 2014, Intel Corporation
 
@@ -25,44 +27,37 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-'use strict';
-var validator = require('json-schema');
-var logger = require("../logger").init();
-/**
- *
- * @param obj
- * @param schema
- * @returns {Array}
- */
-var validate = function(obj, schema){
-    return validator.validate(obj, schema).errors.map(function(e){
-        e.customMessage = e.property + ' ' + e.message;
-        logger.debug("Scheme Error : ", e.customMessage);
-        return e;
-    });
-};
+"use strict";
+var admin= require('commander'),
+    pkgJson = require('../package.json'),
+    auth = require('../admin/operational'),
+    // device = require('../admin/device'),
+    components = require('../admin/components'),
+    configurator = require('../admin/configurator');
 
-
-/**
- * @description it will validate the json schema
- * @param schema
- * @returns {Function}
+admin.version(pkgJson.version);
+/*
+ * Add commando as option
  */
-var validateSchema = function(schema){
-    /**
-     * @description it will validate the json schema
-     * @param data
-     * @return {bool}
-     */
-    return function(data) {
-        var errors = validate(data, schema);
-        return (errors.length === 0);
-    };
-};
-module.exports = {
-    validate: validate,
-    validateSchema: validateSchema,
-    setLogger: function (log) {
-        logger = log;
-    }
-};
+auth.addCommand(admin);
+//device.addCommand(admin);
+components.addCommand(admin);
+configurator.addCommand(admin);
+
+admin.parse(process.argv);
+/*
+ * Run if the command were specified at parameter
+ */
+//device.runCommand(admin);
+
+/*
+ * Help and verions also as commands
+ */
+if (!admin.args.length || admin.args[0] === 'help') {
+    admin.help();
+}
+admin
+    .command('version')
+    .description('output the version number')
+    .action(admin.version(pkgJson.version));
+

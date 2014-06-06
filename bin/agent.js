@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
 Copyright (c) 2014, Intel Corporation
 
@@ -24,38 +25,40 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 "use strict";
-var admin= require('commander'),
-    pkgJson = require('../package.json'),
-    auth = require('./operational'),
-   // device = require('./device'),
-    components = require('./components'),
-    configurator = require('./configurator');
+var utils = require("../lib/utils").init(),
+    logger = require("../lib/logger").init(),
+    Cloud = require("../api/cloud.proxy"),
+    Control = require ("../api/control.proxy"),
+    Message = require('../lib/agent-message'),
+    updServer = require('../lib/server/udp'),
+    Listener = require("../listeners/"),
+    conf = require('../config');
 
-admin.version(pkgJson.version);
-/*
- * Add commando as option
- */
-auth.addCommand(admin);
-//device.addCommand(admin);
-components.addCommand(admin);
-configurator.addCommand(admin);
+process.on("uncaughtException", function(err) {
+    logger.error("UncaughtException:", err.message);
+    logger.error(err.stack);
+    // let the process exit so that forever can restart it
+    process.exit(1);
+});
 
-admin.parse(process.argv);
-/*
- * Run if the command were specified at parameter
- */
-//device.runCommand(admin);
 
-/*
- * Help and verions also as commands
- */
-if (!admin.args.length || admin.args[0] === 'help') {
-    admin.help();
-}
-admin
-    .command('version')
-    .description('output the version number')
-    .action(admin.version(pkgJson.version));
 
+utils.getDeviceId(function (id) {
+    var cloud = Cloud.init(conf, logger, id);
+    cloud.activate(function (status) {
+       if (status === 0) {
+            var udp = updServer.singleton(conf.listeners.udp_port, logger);
+            var ctrl = Control.init(conf, logger, id);
+            var agentMessage = Message.init(cloud, logger);
+            logger.info("Starting listeners...");
+            udp.listen(agentMessage.handler);
+            ctrl.bind(udp);
+            Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
+
+        } else {
+            logger.error("Error in activation... err # : ", status);
+            process.exit(status);
+        }
+    });
+});
