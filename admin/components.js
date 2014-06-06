@@ -126,27 +126,27 @@ module.exports = {
     addCommand : function (program) {
         program
             .command('register <comp_name> <catalogid>')
-            .description('Display registered components.')
+            .description('Registers a component in the device.')
             .action(registerComponents);
         program
             .command('reset-components')
-            .description('clear the component lists.')
+            .description('Clears the component list.')
             .action(resetComponents);
         program
             .command('observation <comp_name> <value>')
-            .description('Display registered components.')
+            .description('Sends an observation for the device, for the specific component.')
             .action(registerObservation);
         program
             .command('catalog')
-            .description('Display Catalog of Device Account.')
+            .description("Displays the Catalog from the device's account.")
             .action(getCatalogList);
         program
             .command('components')
-            .description('Display Components Register at Devices.')
+            .description('Displays components registered for this device.')
             .action(getComponentsList);
         program
             .command('initialize')
-            .description('Resets both the token and the components list.')
+            .description("Resets both the token and the component's list.")
             .action(function() {
                 resetToken();
                 resetComponents();
