@@ -21,7 +21,7 @@
     "default_connector": "rest",
     "connector": {
         "mqtt": {
-            "host": "dev-broker.us.enableiot.com",
+            "host": "test-broker.us.enableiot.com",
             "port": 8883,
             "qos": 1,
             "retain": false,
