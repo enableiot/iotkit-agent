@@ -43,12 +43,13 @@ function IoTKitControl(conf, logger, deviceId, customProxy){
 }
 IoTKitControl.prototype.send = function (actuation) {
     var me = this;
-    var rinfo = updTable.getRinfo(actuation.n);
+    var rinfo = updTable.getRinfo(actuation.component);
     if (rinfo) {
         if (me.dispatcher) {
             me.dispatcher.send(rinfo, actuation);
         }
     }
+    return true;
 };
 IoTKitControl.prototype.controlAction = function () {
     var me = this;
@@ -60,7 +61,7 @@ IoTKitControl.prototype.controlAction = function () {
                 command: message.command,
                 argv: message.params
             };
-            me.send(actuation);
+            return me.send(actuation);
         }
     };
     return handler;

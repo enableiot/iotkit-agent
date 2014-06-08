@@ -29,7 +29,7 @@ var mqtt = require('mqtt');
 var path = require('path');
 
 
-module.exports = function Broker(conf, logger) {
+function Broker(conf, logger) {
     var me = this;
     me.host = conf.host;
     me.port = conf.port;
@@ -67,16 +67,18 @@ module.exports = function Broker(conf, logger) {
     me.connect = function(done) {
         var retries = 0;
         try {
-           if (me.secure) {
-                me.logger.info("Trying with Secure Connection to", me.host, ":", me.port);
-                me.logger.debug("with ", me.tlsArgs);
-                me.client = mqtt.createSecureClient(me.port, me.host, me.tlsArgs);
-            }
-            else {
-                me.logger.info("Non Secure Connection to ", me.host, ":", me.port);
-                me.client = mqtt.createClient(me.port, me.host);
-            }
-        } catch(e) {
+           if ((me.client instanceof mqtt.MqttClient) === false) {
+               if (me.secure) {
+                    me.logger.info("Trying with Secure Connection to", me.host, ":", me.port);
+                    me.logger.debug("with ", me.tlsArgs);
+                    me.client = mqtt.createSecureClient(me.port, me.host, me.tlsArgs);
+                }
+                else {
+                    me.logger.info("Non Secure Connection to ", me.host, ":", me.port);
+                    me.client = mqtt.createClient(me.port, me.host);
+                }
+        }
+    } catch(e) {
             done(new Error("Connection Error", 1002));
             return;
         }
@@ -213,4 +215,11 @@ module.exports = function Broker(conf, logger) {
     me.connected = function () {
         return me.client.connected;
     };
+}
+var broker = null;
+module.exports.singleton = function (conf, logger) {
+    if (!broker) {
+        broker = new Broker(conf, logger);
+    }
+    return broker;
 };

@@ -164,7 +164,12 @@ IoTKitCloud.prototype.dataSubmit = function (metric, callback) {
     metric.gatewayId = me.gatewayId;
     metric.deviceToken = me.secret.deviceToken;
     me.logger.debug("Metric doc: %j", metric, {});
-    me.proxy.data(metric, callback);
+    me.proxy.data(metric, function (dato) {
+        if (callback) {
+            return callback(dato);
+        }
+        return true;
+    });
 
 };
 IoTKitCloud.prototype.regComponent = function(comp, callback) {

@@ -49,11 +49,16 @@ utils.getDeviceId(function (id) {
     cloud.activate(function (status) {
        if (status === 0) {
             var udp = updServer.singleton(conf.listeners.udp_port, logger);
-            var ctrl = Control.init(conf, logger, id);
+
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
             udp.listen(agentMessage.handler);
-            ctrl.bind(udp);
+            //ctrl.bind(udp);
+            //TODO only allow for mqtt Connector, until rest will be implemented
+            if (conf.default_connector === 'mqtt'){
+               var ctrl = Control.init(conf, logger, id);
+               ctrl.bind(udp);
+            }
             Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
 
         } else {
