@@ -31,7 +31,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var admin= require('commander'),
     pkgJson = require('../package.json'),
     auth = require('../admin/operational'),
-    // device = require('../admin/device'),
     components = require('../admin/components'),
     configurator = require('../admin/configurator');
 
@@ -40,7 +39,6 @@ admin.version(pkgJson.version);
  * Add commando as option
  */
 auth.addCommand(admin);
-//device.addCommand(admin);
 components.addCommand(admin);
 configurator.addCommand(admin);
 
@@ -48,16 +46,12 @@ admin.parse(process.argv);
 /*
  * Run if the command were specified at parameter
  */
-//device.runCommand(admin);
-
 /*
- * Help and verions also as commands
+ * Help and versions also as commands
  */
 if (!admin.args.length || admin.args[0] === 'help') {
     admin.help();
 }
-admin
-    .command('version')
+admin.command('version')
     .description('output the version number')
     .action(admin.version(pkgJson.version));
-

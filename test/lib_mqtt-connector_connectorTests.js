@@ -34,16 +34,15 @@ var fileToTest = "../api/mqtt/connector";
 describe(fileToTest, function(){
     var toTest = rewire(fileToTest);
 
-    var client = {
-            subscribe: {},
-            publish: {},
-            on: function() {}
-        };
-    var mqtt = {
+   var mqtt = {
             createSecureClient : function() {},
-            createClient : function() {}
-        };
-
+            createClient : function() {},
+            MqttClient: function () {
+                        this.subscribe = {};
+                        this.publish = {};
+                        this.on = function(){};
+                 }
+            };
     var logger  = {
         info : function(){},
         error : function() {},
@@ -53,6 +52,10 @@ describe(fileToTest, function(){
     console.debug = function() {
         console.log(arguments);
     };
+    beforeEach(function (done){
+        toTest.__set__("broker", null);
+        done();
+    });
     it('Shall Connect to Specific Broker using HTTP >', function(done){
         toTest.__set__("mqtt", mqtt);
 
@@ -64,15 +67,17 @@ describe(fileToTest, function(){
             },
             id = "0a-03-12-22";
 
-        var myBroker = new toTest(config, logger, id);
-
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
         mqtt.createClient = function (port, host ) {
             assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
+
             client.connected = true;
             return client;
         };
+
         myBroker.connect(function(err) {
             assert.isNull(err, "None error shall returned");
             done();
@@ -87,7 +92,8 @@ describe(fileToTest, function(){
                     retries: 2
                     },
             id = "0a-03-12-22";
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
         mqtt.createSecureClient = function (port, host, args ) {
             assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
@@ -111,7 +117,8 @@ describe(fileToTest, function(){
             },
             id = "0a-03-12-22";
 
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
 
         mqtt.createSecureClient = function (port, host, args ) {
             assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
@@ -142,7 +149,8 @@ describe(fileToTest, function(){
                 retries: 2
             },
             id = "0a-03-12-22";
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
         mqtt.createSecureClient = function (port, host, args ) {
             assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
@@ -170,6 +178,7 @@ describe(fileToTest, function(){
             a: "test",
             b: 12323
         }
+        var client = new mqtt.MqttClient();
         mqtt.createSecureClient = function (port, host, args ) {
             assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
@@ -179,7 +188,8 @@ describe(fileToTest, function(){
         };
 
 
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
+
         client.publish = function (topic, message) {
             assert.equal(topic, myTopic, "Missing the topics");
             assert.equal(message, JSON.stringify(myMessage), "Missing the Message");
@@ -206,7 +216,8 @@ describe(fileToTest, function(){
             a: 1,
             c: 2
         };
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
         mqtt.createClient = function (port, host ) {
             assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
@@ -243,9 +254,8 @@ describe(fileToTest, function(){
             a: 1,
             c: 2
         };
-        var myBroker = new toTest(config, logger, id);
-
-
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
         var callHandler = null;
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
@@ -286,6 +296,7 @@ describe(fileToTest, function(){
             c: 2
         };
         var callHandler = null;
+        var client = new mqtt.MqttClient();
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
             assert.isString(event, "The event shall be string");
@@ -293,7 +304,8 @@ describe(fileToTest, function(){
             callHandler = handler;
         };
 
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
+
         mqtt.createClient = function (port, host ) {
             assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
@@ -329,6 +341,7 @@ describe(fileToTest, function(){
             id = "0a-03-12-22";
         var realTopic = 'dev/' + id + '/act';
         var callHandler = null;
+        var client = new mqtt.MqttClient();
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
             assert.isString(event, "The event shall be string");
@@ -336,7 +349,7 @@ describe(fileToTest, function(){
             callHandler = handler;
         };
 
-        var myBroker = new toTest(config, logger, id);
+        var myBroker = toTest.singleton(config, logger);
         mqtt.createClient = function (port, host ) {
             assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");

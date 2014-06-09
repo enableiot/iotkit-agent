@@ -111,6 +111,12 @@ var resetProxy = function () {
     logger.info("Set Proxy data");
 };
 
+var loggerLevel = {
+    info: true,
+    warm: true,
+    error: true,
+    debug: true
+};
 module.exports = {
     addCommand : function (program) {
         program
@@ -181,6 +187,17 @@ module.exports = {
             .command('reset-proxy')
             .description('Clears proxy For REST protocol.')
             .action(resetProxy);
-
+        program
+            .command('set-logger-level <level>')
+            .description('Set the logger level to \'debug\', \'info\', \'warn\', \'erro\'')
+            .action(function(level) {
+                if (loggerLevel[level]) {
+                    saveToConfig("logger.LEVEL", level);
+                    logger.info("Logger Level set to: %s", level);
+                } else {
+                    logger.error("invalid level: %s - please use %s", level,
+                                                Object.keys(loggerLevel).toString());
+                }
+            });
     }
 };
