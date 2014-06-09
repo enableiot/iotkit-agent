@@ -32,11 +32,35 @@ var path = require('path'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(),
     Component = require('../lib/data/Components'),
+    fs = require('fs'),
     common = require('../lib/common');
 
 var filename = "sensor-list.json";
 function getStoreFileName () {
     return path.join(__dirname, '../data/' +  filename);
+}
+
+function getTokenFileName () {
+    var file = '';
+    var fd;
+    var tokenPaths = [
+        '/usr/share/iotkit-agent/certs/' + conf.token_file ,
+        path.join(__dirname, '../certs/' + conf.token_file)
+    ];
+
+    for (var i in tokenPaths) {
+        if (fs.existsSync(tokenPaths[i])) {
+            file = tokenPaths[i];
+            return file;
+        }
+    }
+
+    // If the is no file provide the latest to be created
+    if (file === '') {
+        file = tokenPaths[tokenPaths.length - 1];
+    }
+
+    return file;
 }
 
 var resetComponents = function () {
@@ -50,7 +74,8 @@ var resetToken = function () {
         "deviceToken": false,
         "accountId": false
     };
-    var fullFilename = path.join(__dirname, '../certs/' +  conf.token_file);
+    var fullFilename = getTokenFileName();
+    logger.info('Token file: ' + fullFilename);
     return common.writeToJson(fullFilename, dataTokenReset);
 };
 
@@ -114,9 +139,11 @@ function getCatalogList  () {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(conf, logger, id);
         cloud.catalog(function (catalog) {
-            var table = new Component.Table(catalog);
-            logger.info("# of Component @ Catalog : ", catalog.length);
-            console.log(table.toString());
+            if (catalog) {
+                var table = new Component.Table(catalog);
+                logger.info("# of Component @ Catalog : ", catalog.length);
+                console.log(table.toString());
+            }
             process.exit(0);
         });
     });
