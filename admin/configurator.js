@@ -94,6 +94,21 @@ var setHostFor = function (host_value, port_value) {
        proxy = data["default_connector"];
        logger.info("Config Key : ", proxy, " value ", host_value);
        var host_key = 'connector.' + proxy + '.host';
+
+       if(proxy === "rest"){
+           var protocol;
+           var protocol_key = 'connector.' + proxy + '.protocol';
+           if(host_value.indexOf("https://")===0){
+               host_value = host_value.replace("https://", "");
+               protocol = "https";
+           }else if(host_value.indexOf("http://")===0){
+               host_value = host_value.replace("http://", "");
+               protocol = "http";
+           }
+           if(protocol){
+               saveToConfig(protocol_key, protocol);
+           }
+       }
        saveToConfig(host_key, host_value);
        if (port_value) {
         var port_key = 'connector.' + proxy + '.port';
