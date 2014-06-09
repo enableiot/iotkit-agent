@@ -4,17 +4,24 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
 
+
+## Before start using iotkit-agent
+
+The following steps will guide you through the installation and configuration of the iotkit-agent if you download it from this GitHub repository.
+
+In case you get a Galileo board with the iotkit-agent pre-installed, please go to the section **Galileo with iotkit-agent pre-installed**.
+
 ## Installation
 
 Install using npm:
 
-    npm install iotkit-agent --production
+    npm install iotkit-agent --production 
     mv node_modules/iotkit-agent ./
     
-Once you have a copy of the iotkit-agent locally, execute the setup script:
+Once you have a copy of the iotkit-agent locally, you will need to install forever:
 
     cd iotkit-agent
-    ./setup-agent.sh
+    npm install forever
     
 > You only have to run the setup once
     
@@ -24,16 +31,16 @@ The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard
 To be able to register in iotkit-dashbord, it is required to use the Device ID.
 You can obtain the Device ID executing this command:
 
-    node admin device-id
+    ./iotkit-admin.js device-id
 
 Or, you can set a different Device ID with this command:
 
-    node admin set-device-id <device_id>
+    ./iotkit-admin.js set-device-id <device_id>
 
 After the registration, copy the activation code
 and execute:
 
-    node admin activate <activation_code>     
+    ./iotkit-admin.js activate <activation_code>     
 
         
 ### Starting the Agent
@@ -54,41 +61,70 @@ For instructions how to use the iotkit-agent please see the [iotkit-samples repo
 
 ## Test
 
-The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. To ran all tests:
+The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. To run all tests:
 
-> Install all dev-dependence running
+> Install all dev-dependences, running:
 
     npm install 
+    cd node_modules/.bin
     grunt
 
-## Notes about "admin" command
-> node admin help
+## Notes about "admin" commands
 
-    test   Try to reach the server (using the current protocol).
-                             
-    activate Activates the device.
+> ./iotkit-admin.js -h
 
-    initialize Resets both the token and the components list.
+or
 
-    register <comp_name> <catalogid> </code> - Display registered components.
+> ./iotkit-admin.js
 
-    reset-components clear the component lists.
+  Usage: iotkit-admin [options] [command]
 
-    observation <comp_name> <value> Display registered components.
+Commands:
 
-    catalog Display Catalog for the Device Account.
+    test                   Tries to reach the server (using the current protocol).
+    activate <activation_code> Activates the device.
+    register <comp_name> <catalogid> Registers a component in the device.
+    reset-components       Clears the component list.
+    observation <comp_name> <value> Sends an observation for the device, for the specific component.
+    catalog                Displays the Catalog from the device's account.
+    components             Displays components registered for this device.
+    initialize             Resets both the token and the component's list.
+    protocol <protocol>    Set the protocol to 'mqtt' or 'rest'
+    host <host> [<port>]   Sets the cloud hostname for the current protocol.
+    device-id              Displays the device id.
+    set-device-id <id>     Overrides the device id.
+    clear-device-id        Reverts to using the default device id.
+    save-code <activation_code> Adds the activation code to the device.
+    reset-code             Clears the activation code of the device.
+    proxy <host> <port>    Sets proxy For REST protocol.
+    reset-proxy            Clears proxy For REST protocol.
+    set-logger-level <level> Set the logger level to 'debug', 'info', 'warn', 'error'
 
-    protocol <protocol> Set the protocol to 'mqtt' or 'rest'
+Options:
 
-    host <host> Set the cloud hostname for the current protocol
+    -h, --help     output usage information
+    -V, --version  output the version number
 
-    device-id Display the device id
 
-    set-device-id <id> Override the device id
+## Galileo with iotkit-agent pre-installedl
 
-    clear-device-id Revert to using the default device id
+In case you get a Galileo board with the iotkit-agent pre-installed, skip the **Installation** step.
+You will need to stop the iotkit-agent and then configure it.
+In order to do that, run the command:
 
-    set-proxy <host> <port> Proxy For Rest Protocol
+    systemctl stop iotkit-agent
+
+Once the iotkit-agent is stopped, you can go to step **Configuring and Activating the Agent**.
+**Note**: to run the 'admin' commands, run:
+ 
+    iotkit-admin <command>
+
+This command shall be run from the directory where iotkit-agent is installed.
+ 
+After you configure the agent, you will need to start it with the following command:
+
+    systemctl start iotkit-agent
+
 
 ## Certificates
 
