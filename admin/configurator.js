@@ -131,7 +131,7 @@ var resetProxy = function () {
 
 var loggerLevel = {
     info: true,
-    warm: true,
+    warn: true,
     error: true,
     debug: true
 };
@@ -181,7 +181,7 @@ module.exports = {
             });
 
         program
-            .command('save-code <activaton code>')
+            .command('save-code <activation_code>')
             .description('Adds the activation code to the device.')
             .action(function(activation_code) {
                 saveToConfig("activation_code", activation_code);
@@ -207,7 +207,7 @@ module.exports = {
             .action(resetProxy);
         program
             .command('set-logger-level <level>')
-            .description('Set the logger level to \'debug\', \'info\', \'warn\', \'erro\'')
+            .description('Set the logger level to \'debug\', \'info\', \'warn\', \'error\'')
             .action(function(level) {
                 if (loggerLevel[level]) {
                     saveToConfig("logger.LEVEL", level);
