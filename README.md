@@ -9,7 +9,7 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 The following steps will guide you through the installation and configuration of the iotkit-agent if you download it from this GitHub repository.
 
-In case you get a Galileo board with the iotkit-agent pre-installed, please go to the section **Galileo with iotkit-agent pre-installed**.
+In case you get a Galileo board with the iotkit-agent pre-installed, please go to the section [Galileo with iotkit-agent pre-installed](#galileo-with-iotkit-agent-pre-installed)
 
 ## Installation
 
@@ -27,7 +27,7 @@ Once you have a copy of the iotkit-agent locally, you will need to install forev
     
 ### Configuring and Activating the Agent
 
-The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.enableiot.com).
+The iotkit-agent, require to be register at [iotkit-dashboard](https://dashboard.us.enableiot.com).
 To be able to register in iotkit-dashbord, it is required to use the Device ID.
 You can obtain the Device ID executing this command:
 
@@ -63,13 +63,14 @@ For instructions how to use the iotkit-agent please see the [iotkit-samples repo
 
 The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. To run all tests:
 
-> Install all dev-dependences, running:
+> Install all dev-dependencies, running:
 
     npm install 
-    cd node_modules/.bin
-    grunt
+    node_modules/.bin/grunt
 
 ## Notes about "admin" commands
+
+The iotkit-agent provides a set of commands to perform configuration over the device, as well as, some basic actions, like activation, initialization, etc. 
 
 > ./iotkit-admin.js -h
 
@@ -105,26 +106,34 @@ Options:
     -h, --help     output usage information
     -V, --version  output the version number
 
+Commands like 'register' and 'observation' should be used only for testing purposes. 
 
 ## Galileo with iotkit-agent pre-installed
 
-In case you get a Galileo board with the iotkit-agent pre-installed, skip the **Installation** step.
+In case you get a Galileo board with the iotkit-agent pre-installed, skip the [Installation](#installation) step.
 You will need to stop the iotkit-agent and then configure it.
 In order to do that, run the command:
 
     systemctl stop iotkit-agent
 
 Once the iotkit-agent is stopped, you can go to step **Configuring and Activating the Agent**.
-**Note**: to run the 'admin' commands, run:
+
+**Note**: to run the 'admin' commands, execute:
  
     iotkit-admin <command>
 
-This command shall be run from the directory where iotkit-agent is installed.
+This command can be run from any directory.
  
 After you configure the agent, you will need to start it with the following command:
 
     systemctl start iotkit-agent
 
+## General notes
+
+* The iotkit-agent default protocol is **REST**. To change it to MQTT, use command 'protocol'.
+* The device id is obtained from the MAC Address of the Galileo. Get it with the command 'device-id'.
+* The 'catalog' command shows the list of components associated with the account where the device is active.
+* In order to define the **host**, you don't need to specify the protocol (https/http).
 
 ## Certificates
 
@@ -132,6 +141,17 @@ After you configure the agent, you will need to start it with the following comm
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
+## What's new in version 0.8.x
+
+* Besides MQTT connection, now it's possible to connect with the Iot Kit Cloud through REST protocol.
+* MQTT and REST listeners were deprecated in favor of TCP and UDP protocols.
+* Added Administrator commands to leverage agent configuration.
+* Supports two different type of components: sensors and actuators.   
+ 
+## Known limitations
+ 
+* You will need to switch to MQTT protocol to exercise the Actuation functionality.
+* Components registered through the IotKit Cloud API will not be known by the iotkit-agent.
 
 ## License
 
