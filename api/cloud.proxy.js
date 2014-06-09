@@ -51,8 +51,14 @@ function IoTKitCloud(conf, logger, deviceId, customProxy){
 }
 IoTKitCloud.prototype.isActivated = function () {
     var me = this;
-    var token = me.secret.deviceToken;
-    var account = me.secret.accountId;
+   if (!me.secret) {
+        me.secret = {
+            deviceToken: null,
+            accountId: null
+        }
+    }
+    var token  = me.secret.deviceToken;
+    var account  = me.secret.accountId;
     if (token && token.length > 600) {
         if (account && account.length > 30) {
             return true;

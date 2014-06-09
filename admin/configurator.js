@@ -86,6 +86,7 @@ var saveToConfig = function () {
     }
     return true;
 };
+
 var setHostFor = function (host_value, port_value) {
     var data = readConfig();
     var proxy;
@@ -100,6 +101,8 @@ var setHostFor = function (host_value, port_value) {
        }
     }
 };
+
+
 var setProxy = function (host_proxy, port_proxy) {
     saveToConfig("connector.rest.proxy.host", host_proxy);
     saveToConfig("connector.rest.proxy.port", port_proxy);
