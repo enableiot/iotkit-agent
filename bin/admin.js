@@ -42,6 +42,13 @@ auth.addCommand(admin);
 components.addCommand(admin);
 configurator.addCommand(admin);
 
+admin.command('*')
+     .description('Error message for non valid command')
+     .action(function(){
+        console.log("\'" + admin.args[0] + "\'" +
+            ' is not a valid command.');
+    });
+
 admin.parse(process.argv);
 /*
  * Run if the command were specified at parameter
@@ -55,3 +62,5 @@ if (!admin.args.length || admin.args[0] === 'help') {
 admin.command('version')
     .description('output the version number')
     .action(admin.version(pkgJson.version));
+
+
