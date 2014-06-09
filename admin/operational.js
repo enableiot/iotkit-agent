@@ -76,7 +76,7 @@ module.exports = {
             });
 
         program
-            .command('activate <code>')
+            .command('activate <activation_code>')
             .description('Activates the device.')
             .action(activate);
     }
