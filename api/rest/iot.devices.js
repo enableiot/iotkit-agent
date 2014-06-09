@@ -72,12 +72,12 @@ module.exports.registerComponents = function (data, callback){
             return function (done) {
                var compOpt = new DeviceDef.DeviceComponentOption(tempData);
                httpClient.httpRequest(compOpt, function(err, response){
-                    done(null, response);
+                    done(err, response);
                });
             };
        }), function (err, response) {
             console.info("Attributes sent");
-            callback(null, response);
+            callback(err, response);
         }
     );
 };
