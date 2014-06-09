@@ -106,7 +106,7 @@ Options:
     -V, --version  output the version number
 
 
-## Galileo with iotkit-agent pre-installedl
+## Galileo with iotkit-agent pre-installed
 
 In case you get a Galileo board with the iotkit-agent pre-installed, skip the **Installation** step.
 You will need to stop the iotkit-agent and then configure it.
