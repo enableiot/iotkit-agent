@@ -212,11 +212,13 @@ IoTKitCloud.prototype.catalog = function (callback) {
             deviceId: me.deviceId
         };
     me.proxy.getCatalog(data , function (result) {
-        me.logger.debug("Catalog Response : %j ", result);
-        var length = result.length;
-        for (var i = 0; i < length; ++i) {
-             var o = result[i];
-            me.logger.info("Comp: ", o.id, " ", o.dimension, " ", o.type );
+        if (result) {
+            me.logger.debug("Catalog Response : %j ", result);
+            var length = result.length;
+            for (var i = 0; i < length; ++i) {
+                 var o = result[i];
+                me.logger.info("Comp: ", o.id, " ", o.dimension, " ", o.type );
+            }
         }
         callback(result);
     });
