@@ -76,7 +76,7 @@ IoTKitCloud.prototype.activationComplete = function (callback) {
         toCall = callback;
 
     var handler = function (data) {
-        me.logger.debug('Activation Data Recv: %s', data);
+        me.logger.debug('Activation Data Received: ', data);
         if (data && (data.status === 0)) {
             me.secret.deviceToken = data.deviceToken;
             me.secret.accountId = data.accountId;
