@@ -42,7 +42,6 @@ function getStoreFileName () {
 
 function getTokenFileName () {
     var file = '';
-    var fd;
     var tokenPaths = [
         '/usr/share/iotkit-agent/certs/' + conf.token_file ,
         path.join(__dirname, '../certs/' + conf.token_file)
