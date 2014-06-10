@@ -33,6 +33,23 @@ var fs = require('fs'),
 
 var config = {};
 
+function weAreGlobal() {
+    var global = path.dirname(require.main.filename);
+    if (global.indexOf('node_modules/iotkit-agent') != -1) {
+        return true;
+    }
+    return false;
+}
+
+if (weAreGlobal() && fs.existsSync(systemConf)) {
+    config = require(systemConf);
+} else if (fs.existsSync(path.join(__dirname, localConf))) {
+    config = require(localConf);
+} else {
+    console.error("Failed to find config file");
+}
+
+/*
 if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
 } else if (fs.existsSync(systemConf)) {
@@ -40,6 +57,7 @@ if (fs.existsSync(path.join(__dirname, localConf))) {
 } else {
     console.error("Failed to find config file");
 }
+*/
 
 /* override for local development if NODE_ENV is defined to local */
 if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {

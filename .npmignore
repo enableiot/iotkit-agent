@@ -1,7 +1,5 @@
-certs/
 tests/
 images/
-config/config.json
 iotkit-agent.service
 *.sh
 LICENSE
