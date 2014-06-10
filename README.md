@@ -6,8 +6,8 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 ## Table of Contents
 
-1. [Running from a Galileo with a pre-installed agent](#running-from-a-galileo-with-a-pre-installed-agent)
-2. [Installing using npm](#installing-using-npm)
+1. [Running from a Galileo with a pre-installed agent](#1-running-from-a-galileo-with-a-pre-installed-agent)
+2. [Installing using npm](#2-installing-using-npm)
  
 ##1. Running from a Galileo with a pre-installed agent
 
@@ -24,15 +24,23 @@ If the Galileo board does not have the correct date, run:
 
     date -s "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"
 
-####1.2 Configuring the agent  
+####1.2 Testing the connection with iotkit-dashboard
+
+Run the following command to find the enableiot dashboard: 
+
+    iotkit-admin test
+
+*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#5-notes-about-admin-commands).
+
+####1.3 Configuring the agent  
 
 The iotkit-agent requires to be register at [iotkit-dashboard](https://dashboard.us.enableiot.com).
-You will need and id (a.k.a Device Id) to register the Galileo in the iotkit-dashboard.
+You will need and id (a.k.a Device Id) to register the Galileo in the iotkit-dashboard. In
 To get this Device Id, run the command:
 
     iotkit-admin device-id
     
-*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#notes-about-admin-commands). 
+> In the Dashboard enter both Id and Gateway as output by previous command.
 
 Or, you can set a different Device Id with this command:
 
@@ -45,13 +53,15 @@ by executing:
 
 The device should be active system wide. To verify that, go back to your iotkit dashboard and verify the status of the device previously registered. 
         
-####1.3 Starting the Agent
+####1.4 Starting the Agent
 
 Once the device has been activated, the iotkit-agent has to be started. To do that simply execute the start script:
 
     systemctl start iotkit-agent
 
 ##2. Installing using npm
+
+Follow these steps to install the iotkit-agent if you want to try in any Linux environment or if you got a Galileo without the iotkit-agent pre-installed.
 
 To install the iotkit-agent using npm, just run:
 
@@ -62,10 +72,16 @@ Once you have a copy of the iotkit-agent locally, you will need to install **for
 
     cd iotkit-agent
     npm install forever
-    
-> You only have to run the setup once
-    
-####2.1 Configuring and Activating the Agent
+  
+####2.1 Testing the connection with iotkit-dashboard
+
+Run the following command to find the enableiot dashboard: 
+
+    ./iotkit-admin.js test
+
+*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#5-notes-about-admin-commands).
+
+####2.2 Configuring and Activating the Agent
 
 The steps to configure and activate the agent are almost the same as the scenario where the iotkit-agent has been pre-installed in the Galileo.
 
@@ -73,6 +89,8 @@ So, you will need to register the iotkit-agent at the [iotkit-dashboard](https:/
 To do that, you need to obtain the Device Id by executing this command: 
 
     ./iotkit-admin.js device-id
+
+> In the Dashboard enter both Id and Gateway as output by previous command.
 
 Or, you can set a different Device Id with this command:
 
@@ -86,14 +104,14 @@ After the device registration, copy the activation code in the UI and execute th
 
 The device should be active system wide. 
 To verify that, go back to your iotkit dashboard and verify the status of the device previously registered.
-        
-####2.2 Starting the Agent
+
+####2.3 Starting the Agent
 
 To start the iotkit-agent service simply execute the start script:
 
     ./start-agent.sh
     
-####2.3 Stopping the Agent
+####2.4 Stopping the Agent
 
 Yes, you guessed it, run the stop script:
 
@@ -127,9 +145,9 @@ Commands:
 
 * `test`                    Tries to reach the server (using the current protocol).
 * `activate <activation_code>` Activates the device.
-* `register <comp_name> <catalogid>` Registers a component in the device.
+* `register <comp_name> <catalogid>` Registers a component in the device. Use this command just for testing purposes.
 * `reset-components`       Clears the component list.
-* `observation <comp_name> <value>` Sends an observation for the device, for the specific component.
+* `observation <comp_name> <value>` Sends an observation for the device, for the specific component. Use this command just for testing purposes.
 * `catalog`                Displays the Catalog from the device's account.
 * `components`             Displays components registered for this device.
 * `initialize`             Resets both the token and the component's list.
