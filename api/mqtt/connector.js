@@ -50,7 +50,8 @@ function Broker(conf, logger) {
         retain: conf.retain
     };
     me.client =  {
-        connected: false
+        connected: false,
+        end: function() {}
     };
     me.listen = function() {
         me.client.on('message',function(topic, message) {
