@@ -35,7 +35,7 @@ var config = {};
 
 function weAreGlobal() {
     var global = path.dirname(require.main.filename);
-    if (global.indexOf('node_modules/iotkit-agent') != -1) {
+    if (global.indexOf('node_modules/iotkit-agent') !== -1) {
         return true;
     }
     return false;
