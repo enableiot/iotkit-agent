@@ -50,5 +50,6 @@ if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local")
     config.connector.rest.host = "127.0.0.1";
     config.connector.rest.port = 80;
     config.connector.rest.protocol= "http";
+    config.logger.PATH = './';
 }
 module.exports = config;
