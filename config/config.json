@@ -15,7 +15,8 @@
         -20
     ],
     "logger": {
-        "LEVEL": "info"
+        "LEVEL": "info",
+        "PATH": "/var/log/"
     },
     "gateway_id": null,
     "default_connector": "rest",
@@ -26,8 +27,8 @@
             "qos": 1,
             "retain": false,
             "secure": true,
-            "key": "./certs/enableiot_agent.key",
-            "crt": "./certs/enableiot_agent.crt",
+            "key": "enableiot_agent.key",
+            "crt": "enableiot_agent.crt",
             "retries": 30,
             "topic": {
                 "device": "devices/{deviceid}",
