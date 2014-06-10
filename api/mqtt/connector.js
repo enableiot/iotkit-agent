@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var mqtt = require('mqtt');
 var path = require('path');
+var common = require('../../lib/common');
 
 
 function Broker(conf, logger) {
@@ -36,8 +37,8 @@ function Broker(conf, logger) {
     me.secure = conf.secure;
     if (me.secure) {
         me.tlsArgs = {
-            keyPath: conf.key,
-            certPath: conf.crt,
+            keyPath: common.getCertsPath(conf.key),
+            certPath: common.getCertsPath(conf.crt),
             keepalive: 59000
         };
     }
