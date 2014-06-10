@@ -26,13 +26,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 var fs = require('fs'),
+    path = require('path'),
     localConf = "./config.json",
     systemConf = "/etc/iotkit-agent/config.json";
 
 
 var config = {};
 
-if (fs.existsSync("./config/" + localConf)) {
+if (fs.existsSync(path.join(__dirname,localConf))) {
     config = require(localConf);
 //    console.log("Using local config file");
 }
