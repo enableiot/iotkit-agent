@@ -27,32 +27,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var logger = require("../lib/logger").init(),
     common = require('../lib/common'),
-    utils = require("../lib/utils").init(),
-    fs = require('fs'),
-    path = require('path');
-
-function getConfigName () {
-    var filename = "config.json";
-    var fullFileName = path.join(__dirname, '../config/' +  filename);
-    var systemConf = '/etc/iotkit-agent/' + filename;
-
-    if (fs.existsSync(fullFileName)) {
-        return fullFileName;
-    } else if (fs.existsSync(systemConf)) {
-        return systemConf;
-    } else {
-        console.error("Failed to find config file");
-        return null;
-    }
-}
+    utils = require("../lib/utils").init();
 
 function readConfig () {
-    var fullFilename = getConfigName();
+    var fullFilename = common.getConfigName();
     return common.readFileToJson(fullFilename);
 }
 
 function writeConfig (data) {
-    var fullFilename = getConfigName();
+    var fullFilename = common.getConfigName();
     common.writeToJson(fullFilename, data);
 }
 var saveToConfig = function () {

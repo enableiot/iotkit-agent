@@ -33,15 +33,11 @@ var fs = require('fs'),
 
 var config = {};
 
-if (fs.existsSync(path.join(__dirname,localConf))) {
+if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
-//    console.log("Using local config file");
-}
-else if (fs.existsSync(systemConf)) {
+} else if (fs.existsSync(systemConf)) {
     config = require(systemConf);
-//    console.log("Using system config file");
-}
-else {
+} else {
     console.error("Failed to find config file");
 }
 

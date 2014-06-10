@@ -5,3 +5,4 @@ config/config.json
 iotkit-agent.service
 *.sh
 LICENSE
+buildscripts/

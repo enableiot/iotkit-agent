@@ -16,7 +16,7 @@
     ],
     "logger": {
         "LEVEL": "info",
-        "PATH": "/var/log/"
+        "PATH": "/tmp/"
     },
     "gateway_id": null,
     "default_connector": "rest",
