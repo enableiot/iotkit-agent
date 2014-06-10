@@ -164,7 +164,7 @@ Commands like 'register' and 'observation' should be used only for testing purpo
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
-## What's new in version 0.8.x
+## What's new in version 0.8.5
 
 * Besides MQTT connection, now it's possible to connect with the Iot Kit Cloud through REST protocol.
 * MQTT and REST listeners were deprecated in favor of TCP and UDP protocols.
