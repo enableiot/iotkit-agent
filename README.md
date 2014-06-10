@@ -4,10 +4,10 @@ The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows develo
 
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
 
-# Table of Contents
+## Table of Contents
 
-##1. [Running from a Galileo with a pre-installed agent](#running-from-a-galileo-with-a-pre-installed-agent)
-##2. [Installing using npm](#installing-using-npm)
+1. [Running from a Galileo with a pre-installed agent](#running-from-a-galileo-with-a-pre-installed-agent)
+2. [Installing using npm](#installing-using-npm)
  
 ##1. Running from a Galileo with a pre-installed agent
 
