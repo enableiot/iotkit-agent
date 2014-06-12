@@ -27,8 +27,6 @@
             "qos": 1,
             "retain": false,
             "secure": true,
-            "key": "enableiot_agent.key",
-            "crt": "enableiot_agent.crt",
             "retries": 30,
             "topic": {
                 "device": "devices/{deviceid}",
