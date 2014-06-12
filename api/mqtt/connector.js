@@ -37,8 +37,6 @@ function Broker(conf, logger) {
     me.secure = conf.secure;
     if (me.secure) {
         me.tlsArgs = {
-            keyPath: common.getCertsPath(conf.key),
-            certPath: common.getCertsPath(conf.crt),
             keepalive: 59000
         };
     }

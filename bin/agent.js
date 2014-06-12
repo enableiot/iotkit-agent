@@ -53,7 +53,6 @@ utils.getDeviceId(function (id) {
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
             udp.listen(agentMessage.handler);
-            //ctrl.bind(udp);
             //TODO only allow for mqtt Connector, until rest will be implemented
             if (conf.default_connector === 'mqtt'){
                var ctrl = Control.init(conf, logger, id);

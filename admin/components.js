@@ -32,36 +32,12 @@ var path = require('path'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(),
     Component = require('../lib/data/Components'),
-    fs = require('fs'),
     common = require('../lib/common');
 
 var filename = "sensor-list.json";
 function getStoreFileName () {
     return path.join(__dirname, '../data/' +  filename);
 }
-
-function getTokenFileName () {
-    var file = '';
-    var tokenPaths = [
-        '/usr/share/iotkit-agent/certs/' + conf.token_file ,
-        path.join(__dirname, '../certs/' + conf.token_file)
-    ];
-
-    for (var i in tokenPaths) {
-        if (fs.existsSync(tokenPaths[i])) {
-            file = tokenPaths[i];
-            return file;
-        }
-    }
-
-    // If the is no file provide the latest to be created
-    if (file === '') {
-        file = tokenPaths[tokenPaths.length - 1];
-    }
-
-    return file;
-}
-
 var resetComponents = function () {
     var fullFilename = getStoreFileName();
     var data = [];
@@ -73,7 +49,7 @@ var resetToken = function () {
         "deviceToken": false,
         "accountId": false
     };
-    var fullFilename = getTokenFileName();
+    var fullFilename = common.getTokenFileName(conf.token_file);
     logger.info('Token file: ' + fullFilename);
     return common.writeToJson(fullFilename, dataTokenReset);
 };
