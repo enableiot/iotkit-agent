@@ -6,15 +6,10 @@ lib-cov
 *.out
 *.pid
 *.gz
-
 pids
 logs
 results
-
-npm-debug.log
 node_modules
-
-sensors-list.json
 *.idea/*
 *.orig
 */coverage/*

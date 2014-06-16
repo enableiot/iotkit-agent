@@ -4,3 +4,8 @@ iotkit-agent.service
 *.sh
 LICENSE
 buildscripts/
+*.idea/*
+*.orig
+*/coverage/*
+*/dist/*
+*.log
