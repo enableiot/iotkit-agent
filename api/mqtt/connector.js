@@ -30,16 +30,17 @@ var path = require('path');
 var common = require('../../lib/common');
 
 
-function Broker(conf, logger) {
+function Broker(conf, logger, crd) {
     var me = this;
     me.host = conf.host;
     me.port = conf.port;
     me.secure = conf.secure;
-    if (me.secure) {
-        me.tlsArgs = {
-            keepalive: 59000
-        };
-    }
+    me.crd = crd || {};
+   /* me.credential = {
+        username: crd.deviceId,
+        password: crd.deviceToken,
+        keepalive: 59000
+    };*/
     me.max_retries = conf.retries || 30;
     me.messageHandler = [];
     me.logger = logger;
@@ -48,11 +49,21 @@ function Broker(conf, logger) {
         qos: conf.qos || 1,
         retain: conf.retain
     };
-    me.client =  {
+    me.client = {
         connected: false,
         end: function() {}
     };
-    me.listen = function() {
+    me.setCredential = function (newCrd) {
+        me.crd = newCrd || me.crd;
+        me.credential = {
+            username: me.crd.username,
+            password: me.crd.password,
+            keepalive: 59000,
+            clean: true
+        };
+    };
+    me.setCredential();
+    me.listen = function () {
         me.client.on('message',function(topic, message) {
             try {
                 message = JSON.parse(message);
@@ -64,21 +75,20 @@ function Broker(conf, logger) {
             me.onMessage(topic, message);
         });
     };
-    me.connect = function(done) {
+    me.connect = function (done) {
         var retries = 0;
         try {
            if ((me.client instanceof mqtt.MqttClient) === false) {
                if (me.secure) {
                     me.logger.info("Trying with Secure Connection to", me.host, ":", me.port);
-                    me.logger.debug("with ", me.tlsArgs);
-                    me.client = mqtt.createSecureClient(me.port, me.host, me.tlsArgs);
-                }
-                else {
+                    me.logger.debug("with ", me.credential);
+                    me.client = mqtt.createSecureClient(me.port, me.host, me.credential);
+                } else {
                     me.logger.info("Non Secure Connection to ", me.host, ":", me.port);
-                    me.client = mqtt.createClient(me.port, me.host);
+                    me.client = mqtt.createClient(me.port, me.host, me.credential);
                 }
-        }
-    } catch(e) {
+            }
+        } catch(e) {
             done(new Error("Connection Error", 1002));
             return;
         }
@@ -88,7 +98,6 @@ function Broker(conf, logger) {
                 me.logger.info("Waiting for MQTTConnector to connect # ", retries);
                 if (retries < me.max_retries) {
                     setTimeout(waitForConnection, 1500);
-                
                 } else {
                     me.logger.info('MQTTConnector: Error Connecting to ', me.host, ':', me.port);
                     done(new Error("Connection Error", 1001));
@@ -102,13 +111,15 @@ function Broker(conf, logger) {
         }
         waitForConnection();
     };
-
     me.disconnect = function () {
         me.logger.info("Trying to disconnect ");
         me.client.end();
+        me.client = {
+            connected: false,
+            end: function() {}
+        };
     };
-
-    me.attach = function (topic, handler ) {
+    me.attach = function (topic, handler) {
         me.messageHandler.push({"t": topic,
                                 "h": handler});
     };
@@ -116,7 +127,6 @@ function Broker(conf, logger) {
         var a = new RegExp(pattern);
         return a.test(text);
     }
-
     me.dettach = function (topic) {
        me.messageHandler = me.messageHandler.filter(function (obj){
             return tryPattern(obj.t, topic);});
@@ -136,7 +146,7 @@ function Broker(conf, logger) {
             }
         }
     };
-    me.bind = function(topic, handler, callback) {
+    me.bind = function (topic, handler, callback) {
         /**
          * since the bind and publish connect automatically,
          * it is require to chain the callbacks
@@ -170,7 +180,7 @@ function Broker(conf, logger) {
             connectCallback();
         }
     };
-    me.unbind = function(topic, callback) {
+    me.unbind = function (topic, callback) {
         me.logger.debug('Unbinding from Topic : T => ', topic);
         me.client.unsubscribe(topic, function() {
             me.logger.debug('Unbound from Topic : T => ', topic);
@@ -186,7 +196,7 @@ function Broker(conf, logger) {
      * @param message <object> that will be sent to topics
      * @param args <object>
      */
-    me.publish = function(topic, message, options, callback) {
+    me.publish = function (topic, message, options, callback) {
         if ("function" === typeof options) {
             callback = options;
             options = me.pubArgs;

@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var msg = require('../lib/cloud-message'),
-    fs = require('fs'),
     common = require('../lib/common'),
     path = require("path"),
     proxyConnector = require('../lib/proxies').getProxyConnector();
@@ -80,6 +79,7 @@ IoTKitCloud.prototype.activationComplete = function (callback) {
             me.logger.info('Saving device token...');
             common.writeToJson(me.fullFilename, me.secret);
         }
+        me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
         toCall(data.status);
     };
     return handler;
@@ -123,7 +123,8 @@ IoTKitCloud.prototype.activate = function (code, callback) {
         me.proxy.activation(ActMessage, me.activationComplete(complete));
     } else {
         // skip the update since we were already activated
-        toCall(0);
+        me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
+        complete(0);
     }
 };
 

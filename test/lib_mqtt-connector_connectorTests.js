@@ -70,7 +70,7 @@ describe(fileToTest, function(){
         var myBroker = toTest.singleton(config, logger);
         var client = new mqtt.MqttClient();
         mqtt.createClient = function (port, host ) {
-            assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
+            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
 
@@ -177,19 +177,25 @@ describe(fileToTest, function(){
         var myMessage = {
             a: "test",
             b: 12323
-        }
+        };
+        var crd = {
+            username: "TuUser",
+            password: "tuPassword"
+        };
         var client = new mqtt.MqttClient();
         mqtt.createSecureClient = function (port, host, args ) {
             assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
+            assert.equal(args.username, crd.username, "The user was override");
+            assert.equal(args.password, crd.password, "The user was override");
             client.connected = true;
             return client;
         };
 
 
         var myBroker = toTest.singleton(config, logger);
-
+        myBroker.setCredential(crd);
         client.publish = function (topic, message) {
             assert.equal(topic, myTopic, "Missing the topics");
             assert.equal(message, JSON.stringify(myMessage), "Missing the Message");
@@ -219,7 +225,7 @@ describe(fileToTest, function(){
         var myBroker = toTest.singleton(config, logger);
         var client = new mqtt.MqttClient();
         mqtt.createClient = function (port, host ) {
-            assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
+            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
             client.connected = true;
@@ -266,7 +272,7 @@ describe(fileToTest, function(){
         }
 
         mqtt.createClient = function (port, host ) {
-            assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
+            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
             client.connected = true;
@@ -307,7 +313,7 @@ describe(fileToTest, function(){
         var myBroker = toTest.singleton(config, logger);
 
         mqtt.createClient = function (port, host ) {
-            assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
+            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
             client.connected = true;
@@ -348,12 +354,17 @@ describe(fileToTest, function(){
             assert.equal(event, "message", "Invalid event listeneter");
             callHandler = handler;
         };
-
+        var crd = {
+            username: "TuUser",
+            password: "tuPassword"
+        };
         var myBroker = toTest.singleton(config, logger);
-        mqtt.createClient = function (port, host ) {
-            assert.lengthOf(arguments, 2, "Missing Argument for Secure Connection");
+        mqtt.createClient = function (port, host, credencial ) {
+            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
             assert.equal(port, config.port, "The port has override");
             assert.equal(host, config.host, "The host has override");
+            assert.equal(credencial.username, crd.username, "The user was override");
+            assert.equal(credencial.password, crd.password, "The user was override");
             client.connected = true;
             return client;
         };
@@ -366,6 +377,7 @@ describe(fileToTest, function(){
             var granted = [{ topic: vtopic}];
             cb(null, granted);
         };
+        myBroker.setCredential(crd);
         myBroker.connect(function(err) {
             assert.isNull(err, "None error shall returned");
             myBroker.bind(topicPattern, topicHandler);
