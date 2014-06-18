@@ -28,10 +28,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var msg = require('../lib/cloud-message'),
     common = require('../lib/common'),
-    path = require("path"),
     proxyConnector = require('../lib/proxies').getProxyConnector();
 
-function IoTKitCloud(conf, logger, deviceId, customProxy){
+function IoTKitCloud(conf, logger, deviceId, customProxy) {
     var me = this;
     me.logger = logger;
     me.filename = conf.token_file || "token.json";
@@ -50,7 +49,7 @@ IoTKitCloud.prototype.isActivated = function () {
         me.secret = {
             deviceToken: null,
             accountId: null
-        }
+        };
     }
     var token  = me.secret.deviceToken;
     var account  = me.secret.accountId;
@@ -183,9 +182,10 @@ IoTKitCloud.prototype.regComponent = function(comp, callback) {
     me.logger.debug("Reg Component doc: %j", doc, {});
     me.proxy.addComponent(doc, callback);
 };
-IoTKitCloud.prototype.desRegComponent = function(comp) {
+IoTKitCloud.prototype.desRegComponent = function() {
+    /*
     var me = this;
-  /*  var doc =  JSON.parse(JSON.stringify(comp)); //HardCopy to remove reference bind
+    var doc =  JSON.parse(JSON.stringify(comp)); //HardCopy to remove reference bind
     doc.deviceToken = me.secret.deviceToken;
     me.logger.debug("DesReg Component doc: %j", doc, {});
     me.client.publish(buildPath(me.topics.device_component_del, me.deviceId),
@@ -197,7 +197,7 @@ IoTKitCloud.prototype.test = function(callback) {
     var me = this;
     me.logger.info("Trying to connect to host ...");
     me.proxy.health(me.deviceId, function (result) {
-          me.logger.debug("Response ", result)
+          me.logger.debug("Response ", result);
           callback(result);
     });
 };

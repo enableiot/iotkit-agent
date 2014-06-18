@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var config = require('../../config');
-var common = require('../../lib/common');
 var url = require('url');
 
 var ConnectionOptions = require('./iot.connection.def.js');
@@ -40,7 +39,7 @@ var IoTKiT = {};
 /**
  * Connection attributes to redirect to Intel Itendtity Main Page
  */
-function HealthOption(data) {
+function HealthOption() {
     this.pathname = apiconf.path.health;
     this.token = null;
     ConnectionOptions.call(this);
@@ -50,7 +49,7 @@ HealthOption.prototype = new ConnectionOptions();
 HealthOption.prototype.constructor = HealthOption;
 IoTKiT.HealthOption = HealthOption;
 
-function ExternalInfoOption(data) {
+function ExternalInfoOption() {
     this.pathname = '';
     this.token = null;
     ConnectionOptions.call(this);

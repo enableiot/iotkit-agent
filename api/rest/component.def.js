@@ -27,7 +27,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var config = require('../../config');
-var common = require('../../lib/common');
 
 var ConnectionOptions = require('./iot.connection.def.js');
 var GET_METHOD = 'GET';

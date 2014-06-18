@@ -464,7 +464,7 @@ describe(fileToTest, function(){
                 port: 9090909,
                 secure: false,
                 retries: 2
-            },
+            };
         var myBroker = toTest.singleton(config, logger);
         var client = new mqtt.MqttClient();
         mqtt.createClient = function (port, host ) {

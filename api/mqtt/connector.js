@@ -26,8 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
 var mqtt = require('mqtt');
-var path = require('path');
-var common = require('../../lib/common');
 
 
 function Broker(conf, logger) {

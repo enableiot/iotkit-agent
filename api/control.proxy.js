@@ -26,9 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 "use strict";
-var msg = require('../lib/cloud-message'),
-    common = require('../lib/common'),
-    Sensor = require('../lib/sensors-store'),
+var Sensor = require('../lib/sensors-store'),
     proxyConnector = require('../lib/proxies').geControlConnector('mqtt');
 var updTable = require('../lib/server/upd.table').singleton();
 

@@ -33,10 +33,8 @@ module.exports = function(grunt) {
         dirs: {
             jshint: 'buildscripts/jshint',
             jsfiles: ['Gruntfile.js',
-                      'agent.js',
-                      'device-id.js',
-                      'device-info.js',
                       'lib/**/*.js',
+                      'api/**/*.js',
                       'admin/**/*.js',
                       'listeners/**/*.js']
         },
