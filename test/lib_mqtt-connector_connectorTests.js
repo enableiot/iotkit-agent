@@ -56,7 +56,7 @@ describe(fileToTest, function(){
         toTest.__set__("broker", null);
         done();
     });
-    it('Shall Connect to Specific Broker using HTTP >', function(done){
+    it('Shall Connect to Specific Broker using None Secure Connection >', function(done){
         toTest.__set__("mqtt", mqtt);
 
         var config = {
@@ -83,7 +83,7 @@ describe(fileToTest, function(){
             done();
         });
     });
-    it('Shall Connect to Specific Broker >', function(done){
+    it('Shall Connect to Specific Broker using Secure Connection >', function(done){
         toTest.__set__("mqtt", mqtt);
         var config = {
                     host: "myHosttest",
@@ -455,6 +455,31 @@ describe(fileToTest, function(){
                 callHandler("dev/"+id+"/act", JSON.stringify(msg));
             });
             //myBroker.onMessage(realTopic, msg);
+        });
+    });
+    it('Shall Disconnect from Broker>', function(done){
+        toTest.__set__("mqtt", mqtt);
+        var config = {
+                host: "myHosttest",
+                port: 9090909,
+                secure: false,
+                retries: 2
+            },
+        var myBroker = toTest.singleton(config, logger);
+        var client = new mqtt.MqttClient();
+        mqtt.createClient = function (port, host ) {
+            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
+            assert.equal(port, config.port, "The port has override");
+            assert.equal(host, config.host, "The host has override");
+            client.connected = true;
+            return client;
+        };
+        client.end = function () {
+            done();
+        };
+        myBroker.connect(function(err) {
+            assert.isNull(err, "None error shall returned");
+            myBroker.disconnect();
         });
     });
 });
