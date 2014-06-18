@@ -112,9 +112,9 @@ IoTKitCloud.prototype.activate = function (code, callback) {
     }
     if (!me.isActivated()) {
         var ActMessage = {
-                    deviceId: me.deviceId,
-                    code: code || me.activationCode
-                };
+            deviceId: me.deviceId,
+            code: code || me.activationCode
+        };
         if (ActMessage.code == null) {
             me.logger.error("Device has not been activated, and activation code has not been set - exiting");
             process.exit(1);

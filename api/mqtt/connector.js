@@ -30,17 +30,12 @@ var path = require('path');
 var common = require('../../lib/common');
 
 
-function Broker(conf, logger, crd) {
+function Broker(conf, logger) {
     var me = this;
     me.host = conf.host;
     me.port = conf.port;
     me.secure = conf.secure;
-    me.crd = crd || {};
-   /* me.credential = {
-        username: crd.deviceId,
-        password: crd.deviceToken,
-        keepalive: 59000
-    };*/
+    me.crd = {};
     me.max_retries = conf.retries || 30;
     me.messageHandler = [];
     me.logger = logger;
@@ -79,13 +74,13 @@ function Broker(conf, logger, crd) {
         var retries = 0;
         try {
            if ((me.client instanceof mqtt.MqttClient) === false) {
-               if (me.secure) {
-                    me.logger.info("Trying with Secure Connection to", me.host, ":", me.port);
-                    me.logger.debug("with ", me.credential);
-                    me.client = mqtt.createSecureClient(me.port, me.host, me.credential);
-                } else {
-                    me.logger.info("Non Secure Connection to ", me.host, ":", me.port);
-                    me.client = mqtt.createClient(me.port, me.host, me.credential);
+               if (me.secure === false) {
+                   me.logger.info("Non Secure Connection to ", me.host, ":", me.port);
+                   me.client = mqtt.createClient(me.port, me.host, me.credential);
+               } else {
+                   me.logger.info("Trying with Secure Connection to", me.host, ":", me.port);
+                   me.logger.debug("with ", me.credential);
+                   me.client = mqtt.createSecureClient(me.port, me.host, me.credential);
                 }
             }
         } catch(e) {
