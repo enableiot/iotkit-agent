@@ -53,7 +53,7 @@ IoTKitCloud.prototype.isActivated = function () {
     }
     var token  = me.secret.deviceToken;
     var account  = me.secret.accountId;
-    if (token && token.length > 600) {
+    if (token && token.length > 0) {
         if (account && account.length > 30) {
             return true;
         }
