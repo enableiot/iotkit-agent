@@ -66,8 +66,12 @@ var registerComponents = function (comp, catalogid) {
                         "n": comp,
                         "t": catalogid
                         };
-                agentMessage.handler(msg, function (stus){
-                    logger.info("Component registered", stus);
+                agentMessage.handler(msg, function (stus) {
+                    if (stus.status === 0) {
+                        logger.info("Component registered", stus);
+                    } else {
+                        logger.error("Component Not registered", stus);
+                    }
                     process.exit(r);
                 });
 

@@ -121,8 +121,9 @@ function Broker(conf, logger) {
         return a.test(text);
     }
     me.dettach = function (topic) {
-       me.messageHandler = me.messageHandler.filter(function (obj){
-            return tryPattern(obj.t, topic);});
+       me.messageHandler = me.messageHandler.filter(function (obj) {
+                                                    return !tryPattern(obj.t, topic);
+                            });
     };
     me.onMessage = function (topic, message) {
         var i,
