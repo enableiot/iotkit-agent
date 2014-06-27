@@ -84,6 +84,7 @@ function Broker(conf, logger) {
                 }
             }
         } catch(e) {
+            logger.error("Error in connection ex: " + JSON.stringify(e));
             done(new Error("Connection Error", 1002));
             return;
         }
