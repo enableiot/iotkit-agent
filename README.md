@@ -46,7 +46,7 @@ Or, you can set a different Device Id with this command:
 
     iotkit-admin set-device-id <device_id>
 
-After the registration in the iotkit-dashboard, copy the **activation code** displayed in the "Accounts" UI (in "Accounts" menu) and **activate** the device 
+After the registration in the iotkit-dashboard, copy the **activation code** displayed in the _My Account_ UI, tab _Details_ (in _Account_ menu) and **activate** the device 
 by executing:
 
     iotkit-admin activate <activation_code>
@@ -98,7 +98,7 @@ Or, you can set a different Device Id with this command:
 
 Once you get the Device Id, use them to register the device id in your dashboard.
 
-After the device registration, copy the activation code in the Accounts UI (in "Accounts" menu) and execute the activation command:
+After the device registration, copy the activation code in _My Account_ UI, tab _Details_ (in _Account_ menu) and execute the activation command:
 
     ./iotkit-admin.js activate <activation_code>     
 
