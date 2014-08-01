@@ -37,7 +37,7 @@ var fs = require('fs'),
 
 var filename = "sensor-list.json";
 function getStoreFileName () {
-    dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
+    var dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
     if(!fs.existsSync(dataDirectory)) {
         dataDirectory = '/usr/share/iotkit-agent/data/';
         if(!fs.existsSync(dataDirectory)) {
