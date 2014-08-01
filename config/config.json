@@ -18,6 +18,7 @@
         "LEVEL": "info",
         "PATH": "/tmp/"
     },
+    "data_directory": "",
     "gateway_id": null,
     "default_connector": "rest",
     "connector": {

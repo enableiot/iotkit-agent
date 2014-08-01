@@ -25,7 +25,8 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var path = require('path'),
+var fs = require('fs'),
+    path = require('path'),
     Cloud = require("../api/cloud.proxy"),
     conf = require('../config'),
     Message = require('../lib/agent-message'),
@@ -36,7 +37,16 @@ var path = require('path'),
 
 var filename = "sensor-list.json";
 function getStoreFileName () {
-    return path.join(__dirname, '../data/' +  filename);
+    dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
+    if(!fs.existsSync(dataDirectory)) {
+        dataDirectory = '/usr/share/iotkit-agent/data/';
+        if(!fs.existsSync(dataDirectory)) {
+            logger.error("Data directory does not exist! Set correct path using './iotkit-admin.js set-data-directory /YOUR/DATA/DIRECTORY/'");
+            return;
+        }
+    }
+    logger.info('Using data store: ' + dataDirectory);
+    return path.join(dataDirectory +  filename);
 }
 var resetComponents = function () {
     var fullFilename = getStoreFileName();
@@ -110,9 +120,16 @@ function registerObservation (comp, value) {
 }
 
 function getComponentsList () {
-    var com = common.readFileToJson(getStoreFileName());
-    var table = new Component.Register(com);
-    console.log(table.toString());
+    var storeFile = getStoreFileName();
+    if(storeFile) {
+        if(!fs.existsSync(storeFile)) {
+            logger.error('Could not find component data file!');
+            return;
+        }
+        var com = common.readFileToJson(storeFile);
+        var table = new Component.Register(com);
+        console.log(table.toString());
+    }
 }
 function getCatalogList  () {
     utils.getDeviceId(function (id) {

@@ -27,7 +27,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var logger = require("../lib/logger").init(),
     common = require('../lib/common'),
-    utils = require("../lib/utils").init();
+    utils = require("../lib/utils").init(),
+    path = require('path');
 
 function readConfig () {
     var fullFilename = common.getConfigName();
@@ -188,6 +189,7 @@ module.exports = {
             .command('reset-proxy')
             .description('Clears proxy For REST protocol.')
             .action(resetProxy);
+
         program
             .command('set-logger-level <level>')
             .description('Set the logger level to \'debug\', \'info\', \'warn\', \'error\'')
@@ -200,5 +202,22 @@ module.exports = {
                                                 Object.keys(loggerLevel).toString());
                 }
             });
+
+        program
+            .command('set-data-directory <path>')
+            .description('Sets path of directory that contains sensor data.')
+            .action(function(path) {
+                saveToConfig("data_directory", path);
+                logger.info("Data directory changed.");
+            });
+
+        program
+            .command('reset-data-directory')
+            .description('Resets to default the path of directory that contains sensor data.')
+            .action(function() {
+                saveToConfig("data_directory", path.join(__dirname, '../data/'));
+                logger.info("Data directory changed to default.");
+            });
+
     }
 };
