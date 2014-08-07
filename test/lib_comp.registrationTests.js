@@ -146,8 +146,9 @@ describe(fileToTest, function(){
         };
         connector.regComponent = function (sensor, callback) {
             assert.isObject(sensor, "The Sensor shall be register");
-            sensor.status = 0;
-            callback(sensor);
+            var x = [sensor];
+            x.status = 0;
+            callback(x);
         };
 
         var handler = toTest.init(connector, store, logger);
