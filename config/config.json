@@ -15,12 +15,12 @@
         -20
     ],
     "logger": {
-        "LEVEL": "info",
+        "LEVEL": "debug",
         "PATH": "/tmp/"
     },
     "data_directory": "",
     "gateway_id": null,
-    "default_connector": "rest",
+    "default_connector": "mqtt",
     "connector": {
         "mqtt": {
             "host": "broker.us.enableiot.com",
