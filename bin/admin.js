@@ -48,8 +48,25 @@ admin.command('*')
         console.log("\'" + admin.args[0] + "\'" +
             ' is not a valid command.');
     });
-
-admin.parse(process.argv);
+if(process.argv[2] === 'observation') {
+    if(process.argv[4][0] === '-') {
+        var args = [];
+        var unknown = [];
+        for(var i = 2; i <= 4; i++) {
+            args.push(process.argv[i]);
+        }
+        var parsed = {args: args, unknown: unknown};
+        admin.rawArgs = process.argv;
+        admin.args = args;
+        var result = admin.parseArgs(admin.args, parsed.unknown);
+    }
+    else {
+        admin.parse(process.argv);
+    }
+}
+else {
+    admin.parse(process.argv);
+}
 /*
  * Run if the command were specified at parameter
  */
