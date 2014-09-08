@@ -39,6 +39,11 @@ function writeConfig (data) {
     var fullFilename = common.getConfigName();
     common.writeToJson(fullFilename, data);
 }
+
+function readFromConfig (property) {
+    var fullFilename = common.getConfigName();
+    return common.readFileToJson(fullFilename)[property];
+}
 var saveToConfig = function () {
     if (arguments.length < 2) {
         logger.error("Not enough arguments : ", arguments);
@@ -154,6 +159,26 @@ module.exports = {
             .action(function(id) {
                 saveToConfig("device_id", id);
                 logger.info("Device ID set to: %s", id);
+            });
+
+        program
+            .command('gateway-id')
+            .description('Displays the gateway ID.')
+            .action(function() {
+                logger.info("Gateway ID: %s", readFromConfig('gateway_id'));
+            });
+
+        program
+            .command('set-gateway-id <id>')
+            .description('Overrides the gateway ID.')
+            .action(function(id) {
+                if(id.length === 0)
+                {
+                    logger.error("Empty id given!");
+                } else {
+                    saveToConfig("gateway_id", id);
+                    logger.info("Gateway ID set to: %s", id);
+                }
             });
 
         program
