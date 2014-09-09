@@ -29,7 +29,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     utils = require("../lib/utils").init(),
-    logger = require("../lib/logger").init(utils);
+    logger = require("../lib/logger").init(utils),
+    configurator = require('../admin/configurator');;
 
 describe('iotkit-agent', function() {
      it('should generate a valid device Id', function(done) {
@@ -42,3 +43,16 @@ describe('iotkit-agent', function() {
     });
 
 });
+
+describe('iotkit-agent', function() {
+    it('should generate a valid gatewayId', function(done) {
+        configurator.getGatewayId(function(id){
+            assert(id, 'id is null');
+            assert.notEqual(id, '');
+            this.gatewayId = id;
+            done();
+        });
+    });
+});
+
+

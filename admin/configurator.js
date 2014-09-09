@@ -39,6 +39,18 @@ function writeConfig (data) {
     var fullFilename = common.getConfigName();
     common.writeToJson(fullFilename, data);
 }
+
+var configFileKey = {
+    gatewayId : 'gateway_id',
+    deviceId: 'device_id',
+    dataDirectory: 'data_directory',
+    activationCode: 'activation_code',
+    defaultConnector: 'default_connector',
+    loggerLevel: 'logger.LEVEL',
+    connectorRestProxyHost: 'connector.rest.proxy.host',
+    connectorRestProxyPort: 'connector.rest.proxy.port'
+};
+
 var saveToConfig = function () {
     if (arguments.length < 2) {
         logger.error("Not enough arguments : ", arguments);
@@ -103,14 +115,23 @@ var setHostFor = function (host_value, port_value) {
 
 
 var setProxy = function (host_proxy, port_proxy) {
-    saveToConfig("connector.rest.proxy.host", host_proxy);
-    saveToConfig("connector.rest.proxy.port", port_proxy);
+    saveToConfig(configFileKey.connectorRestProxyHost, host_proxy);
+    saveToConfig(configFileKey.connectorRestProxyPort, port_proxy);
     logger.info("Set Proxy data");
 };
 var resetProxy = function () {
-    saveToConfig("connector.rest.proxy.host", false);
-    saveToConfig("connector.rest.proxy.port", false);
+    saveToConfig(configFileKey.connectorRestProxyHost, false);
+    saveToConfig(configFileKey.connectorRestProxyPort, false);
     logger.info("Set Proxy data");
+};
+
+var setGatewayId = function(id, cb) {
+    saveToConfig(configFileKey.gatewayId, id);
+    cb(id);
+};
+
+var getGatewayId = function(cb) {
+    utils.getGatewayId(configFileKey.gatewayId, cb);
 };
 
 var loggerLevel = {
@@ -126,7 +147,7 @@ module.exports = {
             .description('Set the protocol to \'mqtt\' or \'rest\'')
             .action(function(protocol){
                 if (protocol === 'mqtt' || protocol === 'rest') {
-                    saveToConfig("default_connector", protocol);
+                    saveToConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {
                     logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\'", protocol);
@@ -152,7 +173,7 @@ module.exports = {
             .command('set-device-id <id>')
             .description('Overrides the device id.')
             .action(function(id) {
-                saveToConfig("device_id", id);
+                saveToConfig(configFileKey.deviceId, id);
                 logger.info("Device ID set to: %s", id);
             });
 
@@ -160,7 +181,7 @@ module.exports = {
             .command('clear-device-id')
             .description('Reverts to using the default device id.')
             .action(function() {
-                saveToConfig("device_id", false);
+                saveToConfig(configFileKey.deviceId, false);
                 logger.info("Device ID cleared.");
             });
 
@@ -168,7 +189,7 @@ module.exports = {
             .command('save-code <activation_code>')
             .description('Adds the activation code to the device.')
             .action(function(activation_code) {
-                saveToConfig("activation_code", activation_code);
+                saveToConfig(configFileKey.activationCode, activation_code);
                 logger.info("Activation code saved.");
             });
 
@@ -176,7 +197,7 @@ module.exports = {
             .command('reset-code')
             .description('Clears the activation code of the device.')
             .action(function() {
-                saveToConfig("activation_code", null);
+                saveToConfig(configFileKey.activationCode, null);
                 logger.info("Activation code cleared.");
             });
 
@@ -195,7 +216,7 @@ module.exports = {
             .description('Set the logger level to \'debug\', \'info\', \'warn\', \'error\'')
             .action(function(level) {
                 if (loggerLevel[level]) {
-                    saveToConfig("logger.LEVEL", level);
+                    saveToConfig(configFileKey.loggerLevel, level);
                     logger.info("Logger Level set to: %s", level);
                 } else {
                     logger.error("invalid level: %s - please use %s", level,
@@ -207,7 +228,7 @@ module.exports = {
             .command('set-data-directory <path>')
             .description('Sets path of directory that contains sensor data.')
             .action(function(path) {
-                saveToConfig("data_directory", path);
+                saveToConfig(configFileKey.dataDirectory, path);
                 logger.info("Data directory changed.");
             });
 
@@ -215,9 +236,29 @@ module.exports = {
             .command('reset-data-directory')
             .description('Resets to default the path of directory that contains sensor data.')
             .action(function() {
-                saveToConfig("data_directory", path.join(__dirname, '../data/'));
+                saveToConfig(configFileKey.dataDirectory, path.join(__dirname, '../data/'));
                 logger.info("Data directory changed to default.");
             });
 
-    }
+        program
+            .command('gateway-id')
+            .description('Displays the geteway id.')
+            .action(function() {
+                getGatewayId(function (id) {
+                    logger.info("Gateway ID: %s", id);
+                });
+            });
+
+        program
+            .command('set-gateway-id <id>')
+            .description('Overrides the geteway id.')
+            .action(function(id) {
+                setGatewayId(id, function(id){
+                    logger.info("Gateway Id set to: %s", id);
+                });
+            });
+
+    },
+    setGatewayId: setGatewayId,
+    getGatewayId: getGatewayId
 };

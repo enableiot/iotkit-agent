@@ -86,17 +86,25 @@ Run the following command to find the enableiot dashboard:
 The steps to configure and activate the agent are almost the same as the scenario where the iotkit-agent has been pre-installed in the Galileo.
 
 So, you will need to register the iotkit-agent at the [iotkit-dashboard](https://dashboard.us.enableiot.com).
-To do that, you need to obtain the Device Id by executing this command: 
+To do that, you need to obtain the Device Id and Gateway Id by executing those commands :
 
     ./iotkit-admin.js device-id
+    ./iotkit-admin.js gateway-id
 
-> In the Dashboard enter both Id and Gateway as output by previous command.
+> If both Gateway Id and Device Id weren't set in the past, they will have the same value on the beginning.
+
+> In the Dashboard enter both Id and Gateway as output by previous commands.
 
 Or, you can set a different Device Id with this command:
 
     ./iotkit-admin.js set-device-id <device_id>
 
-Once you get the Device Id, use them to register the device id in your dashboard.
+You can also set a different Gateway with this command:
+
+    ./iotkit-admin.js set-gateway-id <gateway_id>
+
+
+Once you get the Device Id and Gateway Id, use them to register the device id in your dashboard.
 
 After the device registration, copy the activation code in _My Account_ UI, tab _Details_ (in _Account_ menu) and execute the activation command:
 
