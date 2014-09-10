@@ -62,11 +62,11 @@ describe('iotkit-agent', function() {
             this.gatewayId = id;
         });
 
-        configurator.setGetewayId('test', function(id){
+        configurator.setGatewayId('test', function(id){
             assert(id, 'id is null');
             assert.equal(id, 'test');
             //Revert changes made by previous setGateway
-            configurator.setGetewayId(this.gatewayId, function(id){
+            configurator.setGatewayId(this.gatewayId, function(id){
                 assert.equal(id, this.gatewayId);
             });
             done();
