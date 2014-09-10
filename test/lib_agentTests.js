@@ -55,4 +55,23 @@ describe('iotkit-agent', function() {
     });
 });
 
+describe('iotkit-agent', function() {
+    it('should set a correct gatewayId', function(done) {
+        configurator.getGatewayId(function(id) {
+            assert(id, 'id is null');
+            this.gatewayId = id;
+        });
+
+        configurator.setGetewayId('test', function(id){
+            assert(id, 'id is null');
+            assert.equal(id, 'test');
+            //Revert changes made by previous setGateway
+            configurator.setGetewayId(this.gatewayId, function(id){
+                assert.equal(id, this.gatewayId);
+            });
+            done();
+        });
+    });
+});
+
 

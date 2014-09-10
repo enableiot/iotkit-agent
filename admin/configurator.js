@@ -40,7 +40,6 @@ function writeConfig (data) {
     common.writeToJson(fullFilename, data);
 }
 
-
 var configFileKey = {
     gatewayId : 'gateway_id',
     deviceId: 'device_id',
@@ -50,11 +49,6 @@ var configFileKey = {
     loggerLevel: 'logger.LEVEL',
     connectorRestProxyHost: 'connector.rest.proxy.host',
     connectorRestProxyPort: 'connector.rest.proxy.port'
-};
-
-function readFromConfig (property) {
-    var fullFilename = common.getConfigName();
-    return common.readFileToJson(fullFilename)[property];
 };
 
 var saveToConfig = function () {
@@ -118,7 +112,6 @@ var setHostFor = function (host_value, port_value) {
        }
     }
 };
-
 
 var setProxy = function (host_proxy, port_proxy) {
     saveToConfig(configFileKey.connectorRestProxyHost, host_proxy);
@@ -265,5 +258,6 @@ module.exports = {
             });
 
     },
-    getGatewayId: getGatewayId
+    getGatewayId: getGatewayId,
+    setGetewayId: setGatewayId
 };
