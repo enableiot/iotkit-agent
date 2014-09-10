@@ -259,5 +259,5 @@ module.exports = {
 
     },
     getGatewayId: getGatewayId,
-    setGetewayId: setGatewayId
+    setGatewayId: setGatewayId
 };
