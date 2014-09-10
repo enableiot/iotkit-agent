@@ -52,13 +52,14 @@ IoTKitControl.prototype.send = function (actuation) {
 IoTKitControl.prototype.controlAction = function () {
     var me = this;
     var handler = function  (message) {
-        var comp = me.store.byCid(message.componentId);
+        var comp = me.store.byCid(message.content.componentId);
         if (comp) {
             var actuation = {
                 component: comp.name,
-                command: message.command,
-                argv: message.params
+                command: message.content.command,
+                argv: message.content.params
             };
+            me.logger.debug("Sending actuation: " + JSON.stringify(actuation));
             return me.send(actuation);
         }
     };
