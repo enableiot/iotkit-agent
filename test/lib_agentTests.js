@@ -30,6 +30,7 @@ process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(utils),
+    schemaValidation = require('../lib/schema-validator'),
     configurator = require('../admin/configurator');;
 
 describe('iotkit-agent', function() {
@@ -69,6 +70,33 @@ describe('iotkit-agent', function() {
             configurator.setGatewayId(this.gatewayId, function(id){
                 assert.equal(id, this.gatewayId);
             });
+            done();
+        });
+    });
+});
+
+describe('iotkit-agent', function() {
+    it('should format a valid error message from errors array', function(done) {
+        var errors = [
+            {
+                customMessage: 'n must be at least 4 characters long'
+            },
+            {
+                customMessage: 't is missing'
+            }
+
+        ];
+        schemaValidation.parseErrors(errors, function(msg){
+            assert(msg, 'msg is null');
+            assert.equal(msg, 'name must be at least 4 characters long, type is missing');
+            done();
+        });
+    });
+    it('should return empty error message from empty array', function(done) {
+        var errors = [];
+        schemaValidation.parseErrors(errors, function(msg){
+            //assert(msg, 'msg is null');
+            assert.equal(msg, '');
             done();
         });
     });

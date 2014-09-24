@@ -80,7 +80,7 @@ var registerComponents = function (comp, catalogid) {
                     if (stus.status === 0) {
                         logger.info("Component registered", stus);
                     } else {
-                        logger.error("Component Not registered", stus);
+                        logger.error("Component Not registered: ", stus);
                     }
                     process.exit(r);
                 });
