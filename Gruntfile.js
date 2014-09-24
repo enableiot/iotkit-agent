@@ -98,6 +98,7 @@ module.exports = function(grunt) {
                    coverage: true,
                    recursive: true,
                    reporter: 'list',
+                   timeout: 20000,
                    mask: '*Tests.js',
                    check: {
                     lines: 70,
@@ -116,6 +117,7 @@ module.exports = function(grunt) {
                     coverage: true,
                     recursive: true,
                     reporter: 'mocha-teamcity-reporter',
+                    timeout: 20000,
                     mask: '*Tests.js',
                     /*check: {
                         lines: 70,

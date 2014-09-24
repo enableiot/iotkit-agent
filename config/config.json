@@ -28,7 +28,7 @@
             "qos": 1,
             "retain": false,
             "secure": true,
-            "retries": 30,
+            "retries": 5,
             "topic": {
                 "device_status": "device/{deviceid}/activation",
                 "device_activation": "server/devices/{deviceid}/activation",

@@ -37,7 +37,7 @@ function Broker(conf, logger) {
         username: conf.username,
         password: conf.password
     };
-    me.max_retries = conf.retries || 30;
+    me.max_retries = conf.retries || 5;
     me.messageHandler = [];
     me.logger = logger;
     me.topics = conf.topics;
@@ -88,17 +88,27 @@ function Broker(conf, logger) {
             done(new Error("Connection Error", 1002));
             return;
         }
+        var counter = 20000;
+
         function waitForConnection() {
             if (!me.client.connected) {
-                retries++;
-                me.logger.info("Waiting for MQTTConnector to connect # " + retries);
-                if (retries < me.max_retries) {
-                    setTimeout(waitForConnection, 1500);
-                } else {
-                    me.logger.info('MQTTConnector: Error Connecting to '+  me.host + ':' + me.port);
-                    done(new Error("Connection Error", 1001));
+                if(counter < 18000){
+                    counter += 100;
+                    setTimeout(waitForConnection, 100);
+                    return false;
                 }
-                return false;
+                else {
+                    retries++;
+                    me.logger.info("Waiting for MQTTConnector to connect # " + retries);
+                    if (retries < me.max_retries) {
+                        counter = 0;
+                        setTimeout(waitForConnection, 100);
+                    } else {
+                        me.logger.info('MQTTConnector: Error Connecting to ' + me.host + ':' + me.port);
+                        done(new Error("Connection Error", 1001));
+                    }
+                    return false;
+                }
             }
             me.logger.info('MQTTConnector: Connection successful to ' + me.host + ':' + me.port);
             me.listen();
