@@ -33,7 +33,8 @@ var fs = require('fs'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(),
     Component = require('../lib/data/Components'),
-    common = require('../lib/common');
+    common = require('../lib/common'),
+    schemaValidation = require('../lib/schema-validator');
 
 var filename = "sensor-list.json";
 function getStoreFileName () {
@@ -83,7 +84,7 @@ var registerComponents = function (comp, catalogid) {
                         logger.error("Component Not registered: ", stus);
                     }
                     process.exit(r);
-                });
+                }, schemaValidation.schemas.component.REG);
 
             } else {
                 logger.error("Error in the registration process ...", status);
