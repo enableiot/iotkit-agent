@@ -8,7 +8,9 @@ This is a command line "wrapper" for the [REST API](https://github.com/enableiot
 ###iotkit-agent
 This is a "agent" program intended to run as a services. You can send a very simple message, such as:
 
-```{"n": "temp", "v": 26.9}```
+```
+{"n": "temp", "v": 26.9}
+```
 
 to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to the cloud server. 
 
@@ -24,7 +26,9 @@ Here is a getting started document which walks you through this material:
 
 If you are participating in a Intel-sponsored hackathon, the agent may be pre-installed on your Galileo or Edison. Try opening a shell on the board and running:
 
-```# iotkit-admin test```
+```
+# iotkit-admin test
+```
 
 If the program is not installed, you can install it following these steps:
 
@@ -38,7 +42,9 @@ If the program is not installed, you can install it following these steps:
 
 If the agent has been pre-installed on your Galileo or Edison board, you can run:
 
-```iotkit-admin test```
+```
+# iotkit-admin test
+```
 
 but if it isn't installed, you will need "cd" to the directory where you installed it and run it from the local directory (note the leading ./ and the trailing .js):
 
@@ -50,8 +56,9 @@ but if it isn't installed, you will need "cd" to the directory where you install
 
 ###1 Test the connection to the cloud
 
-``
-`# iotkit-admin test
+
+```
+# iotkit-admin test
 2014-10-05T22:05:12.055Z - info: Connected to broker.us.enableiot.com
 2014-10-05T22:05:12.055Z - info: Environment: PROD
 2014-10-05T22:05:12.055Z - info: Build: 0.9.192
