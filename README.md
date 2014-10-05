@@ -16,7 +16,22 @@ We have a [Arduino library](https://github.com/enableiot/iotkit-samples/tree/mas
 
 
 [Getting Started Presentation](../master/doc/gettingStarted.pdf)
- 
+
+##Which version of the command line?
+
+If the agent has been pre-installed on your Galileo or Edison board, you can run:
+
+```iotkit-admin test```
+
+but if it isn't installed, you will need to install it, and run it from the local directory:
+
+```
+# git clone https://github.com/enableiot/iotkit-agent.git
+# cd iotkit-agent
+# npm install
+# ./iotkit-agent.js test
+```
+git clone http
 ##1. Running from a Galileo with a pre-installed agent
 
 In case you get a Galileo board with the iotkit-agent pre-installed, you will need to stop the iotkit-agent and then configure it.
