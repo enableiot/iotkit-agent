@@ -46,29 +46,17 @@ but if it isn't installed, you will need "cd" to the directory where you install
 # ./iotkit-agent.js test
 ```
 
+##Setting up you board
 
+###1 Test the connection to the cloud
 
-git clone http
-##1. Running from a Galileo with a pre-installed agent
+``
+`# iotkit-admin test
+2014-10-05T22:05:12.055Z - info: Connected to broker.us.enableiot.com
+2014-10-05T22:05:12.055Z - info: Environment: PROD
+2014-10-05T22:05:12.055Z - info: Build: 0.9.192
 
-In case you get a Galileo board with the iotkit-agent pre-installed, you will need to stop the iotkit-agent and then configure it.
-In order to do that, run the command:
-
-    systemctl stop iotkit-agent
-
-Once the iotkit-agent is stopped, you can continue with the following steps.
-
-####1.1 Set date
-
-If the Galileo board does not have the correct date, run:
-
-    date -s "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"
-
-####1.2 Testing the connection with iotkit-dashboard
-
-Run the following command to find the enableiot dashboard: 
-
-    iotkit-admin test
+```
 
 *Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#5-notes-about-admin-commands).
 
