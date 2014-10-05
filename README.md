@@ -12,10 +12,27 @@ This is a "agent" program intended to run as a services. You can send a very sim
 
 to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to the cloud server. 
 
-We have a [Arduino library](https://github.com/enableiot/iotkit-samples/tree/master/arduino) which can send this message to the agent, and you can write your own in other languages.
+We have an [Arduino library](https://github.com/enableiot/iotkit-samples/tree/master/arduino) which can send this message to the agent, and you can write your own in other languages.
 
+## Getting Started
+
+Here is a getting started document which walks you through this material:
 
 [Getting Started Presentation](../master/doc/gettingStarted.pdf)
+
+## Installing
+
+If you are participating in a Intel-sponsored hackathon, the agent may be pre-installed on your Galileo or Edison. Try opening a shell on the board and running:
+
+```# iotkit-admin test```
+
+If the program is not installed, you can install it following these steps:
+
+```
+# git clone https://github.com/enableiot/iotkit-agent.git
+# cd iotkit-agent
+# npm install
+```
 
 ##Which version of the command line?
 
@@ -23,14 +40,14 @@ If the agent has been pre-installed on your Galileo or Edison board, you can run
 
 ```iotkit-admin test```
 
-but if it isn't installed, you will need to install it, and run it from the local directory:
+but if it isn't installed, you will need "cd" to the directory where you installed it and run it from the local directory (note the leading ./ and the trailing .js):
 
 ```
-# git clone https://github.com/enableiot/iotkit-agent.git
-# cd iotkit-agent
-# npm install
 # ./iotkit-agent.js test
 ```
+
+
+
 git clone http
 ##1. Running from a Galileo with a pre-installed agent
 
