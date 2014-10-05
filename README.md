@@ -2,6 +2,8 @@
 
 The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows developers to focus on application development and logic for their devices (sensors, actuators and tags). IoT Kit Agent transparently implements the necessary message format and security during both the device registration and data submission. 
 
+[Presentation](../master/doc/gettingStarted.pdf)
+
 ![Agent Topology](../master/images/agent-topo.png?raw=true)
 
 ## Table of Contents
