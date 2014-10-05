@@ -1,15 +1,15 @@
 # iotkit-agent
 
-The IoT Kit Agent abstracts complexities of Cloud connectivity. It allows developers to focus on application development and logic for their devices (sensors, actuators and tags). IoT Kit Agent transparently implements the necessary message format and security during both the device registration and data submission. 
+This project includes two programs:
 
-[Presentation](../master/doc/gettingStarted.pdf)
+###iotkit-admin
+This is a command line "wrapper" for the [REST API](https://github.com/enableiot/iotkit-api/wiki/Api-Home), enabling you to test connectivity, activate a device, register time series and send observations all from the command line.
 
-![Agent Topology](../master/images/agent-topo.png?raw=true)
+###iotkit-agent
+This is a "helper" program intended to run as a services. You can send it a very simple message, such as "{"n": "temp", "v": 26.9}" over a UDP socket. It will add the security token, add a time stamp, convert "temp" to the component id, and send a REST POST over SSL for you. We have a Arduino library which can send this message to the agent, and you can write your own in other languages.
 
-## Table of Contents
 
-1. [Running from a Galileo with a pre-installed agent](#1-running-from-a-galileo-with-a-pre-installed-agent)
-2. [Installing using npm](#2-installing-using-npm)
+[Getting Started Presentation](../master/doc/gettingStarted.pdf)
  
 ##1. Running from a Galileo with a pre-installed agent
 
