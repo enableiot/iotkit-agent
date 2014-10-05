@@ -6,11 +6,13 @@ This project includes two programs:
 This is a command line "wrapper" for the [REST API](https://github.com/enableiot/iotkit-api/wiki/Api-Home), enabling you to test connectivity, activate a device, register time series and send observations all from the command line.
 
 ###iotkit-agent
-This is a "helper" program intended to run as a services. You can send it a very simple message, such as:
+This is a "agent" program intended to run as a services. You can send a very simple message, such as:
 
-```"{"n": "temp", "v": 26.9}"```
+```{"n": "temp", "v": 26.9}```
 
-over a UDP socket. It will add the security token, add a time stamp, convert "temp" to the component (time series) id, and send a REST POST over SSL for you. We have a [Arduino library](https://github.com/enableiot/iotkit-samples/tree/master/arduino) which can send this message to the agent, and you can write your own in other languages.
+to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to the cloud server. 
+
+We have a [Arduino library](https://github.com/enableiot/iotkit-samples/tree/master/arduino) which can send this message to the agent, and you can write your own in other languages.
 
 
 [Getting Started Presentation](../master/doc/gettingStarted.pdf)
