@@ -61,7 +61,7 @@ but if it isn't installed, you will need "cd" to the directory where you install
 # iotkit-admin test
 2014-10-05T22:05:12.055Z - info: Connected to broker.us.enableiot.com
 2014-10-05T22:05:12.055Z - info: Environment: PROD
-2014-10-05T22:05:12.055Z - info: Build: 0.9.192
+2014-10-05T22:05:12.055Z - info: Build: 0.10.3
 
 ```
 
