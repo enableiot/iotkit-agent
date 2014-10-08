@@ -122,6 +122,7 @@ IoTKitCloud.prototype.activate = function (code, callback) {
         me.proxy.activation(ActMessage, me.activationComplete(complete));
     } else {
         // skip the update since we were already activated
+        me.logger.info('Device has already been activated. Updating ...');
         me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
         complete(0);
     }
