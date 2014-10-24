@@ -6,8 +6,8 @@
         "tcp_port": 7070
     },
     "receivers":{
-      "udp_port": 41235,
-        "address":"0.0.0.0"
+        "udp_port": 41235,
+        "udp_address":"0.0.0.0"
     },
     "activation_retries": 10,
     "activation_code": null,
