@@ -38,27 +38,28 @@ function IoTKitControl(conf, logger, deviceId, customProxy){
     me.store = Sensor.init("sensor-list.json", logger);
     me.gatewayId = conf.gateway_id || deviceId;
     me.logger.debug('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
+    me.receiverInfo = {port: conf.receivers.udp_port, address: conf.receivers.udp_address};
+
 }
 IoTKitControl.prototype.send = function (actuation) {
     var me = this;
-    var rinfo = updTable.getRinfo(actuation.component);
-    if (rinfo) {
-        if (me.dispatcher) {
-            me.dispatcher.send(rinfo, actuation);
-        }
+    if(me.dispatcher) {
+        me.dispatcher.send(me.receiverInfo, actuation);
     }
+
     return true;
 };
 IoTKitControl.prototype.controlAction = function () {
     var me = this;
     var handler = function  (message) {
-        var comp = me.store.byCid(message.componentId);
+        var comp = me.store.byCid(message.content.componentId);
         if (comp) {
             var actuation = {
                 component: comp.name,
-                command: message.command,
-                argv: message.params
+                command: message.content.command,
+                argv: message.content.params
             };
+            me.logger.debug("Sending actuation: " + JSON.stringify(actuation));
             return me.send(actuation);
         }
     };
