@@ -28,7 +28,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var Sensor = require('../lib/sensors-store'),
     proxyConnector = require('../lib/proxies').geControlConnector('mqtt');
-var updTable = require('../lib/server/upd.table').singleton();
 
 function IoTKitControl(conf, logger, deviceId, customProxy){
     var me = this;
