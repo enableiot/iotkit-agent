@@ -28,7 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 "use strict";
-var admin= require('commander'),
+var admin= require('../lib/commander'),
     pkgJson = require('../package.json'),
     auth = require('../admin/operational'),
     components = require('../admin/components'),
