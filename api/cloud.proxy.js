@@ -122,6 +122,7 @@ IoTKitCloud.prototype.activate = function (code, callback) {
         me.proxy.activation(ActMessage, me.activationComplete(complete));
     } else {
         // skip the update since we were already activated
+        me.logger.info('Device has already been activated. Updating ...');
         me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
         complete(0);
     }
@@ -132,13 +133,14 @@ IoTKitCloud.prototype.update = function(callback) {
     msg.metadataExtended(me.gatewayId , function (doc) {
         doc.deviceToken = me.secret.deviceToken;
         doc.deviceId = me.deviceId;
-        me.logger.info("Sending attributes...");
+        me.logger.info("Updating metadata...");
         me.proxy.attributes(doc, function () {
             me.logger.debug("attributes has returned from ", me.proxy.type);
             if (callback) {
                 callback();
             }
         });
+        me.logger.info("Metadata updated.");
     });
 
 };

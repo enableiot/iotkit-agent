@@ -191,6 +191,7 @@ Commands:
 * `register <comp_name> <catalogid>` Registers a component in the device. Use this command just for testing purposes.
 * `reset-components`       Clears the component list.
 * `observation <comp_name> <value>` Sends an observation for the device, for the specific component. Use this command just for testing purposes.
+* `update`                 Updates metadata manually
 * `catalog`                Displays the Catalog from the device's account.
 * `components`             Displays components registered for this device.
 * `initialize`             Resets both the token and the component's list.

@@ -98,25 +98,34 @@ var registerComponents = function (comp, catalogid) {
 function registerObservation (comp, value) {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(conf, logger, id);
-        cloud.activate(function (status) {
+        if(cloud.isActivated()) {
             var r = 0;
-            if (status === 0) {
-                var agentMessage = Message.init(cloud, logger);
-                var msg = {
-                    "n": comp,
-                    "v": value
-                };
-                agentMessage.handler(msg, function (stus){
-                    logger.info("Observation Sent", stus);
-                    process.exit(r);
-                });
+            var agentMessage = Message.init(cloud, logger);
+            var msg = {
+                "n": comp,
+                "v": value
+            };
+            agentMessage.handler(msg, function (stus) {
+                logger.info("Observation Sent", stus);
+                process.exit(r);
+            });
+        } else {
+            logger.error("Error in the Observation Device is not activated ...");
+            process.exit(1);
+        }
 
-            } else {
-                logger.error("Error in the Observation Submission process ...", status);
-                process.exit(1);
-            }
+    });
+}
 
-        });
+function updateMetadata() {
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(conf, logger, id);
+        if(cloud.isActivated()) {
+            cloud.update();
+        } else {
+            logger.error("Error in updating Device is not activated ...");
+            process.exit(1);
+        }
     });
 }
 
@@ -176,5 +185,9 @@ module.exports = {
                 resetComponents();
                 logger.info("Initialized");
             });
+        program
+            .command('update')
+            .description('Send update device request to dashboard')
+            .action(updateMetadata);
     }
 };
