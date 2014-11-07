@@ -126,7 +126,7 @@ function updateMetadata() {
             logger.error("Error in updating Device is not activated ...");
             process.exit(1);
         }
-    })
+    });
 }
 
 function getComponentsList () {
