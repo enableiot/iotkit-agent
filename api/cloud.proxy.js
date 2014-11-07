@@ -133,13 +133,14 @@ IoTKitCloud.prototype.update = function(callback) {
     msg.metadataExtended(me.gatewayId , function (doc) {
         doc.deviceToken = me.secret.deviceToken;
         doc.deviceId = me.deviceId;
-        me.logger.info("Sending attributes...");
+        me.logger.info("Updating metadata...");
         me.proxy.attributes(doc, function () {
             me.logger.debug("attributes has returned from ", me.proxy.type);
             if (callback) {
                 callback();
             }
         });
+        me.logger.info("Metadata updated.");
     });
 
 };
