@@ -26,6 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
 var mqtt = require('mqtt');
+var trustedCAs = [__dirname + '/../../certs/AddTrust_External_Root.pem'];
 
 function Broker(conf, logger) {
     var me = this;
@@ -35,7 +36,9 @@ function Broker(conf, logger) {
     me.keepalive = conf.keepalive || 60;
     me.crd = {
         username: conf.username,
-        password: conf.password
+        password: conf.password,
+        ca: trustedCAs,
+        rejectUnauthorized: true
     };
     me.max_retries = conf.retries || 5;
     me.messageHandler = [];
@@ -55,6 +58,8 @@ function Broker(conf, logger) {
             username: me.crd.username,
             password: me.crd.password,
             keepalive: me.keepalive,
+            ca: trustedCAs,
+            rejectUnauthorized: true
         };
     };
     me.setCredential();
