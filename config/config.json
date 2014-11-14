@@ -53,7 +53,7 @@
             "host": "dashboard.us.enableiot.com",
             "port": 443,
             "protocol": "https",
-            "strictSSL": false,
+            "strictSSL": true,
             "timeout": 30000,
             "proxy": {
                 "host": false,
