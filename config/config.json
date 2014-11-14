@@ -5,9 +5,9 @@
         "udp_port": 41234,
         "tcp_port": 7070
     },
-    "receivers":{
+    "receivers": {
         "udp_port": 41235,
-        "udp_address":"0.0.0.0"
+        "udp_address": "0.0.0.0"
     },
     "activation_retries": 10,
     "activation_code": null,
@@ -32,6 +32,7 @@
             "qos": 1,
             "retain": false,
             "secure": true,
+            "strictSSL": true,
             "retries": 5,
             "topic": {
                 "device_status": "device/{deviceid}/activation",
