@@ -36,10 +36,12 @@ function Broker(conf, logger) {
     me.keepalive = conf.keepalive || 60;
     me.crd = {
         username: conf.username,
-        password: conf.password,
-        ca: trustedCAs,
-        rejectUnauthorized: true
+        password: conf.password
     };
+    if(conf.strictSSL) {
+        me.crd.ca = trustedCAs;
+        me.crd.rejectUnauthorized = true;
+    }
     me.max_retries = conf.retries || 5;
     me.messageHandler = [];
     me.logger = logger;
@@ -57,10 +59,12 @@ function Broker(conf, logger) {
         me.credential = {
             username: me.crd.username,
             password: me.crd.password,
-            keepalive: me.keepalive,
-            ca: trustedCAs,
-            rejectUnauthorized: true
+            keepalive: me.keepalive
         };
+        if(conf.strictSSL) {
+            me.credential.ca = trustedCAs;
+            me.credential.rejectUnauthorized = true;
+        }
     };
     me.setCredential();
     me.listen = function () {
