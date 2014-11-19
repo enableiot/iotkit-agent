@@ -38,7 +38,7 @@ function Broker(conf, logger) {
         username: conf.username,
         password: conf.password
     };
-    if(conf.strictSSL) {
+    if(conf.strictSSL === undefined || conf.strictSSL === true) {
         me.crd.ca = trustedCAs;
         me.crd.rejectUnauthorized = true;
     }
@@ -61,7 +61,7 @@ function Broker(conf, logger) {
             password: me.crd.password,
             keepalive: me.keepalive
         };
-        if(conf.strictSSL) {
+        if(conf.strictSSL === undefined || conf.strictSSL === true) {
             me.credential.ca = trustedCAs;
             me.credential.rejectUnauthorized = true;
         }
