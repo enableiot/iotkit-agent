@@ -22,14 +22,13 @@ Here is a getting started document which walks you through this material:
 
 [Getting Started Presentation](../master/doc/gettingStarted.pdf)
 
-## Installing
-
 If you are participating in a Intel-sponsored hackathon, the agent may be pre-installed on your Galileo or Edison. Try opening a shell on the board and running:
 
 ```
 # iotkit-admin test
 ```
 
+## Installing using git
 If the program is not installed, you can install it following these steps:
 
 ```
@@ -160,11 +159,50 @@ Yes, you guessed it, run the stop script:
 
     ./stop-agent.sh
 
-##3. Usage
+##3. Upgrade
+
+If you have pre-installed version of iotkit-agent on your Edison board:
+1. systemctl stop iotkit-agent
+2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
+3. If your agent used global config files, backup external files:
+/etc/iotkit-agent/config.json
+/usr/share/iotkit-agent/certs
+/usr/share/iotkit-agent/data
+4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders.
+4. Upgrade iotkit-agent using npm
+npm install --global iotkit-agent
+5. Replace empty /usr/lib/node_modules/iotkit-agent/certs/token.json file with one from your backup from certs folder
+6  Replace content of /usr/lib/node_modules/iotkit-agent/data folder with content of certs folder from your backup
+5. New iotkit-agents use local config in config/config.json. Update changed properties of your old config in updated config.json, e.g.
+    a. device_id
+    b. gateway_id
+    c. device_loc
+    d. or your proxy settings for REST
+6. systemctl start iotkit-agent
+7. Check logs in /tmp/agent.log
+
+If your iotkit-agent was installed using git:
+1. systemctl stop iotkit-agent
+2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
+3. If your agent used global config files, backup external files:
+/etc/iotkit-agent/config.json
+/usr/share/iotkit-agent/certs
+/usr/share/iotkit-agent/data
+4. Upgrade iotkit-agent using git
+From installation directory execute:
+git stash
+git pull
+git stash pop
+Merge conflicts if occured.
+5. systemctl start iotkit-agent
+6. Check logs in /tmp/agent.log
+
+	
+##4. Usage
 
 For instructions how to use the iotkit-agent please see the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
 
-##4. Test
+##5. Test
 
 The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. 
 To run all tests:
@@ -174,7 +212,7 @@ To run all tests:
     npm install 
     node_modules/.bin/grunt
 
-##5. Notes about "admin" commands
+##6. Notes about "admin" commands
 
 The iotkit-agent provides a set of commands (and basic options) to perform configuration over the device, as well as, some basic actions, like activation, initialization, etc.
 
@@ -213,18 +251,51 @@ Options:
 
 Commands like 'register' and 'observation' should be used only for testing purposes. 
 
-##6. General notes
+##7. General notes
 
 * The iotkit-agent default protocol is **REST**. To change it to MQTT, use command 'protocol'.
 * The device id is obtained from the MAC Address of the Galileo. Get it with the command 'device-id'.
 * The 'catalog' command shows the list of components associated with the account where the device is active.
 * In order to define the **host**, you don't need to specify the protocol (https/http).
 
-##7. Certificates
+##8. Certificates
 
 > Do not use the default certificates in production.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
+
+## What's new in version 1.5.4
+DP-3127 Using only local configuration files, not system ones.
+
+## What's new in version 1.5.2
+DP-2199 – Unable to send observations with value lower than 0
+    Negative values can be send using command line.
+DP-2208 – iotkit-admin.js does not work on Windows
+    Correct system temporary folder is used in Windows and Linux operating systems.
+DP-2282 – Add commands to agent to modify gateway id
+    Gateway id can be updated separately using command set-gateway-id.
+DP-2344 – Timeouts and connection attempts
+    Time limits for MQTT were increased and number of retries lowered.
+DP-2351 – When registering a component with short (<4 characters) name, component is not saved and no error is displayed
+    Added validation on client side for too short component name during registration.
+DP-2521 – Investigate actuation fails
+    Some problems were found and fixed.
+DP-2652 DP-2657 – Sending measurements should not update device every time 
+    Device is no longer updated when sending observation so less data is sent.
+    It’s updated when activating device, registering components or manually by executing update command.
+DP-1642 – Several iotkit-admin commands do not check arguments
+    Added message about next required parameter when not provided.
+DP-2969 – Sending data by iotkit-agent with value 0 fails
+    Zero is accepted as measurement value.
+DP-3029 – Device activation intermittent failures over REST API
+    Timeout for REST calls was increased.
+DP-1977 – mqtt.createSecureClient does not pass key options
+    Strict validation of SSL certificates on dashboard and broker enabled by default.
+DP-3106 Script for submitting data to local agent using UDP
+    Script for submitting data to local agent using UDP was added to root folder. It can be used by Windows users who do not have nc program in their OS.
+DP-3107 Getting Started guide in pdf has been added
+    Getting Started guide in pdf format is available in root folder.
+
 
 ## What's new in version 0.8.5
 
