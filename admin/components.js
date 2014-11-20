@@ -40,15 +40,13 @@ var filename = "sensor-list.json";
 function getStoreFileName () {
     var dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
     if(!fs.existsSync(dataDirectory)) {
-        dataDirectory = '/usr/share/iotkit-agent/data/';
-        if(!fs.existsSync(dataDirectory)) {
-            logger.error("Data directory does not exist! Set correct path using './iotkit-admin.js set-data-directory /YOUR/DATA/DIRECTORY/'");
-            return;
-        }
+        logger.error("Data directory does not exist! Set correct path using './iotkit-admin.js set-data-directory /YOUR/DATA/DIRECTORY/'");
+        return;
     }
     logger.info('Using data store: ' + dataDirectory);
     return path.join(dataDirectory +  filename);
 }
+
 var resetComponents = function () {
     var fullFilename = getStoreFileName();
     var data = [];
