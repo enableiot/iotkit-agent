@@ -165,19 +165,23 @@ If you have pre-installed version of iotkit-agent on your Edison board:
  1. systemctl stop iotkit-agent
  2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
  3. If your agent used global config files, backup external files:
-  /etc/iotkit-agent/config.json
-  /usr/share/iotkit-agent/certs
-  /usr/share/iotkit-agent/data
+ 
+  * /etc/iotkit-agent/config.json
+  * /usr/share/iotkit-agent/certs
+  * /usr/share/iotkit-agent/data  
+  
  4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders.
  5. Upgrade iotkit-agent using npm
   npm install --global iotkit-agent
- 6. Replace empty /usr/lib/node_modules/iotkit-agent/certs/token.json file with one from your backup from certs folder
- 7  Replace content of /usr/lib/node_modules/iotkit-agent/data folder with content of certs folder from your backup
- 8. New iotkit-agents use local config in config/config.json. Update changed properties of your old config in updated   config.json, e.g.
-    a. device_id
-    b. gateway_id
-    c. device_loc
-    d. or your proxy settings for REST
+ 6. Replace default /usr/lib/node_modules/iotkit-agent/certs/token.json file with one from your backup from certs folder
+ 7.  Replace content of /usr/lib/node_modules/iotkit-agent/data folder with content of certs folder from your backup
+ 8. New iotkit-agents use local config in config/config.json. Update changed properties of your old config in updated config.json, e.g.
+ 
+  * device_id
+  * gateway_id
+  * device_loc
+  * or your proxy settings for REST
+    
  9. systemctl start iotkit-agent
  10. Check logs in /tmp/agent.log
 
@@ -185,14 +189,18 @@ If your iotkit-agent was installed using git:
  1. systemctl stop iotkit-agent
  2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
  3. If your agent used global config files, backup external files:
-  /etc/iotkit-agent/config.json
-  /usr/share/iotkit-agent/certs
-  /usr/share/iotkit-agent/data
+ 
+  * /etc/iotkit-agent/config.json
+  * /usr/share/iotkit-agent/certs
+  * /usr/share/iotkit-agent/data
+    
  4. Upgrade iotkit-agent using git
   From installation directory execute:
-  git stash
-  git pull
-  git stash pop
+  
+  * git stash
+  * git pull
+  * git stash pop
+    
   Merge conflicts if occured.
  5. systemctl start iotkit-agent
  6. Check logs in /tmp/agent.log
