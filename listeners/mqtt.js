@@ -55,13 +55,13 @@ exports.init = function(conf, logger, onMessage, deviceId) {
   var mqttServerPort = conf.listeners.mqtt_port || 1883;
 
   var filename = conf.token_file || "token.json";
-  var fullFilename = path.join(__dirname, '../certs/' +  filename);
+  var fullFilename = path.join(__dirname, '../data/' +  filename);
   var secret = { };
     if (fs.existsSync(fullFilename)) {
         secret = common.readFileToJson(fullFilename);
     } else {
         //consider from system folder /usr/share/iotkit-agent/certs
-        fullFilename = '/usr/share/iotkit-agent/certs/' +  filename;
+        fullFilename = '/usr/share/iotkit-agent/data/' +  filename;
         secret = common.readFileToJson(fullFilename);
     }
 
