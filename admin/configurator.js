@@ -48,7 +48,8 @@ var configFileKey = {
     defaultConnector: 'default_connector',
     loggerLevel: 'logger.LEVEL',
     connectorRestProxyHost: 'connector.rest.proxy.host',
-    connectorRestProxyPort: 'connector.rest.proxy.port'
+    connectorRestProxyPort: 'connector.rest.proxy.port',
+    udpListenerPort: 'listeners.udp_port'
 };
 
 var saveToConfig = function () {
@@ -131,6 +132,39 @@ var setGatewayId = function(id, cb) {
 
 var getGatewayId = function(cb) {
     utils.getGatewayId(configFileKey.gatewayId, cb);
+};
+
+
+var consts = {
+    PORT_MIN_VALUE: 1025,
+    PORT_MAX_VALUE: 65535
+};
+
+var portValidator = {
+    'Port value must be an integer': function(value) {
+        return !isNaN(value) && value % 1 === 0;
+    },
+    'Port value out of valid range': function(value) {
+        return value >= consts.PORT_MIN_VALUE && value <= consts.PORT_MAX_VALUE;
+    }
+};
+
+var setListenerUdpPort = function(udp_port, onUdpPortSet) {
+    logger.info("Set UDP port");
+
+    var err;
+    for(var key in portValidator) {
+        if(portValidator.hasOwnProperty(key) &&
+            !portValidator[key](udp_port)) {
+            err = key;
+        }
+    }
+
+    if(!err) {
+        saveToConfig(configFileKey.udpListenerPort, parseInt(udp_port));
+    }
+
+    onUdpPortSet(udp_port, err);
 };
 
 var loggerLevel = {
@@ -254,6 +288,21 @@ module.exports = {
             .action(function(id) {
                 setGatewayId(id, function(id){
                     logger.info("Gateway Id set to: %s", id);
+                });
+            });
+
+        program
+            .command('set-udp-port <udp_port>')
+            .description('Overrides the port UDP listener binds to')
+            .action(function(udp_port) {
+                setListenerUdpPort(udp_port, function(udp_port, err){
+                    if(!err) {
+                        logger.info("UDP port is listening on port: %s", udp_port);
+                    }
+                    else {
+                        logger.error(err);
+                    }
+
                 });
             });
 
