@@ -30,24 +30,18 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var msg = require('../lib/cloud-message'),
     common = require('../lib/common'),
     proxyConnector = require('../lib/proxies').getProxyConnector(),
-    fs = require('fs'),
     path = require('path');
 
-var initializeFile = function(filepath, data) {
-    if(!fs.exists(filepath)) {
-        common.writeToJson(filepath, data);
-    }
-};
 function IoTKitCloud(conf, logger, deviceId, customProxy) {
     var me = this;
     me.logger = logger;
     me.filename = conf.token_file || "token.json";
     me.fullFilename = common.getTokenFileName(me.filename);
-    initializeFile(me.fullFilename, { "deviceToken" : false, "accountId" : false });
+    common.initializeFile(me.fullFilename, { "deviceToken" : false, "accountId" : false });
     me.secret = common.readFileToJson(me.fullFilename);
     var dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
     var fullPathForSensorListFile = path.join(dataDirectory +  'sensor-list.json');
-    initializeFile(fullPathForSensorListFile, []);
+    common.initializeFile(fullPathForSensorListFile, []);
     me.proxy = customProxy || proxyConnector;
     me.max_retries = conf.activation_retries || 10;
     me.deviceId = deviceId;
