@@ -28,7 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var logger = require("../lib/logger").init(),
     Cloud = require("../api/cloud.proxy"),
     utils = require("../lib/utils").init(),
-    config = require('../config');
+    config = require('../config'),
+    configurator = require('../admin/configurator');
 
 var activate = function (code) {
     logger.debug("Activation started ...");
@@ -40,6 +41,9 @@ var activate = function (code) {
             if (err) {
                 logger.error("Error in the activation process ...", err);
                 r = 1;
+            }
+            else{
+                configurator.setDeviceId(id);
             }
             process.exit(r);
         });
