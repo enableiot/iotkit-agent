@@ -129,6 +129,10 @@ var setGatewayId = function(id, cb) {
     cb(id);
 };
 
+var setDeviceId = function(id) {
+    saveToConfig(configFileKey.deviceId, id);
+};
+
 var getGatewayId = function(cb) {
     utils.getGatewayId(configFileKey.gatewayId, cb);
 };
@@ -259,5 +263,6 @@ module.exports = {
 
     },
     getGatewayId: getGatewayId,
-    setGatewayId: setGatewayId
+    setGatewayId: setGatewayId,
+    setDeviceId: setDeviceId
 };
