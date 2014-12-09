@@ -28,7 +28,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var logger = require("../lib/logger").init(),
     common = require('../lib/common'),
     utils = require("../lib/utils").init(),
-    path = require('path');
+    path = require('path'),
+    fs = require('fs');
 
 function readConfig () {
     var fullFilename = common.getConfigName();
@@ -131,6 +132,60 @@ var setGatewayId = function(id, cb) {
 
 var getGatewayId = function(cb) {
     utils.getGatewayId(configFileKey.gatewayId, cb);
+};
+
+var moveDataDirectory = function(directory, cb) {
+    fs.exists(directory, function(exists){
+        if(!exists){
+            fs.mkdir(directory, function(err){
+                if(err){
+                    cb(err);
+                    return;
+                }
+                var config = readConfig ();
+                var directoryPath = '';
+                if(config[configFileKey.dataDirectory] === '') {
+                    directoryPath = path.join(__dirname, '../data/');
+                }
+                else{
+                    directoryPath = path.join(__dirname, config[configFileKey.dataDirectory]);
+                }
+
+                var files = fs.readdirSync(directoryPath);
+                try {
+                    files.forEach(function (file) {
+                        fs.writeFileSync(path.join(directory, file), fs.readFileSync(path.join(directoryPath, file)));
+                    });
+
+                    if (fs.readdirSync(directoryPath).length !== fs.readdirSync(directory).length) {
+                        fs.rmdirSync(directory);
+                    }
+                    else{
+                        saveToConfig(configFileKey.dataDirectory, directory);
+                        fs.writeFileSync(path.join(directory, "config.json"), config);
+                    }
+                }catch(e){
+                    err =e;
+                }
+
+                if(err){
+                    try {
+                        var filesToDelete = fs.readdirSync(directory);
+                        filesToDelete.forEach(function (file) {
+                            fs.unlinkSync(file);
+                        });
+                        fs.rmdirSync(directory);
+                    }
+                    catch(e){
+                    }
+                }
+                cb(err);
+            });
+        }
+        else{
+            cb(new Error("Directory alredy exists."));
+        }
+    });
 };
 
 var loggerLevel = {
@@ -237,6 +292,25 @@ module.exports = {
             .action(function() {
                 saveToConfig(configFileKey.dataDirectory, path.join(__dirname, '../data/'));
                 logger.info("Data directory changed to default.");
+            });
+
+        program
+            .command('move-data-directory <path>')
+            .description('Change directory where data will be stored')
+            .action(function(path){
+                moveDataDirectory (path, function(err){
+                    if(!err) {
+                        logger.info("Data directory moved");
+                    }
+                    else{
+                        if(err.errno === 3){
+                            logger.error("Access error to this directory.");
+                        }
+                        else{
+                            logger.info(err.message);
+                        }
+                    }
+                });
             });
 
         program
