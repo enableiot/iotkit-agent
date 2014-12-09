@@ -52,6 +52,11 @@ exports.init = function(conf, logger, onMessage) {
         socket = new JsonSocket(socket);
         socket.on('message', function(message) {
             logger.debug("Data arrived: " + JSON.stringify(message));
+            if(rinfo.address != "127.0.0.1") {
+                logger.debug("Ignoring remote UDP message");
+                return;
+            }
+
             processMessage(message);
         });
     });
