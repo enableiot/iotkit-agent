@@ -43,6 +43,7 @@ function writeConfig (data) {
 var configFileKey = {
     gatewayId : 'gateway_id',
     deviceId: 'device_id',
+    deviceName: 'device_name',
     dataDirectory: 'data_directory',
     activationCode: 'activation_code',
     defaultConnector: 'default_connector',
@@ -138,7 +139,6 @@ var getGatewayId = function(cb) {
     utils.getGatewayId(configFileKey.gatewayId, cb);
 };
 
-
 var consts = {
     PORT_MIN_VALUE: 1025,
     PORT_MAX_VALUE: 65535
@@ -169,6 +169,11 @@ var setListenerUdpPort = function(udp_port, onUdpPortSet) {
     }
 
     onUdpPortSet(udp_port, err);
+};
+
+var setDeviceName = function(name, cb) {
+    saveToConfig(configFileKey.deviceName, name);
+    cb(name);
 };
 
 var loggerLevel = {
@@ -293,6 +298,23 @@ module.exports = {
                 setGatewayId(id, function(id){
                     logger.info("Gateway Id set to: %s", id);
                 });
+            });
+
+        program
+            .command('set-device-name <name>')
+            .description('Change device name')
+            .action(function(name){
+                setDeviceName(name, function(name){
+                    logger.info("Device name set to: %s", name);
+                });
+            });
+
+        program
+            .command('reset-device-name')
+            .description('Resets to default device name.')
+            .action(function() {
+                saveToConfig(configFileKey.deviceName, false);
+                logger.info("Device name changed to default.");
             });
 
         program
