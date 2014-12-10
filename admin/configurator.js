@@ -44,6 +44,7 @@ function writeConfig (data) {
 var configFileKey = {
     gatewayId : 'gateway_id',
     deviceId: 'device_id',
+    deviceName: 'device_name',
     dataDirectory: 'data_directory',
     activationCode: 'activation_code',
     defaultConnector: 'default_connector',
@@ -172,19 +173,19 @@ var setListenerUdpPort = function(udp_port, onUdpPortSet) {
 };
 
 var moveDataDirectory = function(directory, cb) {
-    fs.exists(directory, function(exists){
-        if(!exists){
-            fs.mkdir(directory, function(err){
-                if(err){
+    fs.exists(directory, function (exists) {
+        if (!exists) {
+            fs.mkdir(directory, function (err) {
+                if (err) {
                     cb(err);
                     return;
                 }
-                var config = readConfig ();
+                var config = readConfig();
                 var directoryPath = '';
-                if(config[configFileKey.dataDirectory] === '') {
+                if (config[configFileKey.dataDirectory] === '') {
                     directoryPath = path.join(__dirname, '../data/');
                 }
-                else{
+                else {
                     directoryPath = path.join(__dirname, config[configFileKey.dataDirectory]);
                 }
 
@@ -197,15 +198,15 @@ var moveDataDirectory = function(directory, cb) {
                     if (fs.readdirSync(directoryPath).length !== fs.readdirSync(directory).length) {
                         fs.rmdirSync(directory);
                     }
-                    else{
+                    else {
                         saveToConfig(configFileKey.dataDirectory, directory);
                         fs.writeFileSync(path.join(directory, "config.json"), config);
                     }
-                }catch(e){
-                    err =e;
+                } catch (e) {
+                    err = e;
                 }
 
-                if(err){
+                if (err) {
                     try {
                         var filesToDelete = fs.readdirSync(directory);
                         filesToDelete.forEach(function (file) {
@@ -213,16 +214,20 @@ var moveDataDirectory = function(directory, cb) {
                         });
                         fs.rmdirSync(directory);
                     }
-                    catch(e){
+                    catch (e) {
                     }
                 }
                 cb(err);
             });
         }
-        else{
+        else {
             cb(new Error("Directory alredy exists."));
         }
     });
+};
+var setDeviceName = function(name, cb) {
+    saveToConfig(configFileKey.deviceName, name);
+    cb(name);
 };
 
 var loggerLevel = {
@@ -366,6 +371,23 @@ module.exports = {
                 setGatewayId(id, function(id){
                     logger.info("Gateway Id set to: %s", id);
                 });
+            });
+
+        program
+            .command('set-device-name <name>')
+            .description('Change device name')
+            .action(function(name){
+                setDeviceName(name, function(name){
+                    logger.info("Device name set to: %s", name);
+                });
+            });
+
+        program
+            .command('reset-device-name')
+            .description('Resets to default device name.')
+            .action(function() {
+                saveToConfig(configFileKey.deviceName, false);
+                logger.info("Device name changed to default.");
             });
 
         program

@@ -45,6 +45,7 @@ function IoTKitCloud(conf, logger, deviceId, customProxy) {
     me.proxy = customProxy || proxyConnector;
     me.max_retries = conf.activation_retries || 10;
     me.deviceId = deviceId;
+    me.deviceName = conf.device_name;
     me.gatewayId = conf.gateway_id || deviceId;
     me.activationCode = conf.activation_code;
     me.logger.debug('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
@@ -137,6 +138,9 @@ IoTKitCloud.prototype.activate = function (code, callback) {
 IoTKitCloud.prototype.update = function(callback) {
     var me = this;
     msg.metadataExtended(me.gatewayId , function (doc) {
+        if(me.deviceName){
+            doc.name = me.deviceName;
+        }
         doc.deviceToken = me.secret.deviceToken;
         doc.deviceId = me.deviceId;
         me.logger.info("Updating metadata...");
