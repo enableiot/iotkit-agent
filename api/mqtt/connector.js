@@ -35,8 +35,8 @@ function Broker(conf, logger) {
     me.secure = conf.secure;
     me.keepalive = conf.keepalive || 60;
     me.crd = {
-        username: conf.username,
-        password: conf.password
+        username: conf.username || '',
+        password: conf.password || ''
     };
     if(conf.strictSSL === undefined || conf.strictSSL === true) {
         me.crd.ca = trustedCAs;
@@ -57,8 +57,8 @@ function Broker(conf, logger) {
     me.setCredential = function (newCrd) {
         me.crd = newCrd || me.crd;
         me.credential = {
-            username: me.crd.username,
-            password: me.crd.password,
+            username: me.crd.username || '',
+            password: me.crd.password || '',
             keepalive: me.keepalive
         };
         if(conf.strictSSL === undefined || conf.strictSSL === true) {
