@@ -266,7 +266,25 @@ Commands like 'register' and 'observation' should be used only for testing purpo
 * The 'catalog' command shows the list of components associated with the account where the device is active.
 * In order to define the **host**, you don't need to specify the protocol (https/http).
 
-##8. Certificates
+##8. Actuator Request Processing
+Components can be configured to be controlled from the cloud. Actuator requests to these devices are generated using either the [iotkit-dashboard](https://dashboard.us.enableiot.com) or the [REST API](https://github.com/enableiot/iotkit-api/wiki/Control-Device-API). These actuation requests are sent to the device via MQTT protocol so the agent must be configured to uses the MQTT protocol. The agent processes incoming actuation requests, reformats them as JSON messages and sends them to local UDP port 41235. This port is configurable. The user must provide the software to listen to this port, handle requests and perform the desired action based on the parameter value (turn LED on/off, set motor speed, etc.) Example scripts can be found in the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
+
+Below is an example of the processed JSON message sent to local UDP port 41235 by the agent.
+```javascript
+{
+	"component": "led1",
+	"command": "LED.v1.0",
+	"argv": [{
+		"name": "LED",
+		"value": "1"
+	}]
+}
+```
+In this example, the request is for component "led1". The "command" field, "LED.v1.0", is a string that was defined in the component type for this component and may or may not have significance to the user. The "LED" parameter name and value can be used to determine what pins to turn on/off.
+
+**Note:** Actuation support requires iotkit-agent version 1.5.2 or later.
+
+##9. Certificates
 
 > Do not use the default certificates in production.
 
