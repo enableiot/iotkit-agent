@@ -42,6 +42,9 @@ function IoTKitCloud(conf, logger, deviceId, customProxy) {
     me.deviceName = conf.device_name;
     me.gatewayId = conf.gateway_id || deviceId;
     me.activationCode = conf.activation_code;
+    if(me.deviceId && me.secret.deviceToken) {
+        me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
+    }
     me.logger.debug('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
 }
 IoTKitCloud.prototype.isActivated = function () {
