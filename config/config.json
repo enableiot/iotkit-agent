@@ -3,7 +3,8 @@
         "mqtt_port": 1884,
         "rest_port": 9090,
         "udp_port": 41234,
-        "tcp_port": 7070
+        "tcp_port": 7070,
+        "ws_port": 8080
     },
     "receivers": {
         "udp_port": 41235,
@@ -11,7 +12,7 @@
     },
     "activation_retries": 10,
     "activation_code": null,
-    "device_id": false,
+    "device_id": "dasfasdfds",
     "token_file": "token.json",
     "device_loc": [
         88.34,
@@ -24,14 +25,14 @@
     },
     "data_directory": "",
     "gateway_id": null,
-    "default_connector": "rest",
+    "default_connector": "rest+ws",
     "connector": {
         "mqtt": {
-            "host": "broker.us.enableiot.com",
-            "port": 8883,
+            "host": "localhost",
+            "port": 1885,
             "qos": 1,
             "retain": false,
-            "secure": true,
+            "secure": false,
             "strictSSL": true,
             "retries": 5,
             "topic": {
@@ -50,9 +51,9 @@
             }
         },
         "rest": {
-            "host": "dashboard.us.enableiot.com",
-            "port": 443,
-            "protocol": "https",
+            "host": "localhost",
+            "port": 80,
+            "protocol": "http",
             "strictSSL": true,
             "timeout": 30000,
             "proxy": {
@@ -74,6 +75,10 @@
                 },
                 "health": "/v1/api/health"
             }
+        },
+        "ws": {
+            "host": "localhost",
+            "retryTime": 5000
         }
     }
 }

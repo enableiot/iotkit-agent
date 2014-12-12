@@ -30,5 +30,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 module.exports = {
     MQTT: require('./mqtt'),
     REST: require('./rest'),
-    TCP: require('./tcp')
+    TCP: require('./tcp'),
+    WEBSOCKET: require('./websocket')
 };

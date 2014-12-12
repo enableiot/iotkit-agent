@@ -58,6 +58,9 @@ utils.getDeviceId(function (id) {
                var ctrl = Control.init(conf, logger, id);
                ctrl.bind(udp);
             }
+            if(conf.default_connector === 'rest+ws') {
+                Listener.WEBSOCKET.init(conf, logger);
+            }
             Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
 
         } else {
