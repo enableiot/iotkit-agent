@@ -257,7 +257,6 @@ Options:
     -h, --help     output usage information
     -V, --version  output the version number
 
-Commands like 'register' and 'observation' should be used only for testing purposes. 
 
 ##7. General notes
 
