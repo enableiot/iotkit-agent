@@ -25,43 +25,26 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-var net = require('net'),
-    JsonSocket = require('json-socket');
 
-exports.init = function(conf, logger, onMessage) {
+var fs = require('fs'),
+    path = require('path'),
+    localConf = "../config/global.json";
 
-    var tcpServerPort = conf.tcp_port || 7070;
-    var tcpServerHost = "127.0.0.1";
+var config = {};
 
-    function processMessage(data) {
-        try {
-            logger.debug("Message to process:" + JSON.stringify(data));
-            onMessage(data);
-        } catch (ex) {
-            logger.error('TCP Error on message: %s', ex.message);
-            logger.error(ex.stack);
-        }
-    }
+if (fs.existsSync(path.join(__dirname, localConf))) {
+    config = require(localConf);
+} else {
+    console.error("Failed to find config file");
+    process.exit(0);
+}
 
-    var server = net.createServer();
-    server.listen(tcpServerPort, tcpServerHost);
+config.connector.mqtt.host = "localhost";
+config.connector.mqtt.port = 1885;
+config.connector.mqtt.secure = false;
 
-    server.on('connection', function(socket) {
-        logger.debug('TCP connection from %s:%d',   socket.remoteAddress, socket.remotePort);
-        if(socket.remoteAddress !== "127.0.0.1") {
-                logger.debug("Ignoring remote message from", socket.remoteAddress);
-                return;
-        }
+config.connector.rest.host = "localhost";
+config.connector.rest.port = 80;
+config.connector.rest.protocol= "http";
 
-        socket = new JsonSocket(socket);
-        socket.on('message', function(message) {
-            logger.debug("Data arrived: " + JSON.stringify(message));
-            processMessage(message);
-        });
-    });
-
-    logger.info("TCP listener started on port:  ", tcpServerPort);
-
-    return server;
-
-};
+module.exports = config;

@@ -25,10 +25,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var fs = require('fs'),
-    path = require('path'),
-    Cloud = require("../api/cloud.proxy"),
-    conf = require('../config'),
+var Cloud = require("../api/cloud.proxy"),
     Message = require('../lib/agent-message'),
     utils = require("../lib/utils").init(),
     logger = require("../lib/logger").init(),
@@ -36,37 +33,29 @@ var fs = require('fs'),
     common = require('../lib/common'),
     schemaValidation = require('../lib/schema-validator');
 
-var filename = "sensor-list.json";
-function getStoreFileName () {
-    var dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
-    if(!fs.existsSync(dataDirectory)) {
-        logger.error("Data directory does not exist! Set correct path using './iotkit-admin.js set-data-directory /YOUR/DATA/DIRECTORY/'");
-        return;
-    }
-    logger.info('Using data store: ' + dataDirectory);
-    return path.join(dataDirectory +  filename);
-}
+var configFileKey = {
+    accountId : 'accountId',
+    gatewayId : 'gateway_id',
+    deviceId: 'device_id',
+    deviceName: 'device_name',
+    deviceToken: 'deviceToken',
+    sensorList: 'sensor-list'
+};
 
 var resetComponents = function () {
-    var fullFilename = getStoreFileName();
     var data = [];
-    return common.writeToJson(fullFilename, data);
+    common.saveToDeviceConfig(configFileKey.sensorList, data);
 };
 
 var resetToken = function () {
-    var dataTokenReset =  {
-        "deviceToken": false,
-        "accountId": false
-    };
-    var fullFilename = common.getTokenFileName(conf.token_file);
-    logger.info('Token file: ' + fullFilename);
-    return common.writeToJson(fullFilename, dataTokenReset);
+    common.saveToDeviceConfig(configFileKey.accountId, false);
+    common.saveToDeviceConfig(configFileKey.deviceToken, false);
 };
 
 var registerComponents = function (comp, catalogid) {
     logger.info("Starting registration ..." );
     utils.getDeviceId(function (id) {
-        var cloud = Cloud.init(conf, logger, id);
+        var cloud = Cloud.init(logger, id);
         cloud.activate(function (status) {
             var r = 0;
             if (status === 0) {
@@ -95,7 +84,7 @@ var registerComponents = function (comp, catalogid) {
 
 function registerObservation (comp, value) {
     utils.getDeviceId(function (id) {
-        var cloud = Cloud.init(conf, logger, id);
+        var cloud = Cloud.init(logger, id);
         if(cloud.isActivated()) {
             var r = 0;
             var agentMessage = Message.init(cloud, logger);
@@ -117,7 +106,7 @@ function registerObservation (comp, value) {
 
 function updateMetadata() {
     utils.getDeviceId(function (id) {
-        var cloud = Cloud.init(conf, logger, id);
+        var cloud = Cloud.init(logger, id);
         if(cloud.isActivated()) {
             cloud.update();
         } else {
@@ -128,20 +117,16 @@ function updateMetadata() {
 }
 
 function getComponentsList () {
-    var storeFile = getStoreFileName();
+    var storeFile = common.getDeviceConfig();
     if(storeFile) {
-        if(!fs.existsSync(storeFile)) {
-            logger.error('Could not find component data file!');
-            return;
-        }
-        var com = common.readFileToJson(storeFile);
+        var com = storeFile['sensor-list'];
         var table = new Component.Register(com);
         console.log(table.toString());
     }
 }
 function getCatalogList  () {
     utils.getDeviceId(function (id) {
-        var cloud = Cloud.init(conf, logger, id);
+        var cloud = Cloud.init(logger, id);
         cloud.catalog(function (catalog) {
             if (catalog) {
                 var table = new Component.Table(catalog);
@@ -179,8 +164,8 @@ module.exports = {
             .command('initialize')
             .description("Resets both the token and the component's list.")
             .action(function() {
-                resetToken();
                 resetComponents();
+                resetToken();
                 logger.info("Initialized");
             });
         program

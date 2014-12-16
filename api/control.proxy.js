@@ -34,7 +34,7 @@ function IoTKitControl(conf, logger, deviceId, customProxy){
     me.logger = logger;
     me.proxy = customProxy || proxyConnector;
     me.deviceId = deviceId;
-    me.store = Sensor.init("sensor-list.json", logger);
+    me.store = Sensor.init("device.json", logger);
     me.gatewayId = conf.gateway_id || deviceId;
     me.logger.debug('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
     me.receiverInfo = {port: conf.receivers.udp_port, address: conf.receivers.udp_address};

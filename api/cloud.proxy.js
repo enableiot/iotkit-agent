@@ -29,25 +29,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var msg = require('../lib/cloud-message'),
     common = require('../lib/common'),
-    proxyConnector = require('../lib/proxies').getProxyConnector(),
-    path = require('path');
+    proxyConnector = require('../lib/proxies').getProxyConnector();
 
-function IoTKitCloud(conf, logger, deviceId, customProxy) {
+function IoTKitCloud(logger, deviceId, customProxy) {
+    var deviceConf = common.getDeviceConfig();
+
     var me = this;
     me.logger = logger;
-    me.filename = conf.token_file || "token.json";
-    me.fullFilename = common.getTokenFileName(me.filename);
-    common.initializeFile(me.fullFilename, { "deviceToken" : false, "accountId" : false });
-    me.secret = common.readFileToJson(me.fullFilename);
-    var dataDirectory = conf.data_directory || path.join(__dirname, '../data/');
-    var fullPathForSensorListFile = path.join(dataDirectory +  'sensor-list.json');
-    common.initializeFile(fullPathForSensorListFile, []);
+    me.secret = {'accountId' : deviceConf.accountId,
+                 'deviceToken' : deviceConf.deviceToken};
     me.proxy = customProxy || proxyConnector;
-    me.max_retries = conf.activation_retries || 10;
+    me.max_retries = deviceConf.activation_retries || 10;
     me.deviceId = deviceId;
-    me.deviceName = conf.device_name;
-    me.gatewayId = conf.gateway_id || deviceId;
-    me.activationCode = conf.activation_code;
+    me.deviceName = deviceConf.device_name;
+    me.gatewayId = deviceConf.gateway_id || deviceId;
+    me.activationCode = deviceConf.activation_code;
     me.logger.debug('Cloud Proxy Created with Cloud Handler ', me.proxy.type);
 }
 IoTKitCloud.prototype.isActivated = function () {
@@ -83,7 +79,8 @@ IoTKitCloud.prototype.activationComplete = function (callback) {
             me.secret.accountId = data.accountId;
             me.activationCompleted = true;
             me.logger.info('Saving device token...');
-            common.writeToJson(me.fullFilename, me.secret);
+            common.saveToDeviceConfig('deviceToken',me.secret.deviceToken);
+            common.saveToDeviceConfig('accountId',me.secret.accountId);
         }
         me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
         toCall(data.status);
@@ -233,6 +230,6 @@ IoTKitCloud.prototype.catalog = function (callback) {
     });
 };
 
-exports.init = function(conf, logger, deviceId) {
-    return new IoTKitCloud(conf, logger, deviceId);
+exports.init = function(logger, deviceId) {
+    return new IoTKitCloud(logger, deviceId);
 };
