@@ -28,13 +28,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var logger = require("../lib/logger").init(),
     Cloud = require("../api/cloud.proxy"),
     utils = require("../lib/utils").init(),
-    config = require('../config'),
+    common = require('../lib/common'),
     configurator = require('../admin/configurator');
 
 var activate = function (code) {
     logger.debug("Activation started ...");
     utils.getDeviceId(function (id) {
-        var cloud = Cloud.init(config, logger, id);
+        var cloud = Cloud.init(logger, id);
         cloud.activate(code, function (err) {
             var r = 0;
             cloud.disconnect();
@@ -51,9 +51,10 @@ var activate = function (code) {
 };
 
 function testConnection () {
-    var host = config.connector[config.default_connector].host;
+    var conf = common.getConfig();
+    var host = conf.connector[conf.default_connector].host;
     utils.getDeviceId(function (id) {
-        var cloud = Cloud.init(config, logger, id);
+        var cloud = Cloud.init(logger, id);
         cloud.test(function (res) {
             var r = 0;
             if (res) {
