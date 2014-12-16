@@ -49,19 +49,26 @@ admin.command('*')
             ' is not a valid command.');
     });
 if(process.argv[2] === 'observation') {
-    if(process.argv[4][0] === '-') {
-        var args = [];
-        var unknown = [];
-        for(var i = 2; i <= 4; i++) {
-            args.push(process.argv[i]);
+    if(process.argv.length === 5) {
+        if(process.argv[4][0] === '-') {
+            var args = [];
+            var unknown = [];
+            for(var i = 2; i <= 4; i++) {
+                args.push(process.argv[i]);
+            }
+            var parsed = {args: args, unknown: unknown};
+            admin.rawArgs = process.argv;
+            admin.args = args;
+            var result = admin.parseArgs(admin.args, parsed.unknown);
         }
-        var parsed = {args: args, unknown: unknown};
-        admin.rawArgs = process.argv;
-        admin.args = args;
-        var result = admin.parseArgs(admin.args, parsed.unknown);
+        else {
+            admin.parse(process.argv);
+        }
     }
     else {
-        admin.parse(process.argv);
+        console.log("\'" + process.argv[2] + "\'" +
+            ' should contains component_name value.');
+        process.exit(1);
     }
 }
 else {
