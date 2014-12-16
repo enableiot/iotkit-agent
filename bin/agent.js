@@ -45,7 +45,7 @@ process.on("uncaughtException", function(err) {
 
 
 utils.getDeviceId(function (id) {
-    var cloud = Cloud.init(conf, logger, id);
+    var cloud = Cloud.init(logger, id);
     cloud.activate(function (status) {
        if (status === 0) {
             var udp = updServer.singleton(conf.listeners.udp_port, logger);
