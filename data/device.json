@@ -1,21 +1,15 @@
 {
     "activation_retries": 10,
     "activation_code": null,
-    "device_id": "ain",
+    "device_id": false,
     "device_name": false,
     "device_loc": [
         88.34,
         64.22047,
         -20
     ],
-    "gateway_id": "ain",
-    "deviceToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJqdGkiOiIzYTg1Y2ZiNS04Mjc4LTQ5ZmEtYmM5Ni00MTBiMjI5NjY2ODAiLCJpc3MiOiJodHRwOi8vZW5hYmxlaW90LmNvbSIsInN1YiI6ImFpbiIsImV4cCI6IjIwMjQtMTItMTNUMDc6NDI6NDAuMDE3WiJ9.hZuOM0TO3QOx9-jwHUgcaiuGYXjUeChUAaobpcImEWs0pETu0pBAsqYocXQe48HdFwGwNYyZarhU_vMziQjTkag7kFvNokS1qQ6_3vWL-icMHZZ2xAZrdAuXTbr0kHPkGwgU4ioqwD8HL2Oo9HwqI9OinEiqPt9TK5U8SZNnKCdb6U_wOkeLZSqEhiB3e7FVcKFhQdFKhSD2ylMrurgo6mNOwxLmDhfiNQw50l_54_ZC0tB6rcw-Fhc4TuEy3abqKO6gLSaKujurMmqcvCGprEuwba8shxmln81Y9tKh_dzrndeQNXgjKk3vL8SRuJd1qfleayy-Z6eb6TuVU3PfMw",
-    "accountId": "4293461f-b3c4-45e5-9fda-3e7afccd5ea2",
-    "sensor-list": [
-        {
-            "name": "test1",
-            "type": "temperature.v1.0",
-            "cid": "b1d71d41-bd9b-4ea8-b7e7-38231cdf81d1"
-        }
-    ]
+    "gateway_id": null,
+    "deviceToken": false,
+    "accountId": false,
+    "sensor-list": []
 }
