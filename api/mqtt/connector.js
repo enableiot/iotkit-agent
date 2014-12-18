@@ -54,6 +54,7 @@ function Broker(conf, logger) {
         connected: false,
         end: function() {}
     };
+    me.bindings = {};
     me.setCredential = function (newCrd) {
         me.crd = newCrd || me.crd;
         me.credential = {
@@ -78,6 +79,19 @@ function Broker(conf, logger) {
             me.logger.info('STATUS: %s', topic, message);
             me.onMessage(topic, message);
         });
+        me.client.on('connect', function(packet) {
+            me.logger.info('Connection to MQTT broker established.');
+            for(var topic in me.bindings) {
+                var handler = me.bindings[topic].handler;
+                var callback = me.bindings[topic].callback;
+                me.bind(topic, handler, callback);
+            }
+        });
+        me.client.on('close', function(err) {
+            me.client.connected = false;
+            me.logger.error('Connection to MQTT broker is closed. Retrying...');
+        });
+
     };
     me.connect = function (done) {
         var retries = 0;
@@ -135,6 +149,7 @@ function Broker(conf, logger) {
         };
     };
     me.attach = function (topic, handler) {
+        me.dettach(topic);
         me.messageHandler.push({"t": topic,
                                 "h": handler});
     };
@@ -167,6 +182,10 @@ function Broker(conf, logger) {
          * since the bind and publish connect automatically,
          * it is require to chain the callbacks
          */
+        me.bindings[topic] = {
+            handler: handler,
+            callback: callback
+        };
         var toCallBack = callback;
         function connectCallback() {
             me.logger.debug('Subscribing to: ' + topic);
@@ -197,6 +216,7 @@ function Broker(conf, logger) {
         }
     };
     me.unbind = function (topic, callback) {
+        delete me.bindings[topic];
         me.logger.debug('Unbinding from Topic : T => '+ topic);
         me.client.unsubscribe(topic, function() {
             me.logger.debug('Unbound from Topic : T => '+ topic);
