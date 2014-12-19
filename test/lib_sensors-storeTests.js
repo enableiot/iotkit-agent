@@ -67,7 +67,7 @@ describe(fileToTest, function(){
                     64.22047,
                     0
                 ],
-                "gateway_id": "ain",
+                "gateway_id": false,
                 "deviceToken": "",
                 "accountId": "",
                 "sensor_list": []
@@ -169,7 +169,7 @@ describe(fileToTest, function(){
                     64.22047,
                     0
                 ],
-                "gateway_id": "ain",
+                "gateway_id": false,
                 "deviceToken": "",
                 "accountId": "",
                 "sensor_list": [
