@@ -39,6 +39,8 @@ if (fs.existsSync(path.join(__dirname, localConf))) {
     process.exit(0);
 }
 
+module.exports = config;
+
 config.connector.mqtt.host = "localhost";
 config.connector.mqtt.port = 1885;
 config.connector.mqtt.secure = false;
@@ -47,4 +49,3 @@ config.connector.rest.host = "localhost";
 config.connector.rest.port = 80;
 config.connector.rest.protocol= "http";
 
-module.exports = config;

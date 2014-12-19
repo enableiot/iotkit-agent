@@ -34,12 +34,12 @@ var Cloud = require("../api/cloud.proxy"),
     schemaValidation = require('../lib/schema-validator');
 
 var configFileKey = {
-    accountId : 'accountId',
+    accountId : 'account_id',
     gatewayId : 'gateway_id',
     deviceId: 'device_id',
     deviceName: 'device_name',
-    deviceToken: 'deviceToken',
-    sensorList: 'sensor-list'
+    deviceToken: 'device_token',
+    sensorList: 'sensor_list'
 };
 
 var resetComponents = function () {
@@ -119,7 +119,7 @@ function updateMetadata() {
 function getComponentsList () {
     var storeFile = common.getDeviceConfig();
     if(storeFile) {
-        var com = storeFile['sensor-list'];
+        var com = storeFile[configFileKey.sensorList];
         var table = new Component.Register(com);
         console.log(table.toString());
     }

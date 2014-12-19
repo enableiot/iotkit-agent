@@ -36,8 +36,8 @@ function IoTKitCloud(logger, deviceId, customProxy) {
 
     var me = this;
     me.logger = logger;
-    me.secret = {'accountId' : deviceConf.accountId,
-                 'deviceToken' : deviceConf.deviceToken};
+    me.secret = {'account_id' : deviceConf.accountId,
+                 'device_token' : deviceConf.deviceToken};
     me.proxy = customProxy || proxyConnector;
     me.max_retries = deviceConf.activation_retries || 10;
     me.deviceId = deviceId;
@@ -79,8 +79,8 @@ IoTKitCloud.prototype.activationComplete = function (callback) {
             me.secret.accountId = data.accountId;
             me.activationCompleted = true;
             me.logger.info('Saving device token...');
-            common.saveToDeviceConfig('deviceToken',me.secret.deviceToken);
-            common.saveToDeviceConfig('accountId',me.secret.accountId);
+            common.saveToDeviceConfig('device_token',me.secret.deviceToken);
+            common.saveToDeviceConfig('account_id',me.secret.accountId);
         }
         me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
         toCall(data.status);

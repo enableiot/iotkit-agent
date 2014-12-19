@@ -39,12 +39,12 @@ var configFileKey = {
     connectorRestProxyPort: 'connector.rest.proxy.port',
     udpListenerPort: 'listeners.udp_port',
     activationCode: 'activation_code',
-    accountId : 'accountId',
+    accountId : 'account_id',
     gatewayId : 'gateway_id',
     deviceId: 'device_id',
     deviceName: 'device_name',
-    deviceToken: 'deviceToken',
-    sensorList: 'sensor-list'
+    deviceToken: 'device_token',
+    sensorList: 'sensor_list'
 };
 
 var setHostFor = function (host_value, port_value) {
@@ -66,25 +66,25 @@ var setHostFor = function (host_value, port_value) {
                protocol = "http";
            }
            if(protocol){
-               common.saveToGlobalConfig(protocol_key, protocol);
+               common.saveToUserConfig(protocol_key, protocol);
            }
        }
-        common.saveToGlobalConfig(host_key, host_value);
+        common.saveToUserConfig(host_key, host_value);
        if (port_value) {
         var port_key = 'connector.' + proxy + '.port';
-        common.saveToGlobalConfig(port_key, port_value);
+        common.saveToUserConfig(port_key, port_value);
        }
     }
 };
 
 var setProxy = function (host_proxy, port_proxy) {
-    common.saveToGlobalConfig(configFileKey.connectorRestProxyHost, host_proxy);
-    common.saveToGlobalConfig(configFileKey.connectorRestProxyPort, port_proxy);
+    common.saveToUserConfig(configFileKey.connectorRestProxyHost, host_proxy);
+    common.saveToUserConfig(configFileKey.connectorRestProxyPort, port_proxy);
     logger.info("Set Proxy data");
 };
 var resetProxy = function () {
-    common.saveToGlobalConfig(configFileKey.connectorRestProxyHost, false);
-    common.saveToGlobalConfig(configFileKey.connectorRestProxyPort, false);
+    common.saveToUserConfig(configFileKey.connectorRestProxyHost, false);
+    common.saveToUserConfig(configFileKey.connectorRestProxyPort, false);
     logger.info("Set Proxy data");
 };
 
@@ -127,7 +127,7 @@ var setListenerUdpPort = function(udp_port, onUdpPortSet) {
     }
 
     if(!err) {
-        common.saveToGlobalConfig(configFileKey.udpListenerPort, parseInt(udp_port));
+        common.saveToUserConfig(configFileKey.udpListenerPort, parseInt(udp_port));
     }
 
     onUdpPortSet(udp_port, err);
@@ -203,7 +203,7 @@ module.exports = {
             .description('Set the protocol to \'mqtt\' or \'rest\'')
             .action(function(protocol){
                 if (protocol === 'mqtt' || protocol === 'rest') {
-                    common.saveToGlobalConfig(configFileKey.defaultConnector, protocol);
+                    common.saveToUserConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {
                     logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\'", protocol);
@@ -272,7 +272,7 @@ module.exports = {
             .description('Set the logger level to \'debug\', \'info\', \'warn\', \'error\'')
             .action(function(level) {
                 if (loggerLevel[level]) {
-                    common.saveToGlobalConfig(configFileKey.loggerLevel, level);
+                    common.saveToUserConfig(configFileKey.loggerLevel, level);
                     logger.info("Logger Level set to: %s", level);
                 } else {
                     logger.error("invalid level: %s - please use %s", level,

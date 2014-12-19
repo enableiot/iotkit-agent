@@ -65,12 +65,12 @@ describe(fileToTest, function(){
                 "device_loc": [
                     88.34,
                     64.22047,
-                    -20
+                    0
                 ],
                 "gateway_id": "ain",
                 "deviceToken": "",
                 "accountId": "",
-                "sensor-list": []
+                "sensor_list": []
             }
 
             var config = {
@@ -91,8 +91,8 @@ describe(fileToTest, function(){
             };
             toTest.__set__("common", common);
             var store = toTest.init(storeName, logger);
-            assert.lengthOf(store.data, dataFile['sensor-list'].length, "The Data load is not the same");
-            assert.deepEqual(store.data, dataFile['sensor-list'], "The Data store are missing data");
+            assert.lengthOf(store.data, dataFile['sensor_list'].length, "The Data load is not the same");
+            assert.deepEqual(store.data, dataFile['sensor_list'], "The Data store are missing data");
             done();
         });
         it('Shall Initialize with Empty Array when not data were save >', function (done) {
@@ -129,7 +129,7 @@ describe(fileToTest, function(){
             }
 
             common.saveToDeviceConfig = function (fullPath, dataToSave) {
-                var str = "sensor-list";
+                var str = "sensor_list";
                 assert.isString(fullPath, "The fullname is not String");
                 assert.include(fullPath, str, "The store Name and Data is not include");
                 assert.lengthOf(dataToSave, 100, "Some Data is missing");
@@ -167,12 +167,12 @@ describe(fileToTest, function(){
                 "device_loc": [
                     88.34,
                     64.22047,
-                    -20
+                    0
                 ],
                 "gateway_id": "ain",
                 "deviceToken": "",
                 "accountId": "",
-                "sensor-list": [
+                "sensor_list": [
                     {name: 1, type: 2, cid: 3},
                     {name: 21, type: 22, cid: 23},
                     {name: 31, type: 32, cid: 33} ]

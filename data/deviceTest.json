@@ -6,12 +6,12 @@
     "device_loc": [
         88.34,
         64.22047,
-        -20
+        0
     ],
     "gateway_id": "ain",
     "deviceToken": "",
     "accountId": "",
-    "sensor-list": [
+    "sensor_list": [
         {
             "name": 1,
             "type": 2,
