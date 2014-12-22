@@ -85,8 +85,11 @@ var registerComponents = function (comp, catalogid) {
 function registerObservation (comp, value) {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
-        if(cloud.isActivated()) {
+        if (cloud.isActivated()) {
             var r = 0;
+            var deviceId = cloud.deviceId;
+            var deviceToken = cloud.secret.deviceToken;
+            cloud.proxy.setCredential(deviceId, deviceToken);
             var agentMessage = Message.init(cloud, logger);
             var msg = {
                 "n": comp,
@@ -100,7 +103,6 @@ function registerObservation (comp, value) {
             logger.error("Error in the Observation Device is not activated ...");
             process.exit(1);
         }
-
     });
 }
 
