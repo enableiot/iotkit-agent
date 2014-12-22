@@ -8,7 +8,7 @@
         64.22047,
         0
     ],
-    "gateway_id": "ain",
+    "gateway_id": false,
     "deviceToken": "",
     "accountId": "",
     "sensor_list": [

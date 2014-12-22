@@ -9,7 +9,7 @@
         0
     ],
     "gateway_id": false,
-    "deviceToken": false,
-    "accountId": false,
+    "device_token": false,
+    "account_id": false,
     "sensor_list": []
 }
