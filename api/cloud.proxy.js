@@ -36,8 +36,8 @@ function IoTKitCloud(logger, deviceId, customProxy) {
 
     var me = this;
     me.logger = logger;
-    me.secret = {'account_id' : deviceConf.accountId,
-                 'device_token' : deviceConf.deviceToken};
+    me.secret = {'accountId' : deviceConf['account_id'],
+                 'deviceToken' : deviceConf['device_token']};
     me.proxy = customProxy || proxyConnector;
     me.max_retries = deviceConf.activation_retries || 10;
     me.deviceId = deviceId;
