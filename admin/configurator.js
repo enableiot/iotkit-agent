@@ -145,7 +145,7 @@ var moveDataDirectory = function(directory, cb) {
 
                 var configFile = path.join(__dirname, "../config/.data_directories.json");
                 var config = common.readConfig(configFile);
-                var directoryPath = path.join(__dirname, config[configFileKey.dataDirectory]);
+                var directoryPath = config[configFileKey.dataDirectory];
 
                 var files = fs.readdirSync(directoryPath);
                 try {
@@ -157,6 +157,8 @@ var moveDataDirectory = function(directory, cb) {
                         fs.rmdirSync(directory);
                     }
                     else {
+                        directory = path.resolve(directory);
+
                         common.saveToConfig(configFile, configFileKey.dataDirectory, directory);
                         common.saveToConfig(configFile, configFileKey.userConfigDirectory , directory);
                     }
