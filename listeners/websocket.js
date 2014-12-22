@@ -2,6 +2,7 @@
  * Created by GER\ajoskows on 12/11/14.
  */
 var WebSocketClient = require('websocket').client;
+var deviceToken = require('./../certs/token').deviceToken;
 
 var init = exports.init = function(conf, logger) {
     var client = new WebSocketClient();
@@ -14,12 +15,19 @@ var init = exports.init = function(conf, logger) {
     });
     client.on('connect', function(connection){
         logger.info('Websocket listener started on port: ' + conf.listeners.ws_port);
+        var initMessageObject = {
+            "type": "device",
+            "deviceId": conf.device_id,
+            "deviceToken": deviceToken,
+            "serverAddress": conf.connector.ws.host + ':' + conf.listeners.ws_port
+        }
+        connection.sendUTF(JSON.stringify(initMessageObject));
         connection.on('close', function() {
             logger.info("Websocket connection closed.");
             init(conf, logger);
         });
         connection.on('message', function(message) {
-            logger.info('Received message: ', message.utf8Data);
+            logger.info('Fired STATUS: ', message.utf8Data);
         });
     });
     client.connect('ws://' + conf.connector.ws.host + ':' + conf.listeners.ws_port, 'echo-protocol');
