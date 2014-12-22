@@ -166,17 +166,22 @@ var moveDataDirectory = function(directory, cb) {
                     err = e;
                 }
 
-                if (err) {
-                    try {
-                        var filesToDelete = fs.readdirSync(directory);
-                        filesToDelete.forEach(function (file) {
-                            fs.unlinkSync(file);
-                        });
+                var pathToDelete = (err) ? directory : directoryPath;
+
+                try {
+                    var filesToDelete = fs.readdirSync(pathToDelete);
+                    filesToDelete.forEach(function (file) {
+                        fs.unlinkSync(path.resolve(pathToDelete, file));
+                    });
+
+                    if(err) {
                         fs.rmdirSync(directory);
                     }
-                    catch (e) {
-                    }
                 }
+                catch (e) {
+                    console.log(e);
+                }
+
                 cb(err);
             });
         }
