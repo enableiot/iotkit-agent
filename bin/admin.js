@@ -42,7 +42,7 @@ admin.version(pkgJson.version)
         process.userConfigPath = path.join(__dirname, userConfDirectory , "user.js");
         if (fs.existsSync(process.userConfigPath)) {
             logger.info("\'" + process.userConfigPath + "\'" +
-                ' will be used as user config directory.');
+                ' will be used as user config file.');
         }
         else{
             logger.error("\'" + process.userConfigPath + "\'" +

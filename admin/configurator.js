@@ -32,7 +32,8 @@ var logger = require("../lib/logger").init(),
     fs = require('fs');
 
 var configFileKey = {
-    dataDirectory: 'data_directory',
+    dataDirectory: 'device_directory',
+    userConfigDirectory : 'user_config_directory',
     defaultConnector: 'default_connector',
     loggerLevel: 'logger.LEVEL',
     connectorRestProxyHost: 'connector.rest.proxy.host',
@@ -141,14 +142,10 @@ var moveDataDirectory = function(directory, cb) {
                     cb(err);
                     return;
                 }
-                var config = common.getConfig();
-                var directoryPath = '';
-                if (config[configFileKey.dataDirectory] === '') {
-                    directoryPath = path.join(__dirname, '../data/');
-                }
-                else {
-                    directoryPath = path.join(__dirname, config[configFileKey.dataDirectory]);
-                }
+
+                var configFile = path.join(__dirname, "../config/.data_directories.json");
+                var config = common.readConfig(configFile);
+                var directoryPath = path.join(__dirname, config[configFileKey.dataDirectory]);
 
                 var files = fs.readdirSync(directoryPath);
                 try {
@@ -160,7 +157,8 @@ var moveDataDirectory = function(directory, cb) {
                         fs.rmdirSync(directory);
                     }
                     else {
-                        common.saveToGlobalConfig(configFileKey.dataDirectory, directory);
+                        common.saveToConfig(configFile, configFileKey.dataDirectory, directory);
+                        common.saveToConfig(configFile, configFileKey.userConfigDirectory , directory);
                     }
                 } catch (e) {
                     err = e;
@@ -283,8 +281,10 @@ module.exports = {
         program
             .command('set-data-directory <path>')
             .description('Sets path of directory that contains sensor data.')
-            .action(function(path) {
-                common.saveToGlobalConfig(configFileKey.dataDirectory, path);
+            .action(function(directoryPath) {
+                var configFile = path.join(__dirname, "../config/.data_directories.json");
+                common.saveToConfig(configFile, configFileKey.dataDirectory, directoryPath);
+                common.saveToConfig(configFile, configFileKey.userConfigDirectory , directoryPath);
                 logger.info("Data directory changed.");
             });
 
@@ -292,7 +292,9 @@ module.exports = {
             .command('reset-data-directory')
             .description('Resets to default the path of directory that contains sensor data.')
             .action(function() {
-                common.saveToGlobalConfig(configFileKey.dataDirectory, "");
+                var configFile = path.join(__dirname, "../config/.data_directories.json");
+                common.saveToConfig(configFile, configFileKey.dataDirectory, "../data/");
+                common.saveToConfig(configFile, configFileKey.userConfigDirectory , "../data/");
                 logger.info("Data directory changed to default.");
             });
 
