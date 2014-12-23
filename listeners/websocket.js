@@ -18,9 +18,8 @@ var init = exports.init = function(conf, logger) {
         var initMessageObject = {
             "type": "device",
             "deviceId": conf.device_id,
-            "deviceToken": deviceToken,
-            "serverAddress": conf.connector.ws.host + ':' + conf.listeners.ws_port
-        }
+            "deviceToken": deviceToken
+        };
         connection.sendUTF(JSON.stringify(initMessageObject));
         connection.on('close', function() {
             logger.info("Websocket connection closed.");
