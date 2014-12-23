@@ -86,10 +86,8 @@ function registerObservation (comp, value) {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
         if (cloud.isActivated()) {
+            cloud.setDeviceCredentials();
             var r = 0;
-            var deviceId = cloud.deviceId;
-            var deviceToken = cloud.secret.deviceToken;
-            cloud.proxy.setCredential(deviceId, deviceToken);
             var agentMessage = Message.init(cloud, logger);
             var msg = {
                 "n": comp,

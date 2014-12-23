@@ -82,7 +82,7 @@ IoTKitCloud.prototype.activationComplete = function (callback) {
             common.saveToDeviceConfig('device_token',me.secret.deviceToken);
             common.saveToDeviceConfig('account_id',me.secret.accountId);
         }
-        me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
+        me.setDeviceCredentials();
         toCall(data.status);
     };
     return handler;
@@ -127,9 +127,14 @@ IoTKitCloud.prototype.activate = function (code, callback) {
     } else {
         // skip the update since we were already activated
         me.logger.info('Device has already been activated. Updating ...');
-        me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
+        me.setDeviceCredentials();
         complete(0);
     }
+};
+
+IoTKitCloud.prototype.setDeviceCredentials = function() {
+    var me = this;
+    me.proxy.setCredential(me.deviceId, me.secret.deviceToken);
 };
 
 IoTKitCloud.prototype.update = function(callback) {
