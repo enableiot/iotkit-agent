@@ -48,10 +48,11 @@ process.on("uncaughtException", function(err) {
 
 admin.version(pkgJson.version)
     .option('-C, --config [path]', "Set the config file path", function(userConfDirectory){
-        process.userConfigPath = path.join(__dirname, userConfDirectory , "user.js");
+        process.userConfigPath = path.resolve(userConfDirectory , "user.js");
         if (fs.existsSync(process.userConfigPath)) {
             logger.info("\'" + process.userConfigPath + "\'" +
                 ' will be used as user config file.');
+            conf = require(process.userConfigPath);
         }
         else{
             logger.error("\'" + process.userConfigPath + "\'" +
