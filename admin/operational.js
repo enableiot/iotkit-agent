@@ -77,7 +77,6 @@ module.exports = {
             .command('test')
             .description('Tries to reach the server (using the current protocol).')
             .action(function() {
-                common.getDeviceConfigName();
                 testConnection();
             });
 
