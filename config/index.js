@@ -33,6 +33,10 @@ var config = {};
 
 if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
+    var userConfig = path.join(config['data_directory'], 'user.js');
+    if(fs.existsSync(userConfig)){
+        config = require(userConfig);
+    }
 } else {
     console.error("Failed to find config file");
     process.exit(0);

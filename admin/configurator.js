@@ -32,7 +32,7 @@ var logger = require("../lib/logger").init(),
     fs = require('fs');
 
 var configFileKey = {
-    dataDirectory: 'device_directory',
+    dataDirectory: 'data_directory',
     userConfigDirectory : 'user_config_directory',
     defaultConnector: 'default_connector',
     loggerLevel: 'logger.LEVEL',
@@ -143,8 +143,7 @@ var moveDataDirectory = function(directory, cb) {
                     return;
                 }
 
-                var configFile = path.join(__dirname, "../config/.data_directories.json");
-                var config = common.readConfig(configFile);
+                var config = common.getConfig();
                 var directoryPath = config[configFileKey.dataDirectory];
 
                 var files = fs.readdirSync(directoryPath);
@@ -158,9 +157,7 @@ var moveDataDirectory = function(directory, cb) {
                     }
                     else {
                         directory = path.resolve(directory);
-
-                        common.saveToConfig(configFile, configFileKey.dataDirectory, directory);
-                        common.saveToConfig(configFile, configFileKey.userConfigDirectory , directory);
+                        common.saveToGlobalConfig(configFileKey.dataDirectory, directory);
                     }
                 } catch (e) {
                     err = e;
@@ -289,9 +286,7 @@ module.exports = {
             .command('set-data-directory <path>')
             .description('Sets path of directory that contains sensor data.')
             .action(function(directoryPath) {
-                var configFile = path.join(__dirname, "../config/.data_directories.json");
-                common.saveToConfig(configFile, configFileKey.dataDirectory, directoryPath);
-                common.saveToConfig(configFile, configFileKey.userConfigDirectory , directoryPath);
+                common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directoryPath));
                 logger.info("Data directory changed.");
             });
 
@@ -299,9 +294,7 @@ module.exports = {
             .command('reset-data-directory')
             .description('Resets to default the path of directory that contains sensor data.')
             .action(function() {
-                var configFile = path.join(__dirname, "../config/.data_directories.json");
-                common.saveToConfig(configFile, configFileKey.dataDirectory, "../data/");
-                common.saveToConfig(configFile, configFileKey.userConfigDirectory , "../data/");
+                common.saveToGlobalConfig(configFileKey.dataDirectory, "/etc/iotkit-agent");
                 logger.info("Data directory changed to default.");
             });
 

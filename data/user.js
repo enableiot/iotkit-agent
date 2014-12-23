@@ -28,14 +28,18 @@
 
 var fs = require('fs'),
     path = require('path'),
-    localConf = "../config/global.json";
+    localConf = path.resolve(process.argv[1], "../config/global.json");
+
+if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
+    localConf = path.resolve("config/global.json");
+}
 
 var config = {};
 
-if (fs.existsSync(path.join(__dirname, localConf))) {
+if (fs.existsSync(localConf)) {
     config = require(localConf);
 } else {
-    console.error("Failed to find config file");
+    console.error("Failed to find config file" + localConf);
     process.exit(0);
 }
 
@@ -54,3 +58,4 @@ config.connector.rest.protocol= "http";
 Please write your changes for config below.
  */
 
+config.default_connector = "mqtt";
