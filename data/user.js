@@ -39,7 +39,7 @@ var config = {};
 if (fs.existsSync(localConf)) {
     config = require(localConf);
 } else {
-    console.error("Failed to find config file" + localConf);
+    console.error("Failed to find config file");
     process.exit(0);
 }
 
