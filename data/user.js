@@ -47,15 +47,14 @@ module.exports = config;
 
 /* Example usage:
 
-config.connector.mqtt.host = "localhost";
-config.connector.mqtt.port = 1885;
-config.connector.mqtt.secure = false;
+config.default_connector = "mqtt";
 
-config.connector.rest.host = "localhost";
-config.connector.rest.port = 80;
-config.connector.rest.protocol= "http";
+config.connector.rest.timeout = 60000;
+
+config.connector.rest.proxy.host = "example.com";
+config.connector.rest.proxy.port = 1180;
 
 Please write your changes for config below.
  */
 
-config.default_connector = "mqtt";
+
