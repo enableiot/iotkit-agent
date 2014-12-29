@@ -79,7 +79,7 @@ function Broker(conf, logger) {
             me.logger.info('STATUS: %s', topic, message);
             me.onMessage(topic, message);
         });
-        me.client.on('connect', function(packet) {
+        me.client.on('connect', function() {
             me.logger.info('Connection to MQTT broker established.');
             for(var topic in me.bindings) {
                 var handler = me.bindings[topic].handler;
@@ -87,7 +87,7 @@ function Broker(conf, logger) {
                 me.bind(topic, handler, callback);
             }
         });
-        me.client.on('close', function(err) {
+        me.client.on('close', function() {
             me.client.connected = false;
             me.logger.error('Connection to MQTT broker is closed. Retrying...');
         });
