@@ -33,7 +33,7 @@ var config = {};
 
 if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
-    var userConfig = path.join(config['data_directory'], 'user.js');
+    var userConfig = path.resolve(config['data_directory'], 'user.js');
     if(fs.existsSync(userConfig)){
         config = require(userConfig);
     }
