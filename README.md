@@ -165,25 +165,23 @@ If you have pre-installed version of iotkit-agent on your Edison board:
  1. systemctl stop iotkit-agent
  2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
  3. If your agent used global config files, backup external files:
- 
+
   * /etc/iotkit-agent/config.json
   * /usr/share/iotkit-agent/certs
-  * /usr/share/iotkit-agent/data  
-  
+  * /usr/share/iotkit-agent/data
+
  4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders.
  5. Upgrade iotkit-agent using npm
   npm install --global iotkit-agent
- 6. Replace default /usr/lib/node_modules/iotkit-agent/certs/token.json file with one from your backup from certs folder
- 7. Replace content of /usr/lib/node_modules/iotkit-agent/data folder with content of certs folder from your backup
- 8. New iotkit-agents use local config in config/config.json. Update changed properties of your old config in updated config.json, e.g.
- 
-  * device_id
-  * gateway_id
-  * device_loc
-  * or your proxy settings for REST
-    
- 9. systemctl start iotkit-agent
- 10. Check logs in /tmp/agent.log
+ 6. New iotkit-agents use three configuration files:
+
+  * global.json - contains default settings
+  * device.json - contains device settings such as device_token, account_id, sensor_list.
+  * user.js - (optional) allowing user to override any setting in global - like in example file.
+
+ 7. Replace information from old token.json, sensor-list.json and config.json to device.json.
+ 8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
+ 9. Use set-data-directory to provide location of your device.json and user.js
 
 If your iotkit-agent was installed using git:
  1. systemctl stop iotkit-agent
@@ -202,9 +200,17 @@ If your iotkit-agent was installed using git:
   * git stash pop
     
   Merge conflicts if occured.
- 5. systemctl start iotkit-agent
- 6. Check logs in /tmp/agent.log
+ 5. New iotkit-agents use three configuration files:
 
+  * global.json - contains default settings
+  * device.json - contains device settings such as device_token, account_id, sensor_list.
+  * user.js - (optional) allowing user to override any setting in global - like in example file.
+
+ 6. Replace information from old token.json, sensor-list.json and config.json to device.json.
+ 7. Use user.js example file to create your own settings, such as proxy, default_connector etc.
+ 8. Use set-data-directory to provide location of your device.json and user.js
+ 9. systemctl start iotkit-agent
+ 10. Check logs in /tmp/agent.log
 	
 ##4. Usage
 
@@ -232,30 +238,39 @@ The following is the list of commands and options:
 
 Commands:
 
-* `test`                    Tries to reach the server (using the current protocol).
-* `activate <activation_code>` Activates the device.
-* `register <comp_name> <catalogid>` Registers a component in the device. Use this command just for testing purposes.
-* `reset-components`       Clears the component list.
-* `observation <comp_name> <value>` Sends an observation for the device, for the specific component. Use this command just for testing purposes.
-* `update`                 Updates metadata manually
-* `catalog`                Displays the Catalog from the device's account.
-* `components`             Displays components registered for this device.
-* `initialize`             Resets both the token and the component's list.
-* `protocol <protocol>`    Set the protocol to 'mqtt' or 'rest'
-* `host <host> [<port>]`   Sets the cloud hostname for the current protocol.
-* `device-id`              Displays the device id.
-* `set-device-id <id>`     Overrides the device id.
-* `clear-device-id`        Reverts to using the default device id.
-* `save-code <activation_code>` Adds the activation code to the device.
-* `reset-code`             Clears the activation code of the device.
-* `proxy <host> <port>`    Sets proxy For REST protocol.
-* `reset-proxy`            Clears proxy For REST protocol.
-* `set-logger-level <level>` Set the logger level to 'debug', 'info', 'warn', 'error'
+* `test`                                Tries to reach the server (using the current protocol).
+* `activate <activation_code>`          Activates the device.
+* `register <comp_name> <catalogid>`    Registers a component in the device.
+* `reset-components`                    Clears the component list.
+* `observation <comp_name> <value>`     Sends an observation for the device, for the specific component.
+* `catalog`                             Displays the Catalog from the device's account.
+* `components`                          Displays components registered for this device.
+* `initialize`                          Resets both the token and the component's list.
+* `update`                              Send update device request to dashboard
+* `protocol <protocol>`                 Set the protocol to 'mqtt' or 'rest'
+* `host <host> [<port>]`                Sets the cloud hostname for the current protocol.
+* `device-id`                           Displays the device id.
+* `set-device-id <id>`                  Overrides the device id.
+* `clear-device-id`                     Reverts to using the default device id.
+* `save-code <activation_code>`         Adds the activation code to the device.
+* `reset-code`                          Clears the activation code of the device.
+* `proxy <host> <port>`                 Sets proxy For REST protocol.
+* `reset-proxy`                         Clears proxy For REST protocol.
+* `set-logger-level <level>`            Set the logger level to 'debug', 'info', 'warn', 'error'
+* `set-data-directory <path>`           Sets path of directory that contains sensor data.
+* `reset-data-directory`                Resets to default the path of directory that contains sensor data.
+* `move-data-directory <path>`          Change directory where data will be stored
+* `gateway-id                           Displays the geteway id.
+* `set-gateway-id <id>                  Overrides the geteway id.
+* `set-device-name <name>               Change device name
+* `reset-device-name                    Resets to default device name.
+* `set-udp-port <udp_port>              Overrides the port UDP listener binds to
 
-Options:
+  Options:
 
-    -h, --help     output usage information
-    -V, --version  output the version number
+    -h, --help           output usage information
+    -V, --version        output the version number
+    -C, --config [path]  Set the config file path
 
 
 ##7. General notes
