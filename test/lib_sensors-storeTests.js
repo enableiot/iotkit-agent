@@ -74,7 +74,7 @@ describe(fileToTest, function(){
             }
 
             var config = {
-                "data_directory": ""
+                "data_directory": "./data/"
             }
 
             var storeName = "deviceTest.json";
@@ -89,6 +89,11 @@ describe(fileToTest, function(){
                 assert.include(fullPath, str, "The store Name and Data is not include");
                 return dataFile;
             };
+
+            common.getDeviceConfig = function(){
+                return dataFile;
+            };
+
             toTest.__set__("common", common);
             var store = toTest.init(storeName, logger);
             assert.lengthOf(store.data, dataFile['sensor_list'].length, "The Data load is not the same");
@@ -181,6 +186,11 @@ describe(fileToTest, function(){
 
             var f = path.join(__dirname, '../data/' + storeName);
             myComm.writeToJson(f, dataFile);
+
+            myComm.getDeviceConfig = function(){
+                return dataFile;
+            };
+
             done();
         });
         after(function(done){
@@ -189,7 +199,6 @@ describe(fileToTest, function(){
         });
 
         it('Shall return a sensor by CID >', function (done) {
-            //toTest.__set__("common", common);
             var store = toTest.init(storeName, logger);
             var c = store.byCid(23);
             assert.equal(c.cid, 23, "The component is not the expected");
