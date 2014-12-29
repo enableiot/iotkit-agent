@@ -161,30 +161,6 @@ describe(fileToTest, function(){
 
 
     });
-    it('Shall Report Error After # Retries >', function(done) {
-        toTest.__set__("mqtt", mqtt);
-        var config = {
-                host: "myHosttest",
-                port: 9090909,
-                secure: true,
-                retries: 2
-            },
-            id = "0a-03-12-22";
-        var myBroker = toTest.singleton(config, logger);
-        var client = new mqtt.MqttClient();
-        mqtt.createSecureClient = function (port, host, args ) {
-            assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
-            assert.equal(port, config.port, "The port has override");
-            assert.equal(host, config.host, "The host has override");
-            client.connected = false;
-            return client;
-        };
-        myBroker.connect(function(err) {
-            assert.instanceOf(err, Error, "Invalid error reported");
-            assert.equal(err.message, "Connection Error", "Invalid Message error  Reported");
-            done();
-        });
-    });
     it('Shall Publish to Specific Broker Topic >', function(done) {
         toTest.__set__("mqtt", mqtt);
         var config = {
@@ -287,10 +263,13 @@ describe(fileToTest, function(){
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
             assert.isString(event, "The event shall be string");
-            assert.equal(event, "message", "Invalid event listeneter");
-            callHandler = handler;
-           // handler("conmector", JSON.stringify(msg));
-        }
+            assert.include(["message", "connect", "close"], event, "Invalid event listeneter");
+            if(event === "message") {
+                callHandler = handler;
+            }
+            console.log(event);
+           // handler("connector", JSON.stringify(msg));
+        };
 
         mqtt.createClient = function (port, host ) {
             assert.lengthOf(arguments, 3, "Missing Argument for Secure Connection");
@@ -300,11 +279,9 @@ describe(fileToTest, function(){
             return client;
         };
 
-
-
         myBroker.connect(function(err) {
             assert.isNull(err, "None error shall returned");
-            callHandler("conmector", JSON.stringify(msg));
+            callHandler("connector", JSON.stringify(msg));
             done();
         });
     });
@@ -327,8 +304,10 @@ describe(fileToTest, function(){
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
             assert.isString(event, "The event shall be string");
-            assert.equal(event, "message", "Invalid event listeneter");
-            callHandler = handler;
+            assert.include(["message", "connect", "close"], event, "Invalid event listener");
+            if(event === "message") {
+                callHandler = handler;
+            }
         };
 
         var myBroker = toTest.singleton(config, logger);
@@ -372,8 +351,10 @@ describe(fileToTest, function(){
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
             assert.isString(event, "The event shall be string");
-            assert.equal(event, "message", "Invalid event listeneter");
-            callHandler = handler;
+            assert.include(["message", "connect", "close"], event, "Invalid event listeneter");
+            if(event === "message") {
+                callHandler = handler;
+            }
         };
         var crd = {
             username: "TuUser",
@@ -426,8 +407,10 @@ describe(fileToTest, function(){
         client.on = function (event, handler) {
             assert.isFunction(handler, "The handle shall be a function");
             assert.isString(event, "The event shall be string");
-            assert.equal(event, "message", "Invalid event listeneter");
-            callHandler = handler;
+            assert.include(["message", "connect", "close"], event, "Invalid event listeneter");
+            if(event === "message") {
+                callHandler = handler;
+            }
         };
 
         var myBroker = toTest.singleton(config, logger);
