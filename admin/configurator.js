@@ -142,51 +142,50 @@ var moveDataDirectory = function(directory, cb) {
                     cb(err);
                     return;
                 }
-
-                var config = common.getConfig();
-                var directoryPath = config[configFileKey.dataDirectory];
-
-                var files = fs.readdirSync(directoryPath);
-                try {
-                    files.forEach(function (file) {
-                        fs.writeFileSync(path.join(directory, file), fs.readFileSync(path.join(directoryPath, file)));
-                    });
-
-                    if (fs.readdirSync(directoryPath).length !== fs.readdirSync(directory).length) {
-                        fs.rmdirSync(directory);
-                    }
-                    else {
-                        directory = path.resolve(directory);
-                        common.saveToGlobalConfig(configFileKey.dataDirectory, directory);
-                    }
-                } catch (e) {
-                    err = e;
-                }
-
-                var pathToDelete = (err) ? directory : directoryPath;
-
-                try {
-                    var filesToDelete = fs.readdirSync(pathToDelete);
-                    filesToDelete.forEach(function (file) {
-                        fs.unlinkSync(path.resolve(pathToDelete, file));
-                    });
-
-                    if(err) {
-                        fs.rmdirSync(directory);
-                    }
-                }
-                catch (e) {
-                    console.log(e);
-                }
-
-                cb(err);
             });
         }
-        else {
-            cb(new Error("Directory alredy exists."));
+
+        var err;
+        var config = common.getConfig();
+        var directoryPath = config[configFileKey.dataDirectory];
+
+        var files = fs.readdirSync(directoryPath);
+        try {
+            files.forEach(function (file) {
+                fs.writeFileSync(path.join(directory, file), fs.readFileSync(path.join(directoryPath, file)));
+            });
+
+            if (fs.readdirSync(directoryPath).length !== fs.readdirSync(directory).length) {
+                fs.rmdirSync(directory);
+            }
+            else {
+                directory = path.resolve(directory);
+                common.saveToGlobalConfig(configFileKey.dataDirectory, directory);
+            }
+        } catch (e) {
+            err = e;
         }
+
+        var pathToDelete = (err) ? directory : directoryPath;
+
+        try {
+            var filesToDelete = fs.readdirSync(pathToDelete);
+            filesToDelete.forEach(function (file) {
+                fs.unlinkSync(path.resolve(pathToDelete, file));
+            });
+
+            if(err) {
+                fs.rmdirSync(directory);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+
+        cb(err);
     });
 };
+
 var setDeviceName = function(name, cb) {
     common.saveToDeviceConfig(configFileKey.deviceName, name);
     cb(name);
