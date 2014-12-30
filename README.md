@@ -219,7 +219,7 @@ If your iotkit-agent was installed using git:
  8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
  9. Use set-data-directory to provide location of your device.json and user.js
  
- Eventually:
+ ####Eventually:
  10. systemctl start iotkit-agent
  11. Check logs in /tmp/agent.log
 	
