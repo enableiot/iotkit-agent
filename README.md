@@ -170,7 +170,7 @@ If you have pre-installed version of iotkit-agent on your Edison board:
   * /usr/share/iotkit-agent/certs
   * /usr/share/iotkit-agent/data
 
- 4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders.
+ 4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders. Backup them.
  5. Upgrade iotkit-agent using npm
   npm install --global iotkit-agent
  6. Iotkit-agents from v.1.6.0 use three configuration files:
@@ -179,7 +179,7 @@ If you have pre-installed version of iotkit-agent on your Edison board:
   * device.json - contains device settings such as device_token, account_id, sensor_list.
   * user.js - (optional) allowing user to override any setting in global - like in example file.
 
-  If you upgrade from previous versions:
+  ####If you upgrade from previous versions:
   
  7. Replace information from old token.json, sensor-list.json and config.json to device.json.
  8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
@@ -194,7 +194,8 @@ If your iotkit-agent was installed using git:
   * /usr/share/iotkit-agent/certs
   * /usr/share/iotkit-agent/data
     
- 4. Upgrade iotkit-agent using git
+ 4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders. Backup them.
+ 5. Upgrade iotkit-agent using git
   From installation directory execute:
   
   * git stash
@@ -202,20 +203,21 @@ If your iotkit-agent was installed using git:
   * git stash pop
     
   Merge conflicts if occured.
- 5. Iotkit-agents from v.1.6.0 use three configuration files:
+ 6. Iotkit-agents from v.1.6.0 use three configuration files:
 
   * global.json - contains default settings
   * device.json - contains device settings such as device_token, account_id, sensor_list.
   * user.js - (optional) allowing user to override any setting in global - like in example file.
   
-  If you upgrade from previous versions:
+  ####If you upgrade from previous versions:
 
- 6. Replace information from old token.json, sensor-list.json and config.json to device.json.
- 7. Use user.js example file to create your own settings, such as proxy, default_connector etc.
- 8. Use set-data-directory to provide location of your device.json and user.js
+ 7. Replace information from old token.json, sensor-list.json and config.json to device.json.
+ 8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
+ 9. Use set-data-directory to provide location of your device.json and user.js
  
- 9. systemctl start iotkit-agent
- 10. Check logs in /tmp/agent.log
+ After that:
+ 10. systemctl start iotkit-agent
+ 11. Check logs in /tmp/agent.log
 	
 ##4. Usage
 
