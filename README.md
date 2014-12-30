@@ -133,7 +133,11 @@ Or, you can set a different Device Id with this command:
 
     ./iotkit-admin.js set-device-id <device_id>
 
-You can also set a different Gateway with this command:
+You can also set a different Device name with this command:
+
+    ./iotkit-admin.js set-device-name <device_name>
+
+Or a different Gateway Id with this command:
 
     ./iotkit-admin.js set-gateway-id <gateway_id>
 
