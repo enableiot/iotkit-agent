@@ -317,7 +317,7 @@ module.exports = {
             .command('reset-data-directory')
             .description('Resets to default the path of directory that contains sensor data.')
             .action(function() {
-                common.saveToGlobalConfig(configFileKey.dataDirectory, "/etc/iotkit-agent");
+                common.saveToGlobalConfig(configFileKey.dataDirectory, "./data/");
                 logger.info("Data directory changed to default.");
             });
 
