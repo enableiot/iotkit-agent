@@ -46,15 +46,12 @@ if (fs.existsSync(localConf)) {
 module.exports = config;
 
 /* Example usage:
-
-config.default_connector = "mqtt";
-
-config.connector.rest.timeout = 60000;
-
-config.connector.rest.proxy.host = "example.com";
-config.connector.rest.proxy.port = 1180;
-
-Please write your changes for config below.
+ * config.default_connector = "mqtt";
+ * config.connector.rest.timeout = 60000;
+ *
+ * config.connector.rest.proxy.host = "example.com";
+ * config.connector.rest.proxy.port = 1180;
+ *
+ * Please write your changes for config below.
  */
-
 
