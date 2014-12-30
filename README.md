@@ -213,6 +213,7 @@ If your iotkit-agent was installed using git:
  6. Replace information from old token.json, sensor-list.json and config.json to device.json.
  7. Use user.js example file to create your own settings, such as proxy, default_connector etc.
  8. Use set-data-directory to provide location of your device.json and user.js
+ 
  9. systemctl start iotkit-agent
  10. Check logs in /tmp/agent.log
 	
@@ -311,28 +312,40 @@ The IoT Kit Agent includes default certificates to provide "out of the box" conn
 ## What's new in version 1.6.0
 DP-3122 – Change config loading strategy
 * We introduce new config strategy in this release. Three different configuration files are used: global, user and device. Global config is managed by developers of iotkit-agent. Device config contains all information connected with activated device. User config can be edited manually by user or by iotkit-admin commands. Setting from user configuration file will override the ones from global configuration file.
+
 DP-3115 – Agent should have --config parameter to provide configuration file location
 * Agent can be run with parameter to specify folder where user config file is placed. Other configurations are taken from configs in data folder (which can be moved to other location).
+
 DP-2775 – Create agent command that sets UDP port & address for receiving actuations
 * UDP port and address can be set using iotkit-admin commands.
+
 DP-3182 – Add command to move data directory with user config
 * User can move device and user configuration files to different directory, outside agent folder.
+
 DP-3265 – Add command to set device name using iotkit-admin
 * Added command to set device name, not only ID.
+
 DP-3433 – Prepare example user config
-* Example user config is provided to help users interact with configuration file syntax and available settings. 
+* Example user config is provided to help users interact with configuration file syntax and available settings.
+ 
 DP-3282 – Make agent reconnect to MQTT
-* Agent try to reconnect to MQTT broker if connection is dropped or lost. 
+* Agent try to reconnect to MQTT broker if connection is dropped or lost.
+ 
 DP-2558 – iotkit-agent (and -admin) change the device-id with another MAC
 * Device id is set after activation even if it did not have value before activation.
+
 DP-2961 – Agent accepts remote UDP messages
 * Agent no longer accept UDP messages from remote machines. It listens for observations only locally.
+
 DP-3309 – Agent should send empty strings as credentials if no credentials provided
 * If device is not activated, it sends empty strings as credentials which allow test and activate calls.
+
 DP-3310 – Device is not sending device ID and token
 * Available credentials are used in every call, in both REST and MQTT.
+
 DP-3181 – Agent should not require existence of empty or default configuration files.
 * There are no longer empty configuration files with token and sensor lists which existence was required.
+
 DP-2970 – iotkit-admin crashes if observation command does not provide enough arguments
 * Added additional checking for required arguments before use.
 
@@ -344,29 +357,41 @@ DP-3127 Using only local configuration files, not system ones.
 ## What's new in version 1.5.2
 DP-2199 – Unable to send observations with value lower than 0
 *    Negative values can be send using command line.
+
 DP-2208 – iotkit-admin.js does not work on Windows
 *    Correct system temporary folder is used in Windows and Linux operating systems.
+
 DP-2282 – Add commands to agent to modify gateway id
 *    Gateway id can be updated separately using command set-gateway-id.
+
 DP-2344 – Timeouts and connection attempts
 *    Time limits for MQTT were increased and number of retries lowered.
+
 DP-2351 – When registering a component with short (<4 characters) name, component is not saved and no error is displayed
 *    Added validation on client side for too short component name during registration.
+
 DP-2521 – Investigate actuation fails
 *    Some problems were found and fixed.
+
 DP-2652 DP-2657 – Sending measurements should not update device every time 
 *    Device is no longer updated when sending observation so less data is sent.
 *    It’s updated when activating device, registering components or manually by executing update command.
+
 DP-1642 – Several iotkit-admin commands do not check arguments
 *    Added message about next required parameter when not provided.
+
 DP-2969 – Sending data by iotkit-agent with value 0 fails
 *    Zero is accepted as measurement value.
+
 DP-3029 – Device activation intermittent failures over REST API
 *    Timeout for REST calls was increased.
+
 DP-1977 – mqtt.createSecureClient does not pass key options
 *    Strict validation of SSL certificates on dashboard and broker enabled by default.
+
 DP-3106 Script for submitting data to local agent using UDP
 *    Script for submitting data to local agent using UDP was added to root folder. It can be used by Windows users who do not have nc program in their OS.
+
 DP-3107 Getting Started guide in pdf has been added
 *    Getting Started guide in pdf format is available in root folder.
 
