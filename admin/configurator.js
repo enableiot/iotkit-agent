@@ -186,6 +186,24 @@ var moveDataDirectory = function(directory, cb) {
     });
 };
 
+var setDataDirectory = function(directory, cb){
+    fs.exists(directory, function (exists) {
+        if(exists){
+            fs.exists(path.resolve(directory, "device.json"), function(configExsits){
+                if(configExsits){
+                    common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directory));
+                }
+                else{
+                    cb(new Error("Directory not contains device.json"));
+                }
+            });
+        }
+        else{
+            cb(new Error("Data directory not exsits"));
+        }
+    });
+};
+
 var setDeviceName = function(name, cb) {
     common.saveToDeviceConfig(configFileKey.deviceName, name);
     cb(name);
@@ -285,8 +303,14 @@ module.exports = {
             .command('set-data-directory <path>')
             .description('Sets path of directory that contains sensor data.')
             .action(function(directoryPath) {
-                common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directoryPath));
-                logger.info("Data directory changed.");
+                setDataDirectory(directoryPath, function(err){
+                   if(!err){
+                       logger.info("Data directory changed.");
+                   }
+                   else{
+                       logger.error(err.message);
+                   }
+                });
             });
 
         program
