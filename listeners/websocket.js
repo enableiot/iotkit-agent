@@ -1,6 +1,3 @@
-/**
- * Created by GER\ajoskows on 12/11/14.
- */
 var WebSocketClient = require('websocket').client;
 var deviceToken = require('./../certs/token').deviceToken;
 
