@@ -25,14 +25,14 @@
     },
     "data_directory": "",
     "gateway_id": null,
-    "default_connector": "rest+ws",
+    "default_connector": "rest",
     "connector": {
         "mqtt": {
-            "host": "localhost",
-            "port": 1885,
+            "host": "broker.us.enableiot.com",
+            "port": 8883,
             "qos": 1,
             "retain": false,
-            "secure": false,
+            "secure": true,
             "strictSSL": true,
             "retries": 5,
             "topic": {
@@ -51,9 +51,9 @@
             }
         },
         "rest": {
-            "host": "localhost",
-            "port": 80,
-            "protocol": "http",
+            "host": "dashboard.us.enableiot.com",
+            "port": 443,
+            "protocol": "https",
             "strictSSL": true,
             "timeout": 30000,
             "proxy": {
