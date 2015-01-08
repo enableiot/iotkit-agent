@@ -185,7 +185,7 @@ If you have pre-installed version of iotkit-agent on your Edison board:
 
   ####If you upgrade from previous versions:
   
- 7. Replace information from old token.json, sensor-list.json and config.json to device.json.
+ 7. Execute node migration.js FOLDER_WITH BACKED_UP_FILES which will compound data from old token.json, sensor-list.json and config.json to device.json.
  8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
  9. Use set-data-directory to provide location of your device.json and user.js
 
@@ -215,7 +215,7 @@ If your iotkit-agent was installed using git:
   
   ####If you upgrade from previous versions:
 
- 7. Replace information from old token.json, sensor-list.json and config.json to device.json.
+ 7. Execute node migration.js FOLDER_WITH BACKED_UP_FILES which will compound data from old token.json, sensor-list.json and config.json to device.json.
  8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
  9. Use set-data-directory to provide location of your device.json and user.js
  
