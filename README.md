@@ -315,6 +315,9 @@ In this example, the request is for component "led1". The "command" field, "LED.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
+## What's new in version 1.6.1
+DP-3463 – Added script for migration from iotkit-agent versions 1.5.6 and below.
+
 ## What's new in version 1.6.0
 DP-3122 – Change config loading strategy
 * We introduce new config strategy in this release. Three different configuration files are used: global, user and device. Global config is managed by developers of iotkit-agent. Device config contains all information connected with activated device. User config can be edited manually by user or by iotkit-admin commands. Setting from user configuration file will override the ones from global configuration file.
