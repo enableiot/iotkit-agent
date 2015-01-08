@@ -147,7 +147,7 @@ var moveDataDirectory = function(directory, cb) {
 
         var err;
         var config = common.getConfig();
-        var directoryPath = config[configFileKey.dataDirectory];
+        var directoryPath = path.resolve(__dirname, "..", config[configFileKey.dataDirectory]);
 
         var files = fs.readdirSync(directoryPath);
         try {
