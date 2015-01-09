@@ -37,8 +37,8 @@ DIST=dist
 cd ${buildscript_dir}/..
 
 
-npm config set proxy http://proxy-us.intel.com:911
-npm config set https-proxy http://proxy-us.intel.com:911
+npm config set proxy http://proxy-mu.intel.com:911
+npm config set https-proxy http://proxy-mu.intel.com:911
 npm install
 if [ $? -ne 0 ]; then
     echo "${BUILD_PREFIX_ERROR}You had an error installing Node Packages. Aborting."
