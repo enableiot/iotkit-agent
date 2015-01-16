@@ -28,9 +28,9 @@
 
 var fs = require('fs'),
     path = require('path'),
-    localConf = path.resolve(process.argv[1], "../config/global.json");
+    localConf = path.resolve(fs.realpathSync(process.argv[1]), "../config/global.json");
 
-if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
+if (!fs.exists(localConf)) {
     localConf = path.resolve("config/global.json");
 }
 

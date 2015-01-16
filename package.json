@@ -1,6 +1,6 @@
 {
   "name": "iotkit-agent",
-  "version": "1.6.0",
+  "version": "1.6.4",
   "description": "Edge agent to abstract complexities",
   "main": "server.js",
   "dependencies": {
@@ -16,8 +16,8 @@
     "json-socket": "^0.1.2"
   },
   "bin": {
-    "iotkit-admin": "./bin/admin.js",
-    "iotkit-agent": "./bin/agent.js"
+    "iotkit-admin": "./iotkit-admin.js",
+    "iotkit-agent": "./iotkit-agent.js"
   },
   "scripts": {
     "start": "node agent",
