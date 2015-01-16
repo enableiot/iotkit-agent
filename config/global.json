@@ -14,7 +14,7 @@
         "LEVEL": "info",
         "PATH": "/tmp/"
     },
-    "default_connector": "rest",
+    "default_connector": "rest+ws",
     "connector": {
         "mqtt": {
             "host": "broker.us.enableiot.com",
@@ -64,6 +64,11 @@
                 },
                 "health": "/v1/api/health"
             }
+        },
+        "ws": {
+            "host": "dashboard.us.enableiot.com",
+            "port": 8080,
+            "retryTime": 5000
         }
     }
 }
