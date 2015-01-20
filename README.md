@@ -163,65 +163,57 @@ Yes, you guessed it, run the stop script:
 
     ./stop-agent.sh
 
-##3. Upgrade
+##3. Upgrading
 
-If you have pre-installed version of iotkit-agent on your Edison board:
- 1. systemctl stop iotkit-agent
- 2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
- 3. If your agent used global config files, backup external files:
+**Note:** To avoid losing configuration settings on an activated device, special care must be taken when upgrading the agent.
 
-  * /etc/iotkit-agent/config.json
-  * /usr/share/iotkit-agent/certs
-  * /usr/share/iotkit-agent/data
+1. Make note of your current agent version:<br>
+```iotkit-admin -V```<br>
+2. *If your agent version is older than 1.6.0 you will need to backup and migrate your configuration settings. See the <a href="#migrate">migration instructions</a> below.* Otherwise, backup/export configuration data to a permanent location (if you have not already done so):<br>
+```iotkit-agent move-data-directory <data_directory>```
+2. Update agent<br>
+**If you installed the Agent globally using NPM or if it came pre-installed**<br>
+```npm update -g iotkit-agent```<br>
+**If you installed locally using NPM**<br>
+```npm update iotkit-agent``` (from within your local node_modules directory)<br>
+**If you initially installed locally using Git**<br>
 
- 4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders. Backup them.
- 5. Upgrade iotkit-agent using npm
-  npm install --global iotkit-agent
- 6. Iotkit-agents from v.1.6.0 use three configuration files:
+   ```
+   git stash
+   git pull
+   ```
+3. Point new agent to previous configuration data folder<br>
+```iotkit-admin set-data-directory <data_directory>```
+4. Run the migration script if upgrading from an agent older than 1.6.0
+5. Restart agent process (for pre-installed agents):<br>
+```systemctl restart iotkit-agent```
+6. Agent logs can be checked for errors: */tmp/agent.log*
 
-  * global.json - contains default settings
-  * device.json - contains device settings such as device_token, account_id, sensor_list.
-  * user.js - (optional) allowing user to override any setting in global - like in example file.
+<a name=migrate></a>
+### Migrating from Agents before 1.6.0
 
-  ####If you upgrade from previous versions:
-  
- 7. Execute node migration.js FOLDER_WITH BACKED_UP_FILES which will compound data from old token.json, sensor-list.json and config.json to device.json.
- 8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
- 9. Use set-data-directory to provide location of your device.json and user.js
+ 1. Make note of your current agent version:<br>
+```iotkit-admin -V```
+ 3. Backup the following 3 agent configuration files to a single location outside of the iotkit-agent folder:<br>
+  **Pre-installed Agent on Edison boards**
+  * /etc/iotkit-agent/**config.json**
+  * /usr/share/iotkit-agent/certs/**token.json**
+  * /usr/share/iotkit-agent/data/**sensor-list.json**
 
-If your iotkit-agent was installed using git:
- 1. systemctl stop iotkit-agent
- 2. Backup old agent located in /usr/lib/node_modules/iotkit-agent where you like
- 3. If your agent used global config files, backup external files:
- 
-  * /etc/iotkit-agent/config.json
-  * /usr/share/iotkit-agent/certs
-  * /usr/share/iotkit-agent/data
-    
- 4. If it was local installation these folders and files are stored locally in config/ certs/ and data/ folders. Backup them.
- 5. Upgrade iotkit-agent using git
-  From installation directory execute:
-  
-  * git stash
-  * git pull
-  * git stash pop
-    
-  Merge conflicts if occured.
- 6. Iotkit-agents from v.1.6.0 use three configuration files:
+  **Globally-installed Agent**
+  * /usr/lib/node_modules/iotkit-agent/config/**config.json**
+  * /usr/lib/node_modules/iotkit-agent/data/**sensor-list.json**
+  * /usr/lib/node_modules/iotkit-agent/cert/**token.json**
 
-  * global.json - contains default settings
-  * device.json - contains device settings such as device_token, account_id, sensor_list.
-  * user.js - (optional) allowing user to override any setting in global - like in example file.
-  
-  ####If you upgrade from previous versions:
+  **Locally-installed Agent**
+  * ./iotkit-agent/config/**config.json**
+  * ./iotkit-agent/data/**sensor-list.json**
+  * ./iotkit-agent/cert/**token.json**
 
- 7. Execute node migration.js FOLDER_WITH BACKED_UP_FILES which will compound data from old token.json, sensor-list.json and config.json to device.json.
- 8. Use user.js example file to create your own settings, such as proxy, default_connector etc.
- 9. Use set-data-directory to provide location of your device.json and user.js
- 
- ####Eventually:
- 10. systemctl start iotkit-agent
- 11. Check logs in /tmp/agent.log
+ 3. Upgrade your agent
+ 4. Run migration script to import old settings into new agent configuration. Use 'migrate.js' in the iotkit-agent install folder.<br>
+ ```migrate.js <backup_directory>```
+ 5. Resume upgrade procedure (steps 4-7)
 	
 ##4. Usage
 
