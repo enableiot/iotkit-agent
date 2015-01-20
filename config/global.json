@@ -68,7 +68,8 @@
         "ws": {
             "host": "dashboard.us.enableiot.com",
             "port": 8080,
-            "retryTime": 5000
+            "retryTime": 5000,
+            "secure": true
         }
     }
 }

@@ -26,6 +26,10 @@ var init = exports.init = function(conf, logger) {
             logger.info('Fired STATUS: ', message.utf8Data);
         });
     });
-    client.connect('ws://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol');
+    if(conf.connector.ws.secure) {
+        client.connect('wss://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol');
+    } else {
+        client.connect('ws://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol');
+    }
     return client;
 };
