@@ -11,7 +11,7 @@ var init = exports.init = function(conf, logger) {
         }, parseInt(conf.connector.ws.retryTime));
     });
     client.on('connect', function(connection){
-        logger.info('Websocket listener started on port: ' + conf.connector.ws.port);
+        logger.info('Connected to websocket server ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
         var initMessageObject = {
             "type": "device",
             "deviceId": deviceInfo.device_id,
