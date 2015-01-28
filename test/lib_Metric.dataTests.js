@@ -31,25 +31,20 @@ var fileToTest = "../lib/data/Metric.data.js";
 
 describe(fileToTest, function(){
     var toTest = rewire(fileToTest);
-    var util = {
-        data: 10234566789,
-        now:  function () {
-                return this.data;
-        }
-    };
+    var startData = Date.now();
     it('Shall Return Metric empty Object >', function(done) {
-        var Metric  = toTest.init(util)
-        var mMet = new Metric()
+        var Metric  = toTest.init();
+        var mMet = new Metric();
         assert.property(mMet, "accountId" , "The account id is required by MQTT AA");
         assert.property(mMet, "did", "The did (device) is require by MQTT AA");
         assert.property(mMet, "on", "The on (epoch time) is require by MQTT AA");
         assert.property(mMet, "count", "The count is require by MQTT AA");
-        assert.equal(mMet.on, util.data, "The on is not the expected");
+        assert.operator(mMet.on, '>=', startData, "The on is not the expected");
         assert.isArray(mMet.data, "The Data Array were not proper initialized");
         done();
     });
     it('Shall Return Metric Object with Name a Value >', function(done) {
-        var Metric  = toTest.init(util)
+        var Metric  = toTest.init();
         var mMet = new Metric();
         var message = {
             accountId: "myAccount",
@@ -60,7 +55,7 @@ describe(fileToTest, function(){
         mMet.set(message);
         assert.equal(mMet.accountId, message.accountId , "The account id is missing");
         assert.equal(mMet.did, message.deviceId, "The Deviceid is missing");
-        assert.equal(mMet.on, util.data, "The on is not the expected");
+        assert.operator(mMet.on, '>=', startData, "The on is not the expected");
         assert.isArray(mMet.data, "The Data Array were not proper initialized");
         delete  mMet;
         mMet = new Metric();
@@ -85,7 +80,7 @@ describe(fileToTest, function(){
         done();
     });
     it('Shall Convert Metric Obj to MQTT >', function(done) {
-        var Metric  = toTest.init(util)
+        var Metric  = toTest.init();
         var mMetricon = new Metric();
         var message = {
             accountId: "myAccount2",
@@ -119,14 +114,14 @@ describe(fileToTest, function(){
         mMetricon = new Metric();
         mMetricon.set(message);
         mMetricon.convertToMQTTPayload();
-        assert.equal(mMetricon.on, util.data, "The on is not the expected");
+        assert.operator(mMetricon.on, '>=', startData, "The on is not the expected");
         assert.isArray(mMetricon.data, "The Data Array were not proper initialized");
         assert.lengthOf(mMetricon.data, 1, "The length of data is not the expected");
         assert.notProperty(mMetricon, "globalCid", "The attributes are not expected");
         d = mMetricon.data[0];
         assert.isString(d.value, "The value of the data is not string");
         assert.equal(d.value, message.v, "The data is not the expected");
-        assert.equal(d.on, util.data, "The on time is not the expected");
+        assert.operator(d.on, '>=', startData, "The on is not the expected");
         assert.equal(d.cid, message.componentId, "The length of data is not the expected");
         assert.equal(d.attributes, message.attributes, "The attributes are not expected");
         assert.notProperty(d, "globalCid", "Temporal Property not remove");
@@ -135,7 +130,7 @@ describe(fileToTest, function(){
         done();
    });
     it('Shall Convert Metric Obj to MQTT with a multiple data>', function(done) {
-        var Metric  = toTest.init(util)
+        var Metric  = toTest.init();
         var mMetricon = new Metric();
         var message = {
             accountId: "myAccount2",
@@ -153,7 +148,7 @@ describe(fileToTest, function(){
             }]
         };
         mMetricon.set(message);
-        assert.equal(mMetricon.on, util.data, "The on is not the expected");
+        assert.operator(mMetricon.on, '>=', startData, "The on is not the expected");
         assert.isArray(mMetricon.data, "The Data Array were not proper initialized");
         assert.lengthOf(mMetricon.data, mMetricon.count, "The length of data is not the expected");
         var d = mMetricon.data[0];
@@ -176,7 +171,7 @@ describe(fileToTest, function(){
         done();
     });
     it('Shall Convert Metric Obj to Rest Payload >', function(done) {
-        var Metric  = toTest.init(util)
+        var Metric  = toTest.init();
         var mMetricon = new Metric();
         var message = {
             accountId: "myAccount2",
@@ -211,14 +206,14 @@ describe(fileToTest, function(){
         mMetricon = new Metric();
         mMetricon.set(message);
         mMetricon.convertToRestPayload();
-        assert.equal(mMetricon.on, util.data, "The on is not the expected");
+        assert.operator(mMetricon.on, '>=', startData, "The on is not the expected");
         assert.isArray(mMetricon.data, "The Data Array were not proper initialized");
         assert.lengthOf(mMetricon.data, 1, "The length of data is not the expected");
         assert.notProperty(mMetricon, "globalCid", "The attributes are not expected");
         d = mMetricon.data[0];
         assert.isString(d.value, "The value of the data is not string");
         assert.equal(d.value, message.v, "The data is not the expected");
-        assert.equal(d.on, util.data, "The on time is not the expected");
+        assert.operator(d.on, '>=', startData, "The on is not the expected");
         assert.equal(d.componentId, message.componentId, "The length of data is not the expected");
         assert.equal(d.attributes, message.attributes, "The attributes are not expected");
         assert.notProperty(d, "cid", "The property is bad named");
@@ -228,7 +223,7 @@ describe(fileToTest, function(){
         done();
     });
     /*it('Shall Convert Metric Obj to MQTT using Data Array>', function(done) {
-        var Metric  = toTest.init(util);
+        var Metric  = toTest.init();
         var mMetricon = new Metric();
         var message = {
             accountId: "myAccount",
