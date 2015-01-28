@@ -33,7 +33,7 @@ describe(fileToTest, function(){
     var toTest = rewire(fileToTest);
     var util = {
         data: 10234566789,
-        newTimeStamp:  function () {
+        now:  function () {
                 return this.data;
         }
     };
