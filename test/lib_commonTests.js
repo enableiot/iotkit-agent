@@ -63,24 +63,6 @@ describe(fileToTest, function(){
         done();
 
     });
-    it('Shall Filter the objects comply with condition >', function(done){
-        var arr = [{a: 2, b: 3}, {a: 4, b: 5}, {a: 6, b: 7}, {a: "e", b: 5}]
-        var found = toTest.filterBy(arr, function (ob){
-            return (ob.b === 5);
-        });
-        assert.isArray(found, "None object has returned");
-        assert.lengthOf(found,2, "Some object has missed in the filter operation");
-        done();
-    });
-    it('Shall None Filter any if object it not comply with condition >', function(done){
-        var arr = [{a: 2, b: 3}, {a: 4, b: 5}, {a: 6, b: 7}, {a: "e", b: 5}]
-        var found = toTest.filterBy(arr, function (ob){
-            return (ob.b === 15);
-        });
-        assert.isArray(found, "None object has returned");
-        assert.lengthOf(found,0, "Some object has missed in the filter operation");
-        done();
-    });
     it('Shall Return the Index of objects At Array that comply with condition >', function(done){
         var arr = [{a: 2, b: 3}, {a: 4, b: 5}, {a: 6, b: 7}, {a: "e", b: 5}];
         var index = toTest.getIndexOf(arr, function (ob){
