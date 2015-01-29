@@ -1,17 +1,40 @@
 var WebSocketClient = require('websocket').client;
-var deviceInfo = require('./../data/device');
+var deviceInfo = require('./../data/device'),
+    tunnel = require('tunnel');
 
 var init = exports.init = function(conf, logger) {
     var client = new WebSocketClient();
 
-    client.on('connectFailed', function() {
+	if(conf.connector.ws.proxy.host && conf.connector.ws.proxy.port && conf.connector.ws.proxy.ssl) {
+		if(conf.connector.ws.proxy.ssl) {
+			var tunnelingAgent = tunnel.httpsOverHttp({
+				proxy: {
+					host: conf.connector.ws.proxy.host,
+					port: conf.connector.ws.proxy.port
+				}
+			});
+		} else {
+			var tunnelingAgent = tunnel.httpOverHttp({
+				proxy: {
+					host: conf.connector.ws.proxy.host,
+					port: conf.connector.ws.proxy.port
+				}
+			});
+		}
+	}
+
+	var requestOptions = {
+		agent: tunnelingAgent
+	};
+
+    client.on('connectFailed', function(result) {
         logger.error("Websocket cannot connect.");
         setTimeout(function() {
             init(conf, logger);
         }, parseInt(conf.connector.ws.retryTime));
     });
     client.on('connect', function(connection){
-        logger.info('Connected to websocket server ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
+        logger.info('Websocket listener started on port: ' + conf.connector.ws.port);
         var initMessageObject = {
             "type": "device",
             "deviceId": deviceInfo.device_id,
@@ -26,10 +49,12 @@ var init = exports.init = function(conf, logger) {
             logger.info('Fired STATUS: ', message.utf8Data);
         });
     });
-    if(conf.connector.ws.secure) {
-        client.connect('wss://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol');
-    } else {
-        client.connect('ws://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol');
-    }
+
+	if(conf.connector.ws.secure) {
+		client.connect('wss://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol', null, null, requestOptions);
+	} else {
+		client.connect('ws://' + conf.connector.ws.host + ':' + conf.connector.ws.port, 'echo-protocol', null, null, requestOptions);
+	}
+
     return client;
 };

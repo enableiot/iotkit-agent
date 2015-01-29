@@ -66,10 +66,15 @@
             }
         },
         "ws": {
-            "host": "dashboard.us.enableiot.com",
+            "host": "ws.us.enableiot.com",
             "port": 8080,
             "retryTime": 5000,
-            "secure": true
+            "secure": true,
+            "proxy": {
+                "host": false,
+                "port": false,
+                "ssl": false
+            }
         }
     }
 }
