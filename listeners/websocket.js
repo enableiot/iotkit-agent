@@ -7,22 +7,22 @@ var init = exports.init = function(conf, logger) {
     var tunnelingAgent = null;
 
 	if(conf.connector.ws.proxy.host && conf.connector.ws.proxy.port) {
-		if(conf.connector.ws.proxy.host.substr(0,5) === 'https') {
-			tunnelingAgent = tunnel.httpsOverHttp({
-				proxy: {
-					host: conf.connector.ws.proxy.host.substr(8),
-					port: conf.connector.ws.proxy.port
-				}
+        if(conf.connector.ws.proxy.host.substr(0,5) === 'https') {
+            tunnelingAgent = tunnel.httpsOverHttp({
+                proxy: {
+                    host: conf.connector.ws.proxy.host.split('https://')[1],
+                    port: conf.connector.ws.proxy.port
+                }
 			});
 		} else {
-			tunnelingAgent = tunnel.httpOverHttp({
-				proxy: {
-					host: conf.connector.ws.proxy.host.substr(7),
-					port: conf.connector.ws.proxy.port
-				}
-			});
-		}
-	}
+            tunnelingAgent = tunnel.httpOverHttp({
+                proxy: {
+                    host: conf.connector.ws.proxy.host.split('http://')[1],
+                    port: conf.connector.ws.proxy.port
+                }
+            });
+        }
+    }
 
 	var requestOptions = {
 		agent: tunnelingAgent
@@ -32,6 +32,7 @@ var init = exports.init = function(conf, logger) {
     client.on('connectFailed', function() {
         logger.error("Websocket cannot connect.");
         setTimeout(function() {
+            logger.info("Trying to reconnect...");
             init(conf, logger);
         }, parseInt(conf.connector.ws.retryTime));
     });
@@ -45,6 +46,7 @@ var init = exports.init = function(conf, logger) {
         connection.sendUTF(JSON.stringify(initMessageObject));
         connection.on('close', function() {
             logger.info("Websocket connection closed.");
+            logger.info("Trying to reconnect...");
             init(conf, logger);
         });
         connection.on('message', function(message) {
