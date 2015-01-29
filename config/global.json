@@ -72,8 +72,7 @@
             "secure": true,
             "proxy": {
                 "host": false,
-                "port": false,
-                "ssl": false
+                "port": false
             }
         }
     }

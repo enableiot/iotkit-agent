@@ -4,19 +4,20 @@ var deviceInfo = require('./../data/device'),
 
 var init = exports.init = function(conf, logger) {
     var client = new WebSocketClient();
+    var tunnelingAgent = null;
 
-	if(conf.connector.ws.proxy.host && conf.connector.ws.proxy.port && conf.connector.ws.proxy.ssl) {
-		if(conf.connector.ws.proxy.ssl) {
-			var tunnelingAgent = tunnel.httpsOverHttp({
+	if(conf.connector.ws.proxy.host && conf.connector.ws.proxy.port) {
+		if(conf.connector.ws.proxy.host.substr(0,5) === 'https') {
+			tunnelingAgent = tunnel.httpsOverHttp({
 				proxy: {
-					host: conf.connector.ws.proxy.host,
+					host: conf.connector.ws.proxy.host.substr(8),
 					port: conf.connector.ws.proxy.port
 				}
 			});
 		} else {
-			var tunnelingAgent = tunnel.httpOverHttp({
+			tunnelingAgent = tunnel.httpOverHttp({
 				proxy: {
-					host: conf.connector.ws.proxy.host,
+					host: conf.connector.ws.proxy.host.substr(7),
 					port: conf.connector.ws.proxy.port
 				}
 			});
@@ -27,7 +28,8 @@ var init = exports.init = function(conf, logger) {
 		agent: tunnelingAgent
 	};
 
-    client.on('connectFailed', function(result) {
+
+    client.on('connectFailed', function() {
         logger.error("Websocket cannot connect.");
         setTimeout(function() {
             init(conf, logger);
