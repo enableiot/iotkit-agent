@@ -53,6 +53,10 @@ var setHostFor = function (host_value, port_value) {
     var proxy;
     if (data) {
        proxy = data["default_connector"];
+       if(proxy === "rest+ws"){
+           proxy = "ws";
+       }
+
        logger.info("Config Key : ", proxy, " value ", host_value);
        var host_key = 'connector.' + proxy + '.host';
 
@@ -219,13 +223,13 @@ module.exports = {
     addCommand : function (program) {
         program
             .command('protocol <protocol>')
-            .description('Set the protocol to \'mqtt\' or \'rest\'')
+            .description('Set the protocol to \'mqtt\' or \'rest\' or \'rest+ws\'')
             .action(function(protocol){
-                if (protocol === 'mqtt' || protocol === 'rest') {
+                if (protocol === 'mqtt' || protocol === 'rest' || protocol == 'rest+ws') {
                     common.saveToUserConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {
-                    logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\'", protocol);
+                    logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\' or \'rest+ws\'", protocol);
                     // do not clear the previous protocol
                 }
             });
