@@ -189,8 +189,8 @@ var moveDataDirectory = function(directory, cb) {
 var setDataDirectory = function(directory, cb){
     fs.exists(directory, function (exists) {
         if(exists){
-            fs.exists(path.resolve(directory, "device.json"), function(configExsits){
-                if(configExsits){
+            fs.exists(path.resolve(directory, "device.json"), function(configExists) {
+                if(configExists){
                     common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directory));
                 }
                 else{

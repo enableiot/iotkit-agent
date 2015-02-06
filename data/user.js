@@ -30,7 +30,7 @@ var fs = require('fs'),
     path = require('path'),
     localConf = path.resolve(fs.realpathSync(process.argv[1]), "../config/global.json");
 
-if (!fs.exists(localConf)) {
+if (!fs.existsSync(localConf)) {
     localConf = path.resolve("config/global.json");
 }
 
@@ -39,7 +39,8 @@ var config = {};
 if (fs.existsSync(localConf)) {
     config = require(localConf);
 } else {
-    console.error("Failed to find config file");
+    console.error("Failed to find config file in ", localConf);
+    console.error("Run your command from directory", path.dirname(fs.realpathSync(process.argv[1])));
     process.exit(0);
 }
 
