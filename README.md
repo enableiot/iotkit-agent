@@ -189,6 +189,13 @@ Yes, you guessed it, run the stop script:
 ```systemctl restart iotkit-agent```
 6. Agent logs can be checked for errors: */tmp/agent.log*
 
+### Migrating from Agent 1.6.4 to 1.6.5 ###
+
+1. Perform steps 1-3 of Upgrading guide
+2. Make a copy of user.js file in data directory
+3. Replace old user.js file with new version from data/user.js
+4. Reapply all configuration changes using commands or by copy pasting part under Example usage comment.
+
 <a name=migrate></a>
 ### Migrating from Agents before 1.6.0
 
@@ -306,6 +313,9 @@ In this example, the request is for component "led1". The "command" field, "LED.
 > Do not use the default certificates in production.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
+
+## What's new in version 1.6.5
+DP-3645 – Fixed problem with config location when using symlink.
 
 ## What's new in version 1.6.1
 DP-3463 – Added script for migration from iotkit-agent versions 1.5.6 and below.
