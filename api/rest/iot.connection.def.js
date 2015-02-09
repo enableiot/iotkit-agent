@@ -42,7 +42,8 @@ function ConnectionOptions() {
         hostname: apiconf.host,
         port: apiconf.port,
         pathname: this.pathname,
-        protocol: apiconf.protocol
+        protocol: apiconf.protocol,
+        query: this.query
     };
     if (apiconf.strictSSL === false) {
         this.strictSSL = false;

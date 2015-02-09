@@ -45,7 +45,8 @@ var configFileKey = {
     deviceId: 'device_id',
     deviceName: 'device_name',
     deviceToken: 'device_token',
-    sensorList: 'sensor_list'
+    sensorList: 'sensor_list',
+    lastActuationsPull: 'last_actuations_pull_time'
 };
 
 var setHostFor = function (host_value, port_value) {
@@ -125,6 +126,14 @@ var setGatewayId = function(id, cb) {
 
 var setDeviceId = function(id) {
     common.saveToDeviceConfig(configFileKey.deviceId, id);
+};
+
+var setLastActuationsPullTime = function(time) {
+    common.saveToDeviceConfig(configFileKey.lastActuationsPull, time);
+};
+
+var getLastActuationsPullTime = function(cb) {
+    cb(utils.getValueFromDeviceConfig(configFileKey.lastActuationsPull));
 };
 
 var getGatewayId = function(cb) {
@@ -209,12 +218,12 @@ var setDataDirectory = function(directory, cb){
                     common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directory));
                 }
                 else{
-                    cb(new Error("Directory not contains device.json"));
+                    cb(new Error("Directory does not contain device.json"));
                 }
             });
         }
         else{
-            cb(new Error("Data directory not exsits"));
+            cb(new Error("Data directory does not exist"));
         }
     });
 };
@@ -415,5 +424,7 @@ module.exports = {
     },
     getGatewayId: getGatewayId,
     setGatewayId: setGatewayId,
-    setDeviceId: setDeviceId
+    setDeviceId: setDeviceId,
+    setLastActuationsPullTime: setLastActuationsPullTime,
+    getLastActuationsPullTime: getLastActuationsPullTime
 };
