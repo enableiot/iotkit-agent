@@ -53,7 +53,8 @@
                 "device": {
                     "act": "/v1/api/devices/{deviceid}/activation",
                     "update": "/v1/api/devices/{deviceid}",
-                    "components": "/v1/api/devices/{deviceid}/components"
+                    "components": "/v1/api/devices/{deviceid}/components",
+                    "actuations": "/v1/api/accounts/{accountId}/control/devices/{deviceId}"
                 },
                 "submit": {
                     "data": "/v1/api/data/{deviceid}"

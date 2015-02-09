@@ -40,6 +40,7 @@ function IoTKitControl(conf, logger, deviceId, customProxy){
     me.receiverInfo = {port: conf.receivers.udp_port, address: conf.receivers.udp_address};
 
 }
+
 IoTKitControl.prototype.send = function (actuation) {
     var me = this;
     if(me.dispatcher) {
@@ -48,6 +49,7 @@ IoTKitControl.prototype.send = function (actuation) {
 
     return true;
 };
+
 IoTKitControl.prototype.controlAction = function () {
     var me = this;
     var handler = function  (message) {
@@ -64,6 +66,7 @@ IoTKitControl.prototype.controlAction = function () {
     };
     return handler;
 };
+
 IoTKitControl.prototype.bind = function (dispatcher, callback) {
     var me = this;
     var data = {deviceId: me.deviceId};
@@ -74,8 +77,6 @@ IoTKitControl.prototype.bind = function (dispatcher, callback) {
         }
     });
 };
-
-
 
 exports.init = function(conf, logger, deviceId) {
     return new IoTKitControl(conf, logger, deviceId);
