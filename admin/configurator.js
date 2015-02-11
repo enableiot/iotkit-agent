@@ -53,7 +53,7 @@ var setHostFor = function (host_value, port_value) {
     var proxy;
     if (data) {
        proxy = data["default_connector"];
-       if(proxy === "rest+ws"){
+       if(proxy === "rest+ws") {
            proxy = "ws";
        }
 
@@ -224,7 +224,7 @@ module.exports = {
         program
             .command('protocol <protocol>')
             .description('Set the protocol to \'mqtt\' or \'rest\' or \'rest+ws\'')
-            .action(function(protocol){
+            .action(function(protocol) {
                 if (protocol === 'mqtt' || protocol === 'rest' || protocol === 'rest+ws') {
                     common.saveToUserConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
