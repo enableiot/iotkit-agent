@@ -248,7 +248,7 @@ IoTKitCloud.prototype.pullActuations = function () {
         accountId: me.secret.accountId
     };
     configurator.getLastActuationsPull(function(from) {
-        if(data.from) {
+        if(from) {
             me.logger.info("Pulling only actuations from last pull time: " + new Date(from * 1000));
             data.from = from;
         }
