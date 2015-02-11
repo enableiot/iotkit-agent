@@ -13,7 +13,7 @@ var init = exports.init = function(conf, logger) {
     var client = new WebSocketClient();
     var tunnelingAgent = null;
 
-	if(conf.connector.ws.proxy.host && conf.connector.ws.proxy.port) {
+    if(conf.connector.ws.proxy.host && conf.connector.ws.proxy.port) {
         if(conf.connector.ws.proxy.host.substr(0,5) === 'https') {
             tunnelingAgent = tunnel.httpsOverHttp({
                 proxy: {
@@ -21,7 +21,7 @@ var init = exports.init = function(conf, logger) {
                     port: conf.connector.ws.proxy.port
                 }
             });
-		} else {
+        } else {
             tunnelingAgent = tunnel.httpOverHttp({
                 proxy: {
                     host: conf.connector.ws.proxy.host.split('http://')[1],
