@@ -73,12 +73,9 @@ utils.getDeviceId(function (id) {
             logger.info("Starting listeners...");
             udp.listen(agentMessage.handler);
             //TODO only allow for mqtt Connector, until rest will be implemented
-            if (conf.default_connector === 'mqtt'){
+            if (conf.default_connector === 'mqtt' || conf.default_connector === 'rest+ws'){
                var ctrl = Control.init(conf, logger, id);
                ctrl.bind(udp);
-            }
-            if(conf.default_connector === 'rest+ws') {
-                Listener.WEBSOCKET.init(conf, logger);
             }
             Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
 

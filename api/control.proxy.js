@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var Sensor = require('../lib/sensors-store'),
-    proxyConnector = require('../lib/proxies').geControlConnector('mqtt');
+    proxyConnector = require('../lib/proxies');
 
 function IoTKitControl(conf, logger, deviceId, customProxy){
     var me = this;
@@ -50,7 +50,7 @@ IoTKitControl.prototype.send = function (actuation) {
 };
 IoTKitControl.prototype.controlAction = function () {
     var me = this;
-    var handler = function  (message) {
+    var handler = function(message) {
         var comp = me.store.byCid(message.content.componentId);
         if (comp) {
             var actuation = {
@@ -78,5 +78,10 @@ IoTKitControl.prototype.bind = function (dispatcher, callback) {
 
 
 exports.init = function(conf, logger, deviceId) {
+    if(conf.default_connector === 'rest+ws') {
+        proxyConnector = proxyConnector.geControlConnector('ws');
+    } else {
+        proxyConnector = proxyConnector.geControlConnector('mqtt');
+    }
     return new IoTKitControl(conf, logger, deviceId);
 };
