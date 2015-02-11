@@ -45,7 +45,8 @@ var configFileKey = {
     deviceId: 'device_id',
     deviceName: 'device_name',
     deviceToken: 'device_token',
-    sensorList: 'sensor_list'
+    sensorList: 'sensor_list',
+    lastActuationsPull: 'last_actuations_pull_time'
 };
 
 var setHostFor = function (host_value, port_value) {
@@ -96,6 +97,14 @@ var setGatewayId = function(id, cb) {
 
 var setDeviceId = function(id) {
     common.saveToDeviceConfig(configFileKey.deviceId, id);
+};
+
+var setLastActuationsPull = function(time) {
+    common.saveToDeviceConfig(configFileKey.lastActuationsPull, time);
+};
+
+var getLastActuationsPull = function(cb) {
+    cb(utils.getValueFromDeviceConfig(configFileKey.lastActuationsPull));
 };
 
 var getGatewayId = function(cb) {
@@ -391,5 +400,7 @@ module.exports = {
     },
     getGatewayId: getGatewayId,
     setGatewayId: setGatewayId,
-    setDeviceId: setDeviceId
+    setDeviceId: setDeviceId,
+    setLastActuationsPull: setLastActuationsPull,
+    getLastActuationsPull: getLastActuationsPull
 };

@@ -39,6 +39,9 @@ var IoTKiT = {};
  */
 function ActuationsOption(data) {
     this.pathname = common.buildPath(common.buildPath(apiconf.path.device.actuations, data.accountId), data.deviceId);
+    if(data.from) {
+        this.query = { from: data.from };
+    }
     this.token = data.deviceToken;
     ConnectionOptions.call(this);
     this.method = GET_METHOD;
