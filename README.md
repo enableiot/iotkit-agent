@@ -314,6 +314,9 @@ In this example, the request is for component "led1". The "command" field, "LED.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
+## What's new in version 1.7.0
+DP-3864 – Support for actuations via websocket protocol. Changed default connector to rest+ws.
+
 ## What's new in version 1.6.5
 DP-3645 – Fixed problem with config location when using symlink.
 
