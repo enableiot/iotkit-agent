@@ -52,7 +52,12 @@ var activate = function (code) {
 
 function testConnection () {
     var conf = common.getConfig();
-    var host = conf.connector[conf.default_connector].host;
+    var host;
+    if(conf.default_connector === 'rest+ws') {
+        host = conf.connector['rest'].host;
+    } else {
+        host = conf.connector[conf.default_connector].host;
+    }
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
         cloud.test(function (res) {
