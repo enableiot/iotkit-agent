@@ -14,7 +14,7 @@
         "LEVEL": "info",
         "PATH": "/tmp/"
     },
-    "default_connector": "rest",
+    "default_connector": "rest+ws",
     "connector": {
         "mqtt": {
             "host": "broker.us.enableiot.com",
@@ -63,6 +63,16 @@
                     "component": "/v1/api/cmpcatalog/{componentId}"
                 },
                 "health": "/v1/api/health"
+            }
+        },
+        "ws": {
+            "host": "ws.us.enableiot.com",
+            "port": 443,
+            "retryTime": 5000,
+            "secure": true,
+            "proxy": {
+                "host": false,
+                "port": false
             }
         }
     }
