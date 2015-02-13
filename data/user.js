@@ -53,6 +53,8 @@ module.exports = config;
  * config.connector.rest.proxy.host = "example.com";
  * config.connector.rest.proxy.port = 1180;
  *
+ * config.connector.ws.proxy.host = "example.com";
+ * config.connector.ws.proxy.port = 911;
+ *
  * Please write your changes for config below.
  */
-

@@ -74,8 +74,8 @@ function Websockets(conf, logger) {
         });
     };
 
-    me.client.on('connectFailed', function() {
-        me.logger.error("Websocket cannot connect.");
+    me.client.on('connectFailed', function(error) {
+        me.logger.error("Websocket cannot connect. " + error);
         setTimeout(function() {
             me.reconnect();
         }, parseInt(me.retryTime));
@@ -86,7 +86,7 @@ function Websockets(conf, logger) {
             handler: handler,
             callback: callback
         };
-
+        logger.info('Connecting to ' + conf.connector.ws.host + ':' + conf.connector.ws.port + '...');
         me.connect();
         me.listen();
     };
