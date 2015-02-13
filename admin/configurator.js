@@ -82,11 +82,36 @@ var setHostFor = function (host_value, port_value) {
     }
 };
 
-var setProxy = function (host_proxy, port_proxy) {
-    common.saveToUserConfig(configFileKey.connectorRestProxyHost, host_proxy);
-    common.saveToUserConfig(configFileKey.connectorRestProxyPort, port_proxy);
-    logger.info("Set Proxy data");
+var consts = {
+    PORT_MIN_VALUE: 1025,
+    PORT_MAX_VALUE: 65535
 };
+
+var portValidator = {
+    'Port value must be an integer': function(value) {
+        return !isNaN(value) && value % 1 === 0;
+    },
+    'Port value out of valid range': function(value) {
+        return value >= consts.PORT_MIN_VALUE && value <= consts.PORT_MAX_VALUE;
+    }
+};
+
+var setProxy = function (host_proxy, port_proxy, onProxyPortSet) {
+    var err;
+    for (var key in portValidator) {
+        if (portValidator.hasOwnProperty(key) && !portValidator[key](port_proxy)) {
+            err = key;
+        }
+    }
+
+    if (!err) {
+        common.saveToUserConfig(configFileKey.connectorRestProxyHost, host_proxy);
+        common.saveToUserConfig(configFileKey.connectorRestProxyPort, parseInt(port_proxy));
+    }
+
+    onProxyPortSet(port_proxy, err);
+};
+
 var resetProxy = function () {
     common.saveToUserConfig(configFileKey.connectorRestProxyHost, false);
     common.saveToUserConfig(configFileKey.connectorRestProxyPort, false);
@@ -104,20 +129,6 @@ var setDeviceId = function(id) {
 
 var getGatewayId = function(cb) {
     utils.getGatewayId(configFileKey.gatewayId, cb);
-};
-
-var consts = {
-    PORT_MIN_VALUE: 1025,
-    PORT_MAX_VALUE: 65535
-};
-
-var portValidator = {
-    'Port value must be an integer': function(value) {
-        return !isNaN(value) && value % 1 === 0;
-    },
-    'Port value out of valid range': function(value) {
-        return value >= consts.PORT_MIN_VALUE && value <= consts.PORT_MAX_VALUE;
-    }
 };
 
 var setListenerUdpPort = function(udp_port, onUdpPortSet) {
@@ -283,7 +294,16 @@ module.exports = {
         program
             .command('proxy <host> <port>')
             .description('Sets proxy For REST protocol.')
-            .action(setProxy);
+            .action(function(host, port) {
+                setProxy(host, port, function (port, err) {
+                    if (!err) {
+                        logger.info("Set Proxy data");
+                    }
+                    else {
+                        logger.error(err);
+                    }
+                });
+            });
 
         program
             .command('reset-proxy')
