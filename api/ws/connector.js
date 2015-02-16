@@ -77,7 +77,11 @@ function Websockets(conf, logger) {
     };
 
     me.onMessage = function(message) {
-        me.bindings.handler(JSON.parse(message));
+        try {
+            me.bindings.handler(JSON.parse(message));
+        } catch (err) {
+            me.logger.error("Received error message: " + message);
+        }
     };
 
     me.listen = function() {
