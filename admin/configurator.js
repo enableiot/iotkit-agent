@@ -38,6 +38,8 @@ var configFileKey = {
     loggerLevel: 'logger.LEVEL',
     connectorRestProxyHost: 'connector.rest.proxy.host',
     connectorRestProxyPort: 'connector.rest.proxy.port',
+    connectorWsProxyHost: 'connector.ws.proxy.host',
+    connectorWsProxyPort: 'connector.ws.proxy.port',
     udpListenerPort: 'listeners.udp_port',
     activationCode: 'activation_code',
     accountId : 'account_id',
@@ -108,6 +110,8 @@ var setProxy = function (host_proxy, port_proxy, onProxyPortSet) {
     if (!err) {
         common.saveToUserConfig(configFileKey.connectorRestProxyHost, host_proxy);
         common.saveToUserConfig(configFileKey.connectorRestProxyPort, parseInt(port_proxy));
+        common.saveToUserConfig(configFileKey.connectorWsProxyHost, host_proxy);
+        common.saveToUserConfig(configFileKey.connectorWsProxyPort, parseInt(port_proxy));
     }
 
     onProxyPortSet(port_proxy, err);
@@ -116,6 +120,8 @@ var setProxy = function (host_proxy, port_proxy, onProxyPortSet) {
 var resetProxy = function () {
     common.saveToUserConfig(configFileKey.connectorRestProxyHost, false);
     common.saveToUserConfig(configFileKey.connectorRestProxyPort, false);
+    common.saveToUserConfig(configFileKey.connectorWsProxyHost, false);
+    common.saveToUserConfig(configFileKey.connectorWsProxyPort, false);
     logger.info("Set Proxy data");
 };
 
