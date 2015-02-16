@@ -249,7 +249,7 @@ IoTKitCloud.prototype.pullActuations = function () {
     };
     configurator.getLastActuationsPullTime(function(lastPullTimestamp) {
         if(lastPullTimestamp) {
-            me.logger.info("Pulling actuations from last pull time: " + new Date(lastPullTimestamp * 1000));
+            me.logger.info("Pulling actuations from last pull time: " + new Date(lastPullTimestamp));
             data.from = lastPullTimestamp;
         } else {
             me.logger.info("Pulling actuations from last 24 hours");
