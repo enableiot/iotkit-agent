@@ -53,6 +53,7 @@ module.exports = config;
  * config.connector.rest.proxy.host = "example.com";
  * config.connector.rest.proxy.port = 1180;
  *
+ * // For HTTPS proxy specify protocol https:// in host
  * config.connector.ws.proxy.host = "example.com";
  * config.connector.ws.proxy.port = 911;
  *

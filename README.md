@@ -315,7 +315,17 @@ In this example, the request is for component "led1". The "command" field, "LED.
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
 ## What's new in version 1.7.0
-DP-3864 – Support for actuations via websocket protocol. Changed default connector to rest+ws.
+DP-3864 – Support for actuations via websocket protocol.
+* Changed default connector to rest+ws. Permanent connection to server can be established using WebSocket for receiving actuations while other commands use REST protocol. Both can work with proxy
+
+DP-3604 – Implement HTTP pull actuations command in Agent.
+* Added new command for REST protocol to pull actuations from last time this command was executed or last 24h if command was never used. Actuations are then executed.
+
+DP-3690 – Proxy port is set as a number, not string.
+* Additionally, prot range is checked.
+
+DP-3703 – Proxy commands in agent set both REST and WS proxies
+* proxy and reset-proxy commands edit both REST and WS proxy configuration
 
 ## What's new in version 1.6.5
 DP-3645 – Fixed problem with config location when using symlink.

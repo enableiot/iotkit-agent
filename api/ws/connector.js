@@ -17,14 +17,14 @@ function Websockets(conf, logger) {
 
     if(me.proxy.host && me.proxy.port) {
         if(conf.connector.ws.proxy.host.substr(0,5) === 'https') {
-            me.proxy.tunnelingAgent = tunnel.httpsOverHttp({
+            me.proxy.tunnelingAgent = tunnel.httpsOverHttps({
                 proxy: {
                     host: conf.connector.ws.proxy.host.split('https://')[1],
                     port: conf.connector.ws.proxy.port
                 }
             });
         } else {
-            me.proxy.tunnelingAgent = tunnel.httpOverHttp({
+            me.proxy.tunnelingAgent = tunnel.httpsOverHttp({
                 proxy: {
                     host: conf.connector.ws.proxy.host.split('http://')[1],
                     port: conf.connector.ws.proxy.port
