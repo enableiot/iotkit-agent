@@ -203,12 +203,12 @@ var setDataDirectory = function(directory, cb){
                     common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directory));
                 }
                 else{
-                    cb(new Error("Directory not contains device.json"));
+                    cb(new Error("Directory does not contain device.json"));
                 }
             });
         }
         else{
-            cb(new Error("Data directory not exsits"));
+            cb(new Error("Data directory does not exist"));
         }
     });
 };
