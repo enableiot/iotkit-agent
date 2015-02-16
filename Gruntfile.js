@@ -101,9 +101,9 @@ module.exports = function(grunt) {
                    timeout: 20000,
                    mask: '*Tests.js',
                    check: {
-                    lines: 66,
-                    statements: 66,
-                    function: 70
+                    lines: 60,
+                    statements: 60,
+                    function: 60
                     },
                    root: '.', // define where the cover task should consider the root of libraries that are covered by tests
                    coverageFolder: 'dist/coverage',
