@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var msg = require('../lib/cloud-message'),
     common = require('../lib/common'),
-    updServer = require('../lib/server/udp'),
+    udpServer = require('../lib/server/udp'),
     Sensor = require('../lib/sensors-store'),
     conf = require('../config'),
     configurator = require('../admin/configurator'),
@@ -247,32 +247,34 @@ IoTKitCloud.prototype.pullActuations = function () {
         deviceId: me.deviceId,
         accountId: me.secret.accountId
     };
-    configurator.getLastActuationsPull(function(from) {
-        if(from) {
-            me.logger.info("Pulling only actuations from last pull time: " + new Date(from * 1000));
-            data.from = from;
+    configurator.getLastActuationsPullTime(function(lastPullTimestamp) {
+        if(lastPullTimestamp) {
+            me.logger.info("Pulling actuations from last pull time: " + new Date(lastPullTimestamp * 1000));
+            data.from = lastPullTimestamp;
+        } else {
+            me.logger.info("Pulling actuations from last 24 hours");
         }
         me.proxy.pullActuations(data, function (result) {
-            if (result) {
-                me.logger.info("Running actuations");
-                var udp = updServer.singleton(conf.listeners.udp_port, me.logger);
+            if (result && result.length) {
+                me.logger.info("Running " + result.length +" actuations.");
+                var udp = udpServer.singleton(conf.listeners.udp_port, me.logger);
                 var receiverInfo = {
                     port: conf.receivers.udp_port,
                     address: conf.receivers.udp_address
                 };
                 for (var i = 0; i < result.length; i++ ){
                     var actuation = result[i];
-                    me.logger.info('Received actuation content: ' + JSON.stringify(actuation));
+                    me.logger.debug('Received actuation content: ' + JSON.stringify(actuation));
                     var comp = me.store.byCid(actuation.componentId);
                     var udpMessage = {
                         component: comp.name,
                         command: actuation.command,
                         argv: actuation.params
                     };
-                    me.logger.debug("Sending actuation: " + JSON.stringify(udpMessage));
+                    me.logger.info("Sending actuation: " + JSON.stringify(udpMessage));
                     udp.send(receiverInfo, udpMessage);
                 }
-                configurator.setLastActuationsPull(Date.now());
+                configurator.setLastActuationsPullTime(Date.now());
                 udp.close();
             }
         });

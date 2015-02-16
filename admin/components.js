@@ -105,7 +105,7 @@ function registerObservation (comp, value) {
 }
 
 function pullActuations() {
-    logger.info("Pulling actuations");
+    logger.info("Pulling actuations from IoT Cloud");
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
         if (cloud.isActivated()) {
@@ -188,7 +188,7 @@ module.exports = {
             .action(updateMetadata);
         program
             .command('pull-actuations')
-            .description('Fetches actuations from last 24h and executes them one by one')
+            .description('Fetches actuations from last time action was executed or 24h if never and executes them one by one')
             .action(pullActuations);
     }
 };

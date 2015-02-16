@@ -99,11 +99,11 @@ var setDeviceId = function(id) {
     common.saveToDeviceConfig(configFileKey.deviceId, id);
 };
 
-var setLastActuationsPull = function(time) {
+var setLastActuationsPullTime = function(time) {
     common.saveToDeviceConfig(configFileKey.lastActuationsPull, time);
 };
 
-var getLastActuationsPull = function(cb) {
+var getLastActuationsPullTime = function(cb) {
     cb(utils.getValueFromDeviceConfig(configFileKey.lastActuationsPull));
 };
 
@@ -401,6 +401,6 @@ module.exports = {
     getGatewayId: getGatewayId,
     setGatewayId: setGatewayId,
     setDeviceId: setDeviceId,
-    setLastActuationsPull: setLastActuationsPull,
-    getLastActuationsPull: getLastActuationsPull
+    setLastActuationsPullTime: setLastActuationsPullTime,
+    getLastActuationsPullTime: getLastActuationsPullTime
 };
