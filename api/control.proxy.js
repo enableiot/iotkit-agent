@@ -60,7 +60,7 @@ IoTKitControl.prototype.controlAction = function () {
                 command: message.content.command,
                 argv: message.content.params
             };
-            me.logger.debug("Sending actuation: " + JSON.stringify(actuation));
+            me.logger.info("Sending actuation: " + JSON.stringify(actuation));
             return me.send(actuation);
         }
     };
