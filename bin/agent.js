@@ -31,7 +31,7 @@ var utils = require("../lib/utils").init(),
     Cloud = require("../api/cloud.proxy"),
     Control = require ("../api/control.proxy"),
     Message = require('../lib/agent-message'),
-    updServer = require('../lib/server/udp'),
+    udpServer = require('../lib/server/udp'),
     Listener = require("../listeners/"),
     admin= require('../lib/commander'),
     pkgJson = require('../package.json'),
@@ -67,7 +67,7 @@ utils.getDeviceId(function (id) {
     var cloud = Cloud.init(logger, id);
     cloud.activate(function (status) {
        if (status === 0) {
-            var udp = updServer.singleton(conf.listeners.udp_port, logger);
+            var udp = udpServer.singleton(conf.listeners.udp_port, logger);
 
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");

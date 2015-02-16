@@ -104,6 +104,20 @@ function registerObservation (comp, value) {
     });
 }
 
+function pullActuations() {
+    logger.info("Pulling actuations from IoT Cloud");
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(logger, id);
+        if (cloud.isActivated()) {
+            cloud.setDeviceCredentials();
+            cloud.pullActuations();
+        } else {
+            logger.error("Error when pulling Actuations. Device is not activated ...");
+            process.exit(1);
+        }
+    });
+}
+
 function updateMetadata() {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
@@ -172,5 +186,9 @@ module.exports = {
             .command('update')
             .description('Send update device request to dashboard')
             .action(updateMetadata);
+        program
+            .command('pull-actuations')
+            .description('Fetches actuations from last time action was executed or 24h if never and executes them one by one')
+            .action(pullActuations);
     }
 };
