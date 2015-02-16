@@ -84,7 +84,7 @@ var setHostFor = function (host_value, port_value) {
 };
 
 var consts = {
-    PORT_MIN_VALUE: 1025,
+    PORT_MIN_VALUE: 0,
     PORT_MAX_VALUE: 65535
 };
 
