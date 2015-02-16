@@ -36,6 +36,9 @@ var apiconf = config.connector.rest;
  */
 function ConnectionOptions() {
     if (apiconf.proxy && apiconf.proxy.host) {
+        if(apiconf.proxy.host.indexOf('://') < 0) {
+            apiconf.proxy.host = 'http://' + apiconf.proxy.host;
+        }
         this.proxy = apiconf.proxy.host + ":" + apiconf.proxy.port;
     }
     var urlT =  {

@@ -26,7 +26,7 @@ function Websockets(conf, logger) {
         } else {
             me.proxy.tunnelingAgent = tunnel.httpsOverHttp({
                 proxy: {
-                    host: conf.connector.ws.proxy.host.split('http://')[1],
+                    host: conf.connector.ws.proxy.host.split('http://')[1] || conf.connector.ws.proxy.host,
                     port: conf.connector.ws.proxy.port
                 }
             });
