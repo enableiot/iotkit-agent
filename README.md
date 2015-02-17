@@ -327,6 +327,9 @@ DP-3690 – Proxy port is set as a number, not string.
 DP-3703 – Proxy commands in agent set both REST and WS proxies
 * proxy and reset-proxy commands edit both REST and WS proxy configuration
 
+DP-3627 – Improve logs in Agent
+* Added log rotation and max size of log file.
+
 ## What's new in version 1.6.5
 DP-3645 – Fixed problem with config location when using symlink.
 
