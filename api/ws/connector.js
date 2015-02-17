@@ -28,7 +28,17 @@
 var WebSocketClient = require('websocket').client,
     tunnel = require('tunnel'),
     common = require('../../lib/common'),
+    utils = require('../../lib/utils').init(),
     deviceInfo = require(common.getFileFromDataDirectory('device.json').split('.json')[0]);
+
+var parseMessage = function (msg, callback) {
+    try {
+        var messageObject = JSON.parse(msg);
+        callback(null, messageObject);
+    } catch (err) {
+        callback('Wrong message format, msg: ' + msg);
+    }
+};
 
 function Websockets(conf, logger) {
     var me = this;
@@ -40,6 +50,17 @@ function Websockets(conf, logger) {
     me.client =  new WebSocketClient();
     me.logger = logger;
     me.bindings = {};
+
+    me.calculateRetryTime = function(error) {
+        var time = utils.getMinutesFromMiliseconds(me.retryTime);
+        if(time.m >= 10) { // 10 minutes
+            me.retryTime = 1000 * 60 * 10;
+            logger.error("Websocket cannot connect. " + error + ". Next attempt in 10 minutes...");
+        } else {
+            me.retryTime *= 2;
+            logger.error("Websocket cannot connect. " + error + ". Next attempt in " + time.m + " minutes " + time.s + " seconds.");
+        }
+    };
 
     if(me.proxy.host && me.proxy.port) {
         if(conf.connector.ws.proxy.host.substr(0,5) === 'https') {
@@ -85,8 +106,7 @@ function Websockets(conf, logger) {
     };
 
     me.listen = function() {
-        me.client.on('connect', function(connection){
-            logger.info('WSConnector: Connection successful to: ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
+        me.client.on('connect', function(connection) {
             var initMessageObject = {
                 "type": "device",
                 "deviceId": deviceInfo.device_id,
@@ -95,17 +115,30 @@ function Websockets(conf, logger) {
             connection.sendUTF(JSON.stringify(initMessageObject));
             connection.on('close', function() {
                 me.logger.info("Websocket connection closed.");
-                me.reconnect();
+                setTimeout(function() {
+                    me.reconnect();
+                }, parseInt(me.retryTime));
             });
             connection.on('message', function(message) {
-                me.logger.info('Fired STATUS: ', message.utf8Data);
-                me.onMessage(message.utf8Data);
+                parseMessage(message.utf8Data, function(err, messageObject) {
+                    if(!err) {
+                        if(messageObject.code === 200) {
+                            me.retryTime = conf.connector.ws.retryTime;
+                            me.logger.info('WSConnector: Connection successful to: ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
+                        } else if(messageObject.code === 1024) {
+                            me.logger.info('Fired STATUS: ', messageObject.content);
+                            me.onMessage(messageObject.content);
+                        } else if(messageObject.code === 500 || messageObject.code === 401) {
+                            me.calculateRetryTime(messageObject.content);
+                        }
+                    }
+                });
             });
         });
     };
 
     me.client.on('connectFailed', function(error) {
-        me.logger.error("Websocket cannot connect. " + error);
+        me.calculateRetryTime(error);
         setTimeout(function() {
             me.reconnect();
         }, parseInt(me.retryTime));
