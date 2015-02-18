@@ -29,7 +29,8 @@ var logger = require("../lib/logger").init(),
     Cloud = require("../api/cloud.proxy"),
     utils = require("../lib/utils").init(),
     common = require('../lib/common'),
-    configurator = require('../admin/configurator');
+    configurator = require('../admin/configurator'),
+    exec = require('child_process').exec;
 
 var activate = function (code) {
     logger.debug("Activation started ...");
@@ -76,6 +77,32 @@ function testConnection () {
     });
 }
 
+function setActualTime () {
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(logger, id);
+        cloud.getActualTime(function (time) {
+            var r = 0;
+            if (time) {
+                var command = 'date -u "' + time + '"';
+                exec(command, function (error, stdout, stderr) {
+                    if (error) {
+                        logger.error("Error changing data: ", stderr);
+                        logger.debug("Date error: ", error);
+                        r = 1;
+                    } else {
+                        logger.info("UTC time changed for: ", stdout);
+                    }
+                    process.exit(r);
+                });
+            } else {
+                logger.error("Failed to receive actual time");
+                r = 1;
+                process.exit(r);
+            }
+        });
+    });
+}
+
 module.exports = {
     addCommand : function (program) {
         program
@@ -89,5 +116,12 @@ module.exports = {
             .command('activate <activation_code>')
             .description('Activates the device.')
             .action(activate);
+
+        program
+            .command('set-time')
+            .description('Sets actual UTC time on your device.')
+            .action(function() {
+                setActualTime();
+            });
     }
 };

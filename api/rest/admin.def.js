@@ -65,6 +65,14 @@ ExternalInfoOption.prototype = new ConnectionOptions();
 ExternalInfoOption.prototype.constructor = ExternalInfoOption;
 IoTKiT.ExternalInfoOption = ExternalInfoOption;
 
-
+function TimeOption() {
+    this.pathname = apiconf.path.time;
+    this.token = null;
+    ConnectionOptions.call(this);
+    this.method = GET_METHOD;
+}
+TimeOption.prototype = new ConnectionOptions();
+TimeOption.prototype.constructor = TimeOption;
+IoTKiT.TimeOption = TimeOption;
 
 module.exports = IoTKiT;
