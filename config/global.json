@@ -70,7 +70,8 @@
         "ws": {
             "host": "ws.us.enableiot.com",
             "port": 443,
-            "retryTime": 5000,
+            "minRetryTime": 5000,
+            "maxRetryTime": 600000,
             "secure": true,
             "proxy": {
                 "host": false,

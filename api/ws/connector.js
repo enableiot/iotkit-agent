@@ -29,6 +29,7 @@ var WebSocketClient = require('websocket').client,
     tunnel = require('tunnel'),
     common = require('../../lib/common'),
     utils = require('../../lib/utils').init(),
+    errors = require('./errors'),
     deviceInfo = require(common.getFileFromDataDirectory('device.json').split('.json')[0]);
 
 var parseMessage = function (msg, callback) {
@@ -45,21 +46,21 @@ function Websockets(conf, logger) {
     me.host = conf.connector.ws.host;
     me.port = conf.connector.ws.port;
     me.secure = conf.connector.ws.secure;
-    me.retryTime = conf.connector.ws.retryTime;
+    me.minRetryTime = conf.connector.ws.minRetryTime;
+    me.maxRetryTime = conf.connector.ws.maxRetryTime;
     me.proxy = conf.connector.ws.proxy;
     me.client =  new WebSocketClient();
     me.logger = logger;
     me.bindings = {};
 
     me.calculateRetryTime = function(error) {
-        var time = utils.getMinutesFromMiliseconds(me.retryTime);
-        if(time.m >= 10) { // 10 minutes
-            me.retryTime = 1000 * 60 * 10;
-            logger.error("Websocket cannot connect. " + error + ". Next attempt in 10 minutes...");
+        if(utils.getMinutesAndSecondsFromMiliseconds(me.minRetryTime).m >= utils.getMinutesAndSecondsFromMiliseconds(me.maxRetryTime).m) {
+            me.minRetryTime = me.maxRetryTime;
         } else {
-            me.retryTime *= 2;
-            logger.error("Websocket cannot connect. " + error + ". Next attempt in " + time.m + " minutes " + time.s + " seconds.");
+            me.minRetryTime *= 2;
         }
+        var time = utils.getMinutesAndSecondsFromMiliseconds(me.minRetryTime);
+        logger.error("Websocket cannot connect. " + error + ". Next attempt in " + time.m + " minutes " + time.s + " seconds.");
     };
 
     if(me.proxy.host && me.proxy.port) {
@@ -98,11 +99,7 @@ function Websockets(conf, logger) {
     };
 
     me.onMessage = function(message) {
-        try {
-            me.bindings.handler(JSON.parse(message));
-        } catch (err) {
-            me.logger.error("Received error message: " + message);
-        }
+        me.bindings.handler(message);
     };
 
     me.listen = function() {
@@ -117,20 +114,22 @@ function Websockets(conf, logger) {
                 me.logger.info("Websocket connection closed.");
                 setTimeout(function() {
                     me.reconnect();
-                }, parseInt(me.retryTime));
+                }, parseInt(me.minRetryTime));
             });
             connection.on('message', function(message) {
                 parseMessage(message.utf8Data, function(err, messageObject) {
                     if(!err) {
-                        if(messageObject.code === 200) {
-                            me.retryTime = conf.connector.ws.retryTime;
+                        if(messageObject.code === errors.Success.Subscribed.code) {
+                            me.minRetryTime = conf.connector.ws.minRetryTime;
                             me.logger.info('WSConnector: Connection successful to: ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
-                        } else if(messageObject.code === 1024) {
+                        } else if(messageObject.code === errors.Success.ReceivedActuation.code) {
                             me.logger.info('Fired STATUS: ', messageObject.content);
                             me.onMessage(messageObject.content);
-                        } else if(messageObject.code === 500 || messageObject.code === 401) {
+                        } else if(messageObject.code === errors.Errors.DatabaseError.code || messageObject.code === errors.Errors.InvalidToken.code) {
                             me.calculateRetryTime(messageObject.content);
                         }
+                    } else {
+                        me.logger.error(JSON.stringify(err));
                     }
                 });
             });
@@ -141,7 +140,7 @@ function Websockets(conf, logger) {
         me.calculateRetryTime(error);
         setTimeout(function() {
             me.reconnect();
-        }, parseInt(me.retryTime));
+        }, parseInt(me.minRetryTime));
     });
 
     me.bind = function (topic, handler, callback) {
