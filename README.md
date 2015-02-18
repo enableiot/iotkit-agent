@@ -181,6 +181,7 @@ Yes, you guessed it, run the stop script:
    ```
    git stash
    git pull
+   npm -d install
    ```
 3. Point new agent to previous configuration data folder<br>
 ```iotkit-admin set-data-directory <data_directory>```
