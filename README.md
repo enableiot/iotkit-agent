@@ -330,6 +330,9 @@ DP-3703 – Proxy commands in agent set both REST and WS proxies
 DP-3627 – Improve logs in Agent
 * Added log rotation and max size of log file.
 
+DP-3718 – Make a counter of failed reconnection attempts and increase interval before next try
+* Time to reconnection to WebSocket server is doubled every time up to 10 minutes. It is reset after successful connection.
+
 ## What's new in version 1.6.5
 DP-3645 – Fixed problem with config location when using symlink.
 
