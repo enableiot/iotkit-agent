@@ -146,6 +146,10 @@ var getGatewayId = function(cb) {
     utils.getGatewayId(configFileKey.gatewayId, cb);
 };
 
+var getDataDirectory = function(cb) {
+    utils.getDataDirectory(configFileKey.dataDirectory, cb);
+};
+
 var setListenerUdpPort = function(udp_port, onUdpPortSet) {
     logger.info("Set UDP port");
 
@@ -425,6 +429,15 @@ module.exports = {
                     else {
                         logger.error(err);
                     }
+                });
+            });
+
+        program
+            .command('data-directory')
+            .description('Displays current data directory.')
+            .action(function() {
+                getDataDirectory(function (id) {
+                    logger.info("Current data directory: %s", id);
                 });
             });
     },
