@@ -295,95 +295,6 @@ module.exports = {
             });
 
         program
-            .command('save-code <activation_code>')
-            .description('Adds the activation code to the device.')
-            .action(function(activation_code) {
-                common.saveToDeviceConfig(configFileKey.activationCode, activation_code);
-                logger.info("Activation code saved.");
-            });
-
-        program
-            .command('reset-code')
-            .description('Clears the activation code of the device.')
-            .action(function() {
-                common.saveToDeviceConfig(configFileKey.activationCode, null);
-                logger.info("Activation code cleared.");
-            });
-
-        program
-            .command('proxy <host> <port>')
-            .description('Sets proxy For REST protocol.')
-            .action(function(host, port) {
-                setProxy(host, port, function (port, err) {
-                    if (!err) {
-                        logger.info("Set Proxy data");
-                    }
-                    else {
-                        logger.error(err);
-                    }
-                });
-            });
-
-        program
-            .command('reset-proxy')
-            .description('Clears proxy For REST protocol.')
-            .action(resetProxy);
-
-        program
-            .command('set-logger-level <level>')
-            .description('Set the logger level to \'debug\', \'info\', \'warn\', \'error\'')
-            .action(function(level) {
-                if (loggerLevel[level]) {
-                    common.saveToUserConfig(configFileKey.loggerLevel, level);
-                    logger.info("Logger Level set to: %s", level);
-                } else {
-                    logger.error("invalid level: %s - please use %s", level,
-                                                Object.keys(loggerLevel).toString());
-                }
-            });
-
-        program
-            .command('set-data-directory <path>')
-            .description('Sets path of directory that contains sensor data.')
-            .action(function(directoryPath) {
-                setDataDirectory(directoryPath, function(err){
-                   if(!err){
-                       logger.info("Data directory changed.");
-                   }
-                   else{
-                       logger.error(err.message);
-                   }
-                });
-            });
-
-        program
-            .command('reset-data-directory')
-            .description('Resets to default the path of directory that contains sensor data.')
-            .action(function() {
-                common.saveToGlobalConfig(configFileKey.dataDirectory, "./data/");
-                logger.info("Data directory changed to default.");
-            });
-
-        program
-            .command('move-data-directory <path>')
-            .description('Change directory where data will be stored')
-            .action(function(path){
-                moveDataDirectory (path, function(err){
-                    if(!err) {
-                        logger.info("Data directory moved");
-                    }
-                    else{
-                        if(err.errno === 3){
-                            logger.error("Access error to this directory.");
-                        }
-                        else{
-                            logger.info(err.message);
-                        }
-                    }
-                });
-            });
-
-        program
             .command('gateway-id')
             .description('Displays the geteway id.')
             .action(function() {
@@ -419,6 +330,41 @@ module.exports = {
             });
 
         program
+            .command('save-code <activation_code>')
+            .description('Adds the activation code to the device.')
+            .action(function(activation_code) {
+                common.saveToDeviceConfig(configFileKey.activationCode, activation_code);
+                logger.info("Activation code saved.");
+            });
+
+        program
+            .command('reset-code')
+            .description('Clears the activation code of the device.')
+            .action(function() {
+                common.saveToDeviceConfig(configFileKey.activationCode, null);
+                logger.info("Activation code cleared.");
+            });
+
+        program
+            .command('proxy <host> <port>')
+            .description('Sets proxy For REST protocol.')
+            .action(function(host, port) {
+                setProxy(host, port, function (port, err) {
+                    if (!err) {
+                        logger.info("Set Proxy data");
+                    }
+                    else {
+                        logger.error(err);
+                    }
+                });
+            });
+
+        program
+            .command('reset-proxy')
+            .description('Clears proxy For REST protocol.')
+            .action(resetProxy);
+
+        program
             .command('set-udp-port <udp_port>')
             .description('Overrides the port UDP listener binds to')
             .action(function(udp_port) {
@@ -433,6 +379,19 @@ module.exports = {
             });
 
         program
+            .command('set-logger-level <level>')
+            .description('Set the logger level to \'debug\', \'info\', \'warn\', \'error\'')
+            .action(function(level) {
+                if (loggerLevel[level]) {
+                    common.saveToUserConfig(configFileKey.loggerLevel, level);
+                    logger.info("Logger Level set to: %s", level);
+                } else {
+                    logger.error("invalid level: %s - please use %s", level,
+                                                Object.keys(loggerLevel).toString());
+                }
+            });
+
+        program
             .command('data-directory')
             .description('Displays current data directory.')
             .action(function() {
@@ -440,6 +399,48 @@ module.exports = {
                     logger.info("Current data directory: %s", id);
                 });
             });
+
+        program
+            .command('move-data-directory <path>')
+            .description('Change directory where data will be stored')
+            .action(function(path){
+                moveDataDirectory (path, function(err){
+                    if(!err) {
+                        logger.info("Data directory moved");
+                    }
+                    else{
+                        if(err.errno === 3){
+                            logger.error("Access error to this directory.");
+                        }
+                        else{
+                            logger.info(err.message);
+                        }
+                    }
+                });
+            });
+
+        program
+            .command('set-data-directory <path>')
+            .description('Sets path of directory that contains sensor data.')
+            .action(function(directoryPath) {
+                setDataDirectory(directoryPath, function(err){
+                   if(!err){
+                       logger.info("Data directory changed.");
+                   }
+                   else{
+                       logger.error(err.message);
+                   }
+                });
+            });
+
+        program
+            .command('reset-data-directory')
+            .description('Resets to default the path of directory that contains sensor data.')
+            .action(function() {
+                common.saveToGlobalConfig(configFileKey.dataDirectory, "./data/");
+                logger.info("Data directory changed to default.");
+            });
+
     },
     getGatewayId: getGatewayId,
     setGatewayId: setGatewayId,
