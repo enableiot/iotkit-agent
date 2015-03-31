@@ -281,6 +281,14 @@ IoTKitCloud.prototype.pullActuations = function () {
     });
 };
 
+IoTKitCloud.prototype.getActualTime = function (callback) {
+    var me = this;
+    me.proxy.getActualTime(function (result) {
+        me.logger.debug("Response ", result);
+        callback(result);
+    });
+};
+
 exports.init = function(logger, deviceId) {
     return new IoTKitCloud(logger, deviceId);
 };

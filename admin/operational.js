@@ -29,23 +29,28 @@ var logger = require("../lib/logger").init(),
     Cloud = require("../api/cloud.proxy"),
     utils = require("../lib/utils").init(),
     common = require('../lib/common'),
-    configurator = require('../admin/configurator');
+    configurator = require('../admin/configurator'),
+    exec = require('child_process').exec,
+    exitMessageCode = {
+        "OK": 0,
+        "ERROR": 1
+    };
 
 var activate = function (code) {
     logger.debug("Activation started ...");
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
         cloud.activate(code, function (err) {
-            var r = 0;
+            var exitCode = exitMessageCode.OK;
             cloud.disconnect();
             if (err) {
                 logger.error("Error in the activation process ...", err);
-                r = 1;
+                exitCode = exitMessageCode.ERROR;
             }
             else{
                 configurator.setDeviceId(id);
             }
-            process.exit(r);
+            process.exit(exitCode);
         });
     });
 };
@@ -61,7 +66,7 @@ function testConnection () {
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
         cloud.test(function (res) {
-            var r = 0;
+            var exitCode = exitMessageCode.OK;
             if (res) {
                 logger.info("Connected to %s", host);
                 logger.info("Environment: %s", res.currentSetting);
@@ -69,9 +74,35 @@ function testConnection () {
                 logger.debug("Full response %j", res );
             } else {
                 logger.error("Connection failed to %s", host);
-                r = 1;
+                exitCode = exitMessageCode.ERROR;
             }
-            process.exit(r);
+            process.exit(exitCode);
+        });
+    });
+}
+
+function setActualTime () {
+    utils.getDeviceId(function (id) {
+        var cloud = Cloud.init(logger, id);
+        cloud.getActualTime(function (time) {
+            var exitCode = exitMessageCode.OK;
+            if (time) {
+                var command = 'date -u "' + time + '"';
+                exec(command, function (error, stdout, stderr) {
+                    if (error) {
+                        logger.error("Error changing data: ", stderr);
+                        logger.debug("Date error: ", error);
+                        exitCode = exitMessageCode.ERROR;
+                    } else {
+                        logger.info("UTC time changed for: ", stdout);
+                    }
+                    process.exit(exitCode);
+                });
+            } else {
+                logger.error("Failed to receive actual time");
+                exitCode = exitMessageCode.ERROR;
+                process.exit(exitCode);
+            }
         });
     });
 }
@@ -89,5 +120,12 @@ module.exports = {
             .command('activate <activation_code>')
             .description('Activates the device.')
             .action(activate);
+
+        program
+            .command('set-time')
+            .description('Sets actual UTC time on your device.')
+            .action(function() {
+                setActualTime();
+            });
     }
 };

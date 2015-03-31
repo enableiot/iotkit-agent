@@ -50,3 +50,7 @@ module.exports.getExternalInfo = function (callback) {
     var external = new AdminDef.ExternalInfoOption();
     return httpClient.httpRequest(external, callback);
 };
+module.exports.getActualTime = function (callback) {
+    var time = new AdminDef.TimeOption();
+    return httpClient.httpRequest(time, callback);
+};
