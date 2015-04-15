@@ -50,6 +50,7 @@ function Websockets(conf, logger) {
     me.logger = logger;
     me.bindings = {};
     me.pingPongIntervalMs = conf.connector.ws.pingPongIntervalMs;
+    me.lastPingTime = Date.now();
     me.lastPongTime = Date.now();
     me.pingpongInterval = null;
 
@@ -107,14 +108,18 @@ function Websockets(conf, logger) {
             "type": "ping"
         };
         me.pingpongInterval = setInterval(function() {
-            var lastPingTime = Date.now() - me.pingPongIntervalMs;
-            if(me.lastPongTime >= lastPingTime) {
+            var diff = me.lastPongTime - me.lastPingTime;
+            if(me.lastPongTime >= me.lastPingTime) {
+                me.logger.debug('Sending PING on WS');
                 connection.sendUTF(JSON.stringify(pingMessageObject));
+                me.lastPingTime = Date.now();
             } else {
                 me.logger.info('PONG not received on time. ');
                 me.reconnect();
             }
         }, me.pingPongIntervalMs);
+        me.logger.debug('Sending PING on WS');
+        connection.sendUTF(JSON.stringify(pingMessageObject));
     };
 
     me.onMessage = function(message) {
@@ -143,8 +148,8 @@ function Websockets(conf, logger) {
                             me.logger.debug('Received PONG on WS');
                         } else if(messageObject.code === errors.Success.Subscribed.code) {
                             me.minRetryTime = conf.connector.ws.minRetryTime;
-                            me.pingpong();
                             me.logger.info('WSConnector: Connection successful to: ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
+                            me.pingpong(connection);
                         } else if(messageObject.code === errors.Success.ReceivedActuation.code) {
                             me.logger.info('Fired STATUS: ', messageObject.content);
                             me.onMessage(messageObject.content);
