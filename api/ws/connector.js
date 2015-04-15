@@ -49,6 +49,9 @@ function Websockets(conf, logger) {
     me.client =  new WebSocketClient();
     me.logger = logger;
     me.bindings = {};
+    me.pingPongIntervalMs = conf.connector.ws.pingPongIntervalMs;
+    me.lastPongTime = Date.now();
+    me.pingpongInterval = null;
 
     me.calculateRetryTime = function(error) {
         if(utils.getMinutesAndSecondsFromMiliseconds(me.minRetryTime).m >= utils.getMinutesAndSecondsFromMiliseconds(me.maxRetryTime).m) {
@@ -92,7 +95,26 @@ function Websockets(conf, logger) {
 
     me.reconnect = function() {
         me.logger.info("Trying to reconnect...");
+        if(me.pingpongInterval) {
+            clearInterval(me.pingpongInterval);
+            me.pingpongInterval = null;
+        }
         me.connect();
+    };
+
+    me.pingpong = function(connection) {
+        var pingMessageObject = {
+            "type": "ping"
+        };
+        me.pingpongInterval = setInterval(function() {
+            var lastPingTime = Date.now() - me.pingPongIntervalMs;
+            if(me.lastPongTime >= lastPingTime) {
+                connection.sendUTF(JSON.stringify(pingMessageObject));
+            } else {
+                me.logger.info('PONG not received on time. ');
+                me.reconnect();
+            }
+        }, me.pingPongIntervalMs);
     };
 
     me.onMessage = function(message) {
@@ -116,8 +138,12 @@ function Websockets(conf, logger) {
             connection.on('message', function(message) {
                 parseMessage(message.utf8Data, function(err, messageObject) {
                     if(!err) {
-                        if(messageObject.code === errors.Success.Subscribed.code) {
+                        if(messageObject.code === errors.Success.ReceivedPong.code) {
+                            me.lastPongTime = Date.now();
+                            me.logger.debug('Received PONG on WS');
+                        } else if(messageObject.code === errors.Success.Subscribed.code) {
                             me.minRetryTime = conf.connector.ws.minRetryTime;
+                            me.pingpong();
                             me.logger.info('WSConnector: Connection successful to: ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
                         } else if(messageObject.code === errors.Success.ReceivedActuation.code) {
                             me.logger.info('Fired STATUS: ', messageObject.content);

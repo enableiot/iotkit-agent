@@ -31,6 +31,7 @@ module.exports = {
     },
     Success: {
         Subscribed: {code: 200, content: "Record in database update for device"},
-        ReceivedActuation: {code: 1024}
+        ReceivedActuation: {code: 1024},
+        ReceivedPong: {code: 202, content: "Pong received"}
     }
 };
