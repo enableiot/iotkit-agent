@@ -14,7 +14,7 @@
     "winston": "^0.7.3",
     "cli-table": "^0.3.0",
     "json-socket": "^0.1.2",
-    "websocket": "^1.0.14",
+    "websocket": "^1.0.18",
     "tunnel": "0.0.3"
   },
   "bin": {

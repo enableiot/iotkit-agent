@@ -135,8 +135,8 @@ function Websockets(conf, logger) {
                 "deviceToken": deviceInfo.device_token
             };
             connection.sendUTF(JSON.stringify(initMessageObject));
-            connection.on('close', function() {
-                me.logger.info("Websocket connection closed.");
+            connection.on('close', function(reasonCode, description) {
+                me.logger.info('Websocket connection closed. Reason: ' + reasonCode + ' ' + description);
                 setTimeout(function() {
                     me.reconnect();
                 }, parseInt(me.minRetryTime));
