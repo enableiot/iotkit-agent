@@ -73,6 +73,8 @@
             "port": 443,
             "minRetryTime": 5000,
             "maxRetryTime": 600000,
+            "pingPongIntervalMs": 30000,
+            "enablePingPong": true,
             "secure": true,
             "proxy": {
                 "host": false,
