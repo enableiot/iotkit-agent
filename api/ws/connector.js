@@ -50,6 +50,7 @@ function Websockets(conf, logger) {
     me.logger = logger;
     me.bindings = {};
     me.pingPongIntervalMs = conf.connector.ws.pingPongIntervalMs;
+    me.enabledPingPong = conf.connector.ws.enablePingPong;
     me.lastPingTime = Date.now();
     me.lastPongTime = Date.now();
     me.pingpongInterval = null;
@@ -149,7 +150,9 @@ function Websockets(conf, logger) {
                         } else if(messageObject.code === errors.Success.Subscribed.code) {
                             me.minRetryTime = conf.connector.ws.minRetryTime;
                             me.logger.info('WSConnector: Connection successful to: ' + conf.connector.ws.host + ':' + conf.connector.ws.port);
-                            me.pingpong(connection);
+                            if(me.enabledPingPong) {
+                                me.pingpong(connection);
+                            }
                         } else if(messageObject.code === errors.Success.ReceivedActuation.code) {
                             me.logger.info('Fired STATUS: ', messageObject.content);
                             me.onMessage(messageObject.content);
