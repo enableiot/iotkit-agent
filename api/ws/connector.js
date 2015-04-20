@@ -109,7 +109,6 @@ function Websockets(conf, logger) {
             "type": "ping"
         };
         me.pingpongInterval = setInterval(function() {
-            var diff = me.lastPongTime - me.lastPingTime;
             if(me.lastPongTime >= me.lastPingTime) {
                 me.logger.debug('Sending PING on WS');
                 connection.sendUTF(JSON.stringify(pingMessageObject));
