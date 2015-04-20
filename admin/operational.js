@@ -90,7 +90,7 @@ function testConnection () {
                             exitCode = exitMessageCode.ERROR;
                         }
                         if (messageObject.code === wsErrors.Success.ReceivedPong.code) {
-                            logger.info('WS Server Available');
+                            logger.info('Connection to Web Socket Server successful');
                             connection.close();
                         }
                     });
