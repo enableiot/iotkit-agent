@@ -27,6 +27,8 @@ var logger = require("../lib/logger").init(),
     utils = require("../lib/utils").init(),
     common = require('../lib/common'),
     configurator = require('../admin/configurator'),
+    WebSocket = require('../api/ws/connector'),
+    wsErrors = require('../api/ws/errors'),
     exec = require('child_process').exec,
     exitMessageCode = {
         "OK": 0,
@@ -73,7 +75,38 @@ function testConnection () {
                 logger.error("Connection failed to %s", host);
                 exitCode = exitMessageCode.ERROR;
             }
-            process.exit(exitCode);
+            if(conf.default_connector === 'rest+ws') {
+                var WS = WebSocket.singleton(conf, logger);
+                WS.client.on('connect', function(connection) {
+                    connection.on('close', function(reasonCode, description) {
+                        logger.info('Websocket connection closed. Reason: ' + reasonCode + ' ' + description);
+                        process.exit(exitCode);
+                    });
+                    connection.on('message', function(message) {
+                        try {
+                            var messageObject = JSON.parse(message.utf8Data);
+                        } catch (err) {
+                            logger.error('Received unexpected message from WS server: ' + message.utf8Data);
+                            exitCode = exitMessageCode.ERROR;
+                        }
+                        if (messageObject.code === wsErrors.Success.ReceivedPong.code) {
+                            logger.info('Connection to Web Socket Server successful');
+                            connection.close();
+                        }
+                    });
+                    var pingMessageObject = {
+                        "type": "ping"
+                    };
+                    connection.sendUTF(JSON.stringify(pingMessageObject));
+                });
+                logger.info("Trying to connect to WS server ...");
+                WS.connect();
+                setTimeout(function() {
+                    logger.error("Timeout exceeded. Program will exit.");
+                    process.exit(exitCode);
+                }, conf.connector.ws.testTimeout);
+            }
+
         });
     });
 }

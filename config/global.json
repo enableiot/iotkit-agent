@@ -71,8 +71,9 @@
         "ws": {
             "host": "ws.us.enableiot.com",
             "port": 443,
-            "minRetryTime": 5000,
+            "minRetryTime": 2500,
             "maxRetryTime": 600000,
+            "testTimeout": 40000,
             "pingPongIntervalMs": 30000,
             "enablePingPong": true,
             "secure": true,
