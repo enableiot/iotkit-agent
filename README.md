@@ -315,6 +315,37 @@ In this example, the request is for component "led1". The "command" field, "LED.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
+## What's new in version 1.7.1
+DP-4247 – Improved detection of connection loss for WebSocket protocol
+* Agent exchange messages with Web Socket Server on regular basis and try to reconnect in case of no response from the server.
+
+DP-4299 – Testing WS connection in test command
+* When rest+ws protocol is used in agent, test command checks both REST API availability and WebSocket connection. Agent tries to connect to WebSocket Server up to 3 times.
+
+DP-4249 – Print WebSocket connection closed reason
+* Updated version of used websocket library. Printing connection closed reason.
+
+DP-3587 – Changed execution of a custom function to create date to built-in Date.now()
+* Using built-in function instead of custom one.
+
+DP-3588 – Removed custom filterBy function that duplicates built-in filter  
+* Using built-in function instead of custom one. 
+
+DP-3596 – During activation process connection to MQTT broker has been unnecessarily closed
+* Removed forced disconnection from activation.
+
+DP-3792 – Catch error during MQTT connection and log warning
+* Logging problems with MQTT connection when error occur.
+ 
+DP-3781 – Added command for displaying current data directory
+* New command data-directory is available in iotkit-admin.
+
+DP-3944 – Changed order of iotkit-admin commands in help message
+* Related commands are in groups.
+
+DP-3931 – Added command for setting actual time on Galileo
+* Intel Edison has built-in system time synchronization and this command is not needed. However, on devices with wrong date which do not use systemd-timesyncd command set-time can be used to set actual UTC time used in IoT Cloud on your device.
+
 ## What's new in version 1.7.0
 DP-3864 – Support for actuations via websocket protocol.
 * Changed default connector to rest+ws. Permanent connection to server can be established using WebSocket for receiving actuations while other commands use REST protocol. Both can work with proxy
@@ -323,7 +354,7 @@ DP-3604 – Implement HTTP pull actuations command in Agent.
 * Added new command for REST protocol to pull actuations from last time this command was executed or last 24h if command was never used. Actuations are then executed.
 
 DP-3690 – Proxy port is set as a number, not string.
-* Additionally, prot range is checked.
+* Additionally, port range is checked.
 
 DP-3703 – Proxy commands in agent set both REST and WS proxies
 * proxy and reset-proxy commands edit both REST and WS proxy configuration

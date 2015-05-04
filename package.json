@@ -1,6 +1,6 @@
 {
   "name": "iotkit-agent",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Edge agent to abstract complexities",
   "main": "server.js",
   "dependencies": {
