@@ -23,8 +23,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 "use strict";
-var url = require('url');
-var config = require('../../config');
+var url = require('url'),
+    config = require('../../config');
+
 
 var apiconf = config.connector.rest;
 /**
@@ -37,6 +38,10 @@ function ConnectionOptions() {
             apiconf.proxy.host = 'http://' + apiconf.proxy.host;
         }
         this.proxy = apiconf.proxy.host + ":" + apiconf.proxy.port;
+    } else if(process.env.https_proxy) {
+        this.proxy = process.env.https_proxy;
+    } else if(process.env.http_proxy) {
+        this.proxy = process.env.http_proxy;
     }
     var urlT =  {
         hostname: apiconf.host,
