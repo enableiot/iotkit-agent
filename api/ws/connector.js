@@ -29,6 +29,16 @@ var WebSocketClient = require('websocket').client,
     errors = require('./errors'),
     deviceInfo = require(common.getFileFromDataDirectory('device.json').split('.json')[0]);
 
+var extractHostAndPortFromUrl = function(url) {
+    var hostStartPosition = url.indexOf("://") + 3;
+    var portStartPosition = url.lastIndexOf(":") + 1;
+    return {
+        host: url.substring(hostStartPosition, portStartPosition - 1),
+        port: url.substring(portStartPosition),
+        protocol: url.substring(0, url.indexOf("://"))
+    };
+};
+
 var parseMessage = function (msg, callback) {
     try {
         var messageObject = JSON.parse(msg);
@@ -80,6 +90,30 @@ function Websockets(conf, logger) {
                     port: conf.connector.ws.proxy.port
                 }
             });
+        }
+    } else {
+        var result;
+        if(process.env.https_proxy){
+            result = extractHostAndPortFromUrl(process.env.https_proxy);
+        } else if(process.env.https_proxy) {
+            result = extractHostAndPortFromUrl(process.env.http_proxy);
+        }
+        if(result.protocol) {
+            if(result.protocol === 'https') {
+                me.proxy.tunnelingAgent = tunnel.httpsOverHttps({
+                    proxy: {
+                        host: result.host,
+                        port: result.port
+                    }
+                });
+            } else {
+                me.proxy.tunnelingAgent = tunnel.httpsOverHttp({
+                    proxy: {
+                        host: result.host,
+                        port: result.port
+                    }
+                });
+            }
         }
     }
 

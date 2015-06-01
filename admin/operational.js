@@ -83,8 +83,9 @@ function testConnection () {
                         process.exit(exitCode);
                     });
                     connection.on('message', function(message) {
+                        var messageObject;
                         try {
-                            var messageObject = JSON.parse(message.utf8Data);
+                            messageObject = JSON.parse(message.utf8Data);
                         } catch (err) {
                             logger.error('Received unexpected message from WS server: ' + message.utf8Data);
                             exitCode = exitMessageCode.ERROR;
