@@ -92,7 +92,7 @@ function Websockets(conf, logger) {
             });
         }
     } else {
-        var result;
+        var result = {};
         if(process.env.https_proxy){
             result = extractHostAndPortFromUrl(process.env.https_proxy);
         } else if(process.env.https_proxy) {
