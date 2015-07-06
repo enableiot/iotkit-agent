@@ -315,6 +315,44 @@ In this example, the request is for component "led1". The "command" field, "LED.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
+## What's new in version 1.8.1
+DP-4299 – Add connecting to WS server in iotkit-admin test command
+* Test command of agent should also try to connect to WS server.
+
+DP-4279 – Print connection closed reason for WS protocol
+* Upgrade websocket dependency package and print connection closed reason for websocket protocol. 
+
+DP-4247 – Implement ping-pong in websocket protocol of iotkit-agent
+
+DP-3998 – IoT Kit Agent CP Header update to BSD-2
+* We need to update CP Headers for IoT Kit Agent repo - Intel headers should be BSD-2 instead of BSD-3 accordingly. 
+
+DP-3944 – Change order of options in help message of iotkit-admin
+* Group similar options so that order will be logical.
+
+DP-3931 – Add command in agent to synchronize time.
+* Time in Galileo devices can be wrong because there is no battery to maintain internal clock. Add a command in agent to set Galileo time using that route. If user synchronize time with dashboard and send observation, it should be visible in  last 10 minutes chart regardless of his time zone.
+
+DP-3792 – Handling agent disconnect exception
+* Handle disconnect exception, add logging meaningful message in case of connection close.
+
+DP-3781 – Add command to agent that shows current data directory
+* Add command to agent that shows current data directory: iotkit-admin.js data-directory
+
+DP-3742 – Read proxy from HTTP_PROXY environment variable
+* If proxy is not configured (false), environment variable HTTP_PROXY should be checked. If proxy is specified in user config, this configuration should be used instead of globally configured proxy.
+
+DP-3596 – During activation process connection to MQTT broker has been unnecessary closed 
+* When agent is connected through MQTT, invoking iotkit-admin.js activate process ends with several disconnections with broker.
+
+DP-3588 – Removing 'filterBy' function that duplicates build-in 'filter'
+
+DP-3587 – Changing unnecessary newTimeStamp function for build-in Date.now() 
+* 'newTimeStamp' function will be removed since it is doing the same as Date.now() function but with unnecessary operations.
+
+DP-4689 – Fix for WS connection without proxy 
+* When system proxy not set, WS connector throws error
+
 ## What's new in version 1.7.1
 DP-4247 – Improved detection of connection loss for WebSocket protocol
 * Agent exchange messages with Web Socket Server on regular basis and try to reconnect in case of no response from the server.
