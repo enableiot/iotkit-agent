@@ -118,7 +118,8 @@ function Websockets(conf, logger) {
     }
 
     me.client.requestOptions = {
-        agent: me.proxy.tunnelingAgent
+        agent: me.proxy.tunnelingAgent,
+        rejectUnauthorized: conf.connector.ws.verifyCert
     };
 
     me.connect = function() {
