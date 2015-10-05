@@ -64,7 +64,7 @@ but if it isn't installed, you will need "cd" to the directory where you install
 
 ```
 
-*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#5-notes-about-admin-commands).
+*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#6-notes-about-admin-commands).
 
 ####1.3 Configuring the agent  
 
@@ -113,7 +113,7 @@ Run the following command to find the enableiot dashboard:
 
     ./iotkit-admin.js test
 
-*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#5-notes-about-admin-commands).
+*Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#6-notes-about-admin-commands).
 
 ####2.2 Configuring and Activating the Agent
 
