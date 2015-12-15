@@ -55,8 +55,8 @@ module.exports.submitData = function (data, callback) {
  * @param callback
  */
 
-module.exports.getMetadataDevice = function(data, callback) {
-    var metaDataOpt = new DeviceDef.DeviceGetMetadataOption(data);
+module.exports.getDevice = function(data, callback) {
+    var metaDataOpt = new DeviceDef.DeviceGetOption(data);
     return httpClient.httpRequest(metaDataOpt, callback);
 };
 
