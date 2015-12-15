@@ -52,16 +52,16 @@ IoTKiT.DeviceActivateOption = DeviceActivateOption;
 
 
 
-function DeviceGetMetadataOption (data) {
+function DeviceGetOption (data) {
     this.pathname = common.buildPath(apiconf.path.device.get, data.deviceId);
     this.token = data.deviceToken;
     ConnectionOptions.call(this);
     this.method = GET_METHOD;
 
 }
-DeviceGetMetadataOption.prototype = new ConnectionOptions();
-DeviceGetMetadataOption.prototype.constructor = DeviceGetMetadataOption;
-IoTKiT.DeviceGetMetadataOption = DeviceGetMetadataOption;
+DeviceGetOption.prototype = new ConnectionOptions();
+DeviceGetOption.prototype.constructor = DeviceGetOption;
+IoTKiT.DeviceGetOption = DeviceGetOption;
 
 
 

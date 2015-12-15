@@ -50,7 +50,7 @@ module.exports.submitData = function (data, callback) {
 };
 
 /**
- * @description Gets a data from analytics UI using device id in data.
+ * @description Gets a device from analytics UI using device id in data.
  * @param data contains device id and metadata in body to sent
  * @param callback
  */

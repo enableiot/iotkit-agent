@@ -149,27 +149,15 @@ IoTKitCloud.prototype.update = function(callback) {
         doc.deviceId = me.deviceId;
         me.logger.info("Updating metadata...");
 
-        //creating new variable is necessary cause it can be modified by getDevice function
-        //we need unmodified 'doc' var for update call
-        var docGD= {};
-        if(me.deviceName){
-            docGD.name = me.deviceName;
-        }
-        docGD.deviceToken = me.secret.deviceToken;
-        docGD.deviceId = me.deviceId;
-
-
         //get device to read existing attributes
-        me.proxy.getDevice(docGD, function(result){
-
-            //delete attributes which agent should update with its own values
-            for(var existingAttributeName in doc.attributes){
-                delete result.attributes[existingAttributeName];
-            }
+        me.proxy.getDevice(doc, function(result){
 
             //append custom attributes to update body
             for (var attributeName in result.attributes){
-                doc.attributes[attributeName] = result.attributes[attributeName];
+
+                if(doc.attributes[attributeName] === undefined) {
+                    doc.attributes[attributeName] = result.attributes[attributeName];
+                }
             }
 
             //update attributes
@@ -180,12 +168,8 @@ IoTKitCloud.prototype.update = function(callback) {
                 }
             });
             me.logger.info("Metadata updated.");
-
         }
-
-
         );
-
     });
 
 };
