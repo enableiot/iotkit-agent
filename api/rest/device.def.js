@@ -28,6 +28,7 @@ var common = require('../../lib/common');
 
 var ConnectionOptions = require('./iot.connection.def.js');
 
+var GET_METHOD = 'GET';
 var PUT_METHOD = 'PUT';
 var POST_METHOD = 'POST';
 
@@ -48,6 +49,21 @@ function DeviceActivateOption(data) {
 DeviceActivateOption.prototype = new ConnectionOptions();
 DeviceActivateOption.prototype.constructor = DeviceActivateOption;
 IoTKiT.DeviceActivateOption = DeviceActivateOption;
+
+
+
+function DeviceGetMetadataOption (data) {
+    this.pathname = common.buildPath(apiconf.path.device.get, data.deviceId);
+    this.token = data.deviceToken;
+    ConnectionOptions.call(this);
+    this.method = GET_METHOD;
+
+}
+DeviceGetMetadataOption.prototype = new ConnectionOptions();
+DeviceGetMetadataOption.prototype.constructor = DeviceGetMetadataOption;
+IoTKiT.DeviceGetMetadataOption = DeviceGetMetadataOption;
+
+
 
 function DeviceMetadataOption (data) {
     this.pathname = common.buildPath(apiconf.path.device.update, data.deviceId);

@@ -48,6 +48,20 @@ module.exports.submitData = function (data, callback) {
     var submitDataOpt = new DeviceDef.DeviceSubmitDataOption(data);
     return httpClient.httpRequest(submitDataOpt, callback);
 };
+
+/**
+ * @description Gets a data from analytics UI using device id in data.
+ * @param data contains device id and metadata in body to sent
+ * @param callback
+ */
+
+module.exports.getMetadataDevice = function(data, callback) {
+    var metaDataOpt = new DeviceDef.DeviceGetMetadataOption(data);
+    return httpClient.httpRequest(metaDataOpt, callback);
+};
+
+
+
 /**
  * The function will Register all components to Analytics using POST
  * if the body is an Array it will send individual post since the bulk api is
