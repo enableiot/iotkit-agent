@@ -148,13 +148,28 @@ IoTKitCloud.prototype.update = function(callback) {
         doc.deviceToken = me.secret.deviceToken;
         doc.deviceId = me.deviceId;
         me.logger.info("Updating metadata...");
-        me.proxy.attributes(doc, function () {
-            me.logger.debug("attributes has returned from ", me.proxy.type);
-            if (callback) {
-                callback();
+
+        //get device to read existing attributes
+        me.proxy.getDevice(doc, function(result){
+
+            //append custom attributes to update body
+            for (var attributeName in result.attributes){
+
+                if(doc.attributes[attributeName] === undefined) {
+                    doc.attributes[attributeName] = result.attributes[attributeName];
+                }
             }
-        });
-        me.logger.info("Metadata updated.");
+
+            //update attributes
+            me.proxy.attributes(doc, function () {
+                me.logger.debug("attributes has returned from ", me.proxy.type);
+                if (callback) {
+                    callback();
+                }
+            });
+            me.logger.info("Metadata updated.");
+        }
+        );
     });
 
 };

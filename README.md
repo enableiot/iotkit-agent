@@ -315,6 +315,9 @@ In this example, the request is for component "led1". The "command" field, "LED.
 
 The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
 
+## What's new in version 1.8.3
+DPDP-331 – Fix #82 issue, agent will update attributes instead of reseting them
+
 ## What's new in version 1.8.1
 DP-4299 – Add connecting to WS server in iotkit-admin test command
 * Test command of agent should also try to connect to WS server.
