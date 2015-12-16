@@ -53,6 +53,7 @@
             "path": {
                 "device": {
                     "act": "/v1/api/devices/{deviceid}/activation",
+                    "get": "/v1/api/devices/{deviceid}",
                     "update": "/v1/api/devices/{deviceid}",
                     "components": "/v1/api/devices/{deviceid}/components",
                     "actuations": "/v1/api/accounts/{accountId}/control/devices/{deviceId}"
