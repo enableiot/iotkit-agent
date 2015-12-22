@@ -206,7 +206,7 @@ describe(fileToTest, function(){
             assert.equal(c.name, 31, "The component is not the expected");
             assert.equal(c.type, 32, "The component is not the expected");
             c = store.byCid("33");
-            assert.isNull(c, "it shall return a null value");
+            assert.isUndefined(c, "it shall return an undefined value");
             done();
         });
         it('Shall return a sensor by Name >', function (done) {
@@ -220,7 +220,7 @@ describe(fileToTest, function(){
             assert.equal(c.name, 31, "The component is not the expected");
             assert.equal(c.type, 32, "The component is not the expected");
             c = store.byName("33");
-            assert.isNull(c, "it shall return a null value");
+            assert.isUndefined(c, "it shall return an undefined value");
             done();
         });
         it('Shall return a sensor by Type >', function (done) {
@@ -234,14 +234,14 @@ describe(fileToTest, function(){
             assert.equal(c.name, 31, "The component is not the expected");
             assert.equal(c.type, 32, "The component is not the expected");
             c = store.byType();
-            assert.isNull(c, "it shall return a null value");
+            assert.isUndefined(c, "it shall return an undefined value");
             done();
         });
         it('Shall return a sensor if exist >', function (done) {
 
             var store = toTest.init(storeName, logger);
             var c = store.exist({name: 2, type: 3});
-            assert.isNull(c, "it shall return a null value");
+            assert.isUndefined(c, "it shall return an undefined value");
             c = store.exist({name: 1, type: 2});
             assert.equal(c.cid, 3,  "The component is not the expected");
             assert.equal(c.name, 1, "The component is not the expected");
