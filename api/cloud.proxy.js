@@ -149,30 +149,41 @@ IoTKitCloud.prototype.update = function(callback) {
         doc.deviceId = me.deviceId;
         me.logger.info("Updating metadata...");
 
-        //get device to read existing attributes
-        me.proxy.getDevice(doc, function(result){
+        if(proxyConnector.type === "rest"){
+            //get device to read existing attributes
+            me.proxy.getDevice(doc, function(result){
 
-            //append custom attributes to update body
-            for (var attributeName in result.attributes){
+                //append custom attributes to update body
+                for (var attributeName in result.attributes){
 
-                if(doc.attributes[attributeName] === undefined) {
-                    doc.attributes[attributeName] = result.attributes[attributeName];
+                    if(doc.attributes[attributeName] === undefined) {
+                        doc.attributes[attributeName] = result.attributes[attributeName];
+                    }
                 }
-            }
-
-            //update attributes
-            me.proxy.attributes(doc, function () {
-                me.logger.debug("attributes has returned from ", me.proxy.type);
-                if (callback) {
-                    callback();
-                }
+                //update attributes
+                me.updateAttributes(doc, callback);
             });
-            me.logger.info("Metadata updated.");
         }
-        );
+        else {
+            me.updateAttributes(doc, callback);
+        }
+        me.logger.info("Metadata updated.");
+
     });
 
 };
+
+IoTKitCloud.prototype.updateAttributes = function(doc, callback){
+    var me = this;
+    me.proxy.attributes(doc, function () {
+        me.logger.debug("attributes has returned from ", me.proxy.type);
+        if (callback) {
+            callback();
+        }
+    });
+};
+
+
 IoTKitCloud.prototype.updateOld = function(callback) {
     var me = this;
     var doc = new msg.Metadata(me.gatewayId);
