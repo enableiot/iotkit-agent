@@ -29,7 +29,7 @@
                 "device_status": "device/{deviceid}/activation",
                 "device_activation": "server/devices/{deviceid}/activation",
                 "device_metadata": "server/devices/{deviceid}/metadata",
-                "metric_topic": "server/metric/{accountid}/{gatewayid}",
+                "metric_topic": "server/metric/{accountid}/{deviceid}",
                 "device_component_add": "server/devices/{deviceid}/components/add",
                 "device_component_status": "device/{deviceid}/components",
                 "device_component_del": "server/devices/{deviceid}/components/delete",

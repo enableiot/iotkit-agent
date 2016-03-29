@@ -62,7 +62,7 @@ exports.init = function(conf, logger, onMessage, deviceId) {
         secret = common.readFileToJson(fullFilename);
     }
 
-  var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{gatewayid}";
+  var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{deviceid}";
 
     var tlsArgs = { };
     var verifyCertKeyPath = conf.connector.mqtt.key || './certs/client.key';
