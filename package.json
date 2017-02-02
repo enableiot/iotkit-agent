@@ -4,19 +4,19 @@
   "description": "Edge agent to abstract complexities",
   "main": "server.js",
   "dependencies": {
+    "async": "^0.9.0",
+    "cli-table": "^0.3.0",
+    "es6-shim": "0.34.0",
     "express": "^3.5.2",
     "getmac": "^1.0.6",
     "json-schema": "^0.2.2",
-    "mqtt": "^0.3.8",
-    "node-uuid": "^1.4.1",
-    "request": "^2.36.0",
-    "async": "^0.9.0",
-    "winston": "^0.7.3",
-    "cli-table": "^0.3.0",
     "json-socket": "^0.1.2",
-    "websocket": "^1.0.18",
+    "mqtt": "^0.3.8",
+    "request": "^2.36.0",
     "tunnel": "0.0.3",
-    "es6-shim": "0.34.0"
+    "uuid": "^3.0.0",
+    "websocket": "^1.0.18",
+    "winston": "^0.7.3"
   },
   "bin": {
     "iotkit-admin": "./iotkit-admin.js",
