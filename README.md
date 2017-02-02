@@ -229,7 +229,7 @@ For instructions how to use the iotkit-agent please see the [iotkit-samples repo
 
 ##5. Test
 
-The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. 
+The iotkit-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://mochajs.org/) as its test framework. 
 To run all tests:
 
 > Install all dev-dependencies, running:
