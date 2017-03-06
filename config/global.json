@@ -18,11 +18,11 @@
     "default_connector": "rest+ws",
     "connector": {
         "mqtt": {
-            "host": "broker.us.enableiot.com",
+            "host": "streammyiot.com",
             "port": 8883,
             "qos": 1,
             "retain": false,
-            "secure": true,
+            "secure": false,
             "strictSSL": true,
             "retries": 5,
             "topic": {
@@ -41,9 +41,9 @@
             }
         },
         "rest": {
-            "host": "dashboard.us.enableiot.com",
-            "port": 443,
-            "protocol": "https",
+            "host": "streammyiot.com",
+            "port": 80,
+            "protocol": "http",
             "strictSSL": true,
             "timeout": 30000,
             "proxy": {
@@ -70,14 +70,14 @@
             }
         },
         "ws": {
-            "host": "ws.us.enableiot.com",
-            "port": 443,
+            "host": "streammyiot.com",
+            "port": 6002,
             "minRetryTime": 2500,
             "maxRetryTime": 600000,
             "testTimeout": 40000,
             "pingPongIntervalMs": 30000,
             "enablePingPong": true,
-            "secure": true,
+            "secure": false,
             "proxy": {
                 "host": false,
                 "port": false
