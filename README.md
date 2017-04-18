@@ -2,10 +2,10 @@
 
 This project includes two programs:
 
-###iotkit-admin
+### iotkit-admin
 This is a command line "wrapper" for the [REST API](https://github.com/enableiot/iotkit-api/wiki/Api-Home), enabling you to test connectivity, activate a device, register time series and send observations all from the command line.
 
-###iotkit-agent
+### iotkit-agent
 This is a "agent" program intended to run as a services. You can send a very simple message, such as:
 
 ```
@@ -37,7 +37,7 @@ If the program is not installed, you can install it following these steps:
 # npm install
 ```
 
-##Which version of the command line?
+## Which version of the command line?
 
 If the agent has been pre-installed on your Galileo or Edison board, you can run:
 
@@ -51,9 +51,9 @@ but if it isn't installed, you will need "cd" to the directory where you install
 # ./iotkit-agent.js test
 ```
 
-##Setting up you board
+## Setting up you board
 
-###1 Test the connection to the cloud
+### 1 Test the connection to the cloud
 
 
 ```
@@ -66,7 +66,7 @@ but if it isn't installed, you will need "cd" to the directory where you install
 
 *Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#6-notes-about-admin-commands).
 
-####1.3 Configuring the agent  
+#### 1.3 Configuring the agent  
 
 The iotkit-agent requires to be register at [iotkit-dashboard](https://dashboard.us.enableiot.com).
 You will need and id (a.k.a Device Id) to register the Galileo in the iotkit-dashboard. In
@@ -87,13 +87,13 @@ by executing:
 
 The device should be active system wide. To verify that, go back to your iotkit dashboard and verify the status of the device previously registered. 
         
-####1.4 Starting the Agent
+#### 1.4 Starting the Agent
 
 Once the device has been activated, the iotkit-agent has to be started. To do that simply execute the start script:
 
     systemctl start iotkit-agent
 
-##2. Installing using npm
+## 2. Installing using npm
 
 Follow these steps to install the iotkit-agent if you want to try in any Linux environment or if you got a Galileo without the iotkit-agent pre-installed.
 
@@ -107,7 +107,7 @@ Once you have a copy of the iotkit-agent locally, you will need to install **for
     cd iotkit-agent
     npm install forever
   
-####2.1 Testing the connection with iotkit-dashboard
+#### 2.1 Testing the connection with iotkit-dashboard
 
 Run the following command to find the enableiot dashboard: 
 
@@ -115,7 +115,7 @@ Run the following command to find the enableiot dashboard:
 
 *Note*: For more information about iotkit-admin commands, go to section [Notes about "admin" commands](#6-notes-about-admin-commands).
 
-####2.2 Configuring and Activating the Agent
+#### 2.2 Configuring and Activating the Agent
 
 The steps to configure and activate the agent are almost the same as the scenario where the iotkit-agent has been pre-installed in the Galileo.
 
@@ -151,19 +151,19 @@ After the device registration, copy the activation code in _My Account_ UI, tab 
 The device should be active system wide. 
 To verify that, go back to your iotkit dashboard and verify the status of the device previously registered.
 
-####2.3 Starting the Agent
+#### 2.3 Starting the Agent
 
 To start the iotkit-agent service simply execute the start script:
 
     ./start-agent.sh
     
-####2.4 Stopping the Agent
+#### 2.4 Stopping the Agent
 
 Yes, you guessed it, run the stop script:
 
     ./stop-agent.sh
 
-##3. Upgrading
+## 3. Upgrading
 
 **Note:** To avoid losing configuration settings on an activated device, special care must be taken when upgrading the agent.
 
