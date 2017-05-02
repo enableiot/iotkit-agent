@@ -42,8 +42,8 @@
         },
         "rest": {
             "host": "streammyiot.com",
-            "port": 80,
-            "protocol": "http",
+            "port": 443,
+            "protocol": "https",
             "strictSSL": true,
             "timeout": 30000,
             "proxy": {
@@ -71,13 +71,13 @@
         },
         "ws": {
             "host": "streammyiot.com",
-            "port": 6002,
+            "port": 443,
             "minRetryTime": 2500,
             "maxRetryTime": 600000,
             "testTimeout": 40000,
             "pingPongIntervalMs": 30000,
             "enablePingPong": true,
-            "secure": false,
+            "secure": true,
             "proxy": {
                 "host": false,
                 "port": false
