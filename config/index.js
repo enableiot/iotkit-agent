@@ -54,7 +54,7 @@ if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local")
     config.connector.mqtt.port = 61613;
     config.connector.mqtt.secure = false;
     config.connector.ws.host = "127.0.0.1";
-    config.connector.ws.port = 6002;
+    config.connector.ws.port = 5000;
     config.connector.ws.secure = false;
     config.connector.rest.host = "127.0.0.1";
     config.connector.rest.port = 80;
