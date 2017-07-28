@@ -222,7 +222,7 @@ Yes, you guessed it, run the stop script:
  4. Run migration script to import old settings into new agent configuration. Use 'migrate.js' in the iotkit-agent install folder.<br>
  ```migrate.js <backup_directory>```
  5. Resume upgrade procedure (steps 4-7)
-	
+  
 ##4. Usage
 
 For instructions how to use the iotkit-agent please see the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
@@ -297,12 +297,12 @@ Components can be configured to be controlled from the cloud. Actuator requests 
 Below is an example of the processed JSON message sent to local UDP port 41235 by the agent.
 ```javascript
 {
-	"component": "led1",
-	"command": "LED.v1.0",
-	"argv": [{
-		"name": "LED",
-		"value": "1"
-	}]
+  "component": "led1",
+  "command": "LED.v1.0",
+  "argv": [{
+    "name": "LED",
+    "value": "1"
+  }]
 }
 ```
 In this example, the request is for component "led1". The "command" field, "LED.v1.0", is a string that was defined in the component type for this component and may or may not have significance to the user. The "LED" parameter name and value can be used to determine what pins to turn on/off.
@@ -313,7 +313,34 @@ In this example, the request is for component "led1". The "command" field, "LED.
 
 > Do not use the default certificates in production.
 
-The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments. 
+The IoT Kit Agent includes default certificates to provide "out of the box" connectivity. These are fine for public data submissions but should not be used for production deployments.
+
+## Using Docker
+
+### Build the image
+````bash
+make
+````
+
+### Start container (connect to production server)
+````bash
+make start
+````
+
+### Start container (connect to local server)
+````bash
+make start-local
+````
+
+### Stop container
+````bash
+make stop
+````
+
+### Remove container and image 
+````bash
+make clean
+````
 
 ## What's new in version 1.8.3
 DPDP-331 – Fix #82 issue, agent will update attributes instead of reseting them
