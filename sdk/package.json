@@ -1,0 +1,28 @@
+{
+  "name": "oisp-sdk-js",
+  "version": "1.0.0alpha1",
+  "description": "OISP SDK for Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "grunt": "^1.0.1",
+    "grunt-contrib-compress": "^1.4.3",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-license-finder": "^2.0.0",
+    "grunt-mocha-istanbul": "^5.0.2",
+    "rewire": "^2.5.2"
+  },
+  "dependencies": {
+    "async": "^2.5.0",
+    "mqtt": "^2.13.1",
+    "request": "^2.83.0",
+    "tunnel": "0.0.5",
+    "websocket": "^1.0.24",
+    "winston": "^2.4.0"
+  }
+}

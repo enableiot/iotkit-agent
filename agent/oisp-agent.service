@@ -1,0 +1,12 @@
+[Unit]
+Description=OISP Agent
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/oisp-agent
+Restart=always
+RestartSec=10s
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

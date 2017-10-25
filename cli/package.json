@@ -1,0 +1,31 @@
+{
+  "name": "oisp-cli",
+  "version": "1.0.0alpha1",
+  "description": "OISP Command Line Interface",
+  "main": "",
+  "dependencies": {
+    "oisp-sdk-js": "../sdk"
+  },
+  "bin": {
+  },
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/enableiot/iotkit-agent.git"
+  },
+  "keywords": [
+    "oisp",
+    "cli"
+  ],
+  "author": "Intel, CPG",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/enableiot/iotkit-agent/issues"
+  },
+  "homepage": "https://github.com/enableiot/iotkit-agent",
+  "devDependencies": {
+  },
+  "directories": {
+  }
+}

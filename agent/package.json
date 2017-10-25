@@ -1,0 +1,54 @@
+{
+  "name": "oisp-agent",
+  "version": "2.0.0alpha1",
+  "description": "OISP agent for devices",
+  "main": "server.js",
+  "dependencies": {
+    "cli-table": "^0.3.0",
+    "commander": "^2.11.0",
+    "es6-shim": "0.34.1",
+    "express": "^3.5.2",
+    "getmac": "^1.0.6",
+    "json-schema": "^0.2.2",
+    "json-socket": "^0.1.2",
+    "mqtt": "^0.3.8",
+    "uuid": "^3.0.0",
+    "oisp-sdk-js": "../sdk"
+  },
+  "bin": {
+    "oisp-admin": "./oisp-admin.js",
+    "oisp-agent": "./oisp-agent.js"
+  },
+  "scripts": {
+    "start": "node agent",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/enableiot/iotkit-agent.git"
+  },
+  "keywords": [
+    "oisp",
+    "agent"
+  ],
+  "author": "Intel, CPG",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/enableiot/iotkit-agent/issues"
+  },
+  "homepage": "https://github.com/enableiot/iotkit-agent",
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "mocha": "^1.18.2",
+    "rewire": "^2.0.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "jshint-teamcity": "^1.0.4",
+    "chai": "^1.9.1",
+    "grunt-contrib-compress": "^0.8.0",
+    "grunt-mocha-istanbul": "^1.4.0",
+    "grunt-license-finder": "^0.1.3"
+  },
+  "directories": {
+    "test": "test"
+  }
+}
