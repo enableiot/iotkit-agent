@@ -10,13 +10,17 @@ build:
 	@$(call msg,"Building oisp-agent ..."); 
 	@/bin/bash -c "docker build . -t ${IMAGE_NAME}"
 
+configure:
+	@$(call msg,"Configure oisp-agent (using bash) ..."); 
+	@/bin/bash -c "docker run -t -i --rm -v ${PWD}/agent/data:/app/agent/data -p 1884:1884 -p 9090:9090 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} --entrypoint='/bin/bash' ${IMAGE_NAME}"
+
 start:
 	@$(call msg,"Starting oisp-agent ..."); 
-	@/bin/bash -c "docker run -d -t -i -p 1884:1884 -p 9090:9090 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
+	@/bin/bash -c "docker run -d -t -i --rm -v ${PWD}/agent/data:/app/agent/data -p 1884:1884 -p 9090:9090 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
 
 start-local:
 	@$(call msg,"Starting oisp-agent (local) ..."); 
-	@/bin/bash -c "docker run -d -t -i -e NODE_ENV=local -p 1884:1884 -p 9090:9090 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
+	@/bin/bash -c "docker run -d -t -i -e NODE_ENV=local --rm -v ${PWD}/agent/data:/app/agent/data -p 1884:1884 -p 9090:9090 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
 
 stop:
 	@$(call msg,"Stopping oisp-agent ..."); 
