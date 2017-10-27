@@ -50,15 +50,16 @@ if (fs.existsSync(path.join(__dirname, localConf))) {
 
 /* override for local development if NODE_ENV is defined to local */
 if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
-    config.connector.mqtt.host = "127.0.0.1";
+    config.connector.mqtt.host = "localhost";
     config.connector.mqtt.port = 61613;
     config.connector.mqtt.secure = false;
-    config.connector.ws.host = "127.0.0.1";
+    config.connector.ws.host = "localhost";
     config.connector.ws.port = 5000;
     config.connector.ws.secure = false;
-    config.connector.rest.host = "127.0.0.1";
+    config.connector.rest.host = "localhost";
     config.connector.rest.port = 80;
     config.connector.rest.protocol= "http";
     config.logger.PATH = './';
 }
+
 module.exports = config;
