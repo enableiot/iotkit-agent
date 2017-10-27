@@ -140,6 +140,11 @@ The OISP Agent includes default certificates to provide "out of the box" connect
 make
 ````
 
+### Start container with bash to configure agent
+````bash
+make configure
+````
+
 ### Start container (connect to production server)
 ````bash
 make start

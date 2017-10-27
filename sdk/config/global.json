@@ -2,7 +2,7 @@
     "data_directory": "./data",
     "listeners": {
         "mqtt_port": 1884,
-        "rest_port": 9090,
+        "rest_port": 8000,
         "udp_port": 41234,
         "tcp_port": 7070
     },
