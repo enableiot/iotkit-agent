@@ -24,6 +24,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 module.exports = {
-    devices: require('./iot.devices'),
-    admin: require('./iot.admin')
+    auth:       require('./iot.auth'),
+    users:      require('./iot.users'),
+    accounts:   require('./iot.accounts'),
+    data:       require('./iot.data'),
+    devices:    require('./iot.devices'),
+    publicApi:  require('./iot.public'),
+    cmpcatalog: require('./iot.cmpcatalog'),
+    control:    require('./iot.control')
 };

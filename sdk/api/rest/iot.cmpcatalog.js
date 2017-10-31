@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014, Intel Corporation
+Copyright (c) 2017, Intel Corporation
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -24,30 +24,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var httpClient = require('../../lib/httpClient');
-var AdminDef = require('./admin.def');
-var CatalogDef = require('./component.def');
-var ActuationsDef = require('./actuations.def');
+var CatalogDef = require('./cmpcatalog.def');
 
-/**
- * It passes to a callback the access token
- */
-module.exports.health = function(callback) {
-    var health = new AdminDef.HealthOption();
-    return httpClient.httpRequest(health, callback);
-};
+
 module.exports.getCatalog = function (data, callback) {
     var catalog = new CatalogDef.CatalogOption(data);
     return httpClient.httpRequest(catalog, callback);
-};
-module.exports.pullActuations = function (data, callback) {
-    var actuations = new ActuationsDef.ActuationsOption(data);
-    return httpClient.httpRequest(actuations, callback);
-};
-module.exports.getExternalInfo = function (callback) {
-    var external = new AdminDef.ExternalInfoOption();
-    return httpClient.httpRequest(external, callback);
-};
-module.exports.getActualTime = function (callback) {
-    var time = new AdminDef.TimeOption();
-    return httpClient.httpRequest(time, callback);
 };

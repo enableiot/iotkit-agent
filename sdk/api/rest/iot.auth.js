@@ -22,29 +22,39 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var config = require('../../config');
+"use strict";
+var httpClient = require('../../lib/httpClient');
+var userAdminDef = require('./admin.def');
 
-var ConnectionOptions = require('./iot.connection.def.js');
-var apiconf = config.connector.rest;
 
-var IoTKiT = {};
 /**
- * Connection attributes to redirect to Intel Identity Main Page
+ *  @description Get user token through API:POST/v1/api/auth/token
+ *  @param data.body.email the user email 
+ *  @param data.body.password the user password
  */
-function GetTokenOption () {
-    this.pathname = apiconf.auth.token;
-    this.token = null;
-    ConnectionOptions.call(this);
-    this.method = 'POST';
-    this.body =  JSON.stringify({username: apiconf.auth.usr,
-                                 password: apiconf.auth.pass});
-}
-GetTokenOption.prototype = new ConnectionOptions();
-GetTokenOption.prototype.constructor = GetTokenOption;
-IoTKiT.GetTokenOption = GetTokenOption;
-module.exports = IoTKiT;
+module.exports.getAuthToken = function(data, callback) {
+    var getAuthTokenOpt = new userAdminDef.auth.GetAuthTokenOption(data);
+  return httpClient.httpRequest(getAuthTokenOpt, callback);
+};
 
 
+/**
+ *  @description Get user token through API:GET/v1/api/auth/tokenInfo
+ *  @param data.token the access token
+ */
+module.exports.getAuthTokenInfo = function(data, callback) {
+  var getAuthTokenInfoOpt = new userAdminDef.auth.GetAuthTokenInfoOption(data);
+  return httpClient.httpRequest(getAuthTokenInfoOpt, callback);
+};
 
+
+/**
+ *  @description Get information about the JWT owner through API:GET/v1/api/auth/me
+ *  @param data contains the auth token
+ */
+module.exports.getAuthUserInfo = function(data, callback) {
+  var getAuthUserInfoOpt = new userAdminDef.auth.GetAuthUserInfoOption(data);
+  return httpClient.httpRequest(getAuthUserInfoOpt, callback);
+};
 
 

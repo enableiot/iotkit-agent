@@ -23,17 +23,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 "use strict";
+var httpClient = require('../../lib/httpClient');
+var ActuationsDef = require('./control.def');
 
-var auth  = require('./auth.def');
-var users = require('./users.def');
-var accounts = require('./accounts.def');
-var data = require('./data.def');
-var devices = require('./devices.def');
 
-module.exports = {
-    auth: auth,
-    users: users,
-    accounts: accounts,
-    data: data,
-    devices: devices
+module.exports.pullActuations = function (data, callback) {
+    var actuations = new ActuationsDef.ActuationsOption(data);
+    return httpClient.httpRequest(actuations, callback);
 };

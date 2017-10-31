@@ -23,17 +23,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 "use strict";
+var httpClient = require('../../lib/httpClient');
+var PublicApi = require('./public.def');
 
-var auth  = require('./auth.def');
-var users = require('./users.def');
-var accounts = require('./accounts.def');
-var data = require('./data.def');
-var devices = require('./devices.def');
+/**
+ * It passes to a callback the access token
+ */
+module.exports.health = function(callback) {
+    var health = new PublicApi.HealthOption();
+    return httpClient.httpRequest(health, callback);
+};
 
-module.exports = {
-    auth: auth,
-    users: users,
-    accounts: accounts,
-    data: data,
-    devices: devices
+
+module.exports.getExternalInfo = function (callback) {
+    var external = new PublicApi.ExternalInfoOption();
+    return httpClient.httpRequest(external, callback);
+};
+module.exports.getActualTime = function (callback) {
+    var time = new PublicApi.TimeOption();
+    return httpClient.httpRequest(time, callback);
 };
