@@ -50,13 +50,18 @@
                 "host": false,
                 "port": false
             },
-            "path": {
+	    "path": {
                 "device": {
                     "act": "/v1/api/devices/{deviceid}/activation",
+		    "act_full": "/v1/api/accounts/{accountid}/devices/{deviceid}/activation",
                     "get": "/v1/api/devices/{deviceid}",
                     "update": "/v1/api/devices/{deviceid}",
                     "components": "/v1/api/devices/{deviceid}/components",
-                    "actuations": "/v1/api/accounts/{accountId}/control/devices/{deviceId}"
+                    "actuations": "/v1/api/accounts/{accountid}/control/devices/{deviceid}",
+		    "getall": "/v1/api/accounts/{accountid}/devices",
+		    "getdetails": "/v1/api/accounts/{accountid}/devices/{deviceid}",
+		    "components_full": "/v1/api/accounts/{accountid}/devices/{deviceid}/components",
+		    "components_delete": "/v1/api/accounts/{accountid}/devices/{deviceid}/components/{cid}"
                 },
                 "submit": {
                     "data": "/v1/api/data/{deviceid}"
@@ -66,9 +71,35 @@
                     "component": "/v1/api/cmpcatalog/{componentId}"
                 },
                 "health": "/v1/api/health",
-                "time": "/v1/api/time"
-            }
-        },
+                "time": "/v1/api/time",
+		"auth": {
+		    "token": "/v1/api/auth/token",
+		    "tokenInfo": "/v1/api/auth/tokenInfo",
+		    "userInfo": "/v1/api/auth/me"
+		},
+		"user": {
+		    "addUser": "/v1/api/users",
+		    "activateUser": "/v1/api/users/activate",
+		    "userId": "/v1/api/users/{userId}",
+		    "forgotPassword": "/v1/api/users/forgot_password",
+		    "changePassword": "/v1/api/users/{email}/change_password",
+		    "requestUserActivation": "/v1/api/users/request_user_activation"
+		},
+		"accounts": {
+		    "create": "/v1/api/accounts",
+		    "accountId": "/v1/api/accounts/{accountId}",
+		    "activationcode": "/v1/api/accounts/{accountId}/activationcode",
+		    "refresh": "/v1/api/accounts/{accountId}/activationcode/refresh",
+		    "userid": "/v1/api/accounts/{accountId}/users/{userId}",
+		    "users": "/v1/api/accounts/{accountId}/users"
+		},
+		"data": {
+		    "send": "/v1/api/data/{deviceid}",
+		    "search": "/v1/api/accounts/{accountId}/data/search",
+		    "advanced": "/v1/api/accounts/{accountId}/data/search/advanced"
+		}
+	    }
+	},
         "ws": {
             "host": "streammyiot.com",
             "port": 443,
