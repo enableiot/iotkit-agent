@@ -25,7 +25,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var mac = require("getmac"),
     os = require("os"),
     http = require("http"),
-    admin = require('oisp-sdk-js').api.rest.admin,
+    publicApi = require('oisp-sdk-js').api.rest.public,
     pkgJson = require('../package.json'),
     config = require ('oisp-sdk-js').config,
     common = require('./common');
@@ -58,7 +58,7 @@ IoTKitUtils.prototype.externalInfo = function(cb) {
     if (!cb) {
         throw "Callback required";
     }
-    admin.getExternalInfo(function (err, data){
+    publicApi.getExternalInfo(function (err, data){
         if (!err) {
             data.ip_local = me.getIPs()[0];
             cb(data);

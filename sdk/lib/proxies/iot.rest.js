@@ -156,7 +156,7 @@ IoTKitRestCloud.prototype.disconnect = function () {
 IoTKitRestCloud.prototype.health = function (device, callback) {
     var me = this;
     me.logger.debug("Starting Health testing");
-    me.client.admin.health(function (err, response) {
+    me.client.publicApi.health(function (err, response) {
         if (!err && response) {
             me.logger.debug("Response From data Submission from API", response);
             callback(response);
@@ -174,7 +174,7 @@ IoTKitRestCloud.prototype.getCatalog = function (data, callback) {
     var dataPayload = {
                 deviceToken: data.deviceToken
             };
-    me.client.admin.getCatalog(dataPayload, function (err, response) {
+    me.client.cmpcatalog.getCatalog(dataPayload, function (err, response) {
         if (!err && response) {
             me.logger.debug("Response From Catalog Retrieved ", response);
             callback(response);
@@ -210,7 +210,7 @@ IoTKitRestCloud.prototype.getDevice = function (data, callback) {
 IoTKitRestCloud.prototype.pullActuations = function (data, callback) {
     var me = this;
     me.logger.info("Starting Actuations pulling ");
-    me.client.admin.pullActuations(data, function (err, response) {
+    me.client.control.pullActuations(data, function (err, response) {
         if (!err && response) {
             me.logger.info("Actuations pulled successfully");
             callback(response);
@@ -233,7 +233,7 @@ IoTKitRestCloud.prototype.setCredential = function (user, password) {
 IoTKitRestCloud.prototype.getActualTime = function (callback) {
     var me = this;
     me.logger.info("Starting Time Retrieving ");
-    me.client.admin.getActualTime(function (err, response) {
+    me.client.publicApi.getActualTime(function (err, response) {
         if (!err && response) {
             me.logger.debug("Response From Time Retrieving", response);
             callback(response.actualTime);
