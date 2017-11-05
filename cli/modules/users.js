@@ -25,7 +25,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var api = require("oisp-sdk-js").api.rest,
     logger = require("oisp-sdk-js").lib.logger.init(),
+    common = require("../lib/common"),
     userAdminData = require("../lib/cli-data");
+var errorHandler = {};
 
 
 var getUserInfo = function(){
@@ -36,8 +38,8 @@ var getUserInfo = function(){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -49,16 +51,16 @@ var updateUserInfo = function(jsonString){
     try {
 	user_admin_data.body = JSON.parse(jsonString);
     } catch (e) {
-	console.log("Error :", e);
-	process.exit(1);
+	logger.error(common.errors["parseJsonError"].message + ": " + e);
+	errorHandler(null, common.errors["parseJsonError"].code);
     }
     api.users.updateUserInfo(user_admin_data, function(err, response){
 	if (!err && response){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -73,8 +75,8 @@ var deleteUser = function(userId){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -90,8 +92,8 @@ var requestUserPasswordChange = function(emailAddress){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -107,8 +109,8 @@ var updateUserPassword = function(token, new_password){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -123,8 +125,8 @@ var changeUserPassword = function(currentPW, newPW){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -140,8 +142,8 @@ var requestUserActivation = function(email){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -155,8 +157,8 @@ var addUser = function(email, password){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -172,15 +174,16 @@ var activateUser = function(token){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
 
 
 module.exports = {
-    addCommand : function (program) {
+    addCommand : function (program, errorHdl) {
+	errorHandler = errorHdl;
         program
             .command('users.get')
             .description('|Get user details.|GET:/v1/api/users/{userId}')

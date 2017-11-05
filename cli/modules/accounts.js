@@ -26,7 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var api = require("oisp-sdk-js").api.rest,
     logger = require("oisp-sdk-js").lib.logger.init(),
     userAdminTools = require("../lib/cli-tools"),
-    userAdminData = require("../lib/cli-data");
+    userAdminData = require("../lib/cli-data"),
+    common = require("../lib/common");
+var errorHandler = {};
 
 
 var createAccount = function(jsonString){
@@ -35,8 +37,8 @@ var createAccount = function(jsonString){
     try {
 	userAdminDataObj.body = JSON.parse(jsonString);
     } catch (e) {
-	console.log("Error in jsonString:", e);
-	process.exit(1);
+	logger.error(common.errors["parseJsonError"].message + ": " + e);
+	errorHandler(null, common.errors["parseJsonError"].code);
     }
     api.accounts.createAccount(userAdminDataObj,function(err, response){
 	if (!err && response){
@@ -44,8 +46,8 @@ var createAccount = function(jsonString){
 	    userAdminData.addAccount(response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -55,8 +57,8 @@ var getAccountInfo = function(accountId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	    logger.error(common.errors["accountIdError"].message);
+	    errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.accounts.getAccountInfo(userAdminDataObj, function(err, response){
@@ -65,8 +67,8 @@ var getAccountInfo = function(accountId){
 	    userAdminData.updateAccount(response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -76,14 +78,14 @@ var updateAccount = function(accountId, jsonString){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     try {
 	userAdminDataObj.body = JSON.parse(jsonString);
     } catch (e) {
-	console.log("Error in jsonString:", e);
-	process.exit(1);
+	logger.error(common.errors["parseJsonError"].message + ": " + e);
+	errorHandler(null, common.errors["parseJsonError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.accounts.updateAccount(userAdminDataObj, function(err, response){
@@ -92,8 +94,8 @@ var updateAccount = function(accountId, jsonString){
 	    userAdminData.updateAccount(response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -103,8 +105,8 @@ var deleteAccount = function(accountId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.accounts.deleteAccount(userAdminDataObj, function(err, response){
@@ -113,8 +115,8 @@ var deleteAccount = function(accountId){
 	    userAdminData.deleteAccount(targetAccount.id);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -124,8 +126,8 @@ var getAccountActivationCode = function(accountId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.accounts.getAccountActivationCode(userAdminDataObj, function(err, response){
@@ -133,8 +135,8 @@ var getAccountActivationCode = function(accountId){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -144,8 +146,8 @@ var refreshAccountActivationCode = function(accountId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.accounts.refreshAccountActivationCode(userAdminDataObj, function(err, response){
@@ -153,8 +155,8 @@ var refreshAccountActivationCode = function(accountId){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -164,15 +166,15 @@ var changeAccountUser = function(accountId, userId, jsonString){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     if (jsonString){
 	try {
 	    userAdminDataObj.body = JSON.parse(jsonString);
 	} catch (e) {
-	    console.log("Error in jsonString:", e);
-	    process.exit(1);
+	logger.error(common.errors["parseJsonError"].message + ": " + e);
+	errorHandler(null, common.errors["parseJsonError"].code);
 	}
     }else{
 	userAdminDataObj.body = {
@@ -188,8 +190,8 @@ var changeAccountUser = function(accountId, userId, jsonString){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
     
@@ -201,8 +203,8 @@ var getAccountUsers = function(accountId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("Account not found in local data file");
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.accounts.getAccountUsers(userAdminDataObj, function(err, response){
@@ -210,14 +212,15 @@ var getAccountUsers = function(accountId){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
 
 module.exports = {
-    addCommand : function (program) {
+    addCommand : function (program, errorHdl) {
+	errorHandler = errorHdl;
         program
             .command('accounts.post <jsonString>')
             .description('|Create an account.|POST:/v1/api/accounts')

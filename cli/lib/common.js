@@ -27,6 +27,20 @@ var fs = require('fs'),
     path = require('path'),
     config = require("oisp-sdk-js").config,
     logger = require("oisp-sdk-js").lib.logger.init();
+
+/*
+ * @description error messages of cli-tool
+ */
+module.exports.errors = {
+    "ok":             {"code": 0, "message": "OK"},
+    "responseError":  {"code": 1, "message": "Server Response Error"},
+    "parseJsonError": {"code": 2, "message": "Can't parse JSON"},
+    "accountIdError": {"code": 3, "message": "Account ID not found in local file"},
+    "deviceIdError":  {"code": 4, "message": "Device ID not found in local file"},
+    "cidError":       {"code": 5, "message": "Component ID not found in local file"},
+    "fsError":        {"code": 6, "message": "Filesystem error"}
+};
+
 /**
  * @description it will write to JSON file overwriting the current content
  * @param filename <string> the name with path where the file will be wrote.

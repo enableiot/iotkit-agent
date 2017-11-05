@@ -29,28 +29,29 @@ var api = require("oisp-sdk-js").api.rest,
     fs = require('fs'),
     logger = require("oisp-sdk-js").lib.logger.init(),
     userAdminTools = require("../lib/cli-tools"),
+    common = require("../lib/common"),
     userAdminData = require("../lib/cli-data");
-
+var errorHandler = {};
 
 var submitData = function(accountId, deviceId, cid, value, jsonString){
     logger.info("Starting submitData ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts); 
     if (targetAccount === null) {
-        logger.error("No matching account found for", accountId);
-        process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-        logger.error("No matching device found for", deviceId);
-        process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     var targetCid = userAdminTools.findCid(cid, userAdminDataObj.accounts[targetAccount.index].devices[targetDevice.index]);
     if (targetCid === null) {
-        logger.error("No matching cid found for", cid);
-        process.exit(1);
+	logger.error(common.errors["cidError"].message);
+	errorHandler(null, common.errors["cidError"].code);
     }
     userAdminDataObj.cid = targetCid.id;
     var on = (new Date()).getTime();
@@ -69,17 +70,17 @@ var submitData = function(accountId, deviceId, cid, value, jsonString){
         try {
             userAdminDataObj.body.data[0].attributes = JSON.parse(jsonString).attributes;
         } catch (e) {
-            console.log("Error in jsonString:", e);
-            process.exit(1);
+	    logger.error(common.errors["parseJsonError"].message + ": " + e);
+	    errorHandler(null, common.errors["parseJsonError"].code);
         }
     }
-    api.data.sendData(userAdminDataObj, function(err, response){
+    api.data.submitData(userAdminDataObj, function(err, response){
         if (!err && response){
             logger.info("Info retrieved: ", response);
         }
         else{
-            logger.error("Error :", err);
-            process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
         }
     });
     
@@ -92,8 +93,8 @@ var submitDataFromFile = function(accountId, deviceId, cid, filename, jsonString
      try {
          value = fs.readFileSync(filename, {encoding: "utf8"});
     } catch (e) {
-        console.log("Cannot read from file", e);
-        process.exit(1);
+	logger.error(common.errors["fsError"].message + ": " + e);
+	errorHandler(null, common.errors["fsError"].code);
     }
     submitData(accountId, deviceId, cid, value.trim(), jsonString);
 };
@@ -104,20 +105,20 @@ var searchDataToFile = function(accountId, deviceId, cid, from, to, filename/*, 
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts); 
     if (targetAccount === null) {
-        logger.error("No matching account found for", accountId);
-        process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-        logger.error("No matching device found for", deviceId);
-        process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     var targetCid = userAdminTools.findCid(cid, userAdminDataObj.accounts[targetAccount.index].devices[targetDevice.index]);
     if (targetCid === null) {
-        logger.error("No matching cid found for", cid);
-        process.exit(1);
+	logger.error(common.errors["cidError"].message);
+	errorHandler(null, common.errors["cidError"].code);
     }
     userAdminDataObj.body = {
         "metrics": [
@@ -154,8 +155,8 @@ var searchDataToFile = function(accountId, deviceId, cid, from, to, filename/*, 
             logger.info("Info retrieved: ", response);
         }
         else{
-            logger.error("Error :", err);
-            process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
         }
     });
 };
@@ -167,21 +168,21 @@ var searchData = function(accountId, deviceId, cid, from, to, jsonString){
 };
 
 
-var searchAdvancedDataToFile = function(accountId, from, to, filename, jsonString){
+var searchDataAdvancedToFile = function(accountId, from, to, filename, jsonString){
     logger.info("Starting searchData ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts); 
     if (targetAccount === null) {
-        logger.error("No matching account found for", accountId);
-        process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     if (jsonString){
         try {
             userAdminDataObj.body = JSON.parse(jsonString);
         } catch (e) {
-            console.log("Error in jsonString:", e);
-            process.exit(1);
+	    logger.error(common.errors["parseJsonError"].message + ": " + e);
+	    errorHandler(null, common.errors["parseJsonError"].code);
         }
     }
     if (from !== ""){
@@ -210,8 +211,8 @@ var searchAdvancedDataToFile = function(accountId, from, to, filename, jsonStrin
             logger.info("Info retrieved: ", response);
         }
         else{
-            logger.error("Error :", err);
-            process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
         }
     });
 };
@@ -219,7 +220,8 @@ var searchAdvancedDataToFile = function(accountId, from, to, filename, jsonStrin
 
 
 module.exports = {
-    addCommand : function (program) {
+    addCommand : function (program, errorHdl) {
+	errorHandler = errorHdl;
         program
             .command('data.post  <accountId> <deviceId> <cid> <value> [jsonString]')
             .description('|Submit data for device.|POST:/v1/api/data/admin/{deviceId}')
@@ -239,6 +241,6 @@ module.exports = {
         program
             .command('data.post.advanced.toFile <accountId> <from> <to> <filename> <jsonString>')
             .description('|Retrieve data with advanced search.|POST:/v1/api/accounts/{accountId}/data/search/advanced')
-            .action(searchAdvancedDataToFile);
+            .action(searchDataAdvancedToFile);
     }
 };

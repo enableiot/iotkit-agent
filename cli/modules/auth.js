@@ -24,10 +24,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var api = require("oisp-sdk-js").api.rest,
     logger = require("oisp-sdk-js").lib.logger.init(),
+    common = require("../lib/common"),
     userAdminData = require("../lib/cli-data");
+var errorHandler = {};
 
-
-var getAuthUserToken = function(username, password){
+var getAuthToken = function(username, password){
     logger.info("Starting getUserToken ...");
     userAdminData.initializeUserAdminBaseData();
     api.auth.getAuthToken({body: {username: username, password: password}}, function(err, response){
@@ -35,13 +36,13 @@ var getAuthUserToken = function(username, password){
 	    logger.info("Retrieved user token :", response.token);	    
 	    userAdminData.saveUserAdminBaseData(username, response.token);
 	}else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
 
-var getAuthUserTokenInfo = function(){
+var getAuthTokenInfo = function(){
     logger.info("Starting getUserTokenInfo ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     api.auth.getAuthTokenInfo(user_admin_data, function(err, response){
@@ -54,8 +55,8 @@ var getAuthUserTokenInfo = function(){
 	    userAdminData.saveUserAdminData("userId", response.payload.sub);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -69,23 +70,24 @@ var getAuthUserInfo = function(){
 	    userAdminData.saveUserAdminData("userId", response.id);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
 
 
 module.exports = {
-    addCommand : function (program) {
+    addCommand : function (program, errorHdl) {
+	errorHandler = errorHdl;
         program
             .command('auth.post.token <username> <password>')
 	    .description('|Get JWT user-token for user.|POST:/v1/api/auth/token ')
-            .action(getAuthUserToken);
+            .action(getAuthToken);
         program
             .command('auth.get.tokeninfo')
 	    .description('|Get user token info of earlier acquired user-token.|GET:/v1/api/auth/tokenInfo')
-            .action(getAuthUserTokenInfo);
+            .action(getAuthTokenInfo);
         program
             .command('auth.get.me')
 	    .description('|Get user info of earlier configured user.|GET:/auth/me')

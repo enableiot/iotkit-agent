@@ -27,16 +27,17 @@ var api = require("oisp-sdk-js").api.rest,
     logger = require("oisp-sdk-js").lib.logger.init(),
     userAdminTools = require("../lib/cli-tools"),
     uuid = require("node-uuid"),
-    userAdminData = require("../lib/cli-data");
-
+    userAdminData = require("../lib/cli-data"),
+    common = require("../lib/common");
+var errorHandler = {};
 
 var getDevices= function(accountId){
     logger.info("Starting getDevices ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (! targetAccount){
-	logger.error("No matching accountId found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     api.devices.getDevices(userAdminDataObj,function(err, response){
@@ -45,8 +46,8 @@ var getDevices= function(accountId){
 	    userAdminData.replaceAllDevices(targetAccount.index, response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -56,8 +57,8 @@ var createDevice = function(accountId, gatewayId, deviceId, name){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     if (! name) {
@@ -74,8 +75,8 @@ var createDevice = function(accountId, gatewayId, deviceId, name){
 	    userAdminData.addDevice(targetAccount.index, response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -85,14 +86,14 @@ var getDeviceDetails = function(accountId, deviceId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.info("No matching device found for", deviceId);
-	process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     api.devices.getDeviceDetails(userAdminDataObj, function(err, response){
@@ -101,33 +102,33 @@ var getDeviceDetails = function(accountId, deviceId){
 	    userAdminData.replaceDevice(targetAccount.index, targetDevice.index, response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
 
 
-var updateDeviceDetails = function(accountId, deviceId, jsonString){
-    logger.info("Starting updateDeviceDetails ...");
+var updateDevice = function(accountId, deviceId, jsonString){
+    logger.info("Starting updateDevice ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.error("No matching device found for", deviceId);
-	process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     try {
 	userAdminDataObj.body = JSON.parse(jsonString);
     } catch (e) {
-	console.log("Error while parsing jsonString:", e);
-	process.exit(1);
+	logger.error(common.errors["parseJsonError"].message + ": " + e);
+	errorHandler(null, common.errors["parseJsonError"].code);
     }
     api.devices.updateDevice(userAdminDataObj, function(err, response){
 	if (!err && response){
@@ -135,8 +136,8 @@ var updateDeviceDetails = function(accountId, deviceId, jsonString){
 	    userAdminData.replaceDevice(targetAccount.index, targetDevice.index, response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -148,14 +149,14 @@ var deleteDevice = function(accountId, deviceId){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.error("No matching device found for", deviceId);
-	process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     api.devices.deleteDevice(userAdminDataObj, function(err, response){
@@ -164,8 +165,8 @@ var deleteDevice = function(accountId, deviceId){
 	    userAdminData.removeDevice(targetAccount.index, targetDevice.index);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -176,13 +177,14 @@ var activateDevice= function(accountId, deviceId, activationCode){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
-    if (targetDevice === null) { // new device allowed here
-	targetDevice = { id: deviceId, index: -1};
+    if (targetDevice === null) { 
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     userAdminDataObj.body = {
@@ -193,8 +195,8 @@ var activateDevice= function(accountId, deviceId, activationCode){
 	    logger.info("Info retrieved: ", response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -205,14 +207,14 @@ var addDeviceComponent = function(accountId, deviceId, name, type){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.info("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.error("No matching device found for", deviceId);
-	process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     userAdminDataObj.body = {
@@ -227,8 +229,8 @@ var addDeviceComponent = function(accountId, deviceId, name, type){
 	    userAdminData.addComponent(targetAccount.index, targetDevice.index, response);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
@@ -239,37 +241,38 @@ var deleteDeviceComponent = function(accountId, deviceId, cid){
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error("No matching account found for", accountId);
-	process.exit(1);
+	logger.error(common.errors["accountIdError"].message);
+	errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.error("No matching device found for", deviceId);
-	process.exit(1);
+	logger.error(common.errors["deviceIdError"].message);
+	errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     var targetCid = userAdminTools.findCid(cid, userAdminDataObj.accounts[targetAccount.index].devices[targetDevice.index]);
     if (targetCid === null) {
-	logger.error("No matching cid found for", cid);
-	process.exit(1);
+	logger.error(common.errors["cidError"].message);
+	errorHandler(null, common.errors["cidError"].code);
     }
     userAdminDataObj.cid = targetCid.id;
     api.devices.deleteDeviceComponent(userAdminDataObj, function(err, response){
 	if (!err && response){
 	    logger.info("Info retrieved: ", response);
-	    userAdminData.deleteComponent(targetAccount.index, targetDevice.index, targetCid.index, response);
+	    userAdminData.deleteComponent(targetAccount.index, targetDevice.index, targetCid.index);
 	}
 	else{
-	    logger.error("Error :", err);
-	    process.exit(1);
+	    logger.error(common.errors["responseError"].message + ": " + err);
+	    errorHandler(null, common.errors["responseError"].code);
 	}
     });
 };
 
 
 module.exports = {
-    addCommand : function (program) {
+    addCommand : function (program, errorHdl) {
+	errorHandler = errorHdl;
         program
             .command('devices.get <accountId>')
             .description('|List devices for account.|Get:/v1/api/accounts/{accountId}/devices')
@@ -285,7 +288,7 @@ module.exports = {
 	program
             .command('devices.put.deviceId <accountId> <deviceId> <jsonString>')
             .description('|Update device details.|PUT:/v1/api/accounts/{accountId}/devices/{deviceId}')
-            .action(updateDeviceDetails);
+            .action(updateDevice);
 	program
             .command('devices.delete.deviceId <accountId> <deviceId>')
             .description('|Delete a device.|GET:/v1/api/accounts/{accountId}/devices/{deviceId}')

@@ -93,16 +93,25 @@ admin.version(pkgJson.version)
     .command("help <apiBase>")
     .description("Filters help text by API base path, [all, apionly, auth, users, accounts, rules, alerts, devices, data, components, control, invites]")
     .action(helpBase);
-/*
+
+/* Error handling */
+var errorHandler = function(error, code){
+    if (error) {
+	console.error(error);
+    }
+    process.exit(code);
+};
+
+
 /*
  * Add commando as option
  */
-auth.addCommand(admin);
-users.addCommand(admin);
-accounts.addCommand(admin);
-devices.addCommand(admin);
-data.addCommand(admin);
-local.addCommand(admin);
+auth.addCommand(admin, errorHandler);
+users.addCommand(admin, errorHandler);
+accounts.addCommand(admin, errorHandler);
+devices.addCommand(admin, errorHandler);
+data.addCommand(admin, errorHandler);
+local.addCommand(admin, errorHandler);
 
 admin.command('*')
      .description('Error message for non valid command')
@@ -111,7 +120,9 @@ admin.command('*')
             ' is not a valid command.');
     });
 
+
 admin.parse(process.argv);
+
 
 /*
  * Run if the command were specified at parameter
