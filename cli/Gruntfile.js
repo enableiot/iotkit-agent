@@ -30,7 +30,7 @@ module.exports = function(grunt) {
             jshint: 'buildscripts/jshint',
             jsfiles: ['Gruntfile.js',
                       'lib/*.js',
-                      'cli-modules/*.js',
+                      'modules/*.js',
 		      'bin/*.js',
 		      '*.js']
         },
