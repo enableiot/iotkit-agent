@@ -36,16 +36,16 @@ var apiconf = config.connector.rest;
 var IoTKiT = {};
 
 
-function SendDataOption(data) {
+function SubmitDataOption(data) {
     this.pathname = common.buildPath(apiconf.path.data.send, data.deviceId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
     this.method = POST_METHOD;
     this.body =  JSON.stringify(data.body);
 }
-SendDataOption.prototype = new ConnectionOptions();
-SendDataOption.prototype.constructor = SendDataOption;
-IoTKiT.SendDataOption = SendDataOption;
+SubmitDataOption.prototype = new ConnectionOptions();
+SubmitDataOption.prototype.constructor = SubmitDataOption;
+IoTKiT.SubmitDataOption = SubmitDataOption;
 
 
 function SearchDataOption(data) {

@@ -33,9 +33,9 @@ var userAdminDef = require('./admin.def');
  *  @param data.userToken contains the access token
  *  @param data.deviceId id of the device which sends the data
  */
-module.exports.sendData = function(data, callback) {
-    var sendDataOpt = new userAdminDef.data.SendDataOption(data);
-  return httpClient.httpRequest(sendDataOpt, callback);
+module.exports.submitData = function(data, callback) {
+    var submitDataOpt = new userAdminDef.data.SendDataOption(data);
+  return httpClient.httpRequest(submitDataOpt, callback);
 };
 
 
