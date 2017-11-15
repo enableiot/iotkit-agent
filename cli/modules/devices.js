@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var api = require("oisp-sdk-js").api.rest,
     logger = require("oisp-sdk-js").lib.logger.init(),
     userAdminTools = require("../lib/cli-tools"),
-    uuid = require("node-uuid"),
+    uuid = require("uuid"),
     userAdminData = require("../lib/cli-data"),
     common = require("../lib/common");
 var errorHandler = {};
