@@ -31,12 +31,12 @@ var localConf = require('../config');
 module.exports = {
 
     // @brief gets config full file name (with absolute path) or logs error
-    // @returns filename if found or exit(1)
+    // @returns filename if found or throws error
     getConfigFileName: function(){
 	var config = localConf;
 	if (!config["admin_file"]){
 	    logger.error("Error: No user_admin file to place to store token. user_admin_file not specified in global config!");
-	    process.exit(1);
+	    throw new Error("No admin file found.");
 	}
 	var userAdminConfFile = config["admin_file"];
 	var absoluteUserAdminConfFile = common.getFileFromDataDirectory(userAdminConfFile);
@@ -65,7 +65,7 @@ module.exports = {
 	var config_object = common.readConfig(userAdminConfFile);
 	if (!config_object){
 	    logger.error("Could not load user admin base data!");
-	    process.exit(1);
+	    throw new Error("Could not load user admin base data.");
 	}
 	return config_object;
     },
@@ -94,8 +94,6 @@ module.exports = {
 	var data = common.readConfig(userAdminConfFile);
 
  	if (! data.accounts ){
-	    data.accounts = [];
-	    data.accounts.push(accountData);
 	    return;
 	}
 	var index = data.accounts.findIndex( function(i){
@@ -110,28 +108,27 @@ module.exports = {
 	var userAdminConfFile = this.getConfigFileName();
 	var data = common.readConfig(userAdminConfFile);
 	if (! data.accounts ){
-	    data.accounts = [];
-	    return;
-	}
-	var index = data.accounts.findIndex( function(i){
-	    return (i.id === accountId);
-	});
-	if (index >=0) {
-	    data.accounts.splice(index, 1);
-	}
-	common.writeConfig(userAdminConfFile, data);	
+            return;
+        }
+        var index = data.accounts.findIndex( function(i){
+            return (i.id === accountId);
+        });
+        if (index >=0) {
+            data.accounts.splice(index, 1);
+        }
+        common.writeConfig(userAdminConfFile, data);
     },
     replaceAccounts: function(accounts){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
-	if (accounts === {}) {
-	    accounts = [];
-	}
-	if (! Array.isArray(accounts)){
-	    accounts = [ accounts ];
-	}
-	data.accounts = accounts;
-	common.writeConfig(userAdminConfFile, data);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (Object.keys(accounts).length === 0) {
+            accounts = [];
+        }
+        if (! Array.isArray(accounts)){
+            accounts = [ accounts ];
+        }
+        data.accounts = accounts;
+        common.writeConfig(userAdminConfFile, data);
     },
 
     
@@ -139,14 +136,14 @@ module.exports = {
     // @param accountIndex index of account in user-admin-data
     // @param devices list of devices
     replaceAllDevices: function(accountIndex, devices){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
-	if (! data["accounts"]){
-	    logger.info("Warning: no accounts found. Nothing updated.");
-	    return 0;
-	}
-	data["accounts"][accountIndex].devices = devices;
-	common.writeConfig(userAdminConfFile, data);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (! data["accounts"]){
+            logger.info("Warning: no accounts found. Nothing updated.");
+            return;
+        }
+        data["accounts"][accountIndex].devices = devices;
+        common.writeConfig(userAdminConfFile, data);
     },
 
     
@@ -155,10 +152,10 @@ module.exports = {
     // @param deviceIndex index of the device to replace
     // @param device device object
     replaceDevice: function(accountIndex, deviceIndex, device){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
-	data.accounts[accountIndex].devices[deviceIndex] = device;
-	common.writeConfig(userAdminConfFile, data);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        data.accounts[accountIndex].devices[deviceIndex] = device;
+        common.writeConfig(userAdminConfFile, data);
     },
 
     
@@ -166,27 +163,27 @@ module.exports = {
     // @param accountIndex index of account in user-admin-data
     // @param deviceIndex index of the device to replace
     removeDevice: function(accountIndex, deviceIndex){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
-	data.accounts[accountIndex].devices.splice(deviceIndex,1);
-	common.writeConfig(userAdminConfFile, data);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        data.accounts[accountIndex].devices.splice(deviceIndex,1);
+        common.writeConfig(userAdminConfFile, data);
     },
     
     // @brief add a new device entry in the respective account data
     // @param accountIndex index of account in user-admin-data
     // @param device device object
     addDevice: function(accountIndex, device){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
-	if (! data["accounts"]){
-	    logger.info("Warning: no accounts found. Nothing updated.");
-	    return 0;
-	}
-	if (! data["accounts"][accountIndex].devices){
-	    data["accounts"][accountIndex].devices = [];
-	}
-	data["accounts"][accountIndex].devices.push(device);
-	common.writeConfig(userAdminConfFile, data);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (! data["accounts"]){
+            logger.info("Warning: no accounts found. Nothing updated.");
+            return;
+        }
+        if (! data["accounts"][accountIndex].devices){
+            data["accounts"][accountIndex].devices = [];
+        }
+        data["accounts"][accountIndex].devices.push(device);
+        common.writeConfig(userAdminConfFile, data);
     },
 
     // @brief add a new component to a device - assumes that account and device index exists
@@ -194,14 +191,14 @@ module.exports = {
     // @param deviceIndex device index
     // @param component component to insert
     addComponent: function(accountIndex, deviceIndex, component){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
 
-	if (! data.accounts[accountIndex].devices[deviceIndex].components){
-	    data.accounts[accountIndex].devices[deviceIndex].components = [];
-	}
-	data.accounts[accountIndex].devices[deviceIndex].components.push(component);
-	common.writeConfig(userAdminConfFile, data);
+        if (! data.accounts[accountIndex].devices[deviceIndex].components){
+            data.accounts[accountIndex].devices[deviceIndex].components = [];
+        }
+        data.accounts[accountIndex].devices[deviceIndex].components.push(component);
+        common.writeConfig(userAdminConfFile, data);
     },
 
     // @brief delete a component of a device - assumes that account, device and cid index exists
@@ -209,9 +206,9 @@ module.exports = {
     // @param deviceIndex device index
     // @param cid component index
     deleteComponent: function(accountIndex, deviceIndex, componentIndex){
-	var userAdminConfFile = this.getConfigFileName();
-	var data = common.readConfig(userAdminConfFile);
-	data.accounts[accountIndex].devices[deviceIndex].components.splice(componentIndex,1);
-	common.writeConfig(userAdminConfFile, data);
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        data.accounts[accountIndex].devices[deviceIndex].components.splice(componentIndex,1);
+        common.writeConfig(userAdminConfFile, data);
     }
 };
