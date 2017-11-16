@@ -28,7 +28,7 @@ var url = require('url');
 
 var GlobalConfig = require('../config');
 
-var fileToTest = "../api/rest/device.def.js";
+var fileToTest = "../api/rest/devices.def.js";
 
 describe(fileToTest, function(){
     var toTest = rewire(fileToTest);

@@ -83,7 +83,7 @@ describe(fileToTest, function(){
             done();
         };
         toTest.__set__("httpClient", httpClientMock);
-        toTest.__set__("DeviceDef", Option);
+        toTest.__set__("adminDef.devices", Option);
         toTest.registerDevice(data, callBack);
     });
     it('Shall Sent Update Data To Server >', function(done){
@@ -117,7 +117,7 @@ describe(fileToTest, function(){
             done();
         };
         toTest.__set__("httpClient", httpClientMock);
-        toTest.__set__("DeviceDef", Option);
+        toTest.__set__("adminDef.devices", Option);
         toTest.updateMetadataDevice(data, callBack);
 
     });
@@ -154,7 +154,7 @@ describe(fileToTest, function(){
             done();
         };
         toTest.__set__("httpClient", httpClientMock);
-        toTest.__set__("DeviceDef", Option);
+        toTest.__set__("adminDef.devices", Option);
         var dataClone = JSON.parse(JSON.stringify(data));
         toTest.registerComponents(dataClone, callBack);
 
@@ -191,7 +191,7 @@ describe(fileToTest, function(){
             done();
         };
         toTest.__set__("httpClient", httpClientMock);
-        toTest.__set__("DeviceDef", Option);
+        toTest.__set__("adminDef.devices", Option);
         var dataClone = JSON.parse(JSON.stringify(data));
         toTest.registerComponents(dataClone, callBack);
 
