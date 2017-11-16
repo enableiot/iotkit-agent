@@ -69,6 +69,7 @@ module.exports.readFileToJson = function (filename) {
             objectFile = fs.readFileSync(filename);
             objectFile = JSON.parse(objectFile);
         } catch(err){
+	    objectFile = null;
             logger.error("Improper JSON format :", err.message);
             logger.error(err.stack);
         }
@@ -96,7 +97,6 @@ module.exports.isAbsolutePath = function(location) {
 };
 
 module.exports.getFileFromDataDirectory = function(filename) {
-    //var config = this.readConfig(path.join(__dirname,"../config/global.json"));
     var fullFileName = '';
     if(config) {
         var dataDirectory = config['data_directory'];
@@ -120,7 +120,7 @@ module.exports.getDeviceConfigName = function() {
         }
         else{
             logger.error("Failed to find device config file");
-            process.exit(0);
+            throw new Error("Failed to find device config file");
         }
     }
 };
@@ -134,49 +134,15 @@ module.exports.getConfig = function(){
     if(process.userConfigPath){
         return require(process.userConfigPath);
     }else{
-        //var config = this.readConfig(path.join(__dirname,"../config/global.json"));
-        /*var userConfig = module.exports.getFileFromDataDirectory('user.js');
-        if(fs.existsSync(userConfig)){
-            return require(userConfig);
-        }
-        else{*/
         return config;
-        //}
     }
 };
 
-module.exports.initializeDataDirectory = function(){
-    var conf = this.getConfig();
-    if(!conf["data_directory"]) {
-        var defaultDirectory = path.resolve('/etc/oisp-agent/');
-        this.saveToGlobalConfig("data_directory", defaultDirectory);
-
-        var deviceConfig = path.resolve(defaultDirectory, "device.json");
-        if (!fs.existsSync(deviceConfig)) {
-            var dataFile = {
-                "activation_retries": 10,
-                "activation_code": null,
-                "device_id": false,
-                "device_name": false,
-                "device_loc": [
-                    88.34,
-                    64.22047,
-                    0
-                ],
-                "gateway_id": false,
-                "device_token": "",
-                "account_id": "",
-                "sensor_list": [],
-                "last_actuations_pull_time": false
-            };
-            this.writeToJson(deviceConfig, dataFile);
-        }
-    }
-};
 
 module.exports.readConfig = function(fileName){
  return this.readFileToJson(fileName);
 };
+
 
 module.exports.writeConfig = function(fileName, data){
     this.writeToJson(fileName, data);
@@ -187,26 +153,6 @@ module.exports.saveToGlobalConfig = function(key, value){
     this.saveToConfig(fileName, key, value);
 };
 
-module.exports.saveToUserConfig = function(key, value){
-    var config = this.getConfig();
-    if(config) {
-        var userConfig = (process.userConfigPath) ? process.userConfigPath : module.exports.getFileFromDataDirectory('user.js');
-        var file = fs.readFileSync(path.resolve(userConfig), 'utf8');
-        var filter = new RegExp("\nconfig." + key + "\\s*=.*;");
-
-        if(typeof value === 'string') {
-            value = "\"" + value + "\"";
-        }
-
-        if (filter.test(file)) {
-            var newFile = file.replace(filter, "\nconfig." + key + "=" + value + ";");
-            fs.writeFileSync(userConfig, newFile, 'utf8');
-        }
-        else {
-            fs.appendFileSync(userConfig, "config." + key + "=" + value + ";\n");
-        }
-    }
-};
 
 module.exports.saveToDeviceConfig = function(key, value){
     var fileName = this.getDeviceConfigName();
@@ -216,7 +162,7 @@ module.exports.saveToDeviceConfig = function(key, value){
 module.exports.saveToConfig = function(){
     if (arguments.length < 2) {
         logger.error("Not enough arguments : ", arguments);
-        process.exit(1);
+	throw new Error("Not enough arguments for saveToConfig");
     }
 
     var fileName = arguments[0];
@@ -230,12 +176,15 @@ module.exports.saveToConfig = function(){
             subtree[keys.pop()] = value;
             value = subtree;
         }
-        data[keys.pop()] = value;
+	try{
+            data[keys.pop()] = value;
+	}
+	catch(err){
+	    throw new Error("Could not add value to config file:", err);
+	}
         return data;
     };
     data = configSaver(data, keys);
-    if (data) {
-        this.writeConfig(fileName, data);
-    }
+    this.writeConfig(fileName, data);
     return true;
 };
