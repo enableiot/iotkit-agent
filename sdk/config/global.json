@@ -115,6 +115,13 @@
 					"delete_complex_command": "/v1/api/accounts/{accountId}/control/commands/{commandName}",
 					"get_complex_commands": "/v1/api/accounts/{accountId}/control/commands/",
 					"actuations": "/v1/api/accounts/{accountid}/control/devices/{deviceid}"
+				},
+				"alerts": {
+					"getListOfAlerts": "/v1/api/accounts/{accountId}/alerts/",
+					"getAlertDetails": "/v1/api/accounts/{accountId}/alerts/{alertId}",
+					"closeAlert": "/v1/api/accounts/{accountId}/alerts/{alertId}/reset",
+					"updateAlertStatus": "/v1/api/accounts/{accountId}/alerts/{alertId}/status/{statusName}",
+					"addCommentsToAlert": "/v1/api/accounts/{accountId}/alerts/{alertId}/comments"
 				}
 			}
 		},

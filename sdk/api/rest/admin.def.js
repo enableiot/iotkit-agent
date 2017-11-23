@@ -31,6 +31,7 @@ var data = require('./data.def');
 var devices = require('./devices.def');
 var rules = require('./rules.def');
 var control = require('./control.def');
+var alerts = require('./alerts.def');
 
 module.exports = {
     auth: auth,
@@ -39,5 +40,6 @@ module.exports = {
     data: data,
     devices: devices,
     rules: rules,
-    control: control
+    control: control,
+    alerts: alerts
 };

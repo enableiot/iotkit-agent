@@ -32,5 +32,6 @@ module.exports = {
     publicApi:  require('./iot.public'),
     cmpcatalog: require('./iot.cmpcatalog'),
     control:    require('./iot.control'),
-    rules:      require('./iot.rules')
+    rules:      require('./iot.rules'),
+    alerts:     require('./iot.alerts')
 };
