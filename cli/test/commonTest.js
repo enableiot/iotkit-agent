@@ -43,6 +43,7 @@ global.account2 = {
 };
 global.deviceId = "24-a5-80-21-5b-30";
 global.deviceId2 = "24-a5-80-21-5b-31";
+global.alertId = "75"
 global.gatewayId = deviceId;
 global.deviceName = "Device #1";
 global.deviceName2 = "Device #2";
@@ -54,6 +55,26 @@ global.device = {
 global.device2 = {
     "deviceId": deviceId2,
     "name": deviceName2
+};
+global.alertObject = {
+    "accountId": "321ef007-8449-477f-9ea0-d702d77e64b9",
+    "alertId": "75",
+    "deviceId": "00-00-00-00-a8-9c",
+    "ruleId": 6832,
+    "ruleName": "rule 2 - basic condition new",
+    "priority": "Low",
+    "triggered": 1402580459000,
+    "created": 1411130946286,
+    "naturalLangAlert": "temperature > 17.2",
+    "conditions": [
+        {
+            "sequence": 1,
+            "condition": "temperature > 17.2"
+        }
+    ],
+    "status": "New",
+    "updated": 1411130946286,
+    "_id": "541c2642b3700bcbe9c76fc5"
 };
 global.component = { 
     "cid": cid,
@@ -125,6 +146,34 @@ global.fakeUserAdminData = {
     },
     deleteComponent: function(accountIndex, DeviceIndex, cidIndex) {
         adminDataFile.accounts[0].devices[0].components = [];
+    },
+    replaceAllAlerts :function(index, alert) {
+        adminDataFile.accounts[0].alerts = [];
+        adminDataFile.accounts[0].alerts.push(alert);
+    },
+    addAlert: function(index, alert) {
+        this.replaceAllAlerts(index, alert);
+    },
+    replaceAlert: function(accountIndex, alertIndex, alert) {
+        this.replaceAllAlerts(alertIndex, alert);
+    },
+    closeAlert: function(accountIndex, alertIndex) {
+        adminDataFile.accounts[0].alerts = [];
+        adminDataFile.accounts[0].alerts[0] = alertObject;
+        adminDataFile.accounts[0].alerts[0].status = "Closed";
+    },
+    updateAlertStatus: function(accountIndex, alertIndex, statusName) {
+        adminDataFile.accounts[0].alerts = [];
+        adminDataFile.accounts[0].alerts[0] = alertObject;
+        adminDataFile.accounts[0].alerts[0].status = statusName;
+    },
+    addCommentsToAlert: function(accountIndex, alertIndex, commentsList) {
+        adminDataFile.accounts[0].alerts = [];
+        adminDataFile.accounts[0].alerts[0] = alertObject;
+        adminDataFile.accounts[0].alerts[0].comments = commentsList;
+    },
+    deleteAlert: function(accountIndex, alertIndex, alert) {
+        delete adminDataFile.accounts[0].alerts;
     }
 }
 
@@ -134,7 +183,8 @@ global.fakeApi = {
     users:    {},
     accounts: {},
     devices:  {},
-    auth:     {}
+    auth:     {},
+    alerts:   {}
 }
 
 
@@ -147,7 +197,17 @@ global.fakeLibTools = {
     },
     findCid: function(cid, devices) {
         return {id: cid, index: 0};
-    }
+    },
+    findAlertId: function(alertId, account) {
+        return {id: alertId, index: 0};
+    },
+    isValidStatusName: function(statusName) {
+        if(("New" === statusName)||("Open" === statusName)||("Closed" === statusName)) {
+            return true;
+        } else {
+            return false;
+        }
+    },
 }
 
 global.fakeLibToolsError = {
@@ -170,7 +230,10 @@ global.fakeCommon = {
         "accountIdError": {"code": 3, "message": "Account ID not found in local file"},
         "deviceIdError":  {"code": 4, "message": "Device ID not found in local file"},
         "cidError":       {"code": 5, "message": "Component ID not found in local file"},
-        "fsError":        {"code": 6, "message": "Filesystem error"}
+        "fsError":        {"code": 6, "message": "Filesystem error"},
+        "alertIdError":   {"code": 7, "message": "Alert Id not found in local file"},
+        "staNameError":   {"code": 8, "message": "Alert Status name is Error"},
+        "usernameError":  {"code": 9, "message": "user name not found in local file"}
     }
 }
 

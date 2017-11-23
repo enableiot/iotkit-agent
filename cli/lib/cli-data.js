@@ -210,5 +210,78 @@ module.exports = {
         var data = common.readConfig(userAdminConfFile);
         data.accounts[accountIndex].devices[deviceIndex].components.splice(componentIndex,1);
         common.writeConfig(userAdminConfFile, data);
-    }
+    },
+
+    // @brief replaces all alerts in the respective account data
+    // @param accountIndex index of account in user-admin-data
+    // @param alerts list of alerts
+    replaceAllAlerts: function(accountIndex, alerts) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (! data["accounts"]) {
+            logger.info("Warning: no accounts found. Nothing updated.");
+            return;
+        }
+        data["accounts"][accountIndex].alerts = alerts;
+        common.writeConfig(userAdminConfFile, data);
+    },
+
+    // @brief replaces an alert in the respective account data. Assumes that account/alert exists
+    // @param accountIndex index of account in user-admin-data
+    // @param alertIndex index of the alert to replace
+    // @param alert alert object
+    replaceAlert: function(accountIndex, alertIndex, alertObject) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if(alertIndex === undefined) {
+            data.accounts[accountIndex].alerts.push(alertObject);
+        } else {
+            data.accounts[accountIndex].alerts[alertIndex] = alertObject;
+        }
+        common.writeConfig(userAdminConfFile, data);
+    },
+
+    // @brief Change alert status to - "Closed". Alert won't be active any more.
+    // @param accountIndex index of account in user-admin-data
+    // @param alertIndex index of the alert to replace
+    closeAlert: function(accountIndex, alertIndex) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (undefined === alertIndex) {
+            logger.info("no alert found on local file, doesn't update alert on local file");
+        } else {
+            data.accounts[accountIndex].alert[alertIndex].status = "Closed";
+        }
+        common.writeConfig(userAdminConfFile, data);
+    },
+
+    // @brief Change alert status to - "Closed". Alert won't be active any more.
+    // @param accountIndex index of account in user-admin-data
+    // @param alertIndex index of the alert to replace
+    // @param statusName Status should have one of the following values: [\'New\', \'Open\', \'Closed\']
+    updateAlertStatus: function(accountIndex, alertIndex, statusName) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (undefined === alertIndex) {
+            logger.info("no alert found on local file, doesn't update alert on local file");
+        } else {
+            data.accounts[accountIndex].alert[alertIndex].status = statusName;
+        }
+        common.writeConfig(userAdminConfFile, data);
+    },
+
+    // @brief Add list of comments to the alert.
+    // @param accountIndex index of account in user-admin-data
+    // @param alertIndex index of the alert to replace
+    // @param commentsList the comments which should be add to alert
+    addCommentsToAlert: function(accountIndex, alertIndex, commentsList) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (undefined === alertIndex) {
+            logger.info("no alert found on local file, doesn't update alert on local file");
+        } else {
+            data.accounts[accountIndex].alert[alertIndex].comments.push(commentsList);
+        }
+        common.writeConfig(userAdminConfFile, data);
+    },
 };

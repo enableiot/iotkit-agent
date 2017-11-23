@@ -33,6 +33,7 @@ var admin= require('commander'),
     data = require('../modules/data'),
     devices = require('../modules/devices'),
     local = require('../modules/local'),
+    alerts = require('../modules/alerts'),
     fs = require('fs'),
     path = require('path'),
     logger = require("oisp-sdk-js").lib.logger.init();
@@ -107,6 +108,7 @@ accounts.addCommand(admin, errorHandler);
 devices.addCommand(admin, errorHandler);
 data.addCommand(admin, errorHandler);
 local.addCommand(admin, errorHandler);
+alerts.addCommand(admin, errorHandler);
 
 admin.command('*')
     .description('Error message for non valid command')

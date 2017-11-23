@@ -38,7 +38,10 @@ module.exports.errors = {
     "accountIdError": {"code": 3, "message": "Account ID not found in local file"},
     "deviceIdError":  {"code": 4, "message": "Device ID not found in local file"},
     "cidError":       {"code": 5, "message": "Component ID not found in local file"},
-    "fsError":        {"code": 6, "message": "Filesystem error"}
+    "fsError":        {"code": 6, "message": "Filesystem error"},
+    "alertIdError":   {"code": 7, "message": "Alert Id not found in local file"},
+    "staNameError":   {"code": 8, "message": "Alert Status name is Error"},
+    "usernameError":  {"code": 9, "message": "user name not found in local file"}
 };
 
 /**

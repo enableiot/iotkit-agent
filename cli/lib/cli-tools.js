@@ -116,5 +116,46 @@ module.exports = {
             return {"id": device.components[restIndex].cid, "index": restIndex};
         }
         return null;
-    }
+    },
+    /* @briefly check alerts status' name is valiid or not
+     * @description when update alert status, we should check status is valid or not
+     * @param statusName statusName should be one of ['New', 'Open', 'Closed']
+     */
+    isValidStatusName: function(statusName) {
+        if(("New" === statusName)||("Open" === statusName)||("Closed" === statusName)) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    /* @brief find alert id based on pattern
+     * @description alert id can be given as
+     * * "alert@i" which selects the ith element of the accounts in the data file
+     * * "pattern" which selects the first matching account name or id 
+     * * "string"    which selects the first matching exact name or account id
+     * @param alertId pattern or string as described above
+     * @param account  account structure in user-admin-data
+     */
+    findAlertId: function(alertId, account) {
+        if (typeof account.alerts === 'undefined') {
+            return null;
+        }
+        var iPattern = new RegExp("alert@([0-9]+)$");
+        var iFound = alertId.match(iPattern);
+        if (iFound && iFound[1]) {
+            if (typeof account.alerts[iFound[1]] === 'undefined') {
+                return null;
+            } else {
+                return {"id": account.alerts[iFound[1]].deviceId, "index": iFound[1]};
+            }
+        }
+        var restPattern = new RegExp(alertId);
+        var restIndex = account.alerts.findIndex(function(i) {
+            return restPattern.test(i.alertId);
+        });
+        if (restIndex >= 0) {
+            return {"id": account.alerts[restIndex].alertId, "index": restIndex};
+        }
+        return null;
+    },
 };
