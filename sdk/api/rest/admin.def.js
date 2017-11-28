@@ -29,11 +29,15 @@ var users = require('./users.def');
 var accounts = require('./accounts.def');
 var data = require('./data.def');
 var devices = require('./devices.def');
+var rules = require('./rules.def');
+var control = require('./control.def');
 
 module.exports = {
     auth: auth,
     users: users,
     accounts: accounts,
     data: data,
-    devices: devices
+    devices: devices,
+    rules: rules,
+    control: control
 };

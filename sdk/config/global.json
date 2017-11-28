@@ -1,118 +1,136 @@
 {
-    "data_directory": "./data",
-    "listeners": {
-        "mqtt_port": 1884,
-        "rest_port": 8000,
-        "udp_port": 41234,
-        "tcp_port": 7070
-    },
-    "receivers": {
-        "udp_port": 41235,
-        "udp_address": "0.0.0.0"
-    },
-    "logger": {
-        "LEVEL": "info",
-        "PATH": "/tmp/",
-        "MAX_SIZE": 134217728
-    },
-    "default_connector": "rest+ws",
-    "connector": {
-        "mqtt": {
-            "host": "streammyiot.com",
-            "port": 8883,
-            "qos": 1,
-            "retain": false,
-            "secure": false,
-            "strictSSL": true,
-            "retries": 5,
-            "topic": {
-                "device_status": "device/{deviceid}/activation",
-                "device_activation": "server/devices/{deviceid}/activation",
-                "device_metadata": "server/devices/{deviceid}/metadata",
-                "metric_topic": "server/metric/{accountid}/{deviceid}",
-                "device_component_add": "server/devices/{deviceid}/components/add",
-                "device_component_status": "device/{deviceid}/components",
-                "device_component_del": "server/devices/{deviceid}/components/delete",
-                "health": "server/devices/{deviceid}/health",
-                "health_status": "device/{deviceid}/health",
-                "cmpcatalog": "server/devices/{deviceid}/cmpcatalog",
-                "cmpcatalog_status": "device/{deviceid}/cmpcatalog",
-                "control_command": "device/{gwid}/control"
-            }
-        },
-        "rest": {
-            "host": "streammyiot.com",
-            "port": 443,
-            "protocol": "https",
-            "strictSSL": true,
-            "timeout": 30000,
-            "proxy": {
-                "host": false,
-                "port": false
-            },
-	    "path": {
-                "device": {
-                    "act": "/v1/api/devices/{deviceid}/activation",
-		    "act_full": "/v1/api/accounts/{accountid}/devices/{deviceid}/activation",
-                    "get": "/v1/api/devices/{deviceid}",
-                    "update": "/v1/api/devices/{deviceid}",
-                    "components": "/v1/api/devices/{deviceid}/components",
-                    "actuations": "/v1/api/accounts/{accountid}/control/devices/{deviceid}",
-		    "getall": "/v1/api/accounts/{accountid}/devices",
-		    "getdetails": "/v1/api/accounts/{accountid}/devices/{deviceid}",
-		    "components_full": "/v1/api/accounts/{accountid}/devices/{deviceid}/components",
-		    "components_delete": "/v1/api/accounts/{accountid}/devices/{deviceid}/components/{cid}"
-                },
-                "submit": {
-                    "data": "/v1/api/data/{deviceid}"
-                },
-                "cmpcatalog": {
-                    "catalog": "/v1/api/cmpcatalog",
-                    "component": "/v1/api/cmpcatalog/{componentId}"
-                },
-                "health": "/v1/api/health",
-                "time": "/v1/api/time",
-		"auth": {
-		    "token": "/v1/api/auth/token",
-		    "tokenInfo": "/v1/api/auth/tokenInfo",
-		    "userInfo": "/v1/api/auth/me"
-		},
-		"user": {
-		    "addUser": "/v1/api/users",
-		    "activateUser": "/v1/api/users/activate",
-		    "userId": "/v1/api/users/{userId}",
-		    "forgotPassword": "/v1/api/users/forgot_password",
-		    "changePassword": "/v1/api/users/{email}/change_password",
-		    "requestUserActivation": "/v1/api/users/request_user_activation"
-		},
-		"accounts": {
-		    "create": "/v1/api/accounts",
-		    "accountId": "/v1/api/accounts/{accountId}",
-		    "activationcode": "/v1/api/accounts/{accountId}/activationcode",
-		    "refresh": "/v1/api/accounts/{accountId}/activationcode/refresh",
-		    "userid": "/v1/api/accounts/{accountId}/users/{userId}",
-		    "users": "/v1/api/accounts/{accountId}/users"
-		},
-		"data": {
-		    "send": "/v1/api/data/{deviceid}",
-		    "search": "/v1/api/accounts/{accountId}/data/search",
-		    "advanced": "/v1/api/accounts/{accountId}/data/search/advanced"
-		}
-	    }
+	"data_directory": "./data",
+	"listeners": {
+		"mqtt_port": 1884,
+		"rest_port": 8000,
+		"udp_port": 41234,
+		"tcp_port": 7070
 	},
-        "ws": {
-            "host": "streammyiot.com",
-            "port": 443,
-            "minRetryTime": 2500,
-            "maxRetryTime": 600000,
-            "testTimeout": 40000,
-            "pingPongIntervalMs": 30000,
-            "enablePingPong": true,
-            "secure": true,
-            "proxy": {
-                "host": false,
-                "port": false
-            }
-        }
-    }
+	"receivers": {
+		"udp_port": 41235,
+		"udp_address": "0.0.0.0"
+	},
+	"logger": {
+		"LEVEL": "info",
+		"PATH": "/tmp/",
+		"MAX_SIZE": 134217728
+	},
+	"default_connector": "rest+ws",
+	"connector": {
+		"mqtt": {
+			"host": "localhost",
+			"port": 80,
+			"qos": 1,
+			"retain": false,
+			"secure": false,
+			"strictSSL": true,
+			"retries": 5,
+			"topic": {
+				"device_status": "device/{deviceid}/activation",
+				"device_activation": "server/devices/{deviceid}/activation",
+				"device_metadata": "server/devices/{deviceid}/metadata",
+				"metric_topic": "server/metric/{accountid}/{deviceid}",
+				"device_component_add": "server/devices/{deviceid}/components/add",
+				"device_component_status": "device/{deviceid}/components",
+				"device_component_del": "server/devices/{deviceid}/components/delete",
+				"health": "server/devices/{deviceid}/health",
+				"health_status": "device/{deviceid}/health",
+				"cmpcatalog": "server/devices/{deviceid}/cmpcatalog",
+				"cmpcatalog_status": "device/{deviceid}/cmpcatalog",
+				"control_command": "device/{gwid}/control"
+			}
+		},
+		"rest": {
+			"host": "localhost",
+			"port": 80,
+			"protocol": "http",
+			"strictSSL": false,
+			"timeout": 30000,
+			"proxy": {
+				"host": false,
+				"port": false
+			},
+			"path": {
+				"device": {
+					"act": "/v1/api/devices/{deviceid}/activation",
+					"act_full": "/v1/api/accounts/{accountid}/devices/{deviceid}/activation",
+					"get": "/v1/api/devices/{deviceid}",
+					"update": "/v1/api/devices/{deviceid}",
+					"components": "/v1/api/devices/{deviceid}/components",
+					"getall": "/v1/api/accounts/{accountid}/devices",
+					"getdetails": "/v1/api/accounts/{accountid}/devices/{deviceid}",
+					"components_full": "/v1/api/accounts/{accountid}/devices/{deviceid}/components",
+					"components_delete": "/v1/api/accounts/{accountid}/devices/{deviceid}/components/{cid}"
+				},
+				"submit": {
+					"data": "/v1/api/data/{deviceid}"
+				},
+				"cmpcatalog": {
+					"catalog": "/v1/api/cmpcatalog",
+					"component": "/v1/api/cmpcatalog/{componentId}"
+				},
+				"health": "/v1/api/health",
+				"time": "/v1/api/time",
+				"auth": {
+					"token": "/v1/api/auth/token",
+					"tokenInfo": "/v1/api/auth/tokenInfo",
+					"userInfo": "/v1/api/auth/me"
+				},
+				"user": {
+					"addUser": "/v1/api/users",
+					"activateUser": "/v1/api/users/activate",
+					"userId": "/v1/api/users/{userId}",
+					"forgotPassword": "/v1/api/users/forgot_password",
+					"changePassword": "/v1/api/users/{email}/change_password",
+					"requestUserActivation": "/v1/api/users/request_user_activation"
+				},
+				"accounts": {
+					"create": "/v1/api/accounts/{accountId}/rules",
+					"accountId": "/v1/api/accounts/{accountId}",
+					"activationcode": "/v1/api/accounts/{accountId}/activationcode",
+					"refresh": "/v1/api/accounts/{accountId}/activationcode/refresh",
+					"userid": "/v1/api/accounts/{accountId}/users/{userId}",
+					"users": "/v1/api/accounts/{accountId}/users"
+				},
+				"data": {
+					"send": "/v1/api/data/{deviceid}",
+					"search": "/v1/api/accounts/{accountId}/data/search",
+					"advanced": "/v1/api/accounts/{accountId}/data/search/advanced"
+				},
+				"rules": {
+					"create": "/v1/api/accounts/{accountId}/rules",
+					"delete":"/v1/api/accounts/{accountId}/rules/delete_rule_with_alerts/{ruleId}",
+					"getall": "/v1/api/accounts/{accountId}/rules",
+					"update": "/v1/api/accounts/{accountId}/rules/{ruleId}",
+					"getdetails": "/v1/api/accounts/{accountId}/rules/{ruleId}",
+					"update_status": "/v1/api/accounts/{accountId}/rules/{ruleId}/status",
+					"create_draft": "/v1/api/accounts/{accountId}/rules/draft",
+					"delete_draft": "/v1/api/accounts/{accountId}/rules/draft/{ruleId}",
+					"clone": "/v1/api/accounts/{accountId}/rules/clone/{ruleId}"
+				},
+				"control": {
+					"send_actuation_command": "/v1/api/accounts/{accountId}/control",
+					"save_complex_command": "/v1/api/accounts/{accountId}/control/commands/{commandName}",
+					"update_complex_command": "/v1/api/accounts/{accountId}/control/commands/{commandName}",
+					"delete_complex_command": "/v1/api/accounts/{accountId}/control/commands/{commandName}",
+					"get_complex_commands": "/v1/api/accounts/{accountId}/control/commands/",
+					"actuations": "/v1/api/accounts/{accountid}/control/devices/{deviceid}"
+				}
+			}
+		},
+		"ws": {
+			"host": "localhost",
+			"port": 5000,
+			"minRetryTime": 2500,
+			"maxRetryTime": 600000,
+			"testTimeout": 40000,
+			"pingPongIntervalMs": 30000,
+			"enablePingPong": true,
+			"secure": false,
+			"proxy": {
+				"host": false,
+				"port": false
+			}
+		}
+	}
 }

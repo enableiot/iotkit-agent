@@ -62,4 +62,12 @@ if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local")
     config.logger.PATH = './';
 }
 
+/* override the log level */
+if (process.env.LOG_LEVEL === "debug" || process.env.LOG_LEVEL === "info" || 
+    process.env.LOG_LEVEL === "warn" || process.env.LOG_LEVEL === "error" ) {
+
+    config.logger.LEVEL = process.env.LOG_LEVEL
+}
+
+
 module.exports = config;

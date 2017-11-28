@@ -28,14 +28,74 @@ var common = require('../../lib/common');
 
 var ConnectionOptions = require('./iot.connection.def.js');
 var GET_METHOD = 'GET';
+var POST_METHOD = 'POST';
+var PUT_METHOD = 'PUT';
+var DELETE_METHOD = 'DELETE';
 
 var apiconf = config.connector.rest;
 //variable to be returned
 var IoTKiT = {};
 /**
  */
+
+
+function SendActuationCommandOption(data) {
+    this.pathname = common.buildPath(apiconf.path.control.send_actuation_command, data.accountId);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = POST_METHOD;
+    this.body = JSON.stringify(data.body);
+}
+SendActuationCommandOption.prototype = new ConnectionOptions();
+SendActuationCommandOption.prototype.constructor = SendActuationCommandOption;
+IoTKiT.SendActuationCommandOption = SendActuationCommandOption;
+
+function SaveComplexCommandOption(data) {
+    this.pathname = common.buildPath(apiconf.path.control.save_complex_command, [data.accountId, data.commandName]);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = POST_METHOD;
+    this.body = JSON.stringify(data.body);
+}
+SaveComplexCommandOption.prototype = new ConnectionOptions();
+SaveComplexCommandOption.prototype.constructor = SaveComplexCommandOption;
+IoTKiT.SaveComplexCommandOption = SaveComplexCommandOption;
+
+
+function GetComplexCommandsOption(data) {
+    this.pathname = common.buildPath(apiconf.path.control.get_complex_commands, data.accountId);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = GET_METHOD;
+}
+GetComplexCommandsOption.prototype = new ConnectionOptions();
+GetComplexCommandsOption.prototype.constructor = GetComplexCommandsOption;
+IoTKiT.GetComplexCommandsOption = GetComplexCommandsOption;
+
+function DeleteComplexCommandOption(data) {
+    this.pathname = common.buildPath(apiconf.path.control.delete_complex_command, [data.accountId, data.commandName]);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = DELETE_METHOD;
+}
+DeleteComplexCommandOption.prototype = new ConnectionOptions();
+DeleteComplexCommandOption.prototype.constructor = DeleteComplexCommandOption;
+IoTKiT.DeleteComplexCommandOption = DeleteComplexCommandOption;
+
+function UpdateComplexCommandOption(data) {
+    this.pathname = common.buildPath(apiconf.path.control.update_complex_command, [data.accountId, data.commandName]);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = PUT_METHOD;
+    this.body = JSON.stringify(data.body);
+}
+UpdateComplexCommandOption.prototype = new ConnectionOptions();
+UpdateComplexCommandOption.prototype.constructor = UpdateComplexCommandOption;
+IoTKiT.UpdateComplexCommandOption = UpdateComplexCommandOption;
+
+
 function ActuationsOption(data) {
-    this.pathname = common.buildPath(common.buildPath(apiconf.path.device.actuations, data.accountId), data.deviceId);
+    this.pathname = common.buildPath(apiconf.path.control.actuations, [data.accountId, data.deviceId]);
     if(data.from) {
         this.query = { from: data.from };
     }

@@ -24,10 +24,74 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 "use strict";
 var httpClient = require('../../lib/httpClient');
-var ActuationsDef = require('./control.def');
+var adminDef = require('./admin.def');
+var async = require('async');
 
+
+/**
+ *  @description Send an actuation command through API: POST:/v1/api/accounts/{accountId}/control
+ *  @param data.userToken contains the access token
+ *  @param data.accountId id of the device which sends the data
+ *  @param data.body the description of the command as described in the API spec
+ */
+module.exports.sendActuationCommand = function(data, callback) {
+    var sendActuationCommandOpt = new adminDef.control.SendActuationCommandOption(data);
+  return httpClient.httpRequest(sendActuationCommandOpt, callback);
+};
+
+/**
+ *  @description Save a complex command through API: POST:/v1/api/accounts/{accountId}/control/commands/{commandName}
+ *  @param data.userToken contains the access token
+ *  @param data.accountId id of the device which sends the data
+ *  @param data.commandName name of the actuation command
+ *  @param data.body the description of the command as described in the API spec
+ */
+module.exports.saveComplexCommand = function(data, callback) {
+    var saveComplexCommandOp = new adminDef.control.SaveComplexCommandOption(data);
+  return httpClient.httpRequest(saveComplexCommandOp, callback);
+};
+
+/**
+ *  @description Get list of complex commands through API: GET:/v1/api/accounts/{accountId}/control/commands/
+ *  @param data.userToken contains the access token
+ *  @param data.accountId id of the device which sends the data
+ */
+module.exports.getComplexCommands = function(data, callback) {
+    var getComplexCommandsOp = new adminDef.control.GetComplexCommandsOption(data);
+  return httpClient.httpRequest(getComplexCommandsOp, callback);
+};
+
+/**
+ *  @description Get list of complex commands through API: DELETE:/v1/api/accounts/{accountId}/control/commands/{commandName}
+ *  @param data.userToken contains the access token
+ *  @param data.accountId id of the device which sends the data
+ */
+module.exports.deleteComplexCommand = function(data, callback) {
+    var deleteComplexCommandsOp = new adminDef.control.DeleteComplexCommandOption(data);
+  return httpClient.httpRequest(deleteComplexCommandsOp, callback);
+};
+
+
+/**
+ *  @description Update a complex command through API: PUT:/v1/api/accounts/{accountId}/control/commands/{commandName}
+ *  @param data.userToken contains the access token
+ *  @param data.accountId id of the device which sends the data
+ *  @param data.commandName name of the actuation command
+ *  @param data.body the description of the command as described in the API spec
+ */
+module.exports.updateComplexCommand = function(data, callback) {
+    var updateComplexCommandOp = new adminDef.control.UpdateComplexCommandOption(data);
+  return httpClient.httpRequest(updateComplexCommandOp, callback);
+};
+
+/**
+ *  @description Get list of actuations through API: GET:/v1/api/accounts/{accountId}/control/devices/{deviceId}
+ *  @param data.userToken contains the access token
+ *  @param data.accountId id of the device which sends the data
+ *  @param data.deviceId the id of the device
+ */
 
 module.exports.pullActuations = function (data, callback) {
-    var actuations = new ActuationsDef.ActuationsOption(data);
+    var actuations = new adminDef.control.ActuationsOption(data);
     return httpClient.httpRequest(actuations, callback);
 };
