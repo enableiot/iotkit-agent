@@ -85,7 +85,7 @@
 					"requestUserActivation": "/v1/api/users/request_user_activation"
 				},
 				"accounts": {
-					"create": "/v1/api/accounts/{accountId}/rules",
+					"create": "/v1/api/accounts",
 					"accountId": "/v1/api/accounts/{accountId}",
 					"activationcode": "/v1/api/accounts/{accountId}/activationcode",
 					"refresh": "/v1/api/accounts/{accountId}/activationcode/refresh",
