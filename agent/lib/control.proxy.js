@@ -86,9 +86,9 @@ IoTKitControl.prototype.bind = function (dispatcher, callback) {
 
 exports.init = function(conf, logger, deviceId) {
     if(conf.default_connector === 'rest+ws') {
-        proxyConnector = proxyConnector.geControlConnector('ws');
+        proxyConnector = proxyConnector.getControlConnector('ws');
     } else {
-        proxyConnector = proxyConnector.geControlConnector('mqtt');
+        proxyConnector = proxyConnector.getControlConnector('mqtt');
     }
     return new IoTKitControl(conf, logger, deviceId);
 };

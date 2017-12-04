@@ -49,7 +49,7 @@ exports.getProxyConnector = function(proxy) {
 };
 
 var currentControl;
-exports.geControlConnector = function(proxy) {
+exports.getControlConnector = function(proxy) {
     try {
         if(!currentControl){
             var protocol = (proxy || config.default_connector);
