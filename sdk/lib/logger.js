@@ -35,7 +35,7 @@ exports.init = function() {
           timestamp: true
     }),
     new (winston.transports.File)({
-        filename: path.join((process.platform ==='win32' ? process.env.temp : conf.PATH), 'agent.log'),
+        filename: path.join((process.platform ==='win32' ? process.env.temp : conf.PATH), 'oisp-sdk.log'),
           level: conf.LEVEL || 'info',
           timestamp: true,
           maxsize: conf.MAX_SIZE, //128 MB
