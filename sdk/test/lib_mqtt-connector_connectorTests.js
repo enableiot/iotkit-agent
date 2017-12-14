@@ -128,7 +128,6 @@ describe(fileToTest, function(){
         mqtt.createSecureClient = function (port, host, args ) {
             client.connected = false;
             throw new Error("Invalid Command");
-            return client;
         };
 
         myBroker.connect(function(err) {

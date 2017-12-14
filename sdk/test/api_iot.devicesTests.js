@@ -76,7 +76,7 @@ describe(fileToTest, function(){
         httpClientMock.httpRequest = function (opt, cb) {
             assert.deepEqual(opt, optData, "the option object were missed");
             cb(reData);
-        }
+        };
         var callBack = function (response) {
             assert.isNotNull(response, "The Response were missing");
             assert.deepEqual(response, reData, "The Data were missing");
