@@ -29,7 +29,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
             jshint: 'buildscripts/jshint',
-            jsfiles: ['api/**/*.js'
+            jsfiles: ['api/**/*.js',
                       'api/*.js',
                       'config/*.js',
                       'lib/**/*.js',
