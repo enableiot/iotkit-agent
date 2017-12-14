@@ -47,10 +47,10 @@ function processResponse(res, body, callback) {
             }
 	}
 	else{ // no body, don't try to parse it
-	    data = {
-		status: "OK",
-		code: res.statusCode
-	    };
+        data = {
+            status: "OK",
+            code: res.statusCode
+        };
 	}
     } else if (res.statusCode === 204) {
         data = {

@@ -27,24 +27,10 @@ var fs = require('fs'),
     localConf = "./global.json";
 
 var config = {};
-var userConfig = '';
-
-function isAbsolutePath(location) { // Change to path.isAbsolute when upgrading Node.js
-    return path.resolve(location) === path.normalize(location);
-}
 
 if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
-    /*if(isAbsolutePath(config['data_directory'])) {
-        userConfig = path.resolve(config['data_directory'], 'user.js');
-    } else {
-        userConfig = path.resolve(__dirname, "..", config['data_directory'], 'user.js');
-    }
-    if(fs.existsSync(userConfig)){
-        config = require(userConfig);
-    }*/
 } else {
-    console.error("Failed to find config file");
     process.exit(0);
 }
 

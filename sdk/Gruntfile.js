@@ -55,13 +55,13 @@ module.exports = function(grunt) {
             }
         },
         eslint: {
-        	options: {
-        		configFile: '<%= dirs.eslint %>/config.json'
-        	},
-        	local: {
-        		src: ['<%= dirs.jsfiles %>']
-        	}
-		},
+            options: {
+                configFile: '<%= dirs.eslint %>/config.json'
+            },
+            local: {
+                src: ['<%= dirs.jsfiles %>']
+            }
+        },
         compress: {
             teamcity: {
                 options: {

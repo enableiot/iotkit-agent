@@ -192,7 +192,6 @@ module.exports.registerComponents = function (data, callback){
                });
             };
        }), function (err, response) {
-            console.info("Attributes sent");
             callback(err, response);
         }
     );

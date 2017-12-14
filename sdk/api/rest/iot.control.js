@@ -25,7 +25,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 var httpClient = require('../../lib/httpClient');
 var adminDef = require('./admin.def');
-var async = require('async');
 
 
 /**
