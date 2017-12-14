@@ -34,7 +34,7 @@ var async = require('async');
  */
 module.exports.getDevices = function(data, callback) {
     var getDevicesOpt = new adminDef.devices.GetDevicesOption(data);
-  return httpClient.httpRequest(getDevicesOpt, callback);
+    return httpClient.httpRequest(getDevicesOpt, callback);
 };
 
 
@@ -46,7 +46,7 @@ module.exports.getDevices = function(data, callback) {
  */
 module.exports.createDevice = function(data, callback) {
     var createDeviceOpt = new adminDef.devices.CreateDeviceOption(data);
-  return httpClient.httpRequest(createDeviceOpt, callback);
+    return httpClient.httpRequest(createDeviceOpt, callback);
 };
 
 
@@ -58,7 +58,7 @@ module.exports.createDevice = function(data, callback) {
  */
 module.exports.getDeviceDetails = function(data, callback) {
     var getDeviceDetailsOpt = new adminDef.devices.GetDeviceDetailsOption(data);
-  return httpClient.httpRequest(getDeviceDetailsOpt, callback);
+    return httpClient.httpRequest(getDeviceDetailsOpt, callback);
 };
 
 
@@ -71,7 +71,7 @@ module.exports.getDeviceDetails = function(data, callback) {
  */
 module.exports.updateDeviceDetails = function(data, callback) {
     var updateDeviceDetailsOpt = new adminDef.devices.UpdateDeviceDetailsOption(data);
-  return httpClient.httpRequest(updateDeviceDetailsOpt, callback);
+    return httpClient.httpRequest(updateDeviceDetailsOpt, callback);
 };
 
 
@@ -83,7 +83,7 @@ module.exports.updateDeviceDetails = function(data, callback) {
  */
 module.exports.deleteDevice = function(data, callback) {
     var deleteDeviceOpt = new adminDef.devices.DeleteDeviceOption(data);
-  return httpClient.httpRequest(deleteDeviceOpt, callback);
+    return httpClient.httpRequest(deleteDeviceOpt, callback);
 };
 
 
@@ -96,7 +96,7 @@ module.exports.deleteDevice = function(data, callback) {
  */
 module.exports.activateDevice = function(data, callback) {
     var activateDeviceOpt = new adminDef.devices.ActivateDeviceOption(data);
-  return httpClient.httpRequest(activateDeviceOpt, callback);
+    return httpClient.httpRequest(activateDeviceOpt, callback);
 };
 
 
@@ -109,7 +109,7 @@ module.exports.activateDevice = function(data, callback) {
  */
 module.exports.addDeviceComponent = function(data, callback) {
     var addDeviceComponentOpt = new adminDef.devices.AddDeviceComponentOption(data);
-  return httpClient.httpRequest(addDeviceComponentOpt, callback);
+    return httpClient.httpRequest(addDeviceComponentOpt, callback);
 };
 
 
@@ -122,7 +122,7 @@ module.exports.addDeviceComponent = function(data, callback) {
  */
 module.exports.deleteDeviceComponent = function(data, callback) {
     var deleteDeviceComponentOpt = new adminDef.devices.DeleteDeviceComponentOption(data);
-  return httpClient.httpRequest(deleteDeviceComponentOpt, callback);
+    return httpClient.httpRequest(deleteDeviceComponentOpt, callback);
 };
 
 
@@ -136,8 +136,8 @@ module.exports.deleteDeviceComponent = function(data, callback) {
  * It passes to a callback the access token
  */
 module.exports.registerDevice = function(data, callback) {
-  var devOpt = new adminDef.devices.DeviceActivateOption(data);
-  return httpClient.httpRequest(devOpt, callback);
+    var devOpt = new adminDef.devices.DeviceActivateOption(data);
+    return httpClient.httpRequest(devOpt, callback);
 };
 /**
  * @description It will put a data to analytics UI using device id at data.
@@ -174,7 +174,7 @@ module.exports.getDevice = function(data, callback) {
  * @param data
  * @param callback
  */
-module.exports.registerComponents = function (data, callback){
+module.exports.registerComponents = function (data, callback) {
     var tmp = data.body;
     delete data.body;
     //TODO this shall be replace with Parallel
@@ -183,16 +183,16 @@ module.exports.registerComponents = function (data, callback){
         tmp = [tmp];
     }
     async.parallel(tmp.map(function (comp) {
-            var tempData = JSON.parse(JSON.stringify(data));
-            tempData.body = comp;
-            return function (done) {
-               var compOpt = new adminDef.devices.DeviceComponentOption(tempData);
-               httpClient.httpRequest(compOpt, function(err, response){
-                    done(err, response);
-               });
-            };
-       }), function (err, response) {
-            callback(err, response);
-        }
-    );
+        var tempData = JSON.parse(JSON.stringify(data));
+        tempData.body = comp;
+        return function (done) {
+            var compOpt = new adminDef.devices.DeviceComponentOption(tempData);
+            httpClient.httpRequest(compOpt, function(err, response) {
+                done(err, response);
+            });
+        };
+    }),
+    function (err, response) {
+        callback(err, response);
+    });
 };

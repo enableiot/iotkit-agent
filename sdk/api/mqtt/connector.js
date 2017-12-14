@@ -92,18 +92,18 @@ function Broker(conf, logger) {
     me.connect = function (done) {
         var retries = 0;
         try {
-           if ((me.client instanceof mqtt.MqttClient) === false) {
-               if (me.secure === false) {
-                   me.logger.info("Non Secure Connection to "+ me.host + ":" + me.port);
-                   me.client = mqtt.createClient(me.port, me.host, me.credential).on('error', function(e) {
-                       logger.warn("Error in connection: " + JSON.stringify(e));
-                   });
-               } else {
-                   me.logger.info("Trying with Secure Connection to" + me.host + ":" + me.port);
-                   me.logger.debug("with " + JSON.stringify(me.credential));
-                   me.client = mqtt.createSecureClient(me.port, me.host, me.credential).on('error', function(e){
-                       logger.warn("Error in secure connection: " + JSON.stringify(e));
-                   });
+            if ((me.client instanceof mqtt.MqttClient) === false) {
+                if (me.secure === false) {
+                    me.logger.info("Non Secure Connection to "+ me.host + ":" + me.port);
+                    me.client = mqtt.createClient(me.port, me.host, me.credential).on('error', function(e) {
+                        logger.warn("Error in connection: " + JSON.stringify(e));
+                    });
+                } else {
+                    me.logger.info("Trying with Secure Connection to" + me.host + ":" + me.port);
+                    me.logger.debug("with " + JSON.stringify(me.credential));
+                    me.client = mqtt.createSecureClient(me.port, me.host, me.credential).on('error', function(e) {
+                        logger.warn("Error in secure connection: " + JSON.stringify(e));
+                    });
                 }
             }
         } catch(e) {
@@ -115,12 +115,11 @@ function Broker(conf, logger) {
 
         function waitForConnection() {
             if (!me.client.connected) {
-                if(counter < 18000){
+                if(counter < 18000) {
                     counter += 100;
                     setTimeout(waitForConnection, 100);
                     return false;
-                }
-                else {
+                } else {
                     retries++;
                     me.logger.info("Waiting for MQTTConnector to connect # " + retries);
                     if (retries < me.max_retries) {
@@ -150,17 +149,16 @@ function Broker(conf, logger) {
     };
     me.attach = function (topic, handler) {
         me.dettach(topic);
-        me.messageHandler.push({"t": topic,
-                                "h": handler});
+        me.messageHandler.push({"t": topic, "h": handler});
     };
     function tryPattern(pattern, text) {
         var a = new RegExp(pattern);
         return a.test(text);
     }
     me.dettach = function (topic) {
-       me.messageHandler = me.messageHandler.filter(function (obj) {
-                                                    return !tryPattern(obj.t, topic);
-                            });
+        me.messageHandler = me.messageHandler.filter(function (obj) {
+            return !tryPattern(obj.t, topic);
+        });
     };
     me.onMessage = function (topic, message) {
         var i,
@@ -169,7 +167,7 @@ function Broker(conf, logger) {
          * Iterate over the messageHandler to match topic patter,
          * and dispatch message to only proper handler
          */
-        for (i = 0; i < length; i++ ){
+        for (i = 0; i < length; i++ ) {
             var obj = me.messageHandler[i];
             if (tryPattern(obj.t, topic)) {
                 me.logger.info('Fired STATUS: %s' + topic + JSON.stringify(message));
@@ -194,9 +192,9 @@ function Broker(conf, logger) {
                 var topicAsPattern = granted[0].topic.replace(/\+/g, "[^<>]*");
                 me.logger.debug("grant " + topicAsPattern);
                 me.attach(topicAsPattern, handler);
-               if (toCallBack) {
+                if (toCallBack) {
                     toCallBack();
-               }
+                }
             });
         }
         if (!me.connected()) {
@@ -251,7 +249,7 @@ function Broker(conf, logger) {
                     me.logger.error(err);
                     if (callback) {
                         callback(err);
-                     }
+                    }
                 }
             });
         } else {

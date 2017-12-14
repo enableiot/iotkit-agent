@@ -34,7 +34,7 @@ var adminDef = require('./admin.def');
  */
 module.exports.createRule = function(data, callback) {
     var createRuleOpt = new adminDef.rules.CreateRuleOption(data);
-  return httpClient.httpRequest(createRuleOpt, callback);
+    return httpClient.httpRequest(createRuleOpt, callback);
 };
 
 /**
@@ -45,7 +45,7 @@ module.exports.createRule = function(data, callback) {
  */
 module.exports.deleteRule = function(data, callback) {
     var deleteRuleOpt = new adminDef.rules.DeleteRuleOption(data);
-  return httpClient.httpRequest(deleteRuleOpt, callback);
+    return httpClient.httpRequest(deleteRuleOpt, callback);
 };
 
 
@@ -56,7 +56,7 @@ module.exports.deleteRule = function(data, callback) {
  */
 module.exports.getRules = function(data, callback) {
     var getRulesOpt = new adminDef.rules.GetRulesOption(data);
-  return httpClient.httpRequest(getRulesOpt, callback);
+    return httpClient.httpRequest(getRulesOpt, callback);
 };
 
 
@@ -70,7 +70,7 @@ module.exports.getRules = function(data, callback) {
  */
 module.exports.updateRule = function(data, callback) {
     var updateRuleOpt = new adminDef.rules.UpdateRuleOption(data);
-  return httpClient.httpRequest(updateRuleOpt, callback);
+    return httpClient.httpRequest(updateRuleOpt, callback);
 };
 
 /**
@@ -81,7 +81,7 @@ module.exports.updateRule = function(data, callback) {
  */
 module.exports.getRuleDetails = function(data, callback) {
     var getRuleDetailsOpt = new adminDef.rules.GetRuleDetailsOption(data);
-  return httpClient.httpRequest(getRuleDetailsOpt, callback);
+    return httpClient.httpRequest(getRuleDetailsOpt, callback);
 };
 
 
@@ -95,7 +95,7 @@ module.exports.getRuleDetails = function(data, callback) {
  */
 module.exports.updateRuleStatus = function(data, callback) {
     var updateRuleStatusOpt = new adminDef.rules.UpdateRuleStatusOption(data);
-  return httpClient.httpRequest(updateRuleStatusOpt, callback);
+    return httpClient.httpRequest(updateRuleStatusOpt, callback);
 };
 
 /**
@@ -106,7 +106,7 @@ module.exports.updateRuleStatus = function(data, callback) {
  */
 module.exports.createDraftRule = function(data, callback) {
     var createDraftRuleOpt = new adminDef.rules.CreateDraftRuleOption(data);
-  return httpClient.httpRequest(createDraftRuleOpt, callback);
+    return httpClient.httpRequest(createDraftRuleOpt, callback);
 };
 
 /**
@@ -117,7 +117,7 @@ module.exports.createDraftRule = function(data, callback) {
  */
 module.exports.deleteDraftRule = function(data, callback) {
     var deleteDraftRuleOpt = new adminDef.rules.DeleteDraftRuleOption(data);
-  return httpClient.httpRequest(deleteDraftRuleOpt, callback);
+    return httpClient.httpRequest(deleteDraftRuleOpt, callback);
 };
 
 
@@ -129,7 +129,7 @@ module.exports.deleteDraftRule = function(data, callback) {
  */
 module.exports.cloneRule = function(data, callback) {
     var cloneRuleOpt = new adminDef.rules.CloneRuleOption(data);
-  return httpClient.httpRequest(cloneRuleOpt, callback);
+    return httpClient.httpRequest(cloneRuleOpt, callback);
 };
 
 

@@ -51,9 +51,9 @@ function ExternalInfoOption() {
     this.token = null;
     ConnectionOptions.call(this);
     var urlT =  {
-            hostname: 'ipinfo.io',
-            port: 80,
-            protocol: 'http'
+        hostname: 'ipinfo.io',
+        port: 80,
+        protocol: 'http'
     };
     this.url = url.format(urlT);
     this.method = GET_METHOD;

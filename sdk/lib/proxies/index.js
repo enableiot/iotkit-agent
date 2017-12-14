@@ -31,7 +31,7 @@ var currentProxy;
 
 exports.getProxyConnector = function(proxy) {
     try {
-        if(!currentProxy){
+        if(!currentProxy) {
             var protocol = (proxy || config.default_connector);
             logger.debug("Proxy Connector : %s ", protocol , "to be Set");
             var Proxy;
@@ -42,8 +42,7 @@ exports.getProxyConnector = function(proxy) {
             currentProxy = Proxy.init(config, logger);
         }
         return currentProxy;
-    }
-    catch(err) {
+    } catch(err) {
         logger.error("Proxy Connector does not exist: ", err);
     }
 };
@@ -51,15 +50,14 @@ exports.getProxyConnector = function(proxy) {
 var currentControl;
 exports.getControlConnector = function(proxy) {
     try {
-        if(!currentControl){
+        if(!currentControl) {
             var protocol = (proxy || config.default_connector);
             logger.debug("Proxy Connector : %s ", protocol , "to be Set");
             var Proxy = require("./iot.control." + protocol);
             currentControl = Proxy.init(config, logger);
         }
         return currentControl;
-    }
-    catch(err) {
+    } catch(err) {
         logger.error("Proxy Connector does not exist: ", err);
     }
 };

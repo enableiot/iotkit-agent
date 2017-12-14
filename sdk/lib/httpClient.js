@@ -35,27 +35,26 @@ var request = require('request');
 function processResponse(res, body, callback) {
     var data = null;
     if (res.statusCode === 200 || res.statusCode === 201) {
-	if (body) {// if body not defined, the statusCode should be returned instead. Empty body is allowed for stauscode:200
+        if (body) {// if body not defined, the statusCode should be returned instead. Empty body is allowed for stauscode:200
             if (res.headers['content-type'] && res.headers['content-type'].indexOf('application/json') > -1) {
-		try {
+                try {
                     data = JSON.parse(body);
-		} catch (e) {
+                } catch (e) {
                     data = null;
-		}
+                }
             } else {
-		data = null;
+                data = null;
             }
-	}
-	else{ // no body, don't try to parse it
-        data = {
-            status: "OK",
-            code: res.statusCode
-        };
-	}
+        } else { // no body, don't try to parse it
+            data = {
+                status: "OK",
+                code: res.statusCode
+            };
+        }
     } else if (res.statusCode === 204) {
         data = {
-                status: "Done"
-             };
+            status: "Done"
+        };
     }
     return  callback(data);
 }
@@ -66,7 +65,7 @@ module.exports.httpRequest = function createRequest (options, callback) {
                        response.statusCode === 201 ||
                        response.statusCode === 204)) {
             processResponse(response, body, function (data) {
-                 return callback(null, data);
+                return callback(null, data);
             });
         } else {
             error = error || body;

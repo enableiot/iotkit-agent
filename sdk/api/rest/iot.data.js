@@ -35,7 +35,7 @@ var userAdminDef = require('./admin.def');
  */
 module.exports.submitData = function(data, callback) {
     var submitDataOpt = new userAdminDef.data.SendDataOption(data);
-  return httpClient.httpRequest(submitDataOpt, callback);
+    return httpClient.httpRequest(submitDataOpt, callback);
 };
 
 
@@ -47,7 +47,7 @@ module.exports.submitData = function(data, callback) {
  */
 module.exports.searchData = function(data, callback) {
     var searchDataOpt = new userAdminDef.data.SearchDataOption(data);
-  return httpClient.httpRequest(searchDataOpt, callback);
+    return httpClient.httpRequest(searchDataOpt, callback);
 };
 
 
@@ -59,5 +59,5 @@ module.exports.searchData = function(data, callback) {
  */
 module.exports.searchDataAdvanced = function(data, callback) {
     var searchDataAdvancedOpt = new userAdminDef.data.SearchDataAdvancedOption(data);
-  return httpClient.httpRequest(searchDataAdvancedOpt, callback);
+    return httpClient.httpRequest(searchDataAdvancedOpt, callback);
 };

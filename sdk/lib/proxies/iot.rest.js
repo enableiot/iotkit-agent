@@ -42,10 +42,11 @@ IoTKitRestCloud.prototype.addComponent = function (data, callback) {
     delete data.deviceToken;
     var did = data.deviceId;
     delete data.deviceId;
-    var dataPayload = {deviceId : did,
-                       deviceToken: token,
-                       body: data
-                    };
+    var dataPayload = {
+        deviceId : did,
+        deviceToken: token,
+        body: data
+    };
     me.logger.debug("Registering components ...", dataPayload);
     me.client.devices.registerComponents(dataPayload, function (err, response) {
         var comp = {};
@@ -69,10 +70,11 @@ IoTKitRestCloud.prototype.data = function (data , callback) {
     var token = data.deviceToken;
     delete data.deviceToken;
     delete data.gatewayId;
-    var dataPayload = {deviceId : data.did,
-                       deviceToken: token,
-                       body: data.convertToRestPayload()
-                       };
+    var dataPayload = {
+        deviceId : data.did,
+        deviceToken: token,
+        body: data.convertToRestPayload()
+    };
 
     me.client.devices.submitData(dataPayload, function (err, response) {
         var data = {};
@@ -85,7 +87,7 @@ IoTKitRestCloud.prototype.data = function (data , callback) {
             me.logger.error("Data Submission Error ", err);
             data = new Error("Data Submission Fail");
             data.status = 4000;
-           return callback(err);
+            return callback(err);
         }
     });
 };
@@ -98,12 +100,12 @@ IoTKitRestCloud.prototype.attributes = function (data, callback) {
     var did = data.deviceId;
     delete data.deviceId;
     var dataPayload = {
-                deviceId : did,
-                deviceToken: token,
-                body: data
-                };
+        deviceId : did,
+        deviceToken: token,
+        body: data
+    };
     me.logger.debug("Attributes , ", dataPayload);
-    me.client.devices.updateMetadataDevice(dataPayload, function(err, response){
+    me.client.devices.updateMetadataDevice(dataPayload, function(err, response) {
         if (!err && response) {
             callback(response);
             me.logger.debug ("Metadata Device: ", dataPayload.deviceId,  "Updated : ", response);
@@ -124,9 +126,9 @@ IoTKitRestCloud.prototype.activation = function (data, callback) {
     var did = data.deviceId;
     delete data.deviceId;
     var actResData = {
-                deviceId: did,
-                body: {"activationCode": data.code}
-        };
+        deviceId: did,
+        body: {"activationCode": data.code}
+    };
     me.client.devices.registerDevice(actResData, function (err, response) {
         me.logger.debug("Device Register", response);
         var secret = { };
@@ -172,8 +174,8 @@ IoTKitRestCloud.prototype.getCatalog = function (data, callback) {
     var me = this;
     me.logger.info("Starting Catalog Retrieving ");
     var dataPayload = {
-                deviceToken: data.deviceToken
-            };
+        deviceToken: data.deviceToken
+    };
     me.client.cmpcatalog.getCatalog(dataPayload, function (err, response) {
         if (!err && response) {
             me.logger.debug("Response From Catalog Retrieved ", response);
@@ -194,7 +196,7 @@ IoTKitRestCloud.prototype.getDevice = function (data, callback) {
         deviceToken: data.deviceToken
     };
     me.logger.debug("Attributes , ", dataPayload);
-    me.client.devices.getDevice(dataPayload, function(err, response){
+    me.client.devices.getDevice(dataPayload, function(err, response) {
         if (!err && response) {
             callback(response);
             me.logger.debug ("Metadata Device: ", data.deviceId,  "Downloaded : ", response);

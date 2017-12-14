@@ -69,39 +69,37 @@ module.exports = function(grunt) {
                     mode: 'tgz'
                 },
                 files: [{cwd: '.',
-                        expand: true,
+                         expand: true,
                          src: ['**/*.js', '**/*.sh', 'config.json', '!node_modules/**', '!dist/**', '!test/**', '!Gruntfile.js'],
-                        /* this is the root folder of untar file */
+                         /* this is the root folder of untar file */
                          dest: '<%= pkg.name %>/'
-                        }
-                    ]
+                }]
+            }
+        },
+        mocha_istanbul: {
+            local: {
+                src: 'test/', // the folder, not the files
+                options: {
+                    ui: 'bdd',
+                    coverage: true,
+                    recursive: true,
+                    reporter: 'list',
+                    timeout: 20000,
+                    mask: '*Tests.js',
+                    check: {
+                        lines: 60,
+                        statements: 60,
+                        function: 60
+                    },
+                    root: '.', // define where the cover task should consider the root of libraries that are covered by tests
+                    coverageFolder: 'dist/coverage',
+                    reportFormats: ['lcov']
                 }
             },
-        mocha_istanbul: {
-           local: {
-               src: 'test/', // the folder, not the files
-               options: {
-                   ui: 'bdd',
-                   coverage: true,
-                   recursive: true,
-                   reporter: 'list',
-                   timeout: 20000,
-                   mask: '*Tests.js',
-                   check: {
-                    lines: 60,
-                    statements: 60,
-                    function: 60
-                    },
-                   root: '.', // define where the cover task should consider the root of libraries that are covered by tests
-                   coverageFolder: 'dist/coverage',
-                   reportFormats: ['lcov']
-               }
-           },
-
         }
     });
 
-    grunt.event.on('coverage', function(lcovFileContents, done){
+    grunt.event.on('coverage', function(lcovFileContents, done) {
         // Check below
         done();
     });

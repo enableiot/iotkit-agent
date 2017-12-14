@@ -39,7 +39,7 @@ var apiconf = config.connector.rest;
 var IoTKiT = {};
 
 
-function GetUserInfoOption(data){
+function GetUserInfoOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.userId, data.userId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -51,7 +51,7 @@ GetUserInfoOption.prototype.constructor = GetUserInfoOption;
 IoTKiT.GetUserInfoOption = GetUserInfoOption;
 
 
-function UpdateUserInfoOption(data){
+function UpdateUserInfoOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.userId, data.userId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -63,7 +63,7 @@ UpdateUserInfoOption.prototype.contstructor = UpdateUserInfoOption;
 IoTKiT.UpdateUserInfoOption = UpdateUserInfoOption;
 
 
-function DeleteUserOption(data){
+function DeleteUserOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.userId, data.deleteUserId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -75,7 +75,7 @@ DeleteUserOption.prototype.contstructor = DeleteUserOption;
 IoTKiT.DeleteUserOption = DeleteUserOption;
 
 
-function RequestUserPasswordChangeOption(data){
+function RequestUserPasswordChangeOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.forgotPassword);
     ConnectionOptions.call(this);
     this.method = POST_METHOD;
@@ -86,7 +86,7 @@ RequestUserPasswordChangeOption.prototype.contstructor = RequestUserPasswordChan
 IoTKiT.RequestUserPasswordChangeOption = RequestUserPasswordChangeOption;
 
 
-function UpdateUserPasswordOption(data){
+function UpdateUserPasswordOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.forgotPassword);
     ConnectionOptions.call(this);
     this.method = PUT_METHOD;
@@ -97,7 +97,7 @@ UpdateUserPasswordOption.prototype.contstructor = UpdateUserPasswordOption;
 IoTKiT.UpdateUserPasswordOption = UpdateUserPasswordOption;
 
 
-function ChangeUserPasswordOption(data){
+function ChangeUserPasswordOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.changePassword, data.username);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -109,7 +109,7 @@ ChangeUserPasswordOption.prototype.contstructor = ChangeUserPasswordOption;
 IoTKiT.ChangeUserPasswordOption = ChangeUserPasswordOption;
 
 
-function RequestUserActivationOption(data){
+function RequestUserActivationOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.requestUserActivation);
     ConnectionOptions.call(this);
     this.method = POST_METHOD;
@@ -120,7 +120,7 @@ RequestUserActivationOption.prototype.contstructor = RequestUserActivationOption
 IoTKiT.RequestUserActivationOption = RequestUserActivationOption;
 
 
-function AddUserOption(data){
+function AddUserOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.addUser);
     ConnectionOptions.call(this);
     this.method = POST_METHOD;
@@ -131,7 +131,7 @@ AddUserOption.prototype.contstructor = AddUserOption;
 IoTKiT.AddUserOption = AddUserOption;
 
 
-function ActivateUserOption(data){
+function ActivateUserOption(data) {
     this.pathname = common.buildPath(apiconf.path.user.activateUser);
     ConnectionOptions.call(this);
     this.method = POST_METHOD;

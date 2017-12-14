@@ -43,7 +43,7 @@ IoTKitWSControl.prototype.controlCommandListen = function (data, handlerCb, sync
     return me.client.bind(data.deviceId, handler, syncCall);
 };
 
-IoTKitWSControl.prototype.updateDeviceInfo = function (deviceInfo){
+IoTKitWSControl.prototype.updateDeviceInfo = function (deviceInfo) {
     var me = this;
     me.client.updateDeviceInfo(deviceInfo);
 };

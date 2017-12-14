@@ -39,7 +39,7 @@ var apiconf = config.connector.rest;
 var IoTKiT = {};
 
 
-function CreateAccountOption(data){
+function CreateAccountOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.create);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -51,7 +51,7 @@ CreateAccountOption.prototype.constructor = CreateAccountOption;
 IoTKiT.CreateAccountOption = CreateAccountOption;
 
 
-function GetAccountInfoOption(data){
+function GetAccountInfoOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.accountId, data.accountId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -63,7 +63,7 @@ GetAccountInfoOption.prototype.constructor = GetAccountInfoOption;
 IoTKiT.GetAccountInfoOption = GetAccountInfoOption;
 
 
-function UpdateAccountOption(data){
+function UpdateAccountOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.accountId, data.accountId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -75,7 +75,7 @@ UpdateAccountOption.prototype.constructor = UpdateAccountOption;
 IoTKiT.UpdateAccountOption = UpdateAccountOption;
 
 
-function DeleteAccountOption(data){
+function DeleteAccountOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.accountId, data.accountId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -87,7 +87,7 @@ DeleteAccountOption.prototype.constructor = DeleteAccountOption;
 IoTKiT.DeleteAccountOption = DeleteAccountOption;
 
 
-function GetAccountActivationCodeOption(data){
+function GetAccountActivationCodeOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.activationcode, data.accountId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -99,7 +99,7 @@ GetAccountActivationCodeOption.prototype.constructor = GetAccountActivationCodeO
 IoTKiT.GetAccountActivationCodeOption = GetAccountActivationCodeOption;
 
 
-function RefreshAccountActivationCodeOption(data){
+function RefreshAccountActivationCodeOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.refresh, data.accountId);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -111,7 +111,7 @@ RefreshAccountActivationCodeOption.prototype.constructor = RefreshAccountActivat
 IoTKiT.RefreshAccountActivationCodeOption = RefreshAccountActivationCodeOption;
 
 
-function ChangeAccountUserOption(data){
+function ChangeAccountUserOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.userid, [data.accountId, data.userId]);
     this.token = data.userToken;
     ConnectionOptions.call(this);
@@ -123,7 +123,7 @@ ChangeAccountUserOption.prototype.constructor = ChangeAccountUserOption;
 IoTKiT.ChangeAccountUserOption = ChangeAccountUserOption;
 
 
-function GetAccountUsersOption(data){
+function GetAccountUsersOption(data) {
     this.pathname = common.buildPath(apiconf.path.accounts.users, data.accountId);
     this.token = data.userToken;
     ConnectionOptions.call(this);

@@ -65,8 +65,8 @@ function Websockets(conf, deviceInfo, logger) {
     me.pingpongInterval = null;
     me.deviceInfo = {};
 
-    me.updateDeviceInfo = function(deviceInfo){
-	me.deviceInfo = deviceInfo;
+    me.updateDeviceInfo = function(deviceInfo) {
+        me.deviceInfo = deviceInfo;
     };
     
     me.calculateRetryTime = function(error) {
@@ -97,7 +97,7 @@ function Websockets(conf, deviceInfo, logger) {
         }
     } else {
         var result = {};
-        if(process.env.https_proxy){
+        if(process.env.https_proxy) {
             result = extractHostAndPortFromUrl(process.env.https_proxy);
         } else if(process.env.http_proxy) {
             result = extractHostAndPortFromUrl(process.env.http_proxy);

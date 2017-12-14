@@ -35,7 +35,7 @@ var adminDef = require('./admin.def');
  */
 module.exports.sendActuationCommand = function(data, callback) {
     var sendActuationCommandOpt = new adminDef.control.SendActuationCommandOption(data);
-  return httpClient.httpRequest(sendActuationCommandOpt, callback);
+    return httpClient.httpRequest(sendActuationCommandOpt, callback);
 };
 
 /**
@@ -47,7 +47,7 @@ module.exports.sendActuationCommand = function(data, callback) {
  */
 module.exports.saveComplexCommand = function(data, callback) {
     var saveComplexCommandOp = new adminDef.control.SaveComplexCommandOption(data);
-  return httpClient.httpRequest(saveComplexCommandOp, callback);
+    return httpClient.httpRequest(saveComplexCommandOp, callback);
 };
 
 /**
@@ -57,7 +57,7 @@ module.exports.saveComplexCommand = function(data, callback) {
  */
 module.exports.getComplexCommands = function(data, callback) {
     var getComplexCommandsOp = new adminDef.control.GetComplexCommandsOption(data);
-  return httpClient.httpRequest(getComplexCommandsOp, callback);
+    return httpClient.httpRequest(getComplexCommandsOp, callback);
 };
 
 /**
@@ -67,7 +67,7 @@ module.exports.getComplexCommands = function(data, callback) {
  */
 module.exports.deleteComplexCommand = function(data, callback) {
     var deleteComplexCommandsOp = new adminDef.control.DeleteComplexCommandOption(data);
-  return httpClient.httpRequest(deleteComplexCommandsOp, callback);
+    return httpClient.httpRequest(deleteComplexCommandsOp, callback);
 };
 
 
@@ -80,7 +80,7 @@ module.exports.deleteComplexCommand = function(data, callback) {
  */
 module.exports.updateComplexCommand = function(data, callback) {
     var updateComplexCommandOp = new adminDef.control.UpdateComplexCommandOption(data);
-  return httpClient.httpRequest(updateComplexCommandOp, callback);
+    return httpClient.httpRequest(updateComplexCommandOp, callback);
 };
 
 /**

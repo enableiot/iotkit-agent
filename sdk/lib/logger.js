@@ -28,24 +28,23 @@ var winston = require('winston'),
 
 exports.init = function() {
 
-  var logTransports = [
-    new (winston.transports.Console)({ 
-          level: conf.LEVEL || 'debug',
-          colorize: true,
-          timestamp: true
-    }),
-    new (winston.transports.File)({
-        filename: path.join((process.platform ==='win32' ? process.env.temp : conf.PATH), 'oisp-sdk.log'),
-          level: conf.LEVEL || 'info',
-          timestamp: true,
-          maxsize: conf.MAX_SIZE, //128 MB
-          maxFiles: 1
-    })
-  ];
+    var logTransports = [
+        new (winston.transports.Console)({ 
+            level: conf.LEVEL || 'debug',
+            colorize: true,
+            timestamp: true
+        }),
+        new (winston.transports.File)({
+            filename: path.join((process.platform ==='win32' ? process.env.temp : conf.PATH), 'oisp-sdk.log'),
+            level: conf.LEVEL || 'info',
+            timestamp: true,
+            maxsize: conf.MAX_SIZE, //128 MB
+            maxFiles: 1
+        })
+    ];
 
-  return new (winston.Logger)({
-    transports: logTransports,
-    exitOnError: false
-  });
-  
+    return new (winston.Logger)({
+        transports: logTransports,
+        exitOnError: false
+    });
 };  

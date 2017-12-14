@@ -35,9 +35,9 @@ function IoTKitMQTTControl(conf, logger, broker) {
     me.type = 'mqtt';
     me.topics = conf.connector[me.type].topic;
     me.pubArgs = {
-                qos: 0,
-                retain: false
-            };
+        qos: 0,
+        retain: false
+    };
     me.logger.debug(me.type.toUpperCase(), 'Control Proxy Created');
 }
 IoTKitMQTTControl.prototype.controlCommandListen = function (data, handlerCb, syncCall) {
@@ -53,6 +53,5 @@ IoTKitMQTTControl.prototype.controlCommandListen = function (data, handlerCb, sy
 
 module.exports.init = function(conf, logger) {
     var brokerConnector = Broker.singleton(conf.connector.mqtt, logger);
-    return new IoTKitMQTTControl(conf, logger,
-                                brokerConnector);
+    return new IoTKitMQTTControl(conf, logger, brokerConnector);
 };

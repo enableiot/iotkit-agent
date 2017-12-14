@@ -34,7 +34,7 @@ var userAdminDef = require('./admin.def');
  */
 module.exports.getAuthToken = function(data, callback) {
     var getAuthTokenOpt = new userAdminDef.auth.GetAuthTokenOption(data);
-  return httpClient.httpRequest(getAuthTokenOpt, callback);
+    return httpClient.httpRequest(getAuthTokenOpt, callback);
 };
 
 
@@ -43,8 +43,8 @@ module.exports.getAuthToken = function(data, callback) {
  *  @param data.token the access token
  */
 module.exports.getAuthTokenInfo = function(data, callback) {
-  var getAuthTokenInfoOpt = new userAdminDef.auth.GetAuthTokenInfoOption(data);
-  return httpClient.httpRequest(getAuthTokenInfoOpt, callback);
+    var getAuthTokenInfoOpt = new userAdminDef.auth.GetAuthTokenInfoOption(data);
+    return httpClient.httpRequest(getAuthTokenInfoOpt, callback);
 };
 
 
@@ -53,8 +53,8 @@ module.exports.getAuthTokenInfo = function(data, callback) {
  *  @param data contains the auth token
  */
 module.exports.getAuthUserInfo = function(data, callback) {
-  var getAuthUserInfoOpt = new userAdminDef.auth.GetAuthUserInfoOption(data);
-  return httpClient.httpRequest(getAuthUserInfoOpt, callback);
+    var getAuthUserInfoOpt = new userAdminDef.auth.GetAuthUserInfoOption(data);
+    return httpClient.httpRequest(getAuthUserInfoOpt, callback);
 };
 
 

@@ -4,9 +4,8 @@
 		"node": true
 	},
 	"rules": {
-	    "indent": ["error", 4],
+	    "indent": ["error", 4, { "ArrayExpression": "first", "ObjectExpression": "first" }],
 	    "brace-style": ["error", "1tbs"],
-	    "space-before-blocks": "error",
-	    "keyword-spacing": "error"
+	    "space-before-blocks": "error"
 	}
 }

@@ -56,10 +56,10 @@ function ConnectionOptions() {
     this.timeout = apiconf.timeout;
     this.url = url.format(urlT);
     this.headers = {
-                    "Content-type" : "application/json"
-                    };
+        "Content-type" : "application/json"
+    };
     if (this.token) {
-       this.headers["Authorization"] = "Bearer " + this.token;
+        this.headers["Authorization"] = "Bearer " + this.token;
     }
     delete this.token;
 }

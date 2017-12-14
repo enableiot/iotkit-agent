@@ -23,9 +23,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
     
-function IoTKitUtils(){
-}
-
+function IoTKitUtils() {}
 
 IoTKitUtils.prototype.getMinutesAndSecondsFromMiliseconds = function(miliseconds) {
     var minutes = Math.floor(miliseconds / 60000),
@@ -34,6 +32,6 @@ IoTKitUtils.prototype.getMinutesAndSecondsFromMiliseconds = function(miliseconds
 };
 
 exports.init = function() {
-  var utils = new IoTKitUtils();
-  return utils;
+    var utils = new IoTKitUtils();
+    return utils;
 };  

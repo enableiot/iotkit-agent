@@ -32,9 +32,9 @@ function IoTKitMQTTCloud(conf, logger, broker) {
     me.type = 'mqtt';
     me.topics = conf.connector[me.type].topic;
     me.pubArgs = {
-                qos: 1,
-                retain: false
-            };
+        qos: 1,
+        retain: false
+    };
     me.logger.debug('MQTT Proxy Created');
 }
 
@@ -77,7 +77,7 @@ IoTKitMQTTCloud.prototype.activation = function (data, callback) {
     me.logger.debug('Called activate function');
     me.logger.debug('...trying activation');
     var actResData = {
-            deviceId: data.deviceId
+        deviceId: data.deviceId
     };
     /* First, it is subscribe to mqtt topic response,
     * in order to be prepared for the activation response
@@ -91,8 +91,7 @@ IoTKitMQTTCloud.prototype.activation = function (data, callback) {
             retain: false
         };
         me.logger.debug('Sending Activation Code');
-        me.client.publish(common.buildPath(me.topics.device_activation, data.deviceId),
-                          activationMsg, args);
+        me.client.publish(common.buildPath(me.topics.device_activation, data.deviceId), activationMsg, args);
     });
 };
 
@@ -116,7 +115,7 @@ IoTKitMQTTCloud.prototype.componentResponse = function (device, callback, syncCa
         }
         return true;
     };
-   return me.client.bind(componentStatus, handler, syncCallback);
+    return me.client.bind(componentStatus, handler, syncCallback);
 };
 
 IoTKitMQTTCloud.prototype.addComponent = function (data, callback) {
@@ -147,12 +146,11 @@ IoTKitMQTTCloud.prototype.pullActuations = function (data, callback) {
 IoTKitMQTTCloud.prototype.data = function (data, callback) {
     var me = this;
     delete data.deviceToken;
-    var topic = common.buildPath(me.topics.metric_topic,
-                                [data.accountId, data.did]);
+    var topic = common.buildPath(me.topics.metric_topic, [data.accountId, data.did]);
     me.logger.debug("Metric doc: %j", data, {});
     delete data.gatewayId;
-    return me.client.publish(topic, data.convertToMQTTPayload(), me.pubArgs, function(){
-       return callback({status:0});
+    return me.client.publish(topic, data.convertToMQTTPayload(), me.pubArgs, function() {
+        return callback({status:0});
     });
 };
 
