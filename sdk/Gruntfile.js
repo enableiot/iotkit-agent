@@ -29,12 +29,12 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
             jshint: 'buildscripts/jshint',
-            jsfiles: ['Gruntfile.js',
+            jsfiles: ['api/**/*.js'
+                      'api/*.js',
+                      'config/*.js',
                       'lib/**/*.js',
-		      'lib/*.js',
-                      'api/**/*.js',
-		      'api/*.js',
-		      '*.js']
+                      'lib/*.js',
+                      '*.js']
         },
         license_finder: {
             default_options: {
@@ -56,8 +56,7 @@ module.exports = function(grunt) {
         },
         jshint: {
 			options: {
-				jshintrc: '<%= dirs.jshint %>/config.json',
-				ignores: ['lib/deprected/*.js']
+				jshintrc: '<%= dirs.jshint %>/config.json'
 			},
 			local: {
 				src: ['<%= dirs.jsfiles %>'],

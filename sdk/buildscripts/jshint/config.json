@@ -1,20 +1,11 @@
     {
         "curly": true,
         "eqeqeq": true,
-        "immed": true,
         "latedef": true,
-        "newcap": true,
         "noarg": true,
-        "sub": true,
         "undef": true,
         "eqnull": true,
         "browser": true,
         "unused": true,
-        "indent": false,
-        "node" : true,
-        "globals": { "angular": true,
-                     "Rickshaw": true,
-                     "iotApp": true,
-                     "iotController": true,
-                     "iotServices": true}
+        "node" : true
     }
