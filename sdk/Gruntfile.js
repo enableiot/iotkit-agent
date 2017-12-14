@@ -28,7 +28,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
-            jshint: 'buildscripts/jshint',
+            eslint: 'buildscripts/eslint',
             jsfiles: ['api/**/*.js',
                       'api/*.js',
                       'config/*.js',
@@ -54,16 +54,13 @@ module.exports = function(grunt) {
                 }
             }
         },
-        jshint: {
-			options: {
-				jshintrc: '<%= dirs.jshint %>/config.json'
-			},
-			local: {
-				src: ['<%= dirs.jsfiles %>'],
-				options: {
-					force: true
-				}
-			},
+        eslint: {
+        	options: {
+        		configFile: '<%= dirs.eslint %>/config.json'
+        	},
+        	local: {
+        		src: ['<%= dirs.jsfiles %>']
+        	}
 		},
         compress: {
             teamcity: {
@@ -113,12 +110,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-license-finder');
 
     // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('gruntify-eslint');
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint:local', 'mocha_istanbul:local']);
-
+    grunt.registerTask('default', ['eslint:local', 'mocha_istanbul:local']);
     grunt.registerTask('packaging', ['compress:teamcity']);
 };
 
