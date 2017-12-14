@@ -2,5 +2,11 @@
 	"extends": "eslint:recommended",
 	"env": {
 		"node": true
+	},
+	"rules": {
+	    "indent": ["error", 4],
+	    "brace-style": ["error", "1tbs"],
+	    "space-before-blocks": "error",
+	    "keyword-spacing": "error"
 	}
 }
