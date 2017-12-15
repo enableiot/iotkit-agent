@@ -33,6 +33,7 @@ module.exports = function(grunt) {
                       'admin/*.js',
                       'bin/*.js',
                       'data/*.js',
+                      'examples/*.js',
                       'lib/**/*.js',
                       'listeners/**/*.js'
             ],
