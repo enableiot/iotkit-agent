@@ -31,196 +31,188 @@ var api = require("oisp-sdk-js").api.rest,
 var errorHandler = {};
 
 
-var createAccount = function(jsonString){
+var createAccount = function(jsonString) {
     logger.info("Starting createAccount ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     try {
-	userAdminDataObj.body = JSON.parse(jsonString);
+        userAdminDataObj.body = JSON.parse(jsonString);
     } catch (e) {
-	logger.error(common.errors["parseJsonError"].message + ": " + e);
-	errorHandler(null, common.errors["parseJsonError"].code);
+        logger.error(common.errors["parseJsonError"].message + ": " + e);
+        errorHandler(null, common.errors["parseJsonError"].code);
     }
-    api.accounts.createAccount(userAdminDataObj,function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	    userAdminData.addAccount(response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.createAccount(userAdminDataObj,function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.addAccount(response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var getAccountInfo = function(accountId){
+var getAccountInfo = function(accountId) {
     logger.info("Starting getAccountInfo ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	    logger.error(common.errors["accountIdError"].message);
-	    errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    api.accounts.getAccountInfo(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	    userAdminData.updateAccount(response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.getAccountInfo(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.updateAccount(response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var updateAccount = function(accountId, jsonString){
+var updateAccount = function(accountId, jsonString) {
     logger.info("Starting updateAccountInfo ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     try {
-	userAdminDataObj.body = JSON.parse(jsonString);
+        userAdminDataObj.body = JSON.parse(jsonString);
     } catch (e) {
-	logger.error(common.errors["parseJsonError"].message + ": " + e);
-	errorHandler(null, common.errors["parseJsonError"].code);
+        logger.error(common.errors["parseJsonError"].message + ": " + e);
+        errorHandler(null, common.errors["parseJsonError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    api.accounts.updateAccount(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	    userAdminData.updateAccount(response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.updateAccount(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.updateAccount(response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var deleteAccount = function(accountId){
+var deleteAccount = function(accountId) {
     logger.info("Starting deleteAccount ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    api.accounts.deleteAccount(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	    userAdminData.deleteAccount(targetAccount.id);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.deleteAccount(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.deleteAccount(targetAccount.id);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var getAccountActivationCode = function(accountId){
+var getAccountActivationCode = function(accountId) {
     logger.info("Starting getAccountActivationCode ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    api.accounts.getAccountActivationCode(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.getAccountActivationCode(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else{
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var refreshAccountActivationCode = function(accountId){
+var refreshAccountActivationCode = function(accountId) {
     logger.info("Starting refreshAccountActivationCode ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    api.accounts.refreshAccountActivationCode(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.refreshAccountActivationCode(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else{
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var changeAccountUser = function(accountId, userId, jsonString){
+var changeAccountUser = function(accountId, userId, jsonString) {
     logger.info("Starting changeAccountUser ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
-    if (jsonString){
-	try {
-	    userAdminDataObj.body = JSON.parse(jsonString);
-	} catch (e) {
-	logger.error(common.errors["parseJsonError"].message + ": " + e);
-	errorHandler(null, common.errors["parseJsonError"].code);
-	}
+    if (jsonString) {
+        try {
+            userAdminDataObj.body = JSON.parse(jsonString);
+        } catch (e) {
+            logger.error(common.errors["parseJsonError"].message + ": " + e);
+            errorHandler(null, common.errors["parseJsonError"].code);
+        }
     }else{
-	userAdminDataObj.body = {
-	    "id": userId,
-	    "accounts": {}
-	};
-	userAdminDataObj.body.accounts[targetAccount.id] = "user";
+        userAdminDataObj.body = {
+            "id": userId,
+            "accounts": {}
+        };
+        userAdminDataObj.body.accounts[targetAccount.id] = "user";
     }
     userAdminDataObj.accountId = targetAccount.id;
     userAdminDataObj.userId = userId;
-    api.accounts.changeAccountUser(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.changeAccountUser(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else{
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
     
 };
 
 
-var getAccountUsers = function(accountId){
+var getAccountUsers = function(accountId) {
     logger.info("Starting getAccountUsers ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    api.accounts.getAccountUsers(userAdminDataObj, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.accounts.getAccountUsers(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else{
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 module.exports = {
     addCommand : function (program, errorHdl) {
-	errorHandler = errorHdl;
+        errorHandler = errorHdl;
         program
             .command('accounts.post <jsonString>')
             .description('|Create an account.|POST:/v1/api/accounts')
@@ -233,26 +225,25 @@ module.exports = {
             .command('accounts.put <accountId> <jsonString>')
             .description('|Update an account.|PUT:/v1/api/accounts/{accountId}')
             .action(updateAccount);
-	program
+        program
             .command('accounts.delete <accountId>')
             .description('|Delete an account.|DELETE:/v1/api/accounts/{accountId}')
             .action(deleteAccount);
-	program
+        program
             .command('accounts.get.activationcode <accountId>')
             .description('|Get account activation code.|GET:/v1/api/accounts/{accountId}/activationcode')
             .action(getAccountActivationCode);
-	program
+        program
             .command('accounts.put.refresh <accountId>')
             .description('|Renew account activation code.|PUT:/v1/api/accounts/{accountId}/activationcode/refresh')
             .action(refreshAccountActivationCode);
-	program
+        program
             .command('accounts.put.users <accountId> <userId> [jsonString]')
             .description('|Change another users privileges for account. If jsonString is empty user is added with "user" role to account|PUT:/v1/api/accounts/{accontId}/users/{userId}')
             .action(changeAccountUser);
-	program
-	    .command('accounts.get.users <accountId>')
-	    .description('|Get users of account.|GET:/v1/api/accounts/{accountId}/users')
-	    .action(getAccountUsers);
-	
+        program
+            .command('accounts.get.users <accountId>')
+            .description('|Get users of account.|GET:/v1/api/accounts/{accountId}/users')
+            .action(getAccountUsers);
     }
 };

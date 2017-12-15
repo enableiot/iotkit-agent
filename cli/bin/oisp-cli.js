@@ -38,54 +38,49 @@ var admin= require('commander'),
     logger = require("oisp-sdk-js").lib.logger.init();
 
 
-var helpBase = function(apiBase){
-    if ( ! apiBase.match(new RegExp("^regular$|^all$|^apionly$|^auth$|^users$|^accounts$|^rules$|^alerts$|^devices$|^data$|^components$|^control$|^invites$"))){
-	console.log("Unknown apiBase command");
-	return;
+var helpBase = function(apiBase) {
+    if ( ! apiBase.match(new RegExp("^regular$|^all$|^apionly$|^auth$|^users$|^accounts$|^rules$|^alerts$|^devices$|^data$|^components$|^control$|^invites$"))) {
+        console.log("Unknown apiBase command");
+        return;
     }
-    var processHelp = function(txt){
-	var split_txt = txt.split('\n');
-	var result = "";
-	var replace_pattern = new RegExp("^(.*)\\|(.*)\\|(.*)$");
-	var apiBase_pattern = new RegExp("^ *" + apiBase);
+    var processHelp = function(txt) {
+        var split_txt = txt.split('\n');
+        var result = "";
+        var replace_pattern = new RegExp("^(.*)\\|(.*)\\|(.*)$");
+        var apiBase_pattern = new RegExp("^ *" + apiBase);
 
-	split_txt.forEach(function(line){
-	    if (apiBase === "regular"){
-		line = line.replace(replace_pattern, "$1$2");
-	    }
-	    else if (apiBase === "apionly"){
-		line = line.replace(replace_pattern, "$1API: $3");
-	    }
-	    else if (apiBase === "all"){
-		line = line.replace(replace_pattern, "$1$2 API: $3");
-	    }
-	    else { /* try to filter for apiBase*/
-		if (line.match(apiBase_pattern)){
-		    line = line.replace(replace_pattern, "$1$2 API: $3");
-		}
-		else {
-		    line = "";
-		}
-	    }
-	    if (line !== "") {
-		result += line + "\n";
-	    }
-	});
-	return result;
+        split_txt.forEach(function(line) {
+            if (apiBase === "regular") {
+                line = line.replace(replace_pattern, "$1$2");
+            } else if (apiBase === "apionly") {
+                line = line.replace(replace_pattern, "$1API: $3");
+            } else if (apiBase === "all") {
+                line = line.replace(replace_pattern, "$1$2 API: $3");
+            } else { /* try to filter for apiBase*/
+                if (line.match(apiBase_pattern)) {
+                    line = line.replace(replace_pattern, "$1$2 API: $3");
+                } else {
+                    line = "";
+                }
+            }
+            if (line !== "") {
+                result += line + "\n";
+            }
+        });
+        return result;
     };
 
     admin.outputHelp(processHelp);
 };
 
 admin.version(pkgJson.version)
-    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory){
+    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory) {
         process.userConfigPath = path.resolve(userConfDirectory , "user.js");
         if (fs.existsSync(process.userConfigPath)) {
-            logger.info("\'" + process.userConfigPath + "\'" +
+            logger.info("'" + process.userConfigPath + "'" +
                 ' will be used as user config file.');
-        }
-        else{
-            logger.error("\'" + process.userConfigPath + "\'" +
+        } else{
+            logger.error("'" + process.userConfigPath + "'" +
                 ' not contains user.js config file.');
             process.exit(1);
         }
@@ -95,9 +90,9 @@ admin.version(pkgJson.version)
     .action(helpBase);
 
 /* Error handling */
-var errorHandler = function(error, code){
+var errorHandler = function(error, code) {
     if (error) {
-	console.error(error);
+        console.error(error);
     }
     process.exit(code);
 };
@@ -114,9 +109,9 @@ data.addCommand(admin, errorHandler);
 local.addCommand(admin, errorHandler);
 
 admin.command('*')
-     .description('Error message for non valid command')
-     .action(function(){
-        console.log("\'" + admin.args[0] + "\'" +
+    .description('Error message for non valid command')
+    .action(function() {
+        console.log("'" + admin.args[0] + "'" +
             ' is not a valid command.');
     });
 

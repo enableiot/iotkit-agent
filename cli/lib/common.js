@@ -68,8 +68,8 @@ module.exports.readFileToJson = function (filename) {
         try {
             objectFile = fs.readFileSync(filename);
             objectFile = JSON.parse(objectFile);
-        } catch(err){
-	    objectFile = null;
+        } catch(err) {
+            objectFile = null;
             logger.error("Improper JSON format :", err.message);
             logger.error(err.stack);
         }
@@ -80,9 +80,9 @@ module.exports.readFileToJson = function (filename) {
 
 module.exports.initializeFile = function(filepath, data) {
     if(!fs.existsSync(filepath)) {
-	if (!fs.existsSync(path.dirname(filepath))){
-	    fs.mkdirSync(path.dirname(filepath));
-	}
+        if (!fs.existsSync(path.dirname(filepath))) {
+            fs.mkdirSync(path.dirname(filepath));
+        }
         this.writeToJson(filepath, data);
     }
 };
@@ -115,23 +115,22 @@ module.exports.getDeviceConfigName = function() {
         return fullFileName;
     } else {
         var defaultConfig = path.resolve(__dirname, "../data/device.json");
-        if(!fs.existsSync(fullFileName) && fs.existsSync(defaultConfig)){
+        if(!fs.existsSync(fullFileName) && fs.existsSync(defaultConfig)) {
             return defaultConfig;
-        }
-        else{
+        } else{
             logger.error("Failed to find device config file");
             throw new Error("Failed to find device config file");
         }
     }
 };
 
-module.exports.getDeviceConfig = function(){
+module.exports.getDeviceConfig = function() {
     var config = this.readFileToJson(this.getDeviceConfigName());
     return config;
 };
 
-module.exports.getConfig = function(){
-    if(process.userConfigPath){
+module.exports.getConfig = function() {
+    if(process.userConfigPath) {
         return require(process.userConfigPath);
     }else{
         return config;
@@ -139,30 +138,30 @@ module.exports.getConfig = function(){
 };
 
 
-module.exports.readConfig = function(fileName){
- return this.readFileToJson(fileName);
+module.exports.readConfig = function(fileName) {
+    return this.readFileToJson(fileName);
 };
 
 
-module.exports.writeConfig = function(fileName, data){
+module.exports.writeConfig = function(fileName, data) {
     this.writeToJson(fileName, data);
 };
 
-module.exports.saveToGlobalConfig = function(key, value){
+module.exports.saveToGlobalConfig = function(key, value) {
     var fileName = path.resolve(__dirname, '../config/global.json');
     this.saveToConfig(fileName, key, value);
 };
 
 
-module.exports.saveToDeviceConfig = function(key, value){
+module.exports.saveToDeviceConfig = function(key, value) {
     var fileName = this.getDeviceConfigName();
     this.saveToConfig(fileName, key, value);
 };
 
-module.exports.saveToConfig = function(){
+module.exports.saveToConfig = function() {
     if (arguments.length < 2) {
         logger.error("Not enough arguments : ", arguments);
-	throw new Error("Not enough arguments for saveToConfig");
+        throw new Error("Not enough arguments for saveToConfig");
     }
 
     var fileName = arguments[0];
@@ -176,12 +175,11 @@ module.exports.saveToConfig = function(){
             subtree[keys.pop()] = value;
             value = subtree;
         }
-	try{
+        try{
             data[keys.pop()] = value;
-	}
-	catch(err){
-	    throw new Error("Could not add value to config file:", err);
-	}
+        } catch(err) {
+            throw new Error("Could not add value to config file:", err);
+        }
         return data;
     };
     data = configSaver(data, keys);

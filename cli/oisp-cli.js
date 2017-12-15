@@ -24,4 +24,4 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 "use strict";
-var admin = require("./bin/oisp-cli"); // jshint ignore:line
+var admin = require("./bin/oisp-cli"); // eslint-disable-line

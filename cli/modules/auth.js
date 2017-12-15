@@ -28,69 +28,67 @@ var api = require("oisp-sdk-js").api.rest,
     userAdminData = require("../lib/cli-data");
 var errorHandler = {};
 
-var getAuthToken = function(username, password){
+var getAuthToken = function(username, password) {
     logger.info("Starting getUserToken ...");
     userAdminData.initializeUserAdminBaseData();
-    api.auth.getAuthToken({body: {username: username, password: password}}, function(err, response){
-	if (!err && response){
-	    logger.info("Retrieved user token :", response.token);	    
-	    userAdminData.saveUserAdminBaseData(username, response.token);
-	}else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.auth.getAuthToken({body: {username: username, password: password}}, function(err, response) {
+        if (!err && response) {
+            logger.info("Retrieved user token :", response.token);
+            userAdminData.saveUserAdminBaseData(username, response.token);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var getAuthTokenInfo = function(){
+var getAuthTokenInfo = function() {
     logger.info("Starting getUserTokenInfo ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
-    api.auth.getAuthTokenInfo(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", JSON.stringify(response));
-	    if (! Object.keys(response.payload.accounts).length) {
-		response.payload.accounts = []; //should be array to apply array methods later
-	    }
-	    userAdminData.saveUserAdminData("accounts", response.payload.accounts);
-	    userAdminData.saveUserAdminData("userId", response.payload.sub);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.auth.getAuthTokenInfo(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", JSON.stringify(response));
+            if (! Object.keys(response.payload.accounts).length) {
+                response.payload.accounts = []; //should be array to apply array methods later
+            }
+            userAdminData.saveUserAdminData("accounts", response.payload.accounts);
+            userAdminData.saveUserAdminData("userId", response.payload.sub);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var getAuthUserInfo = function(){
+var getAuthUserInfo = function() {
     logger.info("Starting getUserInfo ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
-    api.auth.getAuthUserInfo(user_admin_data, function(err, response){
-	if (!err && response){   
-	    logger.info("Info retrieved: ", response);
-	    userAdminData.saveUserAdminData("userId", response.id);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.auth.getAuthUserInfo(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.saveUserAdminData("userId", response.id);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
 module.exports = {
     addCommand : function (program, errorHdl) {
-	errorHandler = errorHdl;
+        errorHandler = errorHdl;
         program
             .command('auth.post.token <username> <password>')
-	    .description('|Get JWT user-token for user.|POST:/v1/api/auth/token ')
+            .description('|Get JWT user-token for user.|POST:/v1/api/auth/token ')
             .action(getAuthToken);
         program
             .command('auth.get.tokeninfo')
-	    .description('|Get user token info of earlier acquired user-token.|GET:/v1/api/auth/tokenInfo')
+            .description('|Get user token info of earlier acquired user-token.|GET:/v1/api/auth/tokenInfo')
             .action(getAuthTokenInfo);
         program
             .command('auth.get.me')
-	    .description('|Get user info of earlier configured user.|GET:/auth/me')
+            .description('|Get user info of earlier configured user.|GET:/auth/me')
             .action(getAuthUserInfo);
     }
 };

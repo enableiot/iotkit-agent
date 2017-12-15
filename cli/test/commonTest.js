@@ -66,7 +66,7 @@ global.from = 1407979291860;
 global.to   = 1407979292860;
 global.filenameToSave = "value"
 global.logger  = {
-    info : function(){},
+    info : function() {},
     error : function() {},
     debug : function() {}
 };
@@ -76,55 +76,55 @@ console.debug = function() {
 
 
 global.fakeUserAdminData = {
-    initializeUserAdminBaseData: function(username, token){
-	adminDataFile = {}
+    initializeUserAdminBaseData: function(username, token) {
+        adminDataFile = {}
     },
-    saveUserAdminBaseData: function(username, token){
-	adminDataFile.username = username;
-	adminDataFile.userToken = token;
+    saveUserAdminBaseData: function(username, token) {
+        adminDataFile.username = username;
+        adminDataFile.userToken = token;
     },
-    loadUserAdminBaseData: function(){
-	adminDataFile = {}
-	this.addAccount(account);
-	this.addDevice(0, device);
-	this.addComponent(0, 0, component);
-	this.saveUserAdminBaseData(username, token);
-	return Object.assign({}, adminDataFile);
+    loadUserAdminBaseData: function() {
+        adminDataFile = {}
+        this.addAccount(account);
+        this.addDevice(0, device);
+        this.addComponent(0, 0, component);
+        this.saveUserAdminBaseData(username, token);
+        return Object.assign({}, adminDataFile);
     },
-    saveUserAdminData: function(key, value){
-	adminDataFile[key] = value;
+    saveUserAdminData: function(key, value) {
+        adminDataFile[key] = value;
     },
-    addAccount: function(account){
-	adminDataFile.accounts = [];
-	adminDataFile.accounts.push(account);
+    addAccount: function(account) {
+        adminDataFile.accounts = [];
+        adminDataFile.accounts.push(account);
     },
-    updateAccount: function(account){
-	this.addAccount(account);
+    updateAccount: function(account) {
+        this.addAccount(account);
     },
-    deleteAccount: function(account){
-	adminDataFile.accounts = [];
+    deleteAccount: function(account) {
+        adminDataFile.accounts = [];
     },
-    replaceAllDevices: function(index, device){
-	adminDataFile.accounts[0].devices = [];
-	adminDataFile.accounts[0].devices.push(device);
+    replaceAllDevices: function(index, device) {
+        adminDataFile.accounts[0].devices = [];
+        adminDataFile.accounts[0].devices.push(device);
     },
-    addDevice: function(index, device){
-	this.replaceAllDevices(index, device);
+    addDevice: function(index, device) {
+        this.replaceAllDevices(index, device);
     },
-    replaceDevice: function(accountIndex, deviceIndex, device){
-	this.replaceAllDevices(deviceIndex, device);
+    replaceDevice: function(accountIndex, deviceIndex, device) {
+        this.replaceAllDevices(deviceIndex, device);
     },
-    removeDevice: function(accountIndex, deviceIndex){
-	adminDataFile.accounts = [];
-	adminDataFile.accounts.push(account);
-	adminDataFile.accounts[0].devices = [];
+    removeDevice: function(accountIndex, deviceIndex) {
+        adminDataFile.accounts = [];
+        adminDataFile.accounts.push(account);
+        adminDataFile.accounts[0].devices = [];
     },
-    addComponent: function(accountIndex, deviceIndex, component){
-	adminDataFile.accounts[0].devices[0].components = [];
-	adminDataFile.accounts[0].devices[0].components.push(component);
+    addComponent: function(accountIndex, deviceIndex, component) {
+        adminDataFile.accounts[0].devices[0].components = [];
+        adminDataFile.accounts[0].devices[0].components.push(component);
     },
-    deleteComponent: function(accountIndex, DeviceIndex, cidIndex){
-	adminDataFile.accounts[0].devices[0].components = [];
+    deleteComponent: function(accountIndex, DeviceIndex, cidIndex) {
+        adminDataFile.accounts[0].devices[0].components = [];
     }
 }
 
@@ -139,66 +139,65 @@ global.fakeApi = {
 
 
 global.fakeLibTools = {
-    findAccountId: function(accountId, accounts){
-	return {id: accountId, index: 0};
+    findAccountId: function(accountId, accounts) {
+        return {id: accountId, index: 0};
     },
-    findDeviceId: function(deviceId, account){
-	return {id: deviceId, index: 0};
+    findDeviceId: function(deviceId, account) {
+        return {id: deviceId, index: 0};
     },
-    findCid: function(cid, devices){
-	return {id: cid, index: 0};
+    findCid: function(cid, devices) {
+        return {id: cid, index: 0};
     }
 }
 
 global.fakeLibToolsError = {
-    findAccountId: function(accountId, accounts){
-	return null;
+    findAccountId: function(accountId, accounts) {
+        return null;
     },
-    findDeviceId: function(deviceId, accounts){
-	return null;
+    findDeviceId: function(deviceId, accounts) {
+        return null;
     },
-    findCid: function(deviceId, accounts){
-	return null;
+    findCid: function(deviceId, accounts) {
+        return null;
     } 
 }
 
 global.fakeCommon = {
     errors: {
-	"ok":             {"code": 0, "message": "OK"},
-	"responseError":  {"code": 1, "message": "Server Response Error"},
-	"parseJsonError": {"code": 2, "message": "Can't parse JSON"},
-	"accountIdError": {"code": 3, "message": "Account ID not found in local file"},
-	"deviceIdError":  {"code": 4, "message": "Device ID not found in local file"},
-	"cidError":       {"code": 5, "message": "Component ID not found in local file"},
-	"fsError":        {"code": 6, "message": "Filesystem error"}
+        "ok":             {"code": 0, "message": "OK"},
+        "responseError":  {"code": 1, "message": "Server Response Error"},
+        "parseJsonError": {"code": 2, "message": "Can't parse JSON"},
+        "accountIdError": {"code": 3, "message": "Account ID not found in local file"},
+        "deviceIdError":  {"code": 4, "message": "Device ID not found in local file"},
+        "cidError":       {"code": 5, "message": "Component ID not found in local file"},
+        "fsError":        {"code": 6, "message": "Filesystem error"}
     }
 }
 
-global.FakeDate = function(){
+global.FakeDate = function() {
 }
 
-FakeDate.prototype.getTime = function(){
+FakeDate.prototype.getTime = function() {
     return on;
 }
 
 global.fakeFs = {
-    readFileSync:  function(filename, options){
-	if (filename === "value.txt" && options.encoding === "utf8"){
-	    return String(value);
-	}
-	else {
-	    return -1;
-	}
+    readFileSync:  function(filename, options) {
+        if (filename === "value.txt" && options.encoding === "utf8") {
+            return String(value);
+        } else {
+            return -1;
+        }
     }
 }
 global.fakeFsError = {
-    readFileSync:  function(filename, options){
-	throw new Error("Cannot load from file");
+    readFileSync:  function(filename, options) {
+        throw new Error("Cannot load from file");
     }
 }
 
 global.fakeUuid = {
-    v4: function(){
-	return "436e7e74-6771-4898-9057-26932f5eb7e1";
+    v4: function() {
+        return "436e7e74-6771-4898-9057-26932f5eb7e1";
     }
 }

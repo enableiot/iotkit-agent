@@ -33,25 +33,25 @@ var api = require("oisp-sdk-js").api.rest,
     userAdminData = require("../lib/cli-data");
 var errorHandler = {};
 
-var submitData = function(accountId, deviceId, cid, value, jsonString){
+var submitData = function(accountId, deviceId, cid, value, jsonString) {
     logger.info("Starting submitData ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts); 
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.error(common.errors["deviceIdError"].message);
-	errorHandler(null, common.errors["deviceIdError"].code);
+        logger.error(common.errors["deviceIdError"].message);
+        errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     var targetCid = userAdminTools.findCid(cid, userAdminDataObj.accounts[targetAccount.index].devices[targetDevice.index]);
     if (targetCid === null) {
-	logger.error(common.errors["cidError"].message);
-	errorHandler(null, common.errors["cidError"].code);
+        logger.error(common.errors["cidError"].message);
+        errorHandler(null, common.errors["cidError"].code);
     }
     userAdminDataObj.cid = targetCid.id;
     var on = (new Date()).getTime();
@@ -66,59 +66,58 @@ var submitData = function(accountId, deviceId, cid, value, jsonString){
             }
         ]       
     };
-    if (jsonString){
+    if (jsonString) {
         try {
             userAdminDataObj.body.data[0].attributes = JSON.parse(jsonString).attributes;
         } catch (e) {
-	    logger.error(common.errors["parseJsonError"].message + ": " + e);
-	    errorHandler(null, common.errors["parseJsonError"].code);
+            logger.error(common.errors["parseJsonError"].message + ": " + e);
+            errorHandler(null, common.errors["parseJsonError"].code);
         }
     }
-    api.data.submitData(userAdminDataObj, function(err, response){
-        if (!err && response){
+    api.data.submitData(userAdminDataObj, function(err, response) {
+        if (!err && response) {
             logger.info("Info retrieved: ", response);
-        }
-        else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
         }
     });
     
 };
 
 
-var submitDataFromFile = function(accountId, deviceId, cid, filename, jsonString){
+var submitDataFromFile = function(accountId, deviceId, cid, filename, jsonString) {
     logger.info("Starting submitDataFromFile ...");
     var value;
-     try {
-         value = fs.readFileSync(filename, {encoding: "utf8"});
+    try {
+        value = fs.readFileSync(filename, {encoding: "utf8"});
     } catch (e) {
-	logger.error(common.errors["fsError"].message + ": " + e);
-	errorHandler(null, common.errors["fsError"].code);
+        logger.error(common.errors["fsError"].message + ": " + e);
+        errorHandler(null, common.errors["fsError"].code);
     }
     submitData(accountId, deviceId, cid, value.trim(), jsonString);
 };
 
 
-var searchDataToFile = function(accountId, deviceId, cid, from, to, filename/*, jsonString*/){
+var searchDataToFile = function(accountId, deviceId, cid, from, to, filename/*, jsonString*/) {
     logger.info("Starting searchDataToFile ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts); 
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
     var targetDevice = userAdminTools.findDeviceId(deviceId, userAdminDataObj.accounts[targetAccount.index]);
     if (targetDevice === null) {
-	logger.error(common.errors["deviceIdError"].message);
-	errorHandler(null, common.errors["deviceIdError"].code);
+        logger.error(common.errors["deviceIdError"].message);
+        errorHandler(null, common.errors["deviceIdError"].code);
     }
     userAdminDataObj.deviceId = targetDevice.id;
     var targetCid = userAdminTools.findCid(cid, userAdminDataObj.accounts[targetAccount.index].devices[targetDevice.index]);
     if (targetCid === null) {
-	logger.error(common.errors["cidError"].message);
-	errorHandler(null, common.errors["cidError"].code);
+        logger.error(common.errors["cidError"].message);
+        errorHandler(null, common.errors["cidError"].code);
     }
     userAdminDataObj.body = {
         "metrics": [
@@ -133,18 +132,18 @@ var searchDataToFile = function(accountId, deviceId, cid, from, to, filename/*, 
             ]
         }
     };
-    if (from !== ""){
+    if (from !== "") {
         userAdminDataObj.body.from = math.eval(from);
     }
     if (to !== "") {
         userAdminDataObj.body.to = math.eval(to);
     }
-    api.data.searchData(userAdminDataObj, function(err, response){
-        if (!err && response){
+    api.data.searchData(userAdminDataObj, function(err, response) {
+        if (!err && response) {
             if (response.series && filename) {
-                response.series.forEach(function(i){
-                    if (i.points){
-                        i.points.forEach(function(j){
+                response.series.forEach(function(i) {
+                    if (i.points) {
+                        i.points.forEach(function(j) {
                             fs.writeFileSync(filename + "." + j.ts, j.value, {encoding: "utf8"});
                             j.value = "file:" + filename + "." + j.ts;
                         });
@@ -153,66 +152,64 @@ var searchDataToFile = function(accountId, deviceId, cid, from, to, filename/*, 
                 });
             }
             logger.info("Info retrieved: ", response);
-        }
-        else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
         }
     });
 };
 
 
-var searchData = function(accountId, deviceId, cid, from, to, jsonString){
+var searchData = function(accountId, deviceId, cid, from, to, jsonString) {
     logger.info("Starting searchData ...");
     searchDataToFile(accountId, deviceId, cid, from, to, null,jsonString);
 };
 
 
-var searchDataAdvancedToFile = function(accountId, from, to, filename, jsonString){
+var searchDataAdvancedToFile = function(accountId, from, to, filename, jsonString) {
     logger.info("Starting searchData ...");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts); 
     if (targetAccount === null) {
-	logger.error(common.errors["accountIdError"].message);
-	errorHandler(null, common.errors["accountIdError"].code);
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
     }
     userAdminDataObj.accountId = targetAccount.id;
-    if (jsonString){
+    if (jsonString) {
         try {
             userAdminDataObj.body = JSON.parse(jsonString);
         } catch (e) {
-	    logger.error(common.errors["parseJsonError"].message + ": " + e);
-	    errorHandler(null, common.errors["parseJsonError"].code);
+            logger.error(common.errors["parseJsonError"].message + ": " + e);
+            errorHandler(null, common.errors["parseJsonError"].code);
         }
     }
-    if (from !== ""){
+    if (from !== "") {
         userAdminDataObj.body.from = math.eval(from);
     }
     if (to !== "") {
         userAdminDataObj.body.to = math.eval(to);
     }
-    api.data.searchDataAdvanced(userAdminDataObj, function(err, response){
-        if (!err && response){
+    api.data.searchDataAdvanced(userAdminDataObj, function(err, response) {
+        if (!err && response) {
             if (response.data) {
-                response.data.forEach(function(i){
-                    if (i.components){
-                        i.components.forEach(function(j){
-			    if (j.samples){
-				j.samples.forEach(function(k){
-				    fs.writeFileSync(filename + "." + k[0], k[1], {encoding: "utf8"});
-				    k[1] = "file:" + filename + "." + k[0];
-				});
-			    }
+                response.data.forEach(function(i) {
+                    if (i.components) {
+                        i.components.forEach(function(j) {
+                            if (j.samples) {
+                                j.samples.forEach(function(k) {
+                                    fs.writeFileSync(filename + "." + k[0], k[1], {encoding: "utf8"});
+                                    k[1] = "file:" + filename + "." + k[0];
+                                });
+                            }
                         });
                     }
                     
                 });
             }   
             logger.info("Info retrieved: ", response);
-        }
-        else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
         }
     });
 };
@@ -221,7 +218,7 @@ var searchDataAdvancedToFile = function(accountId, from, to, filename, jsonStrin
 
 module.exports = {
     addCommand : function (program, errorHdl) {
-	errorHandler = errorHdl;
+        errorHandler = errorHdl;
         program
             .command('data.post  <accountId> <deviceId> <cid> <value> [jsonString]')
             .description('|Submit data for device.|POST:/v1/api/data/admin/{deviceId}')

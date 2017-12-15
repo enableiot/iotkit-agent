@@ -30,160 +30,151 @@ var api = require("oisp-sdk-js").api.rest,
 var errorHandler = {};
 
 
-var getUserInfo = function(){
+var getUserInfo = function() {
     logger.info("Starting getUserInfo ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
-    api.users.getUserInfo(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.getUserInfo(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var updateUserInfo = function(jsonString){
+var updateUserInfo = function(jsonString) {
     logger.info("Starting UpdateUserInfo with jsonString", jsonString, "...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     try {
-	user_admin_data.body = JSON.parse(jsonString);
+        user_admin_data.body = JSON.parse(jsonString);
     } catch (e) {
-	logger.error(common.errors["parseJsonError"].message + ": " + e);
-	errorHandler(null, common.errors["parseJsonError"].code);
+        logger.error(common.errors["parseJsonError"].message + ": " + e);
+        errorHandler(null, common.errors["parseJsonError"].code);
     }
-    api.users.updateUserInfo(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.updateUserInfo(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var deleteUser = function(userId){
+var deleteUser = function(userId) {
     logger.info("Starting Delete User ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.deleteUserId = userId;
-    api.users.deleteUser(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.deleteUser(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var requestUserPasswordChange = function(emailAddress){
+var requestUserPasswordChange = function(emailAddress) {
     logger.info("Starting requestPasswordChange ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.body = {email: emailAddress};
     user_admin_data.userToken = null;
-    api.users.requestUserPasswordChange(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.requestUserPasswordChange(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var updateUserPassword = function(token, new_password){
+var updateUserPassword = function(token, new_password) {
     logger.info("Starting updateUserPassword ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.userToken = null;
     user_admin_data.body = {token:  token, password: new_password};
-    api.users.updateUserPassword(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.updateUserPassword(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var changeUserPassword = function(currentPW, newPW){
+var changeUserPassword = function(currentPW, newPW) {
     logger.info("Starting changeUserPassword ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.body = {currentpwd: currentPW, password: newPW};
-    api.users.changeUserPassword(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.changeUserPassword(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var requestUserActivation = function(email){
+var requestUserActivation = function(email) {
     logger.info("Starting requestUserActivation ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.userToken = null;
     user_admin_data.body = {email: email};
-    api.users.requestUserActivation(user_admin_data, function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.requestUserActivation(user_admin_data, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
-var addUser = function(email, password){
+var addUser = function(email, password) {
     logger.info("Starting addUser ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.body = {"email": email, "password": password};
-    api.users.addUser(user_admin_data,function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.addUser(user_admin_data,function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
-var activateUser = function(token){
+var activateUser = function(token) {
     logger.info("Starting activate ...");
     var user_admin_data = userAdminData.loadUserAdminBaseData();
     user_admin_data.userToken = null;
     user_admin_data.body = {"token": token};
-    api.users.activateUser(user_admin_data,function(err, response){
-	if (!err && response){
-	    logger.info("Info retrieved: ", response);
-	}
-	else{
-	    logger.error(common.errors["responseError"].message + ": " + err);
-	    errorHandler(null, common.errors["responseError"].code);
-	}
+    api.users.activateUser(user_admin_data,function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError"].code);
+        }
     });
 };
 
 
 module.exports = {
     addCommand : function (program, errorHdl) {
-	errorHandler = errorHdl;
+        errorHandler = errorHdl;
         program
             .command('users.get')
             .description('|Get user details.|GET:/v1/api/users/{userId}')
@@ -196,30 +187,29 @@ module.exports = {
             .command('users.delete <userId>')
             .description('|Delete user.|DELETE:/v1/api/users/{userId}')
             .action(deleteUser);
-	program
+        program
             .command('users.post.forgot_password <email-address>')
             .description('|Request new password when password is lost. Request will be sent to email-address.|POST:/v1/api/users/forgot_password')
             .action(requestUserPasswordChange);
-	program
+        program
             .command('users.put.forgot_password <token> <new-password>')
             .description('|Update password with received token provided by email.|PUT:/v1/api/users/forgot_password.')
             .action(updateUserPassword);
-	program
+        program
             .command('users.put.change_password <currentPW> <newPW>')
             .description('|Update password. User is identified by email.|PUT:/v1/api/users/{email}/change_password')
             .action(changeUserPassword);
-	program
+        program
             .command('users.put.request_user_activation <email>')
             .description('|Request user activatation by email.|PUT:/v1/api/users/request_user_activation')
             .action(requestUserActivation);
-	program
+        program
             .command('users.post <email> <password>')
             .description('|Create user in DB and send activation email.|POST:/v1/api/users')
             .action(addUser);
-	program
+        program
             .command('users.post.activate <token>')
             .description('|Send activation token which has been received by email.|POST:/v1/api/users/activate')
             .action(activateUser);
-	
     }
 };

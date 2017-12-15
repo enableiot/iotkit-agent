@@ -28,10 +28,6 @@ var fs = require('fs'),
 
 var config = {};
 
-function isAbsolutePath(location) { // Change to path.isAbsolute when upgrading Node.js
-    return path.resolve(location) === path.normalize(location);
-}
-
 if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
 

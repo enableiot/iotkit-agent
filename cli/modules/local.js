@@ -25,21 +25,21 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var userAdminData = require("../lib/cli-data");
 
 
-var getLocalAccounts = function(){
+var getLocalAccounts = function() {
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     if (userAdminDataObj.accounts) {
-	userAdminDataObj.accounts.forEach(function(i){
-	    console.log(i.id, i.name);
-	});
+        userAdminDataObj.accounts.forEach(function(i) {
+            console.log(i.id, i.name);
+        });
     }
     
 };
 
 
-var getUserId = function(){
+var getUserId = function() {
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
     if (userAdminDataObj.userId) {
-	console.log(userAdminDataObj.userId);
+        console.log(userAdminDataObj.userId);
     }
     
 };
@@ -51,11 +51,11 @@ module.exports = {
     addCommand : function (program) {
         program
             .command('local.accounts')
-	    .description('|Get list of accounts from local config. Useful for shell processing.| N/A only local processing')
+            .description('|Get list of accounts from local config. Useful for shell processing.| N/A only local processing')
             .action(getLocalAccounts);
-	program
+        program
             .command('local.userId')
-	    .description('|Get userId. Useful for shell processing.| N/A only local processing')
+            .description('|Get userId. Useful for shell processing.| N/A only local processing')
             .action(getUserId);
     }
 };
