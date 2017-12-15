@@ -28,11 +28,15 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
-            jshint: 'buildscripts/jshint',
-            jsfiles: ['Gruntfile.js',
+            eslint: 'buildscripts/eslint',
+            jsfiles: ['*.js',
+                      'admin/*.js',
+                      'bin/*.js',
+                      'data/*.js',
                       'lib/**/*.js',
-                      'admin/**/*.js',
-                      'listeners/**/*.js']
+                      'listeners/**/*.js'
+            ],
+            testfiles: ['test/*.js']
         },
         license_finder: {
             default_options: {
@@ -52,25 +56,20 @@ module.exports = function(grunt) {
                 }
             }
         },
-        jshint: {
-			options: {
-				jshintrc: '<%= dirs.jshint %>/config.json',
-				ignores: ['lib/deprected/*.js']
-			},
-			local: {
-				src: ['<%= dirs.jsfiles %>'],
-				options: {
-					force: true
-				}
-			},
-			teamcity: {
-				src: ['<%= dirs.jsfiles %>'],
-				options: {
-					force: true,
-					reporter: require('jshint-teamcity')
-				}
-			}
-		},
+        eslint: {
+            local: {
+                src: ['<%= dirs.jsfiles %>'],
+                options: {
+                    configFile: '<%= dirs.eslint %>/config.json'
+                }
+            },
+            tests: {
+                src: ['<%= dirs.testfiles %>'],
+                options: {
+                    configFile: '<%= dirs.eslint %>/test-config.json'
+                }
+            }
+        },
         compress: {
             teamcity: {
                 options: {
@@ -105,26 +104,7 @@ module.exports = function(grunt) {
                    coverageFolder: 'dist/coverage',
                    reportFormats: ['lcov']
                }
-           },
-           teamcity: {
-                src: 'test/', // the folder, not the files
-                options: {
-                    ui: 'bdd',
-                    coverage: true,
-                    recursive: true,
-                    reporter: 'mocha-teamcity-reporter',
-                    timeout: 20000,
-                    mask: '*Tests.js',
-                    /*check: {
-                        lines: 70,
-                        statements: 70,
-                        function: 70
-                    },*/
-                    root: '.', // define where the cover task should consider the root of libraries that are covered by tests
-                    coverageFolder: 'dist/coverage',
-                    reportFormats: ['lcov', 'teamcity']
-                }
-            }
+           }
         }
     });
 
@@ -135,16 +115,10 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-mocha-istanbul');
     grunt.loadNpmTasks('grunt-license-finder');
-
-    // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('gruntify-eslint');
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Default task(s).
-    grunt.registerTask('default', ['jshint:local', 'mocha_istanbul:local']);
-
-    grunt.registerTask('teamcity_codevalidation', ['jshint:teamcity',
-                                                   'mocha_istanbul:teamcity']);
+    grunt.registerTask('default', ['eslint:local', 'eslint:tests', 'mocha_istanbul:local']);
     grunt.registerTask('packaging', ['compress:teamcity']);
-};
-
+}

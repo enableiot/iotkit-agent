@@ -1,0 +1,11 @@
+{
+	"env": {
+		"node": true
+	},
+	"rules": {
+	    "indent": ["error", 4, { "ArrayExpression": "first", "ObjectExpression": "first" }],
+	    "brace-style": ["error", "1tbs"],
+	    "space-before-blocks": "error",
+	    "no-mixed-spaces-and-tabs": "error"
+	}
+}
