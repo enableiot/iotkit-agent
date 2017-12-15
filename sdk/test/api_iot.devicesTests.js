@@ -27,7 +27,7 @@ var assert =  require('chai').assert,
 
 var fileToTest = "../api/rest/iot.devices.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
     var logger  = {
         info : function() {},
@@ -86,14 +86,15 @@ describe(fileToTest, function(){
         toTest.__set__("adminDef.devices", Option);
         toTest.registerDevice(data, callBack);
     });
-    it('Shall Sent Update Data To Server >', function(done){
+    it('Shall Sent Update Data To Server >', function(done) {
         var optData = {
             method: 'PUT',
             host: "myhost",
             body: "mybody"
         };
 
-        var data = {deviceid : "did",
+        var data = {
+            deviceid : "did",
             body: { data: "message" }
         };
         var reData = {
@@ -121,16 +122,17 @@ describe(fileToTest, function(){
         toTest.updateMetadataDevice(data, callBack);
 
     });
-    it('Shall Sent Component Registration To Server >', function(done){
+    it('Shall Sent Component Registration To Server >', function(done) {
         var optData = {
             method: 'POST',
             host: "myhost",
             body: "mybody"
         };
 
-        var data = {deviceId : "did",
-                    body: { data: "message" }
-                    };
+        var data = {
+            deviceId : "did",
+            body: { data: "message" }
+        };
         var reData = {
             x : 10,
             y : 220,
@@ -139,7 +141,7 @@ describe(fileToTest, function(){
 
         Option.DeviceComponentOption = function (device) {
             assert.deepEqual(device, data, "The Data is not the expected");
-             return optData;
+            return optData;
         };
         httpClientMock.httpRequest = function (opt, cb) {
             assert.deepEqual(opt, optData, "the option object were missed");
@@ -159,14 +161,15 @@ describe(fileToTest, function(){
         toTest.registerComponents(dataClone, callBack);
 
     });
-    it('Shall Return an Error in a fail Registration To Server >', function(done){
+    it('Shall Return an Error in a fail Registration To Server >', function(done) {
         var optData = {
             method: 'POST',
             host: "myhost",
             body: "mybody"
         };
 
-        var data = {deviceId : "did",
+        var data = {
+            deviceId : "did",
             body: { data: "message" }
         };
         var reData = {

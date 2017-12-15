@@ -30,10 +30,10 @@ var GlobalConfig = require('../config');
 
 var fileToTest = "../api/rest/devices.def.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
     var logger  = {
-        info : function(){},
+        info : function() {},
         error : function() {},
         debug : function() {}
     };
@@ -61,10 +61,11 @@ describe(fileToTest, function(){
         toTest.__set__('config', config);
         var data = {
             deviceId: 20000,
-            body: {a: 1,
-                   b: 2,
-                   c: [1,2,3]
-                    }
+            body: {
+                a: 1,
+                b: 2,
+                c: [1,2,3]
+            }
         };
 
         var deTest = new toTest.DeviceActivateOption(data);
@@ -98,7 +99,8 @@ describe(fileToTest, function(){
         toTest.__set__('config', config);
         var data = {
             deviceId: 20000,
-            body: {a: 1,
+            body: {
+                a: 1,
                 b: 2,
                 c: [1,2,3]
             }
@@ -138,7 +140,8 @@ describe(fileToTest, function(){
         var data = {
             deviceId: 20000,
             deviceToken: "Thisis Mytoken",
-            body: {a: 1,
+            body: {
+                a: 1,
                 b: 2,
                 c: [1,2,3]
             }
@@ -154,8 +157,8 @@ describe(fileToTest, function(){
         assert.equal(urlD.pathname, "/v1/api/devices/20000/components", "path improper formed");
         assert.equal(deTest.body, JSON.stringify(data.body));
         assert.equal(deTest.method, "POST", "The verb is incorrect");
-       // var Proxy = config.api.proxy.host + ":" + config.api.proxy.port;
-      //  assert.equal(deTest.proxy, Proxy, "The verb is incorrect");
+        // var Proxy = config.api.proxy.host + ":" + config.api.proxy.port;
+        //  assert.equal(deTest.proxy, Proxy, "The verb is incorrect");
         assert.isObject(deTest.headers, "Shall be an Object with a Key-Value for HTTP Header");
         assert.property(deTest.headers, "Content-type", "The content Type has not Set");
         assert.property(deTest.headers, "Authorization", "The Authorization Header has not set");
@@ -187,7 +190,8 @@ describe(fileToTest, function(){
         var data = {
             deviceId: 20022,
             deviceToken: "Thisis Mytoken",
-            body: {a: 1,
+            body: {
+                a: 1,
                 d: 2,
                 n: [2,3]
             }

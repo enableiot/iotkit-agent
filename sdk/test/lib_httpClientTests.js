@@ -27,11 +27,11 @@ var assert =  require('chai').assert,
 
 var fileToTest = "../lib/httpClient.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
 
     var logger  = {
-        info : function(){},
+        info : function() {},
         error : function() {},
         debug : function() {}
     };
@@ -43,7 +43,7 @@ describe(fileToTest, function(){
         statusCode: 200,
         headers: {'content-type': "application/json"}
     };
-    it('Shall Connect to Specific Broker using HTTP >', function(done){
+    it('Shall Connect to Specific Broker using HTTP >', function(done) {
         var body = {
             a:1,
             b:2,
@@ -65,15 +65,14 @@ describe(fileToTest, function(){
             callback(null, resp, JSON.stringify(body));
         };
         toTest.__set__("request", request);
-        toTest.httpRequest(myOption, function(err, result){
-           assert.isObject(result, "The result data is not an object");
-           assert.isNull(err, "The error shall be null");
-           assert.deepEqual(result, body, "The result were missinge");
-           done();
-
+        toTest.httpRequest(myOption, function(err, result) {
+            assert.isObject(result, "The result data is not an object");
+            assert.isNull(err, "The error shall be null");
+            assert.deepEqual(result, body, "The result were missinge");
+            done();
         });
     });
-    it('Shall Connect to Specific Broker using HTTP with a 201 as Status code >', function(done){
+    it('Shall Connect to Specific Broker using HTTP with a 201 as Status code >', function(done) {
         var body = {
             a:1,
             b:3,
@@ -99,7 +98,7 @@ describe(fileToTest, function(){
             callback(null, resp, JSON.stringify(body));
         };
         toTest.__set__("request", request);
-        toTest.httpRequest(myOption, function(err, result){
+        toTest.httpRequest(myOption, function(err, result) {
             assert.isObject(result, "The result data is not an object");
             assert.isNull(err, "the error shall be null");
             assert.deepEqual(result, body, "The result were missinge");
@@ -107,7 +106,7 @@ describe(fileToTest, function(){
 
         });
     });
-    it('Shall Connect to Specific Broker using HTTP with a 204 as Status code >', function(done){
+    it('Shall Connect to Specific Broker using HTTP with a 204 as Status code >', function(done) {
         var body = {
             a:1,
             b:3,
@@ -133,7 +132,7 @@ describe(fileToTest, function(){
             callback(null, resp, null);
         };
         toTest.__set__("request", request);
-        toTest.httpRequest(myOption, function(err, result){
+        toTest.httpRequest(myOption, function(err, result) {
             assert.isObject(result, "The result data is not an object");
             assert.isNull(err, "The error shall be null");
             assert.equal(result.status, "Done", "The result were missing");
@@ -161,7 +160,7 @@ describe(fileToTest, function(){
             callback(null, resp, "@@@@");
         };
         toTest.__set__("request", request);
-        toTest.httpRequest(myOption, function(result){
+        toTest.httpRequest(myOption, function(result) {
             assert.isNull(result, "The result data shall be null");
             done();
 

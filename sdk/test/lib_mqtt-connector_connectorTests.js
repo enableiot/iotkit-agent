@@ -28,36 +28,36 @@ var assert =  require('chai').assert,
 
 var fileToTest = "../api/mqtt/connector";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
 
-   var mqtt = {
-            createSecureClient : function() {},
-            createClient : function() {},
-            MqttClient: function () {
-                        this.subscribe = {};
-                        this.publish = {};
-                        this.on = function(){};
-                 }
-            };
+    var mqtt = {
+        createSecureClient : function() {},
+        createClient : function() {},
+        MqttClient: function () {
+            this.subscribe = {};
+            this.publish = {};
+            this.on = function() {};
+        }
+    };
     var logger  = {
-        info : function(){},
+        info : function() {},
         error : function() {},
         debug : function() {}
     };
 
-    var errorHandler = ('Connection Error', function(){
+    var errorHandler = ('Connection Error', function() {
         return this;
     });
 
     console.debug = function() {
         console.log(arguments);
     };
-    beforeEach(function (done){
+    beforeEach(function (done) {
         toTest.__set__("broker", null);
         done();
     });
-    it('Shall Connect to Specific Broker using None Secure Connection >', function(done){
+    it('Shall Connect to Specific Broker using None Secure Connection >', function(done) {
         toTest.__set__("mqtt", mqtt);
 
         var config = {
@@ -87,14 +87,14 @@ describe(fileToTest, function(){
             done();
         });
     });
-    it('Shall Connect to Specific Broker using Secure Connection >', function(done){
+    it('Shall Connect to Specific Broker using Secure Connection >', function(done) {
         toTest.__set__("mqtt", mqtt);
         var config = {
-                    host: "myHosttest",
-                    port: 9090909,
-                    secure: true,
-                    retries: 2
-                    },
+                host: "myHosttest",
+                port: 9090909,
+                secure: true,
+                retries: 2
+            },
             id = "0a-03-12-22";
         var myBroker = toTest.singleton(config, logger);
         var client = new mqtt.MqttClient();
@@ -114,7 +114,7 @@ describe(fileToTest, function(){
             done();
         });
     });
-    it('Shall Catch a Exception at Connect >', function(done){
+    it('Shall Catch a Exception at Connect >', function(done) {
         toTest.__set__("mqtt", mqtt);
         var config = {
                 host: "myHosttest",
@@ -135,7 +135,7 @@ describe(fileToTest, function(){
             done();
         });
     });
-    it('Shall Retries to Connect to Specific Broker >', function(done){
+    it('Shall Retries to Connect to Specific Broker >', function(done) {
         toTest.__set__("mqtt", mqtt);
 
         var config = {
@@ -164,11 +164,9 @@ describe(fileToTest, function(){
             done();
         });
 
-        setTimeout(function(){
-           client.connected = true;
+        setTimeout(function() {
+            client.connected = true;
         }, 1000);
-
-
     });
     it('Shall Publish to Specific Broker Topic >', function(done) {
         toTest.__set__("mqtt", mqtt);
@@ -251,9 +249,9 @@ describe(fileToTest, function(){
         client.on = errorHandler;
 
         myBroker.connect(function(err) {
-           assert.isNull(err, "None error shall returned");
-           myBroker.bind(topicPattern, topicHandler);
-           myBroker.onMessage(realTopic, msg);
+            assert.isNull(err, "None error shall returned");
+            myBroker.bind(topicPattern, topicHandler);
+            myBroker.onMessage(realTopic, msg);
         });
     });
     it('Shall Listen to on Message >', function (done) {
@@ -274,7 +272,7 @@ describe(fileToTest, function(){
         var client = new mqtt.MqttClient();
         var callHandler = null;
         client.on = function (event, handler) {
-            if(event === "error"){
+            if(event === "error") {
                 return client;
             }
             assert.isFunction(handler, "The handle shall be a function");
@@ -286,7 +284,6 @@ describe(fileToTest, function(){
             }
 
             console.log(event);
-           // handler("connector", JSON.stringify(msg));
         };
 
         mqtt.createClient = function (port, host ) {
@@ -320,7 +317,7 @@ describe(fileToTest, function(){
         var callHandler = null;
         var client = new mqtt.MqttClient();
         client.on = function (event, handler) {
-            if(event === "error"){
+            if(event === "error") {
                 return client;
             }
             assert.isFunction(handler, "The handle shall be a function");
@@ -370,7 +367,7 @@ describe(fileToTest, function(){
         var callHandler = null;
         var client = new mqtt.MqttClient();
         client.on = function (event, handler) {
-            if(event === "error"){
+            if(event === "error") {
                 return client;
             }
             assert.isFunction(handler, "The handle shall be a function");
@@ -429,7 +426,7 @@ describe(fileToTest, function(){
         var callHandler = null;
         var client = new mqtt.MqttClient();
         client.on = function (event, handler) {
-            if(event === "error"){
+            if(event === "error") {
                 return client;
             }
             assert.isFunction(handler, "The handle shall be a function");
@@ -464,17 +461,16 @@ describe(fileToTest, function(){
             myBroker.bind(topicPattern, topicHandler, function() {
                 callHandler("dev/"+id+"/act", JSON.stringify(msg));
             });
-            //myBroker.onMessage(realTopic, msg);
         });
     });
-    it('Shall Disconnect from Broker>', function(done){
+    it('Shall Disconnect from Broker>', function(done) {
         toTest.__set__("mqtt", mqtt);
         var config = {
-                host: "myHosttest",
-                port: 9090909,
-                secure: false,
-                retries: 2
-            };
+            host: "myHosttest",
+            port: 9090909,
+            secure: false,
+            retries: 2
+        };
         var myBroker = toTest.singleton(config, logger);
         var client = new mqtt.MqttClient();
         mqtt.createClient = function (port, host ) {
