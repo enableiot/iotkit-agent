@@ -46,6 +46,9 @@ if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local")
     config.connector.rest.port = 80;
     config.connector.rest.protocol= "http";
     config.logger.PATH = './';
+
+    delete process.env["http_proxy"];
+    delete process.env["https_proxy"];
 }
 
 /* override the log level */
