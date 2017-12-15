@@ -34,7 +34,8 @@ module.exports = function(grunt) {
                       'config/*.js',
                       'lib/**/*.js',
                       'lib/*.js',
-                      '*.js']
+                      '*.js'],
+            testfiles: ['test/*.js']
         },
         license_finder: {
             default_options: {
@@ -55,11 +56,17 @@ module.exports = function(grunt) {
             }
         },
         eslint: {
-            options: {
-                configFile: '<%= dirs.eslint %>/config.json'
-            },
             local: {
-                src: ['<%= dirs.jsfiles %>']
+                src: ['<%= dirs.jsfiles %>'],
+                options: {
+                    configFile: '<%= dirs.eslint %>/config.json'
+                }
+            },
+            tests: {
+                src: ['<%= dirs.testfiles %>'],
+                options: {
+                    configFile: '<%= dirs.eslint %>/test-config.json'
+                }
             }
         },
         compress: {
@@ -112,7 +119,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Default task(s).
-    grunt.registerTask('default', ['eslint:local', 'mocha_istanbul:local']);
+    grunt.registerTask('default', ['eslint:local', 'eslint:tests', 'mocha_istanbul:local']);
     grunt.registerTask('packaging', ['compress:teamcity']);
 };
 
