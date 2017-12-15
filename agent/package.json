@@ -39,9 +39,10 @@
   "homepage": "https://github.com/enableiot/iotkit-agent",
   "devDependencies": {
     "grunt": "^0.4.4",
+    "grunt-cli": "^1.2.0",
     "mocha": "^1.18.2",
     "rewire": "^2.0.0",
-    "grunt-contrib-jshint": "^0.10.0",
+    "gruntify-eslint": "^4.0.0",
     "jshint-teamcity": "^1.0.4",
     "chai": "^1.9.1",
     "grunt-contrib-compress": "^0.8.0",
