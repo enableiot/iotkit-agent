@@ -26,7 +26,7 @@ var assert =  require('chai').assert,
     rewire = require('rewire');
 var fileToTest = "../lib/data.submission.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
     var logger = {
         info : function() {},
@@ -45,25 +45,25 @@ describe(fileToTest, function(){
             x: "Sensor Name",
             v: "31"
         }
-       store.exist = function (data) {
-                assert.isFalse(true, "The message shall not be going through");
-                return true;
-            };
+        store.exist = function (data) {
+            assert.isFalse(true, "The message shall not be going through");
+            return true;
+        };
         var handler = toTest.init(connector, store, logger);
-        var process = handler.submission(wrongMessage, function (process){
+        var process = handler.submission(wrongMessage, function (process) {
             assert.isFalse(process, "Message Shall be not processed  invalid n key")
             //  assert.isFalse(process, "Message Shall be not processed  invalid n key");
             wrongMessage = {
                 n: "Sensor Name",
                 tw: "SensorType.v1"
             };
-            handler.submission(wrongMessage, function(process){
+            handler.submission(wrongMessage, function(process) {
                 assert.isFalse(process, "Message Shall be not processed Msg - invalid t key");
                 wrongMessage = {
                     n: 1,
                     v: "SensorType.v1"
                 };
-                handler.submission(wrongMessage, function(process){
+                handler.submission(wrongMessage, function(process) {
                     wrongMessage = {
                         n: "",
                         v: "SensorType.v1"
@@ -75,7 +75,7 @@ describe(fileToTest, function(){
                 });
             });
         });
-     });
+    });
     it('Shall Return True if it a valid Registration Message >', function(done) {
         var okMessage = {
             n: "Sensor Name",
@@ -98,12 +98,12 @@ describe(fileToTest, function(){
             assert.property(metric, "on", "It is required the ON Message");
             assert.equal(metric.on, okMessage.on, "The TimeStamp were not propagated");
             assert.equal(metric.count, 1, " The count shall be 1");
-   //         done();
+            //         done();
             callback(true);
             return;
         };
         var handler = toTest.init(connector, store, logger);
-        handler.submission(okMessage, function(status){
+        handler.submission(okMessage, function(status) {
             assert.isTrue(status, "Message Shall be processed Msg ");
             done();
         });
@@ -116,8 +116,8 @@ describe(fileToTest, function(){
             on: 1234567890
         };
         var ci = { cid: "thisCID",
-            n: okMessage.n,
-            t: "thisT"};
+                   n: okMessage.n,
+                   t: "thisT"};
         var store = {
             byName: function (name) {
                 assert.isString(name, "Shall be the name of the Component");
@@ -133,9 +133,9 @@ describe(fileToTest, function(){
             assert.equal(metric.count, 1, " The count shall be 1");
             //         done();
             callback();
-         };
+        };
         var handler = toTest.init(connector, store, logger);
-        handler.submission(okMessage, function (process){
+        handler.submission(okMessage, function (process) {
             assert.isTrue(process, "Message Shall be processed Msg ");
             done();
         });

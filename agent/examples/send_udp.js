@@ -43,7 +43,7 @@ var data = "{\"n\": \"" + component + "\", \"v\": \"" + value + "\"}";
 var dgram = require('dgram');
 var message = new Buffer(data);
 var client = dgram.createSocket("udp4");
-client.send(message, 0, message.length, port, endpoint, function(err, bytes) {
-  client.close();
-  process.exit(0);
+client.send(message, 0, message.length, port, endpoint, function() {
+    client.close();
+    process.exit(0);
 });

@@ -56,7 +56,7 @@ var Data = function (connector, SensorStore, logT) {
             if (cid) {
                 msg.cid = cid.cid; //Add component id to convert to Proper  Data ingestion message
                 metric.set(msg);
-                me.connector.dataSubmit(metric, function(dat){
+                me.connector.dataSubmit(metric, function(dat) {
                     me.logger.info("Response received: ", dat);
                     return callback(dat);
                 });

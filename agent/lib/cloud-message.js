@@ -45,7 +45,7 @@ module.exports.metadataExtended = function  (gatewayId, callback) {
         gatewayId : gatewayId
     };
     callback(att);
-   /* util.externalInfo(function (data) {
+    /* util.externalInfo(function (data) {
         if (data) {
             att.loc = data.loc.split(',');
             att.loc = att.loc.map(function (od){

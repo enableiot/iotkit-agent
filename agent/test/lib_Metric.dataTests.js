@@ -26,7 +26,7 @@ var assert =  require('chai').assert,
     rewire = require('rewire');
 var fileToTest = "../lib/data/Metric.data.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
     var startData = Date.now();
     it('Shall Return Metric empty Object >', function(done) {
@@ -125,7 +125,7 @@ describe(fileToTest, function(){
         assert.lengthOf(mMetricon.data, mMetricon.count, "The length of data is not the expected");
 
         done();
-   });
+    });
     it('Shall Convert Metric Obj to MQTT with a multiple data>', function(done) {
         var Metric  = toTest.init();
         var mMetricon = new Metric();

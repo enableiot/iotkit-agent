@@ -27,7 +27,7 @@ var path = require('path'),
     rewire = require('rewire');
 var fileToTest = "../lib/sensors-store.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var logger = {
         info : function() {},
         error : function() {},
@@ -39,16 +39,16 @@ describe(fileToTest, function(){
 
     describe("Stora shall Read/Write from source", function () {
         var common = {
-            readFileToJson : function (){},
-            writeToJson: function(){},
-            getConfig: function(){}
+            readFileToJson : function () {},
+            writeToJson: function() {},
+            getConfig: function() {}
         };
         var toTest;
         before(function(done) {
             toTest = rewire(fileToTest);
             done();
         });
-        after(function (done){
+        after(function (done) {
             toTest = null;
             done();
         });
@@ -76,7 +76,7 @@ describe(fileToTest, function(){
 
             var storeName = "deviceTest.json";
 
-            common.getConfig = function(){
+            common.getConfig = function() {
                 return config;
             };
 
@@ -87,7 +87,7 @@ describe(fileToTest, function(){
                 return dataFile;
             };
 
-            common.getDeviceConfig = function(){
+            common.getDeviceConfig = function() {
                 return dataFile;
             };
 
@@ -184,13 +184,13 @@ describe(fileToTest, function(){
             var f = path.join(__dirname, '../data/' + storeName);
             myComm.writeToJson(f, dataFile);
 
-            myComm.getDeviceConfig = function(){
+            myComm.getDeviceConfig = function() {
                 return dataFile;
             };
 
             done();
         });
-        after(function(done){
+        after(function(done) {
             toTest = null;
             done();
         });

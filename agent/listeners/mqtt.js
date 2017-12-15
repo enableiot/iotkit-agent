@@ -49,11 +49,11 @@ var buildPath = function (path, data) {
 
 exports.init = function(conf, logger, onMessage, deviceId) {
 
-  var mqttServerPort = conf.listeners.mqtt_port || 1883;
+    var mqttServerPort = conf.listeners.mqtt_port || 1883;
 
-  var filename = conf.token_file || "token.json";
-  var fullFilename = path.join(__dirname, '../data/' +  filename);
-  var secret = { };
+    var filename = conf.token_file || "token.json";
+    var fullFilename = path.join(__dirname, '../data/' +  filename);
+    var secret = { };
     if (fs.existsSync(fullFilename)) {
         secret = common.readFileToJson(fullFilename);
     } else {
@@ -62,7 +62,7 @@ exports.init = function(conf, logger, onMessage, deviceId) {
         secret = common.readFileToJson(fullFilename);
     }
 
-  var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{deviceid}";
+    var metric_topic = conf.connector.mqtt.topic.metric_topic || "server/metric/{accountid}/{deviceid}";
 
     var tlsArgs = { };
     var verifyCertKeyPath = conf.connector.mqtt.key || './certs/client.key';
@@ -81,73 +81,73 @@ exports.init = function(conf, logger, onMessage, deviceId) {
         };
     }
 
-  var mqttServer = mqtt.createServer(function(client) {
+    var mqttServer = mqtt.createServer(function(client) {
 
-    client.on('connect', function(packet) {
-      client.connack({returnCode: 0});
-      client.id = packet.clientId;
-      logger.debug('MQTT Client connected: ', packet.clientId);
-    });
+        client.on('connect', function(packet) {
+            client.connack({returnCode: 0});
+            client.id = packet.clientId;
+            logger.debug('MQTT Client connected: ', packet.clientId);
+        });
 
-    client.on('publish', function(packet) {
-      logger.debug('MQTT Topic: %s Payload: %s', packet.topic, packet.payload);
-      try {
-        onMessage(JSON.parse(packet.payload));
-      } catch (ex) {
-        logger.error('MQTT Error on message: %s', ex);
-      }
-  });
+        client.on('publish', function(packet) {
+            logger.debug('MQTT Topic: %s Payload: %s', packet.topic, packet.payload);
+            try {
+                onMessage(JSON.parse(packet.payload));
+            } catch (ex) {
+                logger.error('MQTT Error on message: %s', ex);
+            }
+        });
 
-    client.on('subscribe', function(packet) {
-        try {
+        client.on('subscribe', function(packet) {
+            try {
             // create a new client object to the new online broker
             // subscribe
 
-            var newclient;
-            var topic = packet.subscriptions[0].topic;
+                var newclient;
+                var topic = packet.subscriptions[0].topic;
 
-            if(conf.connector.mqtt.secure){
-                newclient = mqtt.createSecureClient(conf.connector.mqtt.port, conf.connector.mqtt.host, tlsArgs);
-            } else {
-                newclient = mqtt.createClient(conf.connector.mqtt.port, conf.connector.mqtt.host);
+                if(conf.connector.mqtt.secure) {
+                    newclient = mqtt.createSecureClient(conf.connector.mqtt.port, conf.connector.mqtt.host, tlsArgs);
+                } else {
+                    newclient = mqtt.createClient(conf.connector.mqtt.port, conf.connector.mqtt.host);
+                }
+
+                if(topic === 'data') {
+                    newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]));
+                    logger.info('Subscribed to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]));
+                } else {
+                    newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
+                    logger.info('Subscribing to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
+                }
+
+                newclient.on('message', function (topic, message) {
+                    logger.info('Received a message on subscribed topic: ' + topic);
+                    client.publish({"topic": topic, "payload": message});
+                });
+            } catch (ex) {
+                logger.error('Error on message: %s', ex.message);
+                logger.error(ex.stack);
             }
+        });
 
-            if(topic === 'data'){
-                newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]));
-                logger.info('Subscribed to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]));
-            } else {
-                newclient.subscribe(buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
-                logger.info('Subscribing to topic:' + buildPath(metric_topic, [secret.accountId, deviceId]) + '/' + topic);
-            }
+        client.on('pingreq', function() {
+            client.pingresp();
+        });
 
-            newclient.on('message', function (topic, message) {
-                logger.info('Received a message on subscribed topic: ' + topic);
-                client.publish({"topic": topic, "payload": message});
-            });
-        } catch (ex) {
-            logger.error('Error on message: %s', ex.message);
-            logger.error(ex.stack);
-        }
-    });
+        client.on('disconnect', function() {
+            client.stream.end();
+        });
 
-    client.on('pingreq', function() {
-      client.pingresp();
-    });
+        client.on('error', function(err) {
+            //client.stream.end();
+            logger.error('MQTT Error: ', err);
+        });
 
-    client.on('disconnect', function() {
-      client.stream.end();
-    });
+    }).listen(mqttServerPort);
 
-    client.on('error', function(err) {
-      //client.stream.end();
-      logger.error('MQTT Error: ', err);
-    });
+    logger.info("MQTT listener started on port: ", mqttServerPort);
 
-  }).listen(mqttServerPort);
-
-  logger.info("MQTT listener started on port: ", mqttServerPort);
-
-  return mqttServer;
+    return mqttServer;
 
 };
 

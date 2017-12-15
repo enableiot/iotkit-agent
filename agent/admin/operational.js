@@ -45,8 +45,7 @@ var activate = function (code) {
             if (err) {
                 logger.error("Error in the activation process ...", err);
                 exitCode = exitMessageCode.ERROR;
-            }
-            else{
+            } else{
                 configurator.setDeviceId(id);
             }
             process.exit(exitCode);
@@ -76,7 +75,7 @@ function testConnection () {
                 exitCode = exitMessageCode.ERROR;
             }
             if(conf.default_connector === 'rest+ws') {
-		var deviceInfo = common.getDeviceConfig();
+                var deviceInfo = common.getDeviceConfig();
                 var WS = Websocket.singleton(conf, deviceInfo, logger);
                 WS.client.on('connect', function(connection) {
                     connection.on('close', function(reasonCode, description) {

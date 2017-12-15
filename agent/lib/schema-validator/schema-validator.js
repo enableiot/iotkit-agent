@@ -31,8 +31,8 @@ var logger = require("oisp-sdk-js").lib.logger.init();
  * @param schema
  * @returns {Array}
  */
-var validate = function(obj, schema){
-    return validator.validate(obj, schema).errors.map(function(e){
+var validate = function(obj, schema) {
+    return validator.validate(obj, schema).errors.map(function(e) {
         e.customMessage = e.property + ' ' + e.message;
         logger.debug("Scheme Error : ", e.customMessage);
         return e;
@@ -57,7 +57,7 @@ var parseErrors = function(result, cb) {
  * @param schema
  * @returns {Function}
  */
-var validateSchema = function(schema){
+var validateSchema = function(schema) {
     /**
      * @description it will validate the json schema
      * @param data

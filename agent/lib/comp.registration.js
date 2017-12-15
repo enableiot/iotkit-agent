@@ -74,7 +74,7 @@ var Component = function (connector, SensorStore, logT) {
                 return callback(true);
             }
 
-         } else {
+        } else {
             logger.debug('Comp. registration - Invalid message format. Expected %j got %j', sampleCompReg, msg, {});
             return callback(false);
         }
@@ -83,7 +83,7 @@ var Component = function (connector, SensorStore, logT) {
     me.deregister = function (msg) {
         if (me.desregValidator(msg)) {
             var sen = {name: msg.n,
-                        type: msg.t};
+                       type: msg.t};
             var comp = me.store.delete(sen);
             /**
              * if Component Exist an has different type

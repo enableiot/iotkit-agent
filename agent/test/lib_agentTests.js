@@ -28,11 +28,11 @@ var assert = require('assert'),
     utils = require("../lib/utils").init(),
     logger = require("oisp-sdk-js").lib.logger.init(utils),
     schemaValidation = require('../lib/schema-validator'),
-    configurator = require('../admin/configurator');;
+    configurator = require('../admin/configurator');
 
 describe('oisp-agent', function() {
-     it('should generate a valid device Id', function(done) {
-        utils.getDeviceId(function(id){
+    it('should generate a valid device Id', function(done) {
+        utils.getDeviceId(function(id) {
             assert(id, 'id is null');
             this.deviceId = id;
             console.log(id);
@@ -44,7 +44,7 @@ describe('oisp-agent', function() {
 
 describe('oisp-agent', function() {
     it('should generate a valid gatewayId', function(done) {
-        configurator.getGatewayId(function(id){
+        configurator.getGatewayId(function(id) {
             assert(id, 'id is null');
             assert.notEqual(id, '');
             this.gatewayId = id;
@@ -60,11 +60,11 @@ describe('oisp-agent', function() {
             this.gatewayId = id;
         });
 
-        configurator.setGatewayId('test', function(id){
+        configurator.setGatewayId('test', function(id) {
             assert(id, 'id is null');
             assert.equal(id, 'test');
             //Revert changes made by previous setGateway
-            configurator.setGatewayId(this.gatewayId, function(id){
+            configurator.setGatewayId(this.gatewayId, function(id) {
                 assert.equal(id, this.gatewayId);
             });
             done();
@@ -83,7 +83,7 @@ describe('oisp-agent', function() {
             }
 
         ];
-        schemaValidation.parseErrors(errors, function(msg){
+        schemaValidation.parseErrors(errors, function(msg) {
             assert(msg, 'msg is null');
             assert.equal(msg, 'name must be at least 4 characters long, type is missing');
             done();
@@ -91,7 +91,7 @@ describe('oisp-agent', function() {
     });
     it('should return empty error message from empty array', function(done) {
         var errors = [];
-        schemaValidation.parseErrors(errors, function(msg){
+        schemaValidation.parseErrors(errors, function(msg) {
             //assert(msg, 'msg is null');
             assert.equal(msg, '');
             done();

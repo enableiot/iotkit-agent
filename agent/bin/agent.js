@@ -44,15 +44,14 @@ process.on("uncaughtException", function(err) {
 });
 
 admin.version(pkgJson.version)
-    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory){
+    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory) {
         process.userConfigPath = path.resolve(userConfDirectory , "user.js");
         if (fs.existsSync(process.userConfigPath)) {
-            logger.info("\'" + process.userConfigPath + "\'" +
+            logger.info("'" + process.userConfigPath + "'" +
                 ' will be used as user config file.');
             conf = require(process.userConfigPath);
-        }
-        else{
-            logger.error("\'" + process.userConfigPath + "\'" +
+        } else{
+            logger.error("'" + process.userConfigPath + "'" +
                 ' not contains user.js config file.');
             process.exit(1);
         }
@@ -63,16 +62,16 @@ admin.parse(process.argv);
 utils.getDeviceId(function (id) {
     var cloud = Cloud.init(logger, id);
     cloud.activate(function (status) {
-       if (status === 0) {
+        if (status === 0) {
             var udp = udpServer.singleton(conf.listeners.udp_port, logger);
 
             var agentMessage = Message.init(cloud, logger);
             logger.info("Starting listeners...");
             udp.listen(agentMessage.handler);
             //TODO only allow for mqtt Connector, until rest will be implemented
-            if (conf.default_connector === 'mqtt' || conf.default_connector === 'rest+ws'){
-               var ctrl = Control.init(conf, logger, id);
-               ctrl.bind(udp);
+            if (conf.default_connector === 'mqtt' || conf.default_connector === 'rest+ws') {
+                var ctrl = Control.init(conf, logger, id);
+                ctrl.bind(udp);
             }
             Listener.TCP.init(conf.listeners, logger, agentMessage.handler);
 

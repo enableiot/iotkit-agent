@@ -32,7 +32,7 @@ function Server(udpServerPort, logger) {
     me.server.on("error", function (err) {
         me.logger.error('UDP Error: ', err.stack);
     });
-    me.server.on('close', function(rinfo){
+    me.server.on('close', function(rinfo) {
         console.log('UDP Closing from ', rinfo);
     });
     me.server.on("message", function (msg, rinfo) {
@@ -66,7 +66,7 @@ Server.prototype.listen = function (handler) {
 Server.prototype.send = function (toClient, data) {
     var me = this;
     var msg = new Buffer(JSON.stringify(data));
-    me.server.send(msg, 0, msg.length, toClient.port, toClient.address, function(err, bytes){
+    me.server.send(msg, 0, msg.length, toClient.port, toClient.address, function(err, bytes) {
         me.logger.debug("Response Send", err , " bytes ", bytes);
     });
 };

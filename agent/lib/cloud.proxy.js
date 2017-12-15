@@ -50,7 +50,7 @@ function IoTKitCloud(logger, deviceId, customProxy) {
 }
 IoTKitCloud.prototype.isActivated = function () {
     var me = this;
-   if (!me.secret) {
+    if (!me.secret) {
         me.secret = {
             deviceToken: null,
             accountId: null
@@ -107,13 +107,13 @@ IoTKitCloud.prototype.activate = function (code, callback) {
         * It were sent ever activation the update Metadata,
          * since every start/stop the HW could change.
         */
-       if (status === 0) {
-           me.update(function() {
-               toCall(status);
-           });
-       } else {
-           toCall(status);
-       }
+        if (status === 0) {
+            me.update(function() {
+                toCall(status);
+            });
+        } else {
+            toCall(status);
+        }
     }
     if (!me.isActivated()) {
         var ActMessage = {
@@ -142,19 +142,19 @@ IoTKitCloud.prototype.setDeviceCredentials = function() {
 IoTKitCloud.prototype.update = function(callback) {
     var me = this;
     msg.metadataExtended(me.gatewayId , function (doc) {
-        if(me.deviceName){
+        if(me.deviceName) {
             doc.name = me.deviceName;
         }
         doc.deviceToken = me.secret.deviceToken;
         doc.deviceId = me.deviceId;
         me.logger.info("Updating metadata...");
 
-        if(proxyConnector.type === "rest"){
+        if(proxyConnector.type === "rest") {
             //get device to read existing attributes
-            me.proxy.getDevice(doc, function(result){
+            me.proxy.getDevice(doc, function(result) {
 
                 //append custom attributes to update body
-                for (var attributeName in result.attributes){
+                for (var attributeName in result.attributes) {
 
                     if(doc.attributes[attributeName] === undefined) {
                         doc.attributes[attributeName] = result.attributes[attributeName];
@@ -163,8 +163,7 @@ IoTKitCloud.prototype.update = function(callback) {
                 //update attributes
                 me.updateAttributes(doc, callback);
             });
-        }
-        else {
+        } else {
             me.updateAttributes(doc, callback);
         }
         me.logger.info("Metadata updated.");
@@ -173,7 +172,7 @@ IoTKitCloud.prototype.update = function(callback) {
 
 };
 
-IoTKitCloud.prototype.updateAttributes = function(doc, callback){
+IoTKitCloud.prototype.updateAttributes = function(doc, callback) {
     var me = this;
     me.proxy.attributes(doc, function () {
         me.logger.debug("attributes has returned from ", me.proxy.type);
@@ -197,8 +196,8 @@ IoTKitCloud.prototype.updateOld = function(callback) {
     });
 };
 IoTKitCloud.prototype.disconnect = function () {
-  var me = this;
-  me.proxy.disconnect();
+    var me = this;
+    me.proxy.disconnect();
 };
 
 IoTKitCloud.prototype.dataSubmit = function (metric, callback) {
@@ -239,23 +238,23 @@ IoTKitCloud.prototype.test = function(callback) {
     var me = this;
     me.logger.info("Trying to connect to host ...");
     me.proxy.health(me.deviceId, function (result) {
-          me.logger.debug("Response ", result);
-          callback(result);
+        me.logger.debug("Response ", result);
+        callback(result);
     });
 };
 
 IoTKitCloud.prototype.catalog = function (callback) {
     var me = this;
     var data = {
-            deviceToken: me.secret.deviceToken,
-            deviceId: me.deviceId
-        };
+        deviceToken: me.secret.deviceToken,
+        deviceId: me.deviceId
+    };
     me.proxy.getCatalog(data , function (result) {
         if (result) {
             me.logger.debug("Catalog Response : %j ", result);
             var length = result.length;
             for (var i = 0; i < length; ++i) {
-                 var o = result[i];
+                var o = result[i];
                 me.logger.info("Comp: ", o.id, " ", o.dimension, " ", o.type );
             }
         }
@@ -285,7 +284,7 @@ IoTKitCloud.prototype.pullActuations = function () {
                     port: conf.receivers.udp_port,
                     address: conf.receivers.udp_address
                 };
-                for (var i = 0; i < result.length; i++ ){
+                for (var i = 0; i < result.length; i++ ) {
                     var actuation = result[i];
                     me.logger.debug('Received actuation content: ' + JSON.stringify(actuation));
                     var comp = me.store.byCid(actuation.componentId);

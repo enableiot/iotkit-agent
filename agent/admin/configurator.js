@@ -52,33 +52,33 @@ var setHostFor = function (host_value, port_value) {
     var data = common.getConfig();
     var proxy;
     if (data) {
-       proxy = data["default_connector"];
-       if(proxy === "rest+ws") {
-           proxy = "ws";
-       }
+        proxy = data["default_connector"];
+        if(proxy === "rest+ws") {
+            proxy = "ws";
+        }
 
-       logger.info("Config Key : ", proxy, " value ", host_value);
-       var host_key = 'connector.' + proxy + '.host';
+        logger.info("Config Key : ", proxy, " value ", host_value);
+        var host_key = 'connector.' + proxy + '.host';
 
-       if(proxy === "rest"){
-           var protocol;
-           var protocol_key = 'connector.' + proxy + '.protocol';
-           if(host_value.indexOf("https://")===0){
-               host_value = host_value.replace("https://", "");
-               protocol = "https";
-           }else if(host_value.indexOf("http://")===0){
-               host_value = host_value.replace("http://", "");
-               protocol = "http";
-           }
-           if(protocol){
-               common.saveToUserConfig(protocol_key, protocol);
-           }
-       }
+        if(proxy === "rest") {
+            var protocol;
+            var protocol_key = 'connector.' + proxy + '.protocol';
+            if(host_value.indexOf("https://")===0) {
+                host_value = host_value.replace("https://", "");
+                protocol = "https";
+            }else if(host_value.indexOf("http://")===0) {
+                host_value = host_value.replace("http://", "");
+                protocol = "http";
+            }
+            if(protocol) {
+                common.saveToUserConfig(protocol_key, protocol);
+            }
+        }
         common.saveToUserConfig(host_key, host_value);
-       if (port_value) {
-        var port_key = 'connector.' + proxy + '.port';
-        common.saveToUserConfig(port_key, port_value);
-       }
+        if (port_value) {
+            var port_key = 'connector.' + proxy + '.port';
+            common.saveToUserConfig(port_key, port_value);
+        }
     }
 };
 
@@ -188,8 +188,7 @@ var moveDataDirectory = function(directory, cb) {
 
             if (fs.readdirSync(directoryPath).length !== fs.readdirSync(directory).length) {
                 fs.rmdirSync(directory);
-            }
-            else {
+            } else {
                 directory = path.resolve(directory);
                 common.saveToGlobalConfig(configFileKey.dataDirectory, directory);
             }
@@ -208,8 +207,7 @@ var moveDataDirectory = function(directory, cb) {
             if(err) {
                 fs.rmdirSync(directory);
             }
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
         }
 
@@ -217,19 +215,17 @@ var moveDataDirectory = function(directory, cb) {
     });
 };
 
-var setDataDirectory = function(directory, cb){
+var setDataDirectory = function(directory, cb) {
     fs.exists(directory, function (exists) {
-        if(exists){
+        if(exists) {
             fs.exists(path.resolve(directory, "device.json"), function(configExists) {
-                if(configExists){
+                if(configExists) {
                     common.saveToGlobalConfig(configFileKey.dataDirectory, path.resolve(directory));
-                }
-                else{
+                } else{
                     cb(new Error("Directory does not contain device.json"));
                 }
             });
-        }
-        else{
+        } else{
             cb(new Error("Data directory does not exist"));
         }
     });
@@ -256,7 +252,7 @@ module.exports = {
                     common.saveToUserConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {
-                    logger.error("invalid protocol: %s - please use \'mqtt\' or \'rest\' or \'rest+ws\'", protocol);
+                    logger.error("invalid protocol: %s - please use 'mqtt' or 'rest' or 'rest+ws'", protocol);
                     // do not clear the previous protocol
                 }
             });
@@ -304,7 +300,7 @@ module.exports = {
             .command('set-gateway-id <id>')
             .description('Overrides the geteway id.')
             .action(function(id) {
-                setGatewayId(id, function(id){
+                setGatewayId(id, function(id) {
                     logger.info("Gateway Id set to: %s", id);
                 });
             });
@@ -312,8 +308,8 @@ module.exports = {
         program
             .command('set-device-name <name>')
             .description('Change device name')
-            .action(function(name){
-                setDeviceName(name, function(name){
+            .action(function(name) {
+                setDeviceName(name, function(name) {
                     logger.info("Device name set to: %s", name);
                 });
             });
@@ -349,8 +345,7 @@ module.exports = {
                 setProxy(host, port, function (port, err) {
                     if (!err) {
                         logger.info("Set Proxy data");
-                    }
-                    else {
+                    } else {
                         logger.error(err);
                     }
                 });
@@ -365,11 +360,10 @@ module.exports = {
             .command('set-udp-port <udp_port>')
             .description('Overrides the port UDP listener binds to')
             .action(function(udp_port) {
-                setListenerUdpPort(udp_port, function(udp_port, err){
+                setListenerUdpPort(udp_port, function(udp_port, err) {
                     if(!err) {
                         logger.info("UDP port is listening on port: %s", udp_port);
-                    }
-                    else {
+                    } else {
                         logger.error(err);
                     }
                 });
@@ -384,7 +378,7 @@ module.exports = {
                     logger.info("Logger Level set to: %s", level);
                 } else {
                     logger.error("invalid level: %s - please use %s", level,
-                                                Object.keys(loggerLevel).toString());
+                        Object.keys(loggerLevel).toString());
                 }
             });
 
@@ -400,16 +394,14 @@ module.exports = {
         program
             .command('move-data-directory <path>')
             .description('Change directory where data will be stored')
-            .action(function(path){
-                moveDataDirectory (path, function(err){
+            .action(function(path) {
+                moveDataDirectory (path, function(err) {
                     if(!err) {
                         logger.info("Data directory moved");
-                    }
-                    else{
-                        if(err.errno === 3){
+                    } else{
+                        if(err.errno === 3) {
                             logger.error("Access error to this directory.");
-                        }
-                        else{
+                        } else{
                             logger.info(err.message);
                         }
                     }
@@ -420,13 +412,12 @@ module.exports = {
             .command('set-data-directory <path>')
             .description('Sets path of directory that contains sensor data.')
             .action(function(directoryPath) {
-                setDataDirectory(directoryPath, function(err){
-                   if(!err){
-                       logger.info("Data directory changed.");
-                   }
-                   else{
-                       logger.error(err.message);
-                   }
+                setDataDirectory(directoryPath, function(err) {
+                    if(!err) {
+                        logger.info("Data directory changed.");
+                    } else{
+                        logger.error(err.message);
+                    }
                 });
             });
 

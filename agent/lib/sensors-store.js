@@ -34,8 +34,7 @@ function Sensor (store, logT) {
     var deviceConfig = common.getDeviceConfig();
     if(deviceConfig) {
         me.data = deviceConfig['sensor_list'];
-    }
-    else {
+    } else {
         me.data = [];
     }
 }
@@ -56,9 +55,9 @@ Sensor.prototype.byName = function (name) {
     });
 };
 Sensor.prototype.byType = function (type) {
-   return this.data.find(function (obj){
-       return (obj.type === type);
-   });
+    return this.data.find(function (obj) {
+        return (obj.type === type);
+    });
 };
 Sensor.prototype.add = function (sensor) {
     var me = this;
@@ -86,7 +85,7 @@ Sensor.prototype.exist = function (obj) {
         return ((t.name === obj.name) && (t.type === obj.type));
     });
 };
-Sensor.prototype.save = function(){
+Sensor.prototype.save = function() {
     var me = this;
     common.saveToDeviceConfig("sensor_list", me.data);
 };

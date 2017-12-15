@@ -30,7 +30,7 @@ var mac = require("getmac"),
     config = require ('oisp-sdk-js').config,
     common = require('./common');
     
-function IoTKitUtils(cfg){
+function IoTKitUtils(cfg) {
     var me = this;
     common.initializeDataDirectory();
     me.deviceConf = common.getDeviceConfig();
@@ -45,20 +45,20 @@ IoTKitUtils.prototype.getLocation = function () {
     return null;
 };
 IoTKitUtils.prototype.getAgentAttr = function () {
-   return {
-       "agent_version": pkgJson.version,
-       "hardware_vendor": os.cpus()[0].model,
-       "hardware_model": os.platform(),
-       "Model Name": os.arch(),
-       "Firmware Version": os.release()
-   };
+    return {
+        "agent_version": pkgJson.version,
+        "hardware_vendor": os.cpus()[0].model,
+        "hardware_model": os.platform(),
+        "Model Name": os.arch(),
+        "Firmware Version": os.release()
+    };
 };
 IoTKitUtils.prototype.externalInfo = function(cb) {
     var me = this;
     if (!cb) {
         throw "Callback required";
     }
-    publicApi.getExternalInfo(function (err, data){
+    publicApi.getExternalInfo(function (err, data) {
         if (!err) {
             data.ip_local = me.getIPs()[0];
             cb(data);
@@ -68,7 +68,7 @@ IoTKitUtils.prototype.externalInfo = function(cb) {
     });
 };
 IoTKitUtils.prototype.getExternalInfo = function(cb) {
-  var me = this;
+    var me = this;
     if (!cb) {
         throw "Callback required";
     }
@@ -87,51 +87,51 @@ IoTKitUtils.prototype.getExternalInfo = function(cb) {
                 cb(data);
             });
         } else {
-          cb(null);
+            cb(null);
         }
     }).end();
 };
 IoTKitUtils.prototype.getDeviceId = function(cb) {
-  var me = this;
-  if (!cb) {
-      throw "Callback required";
-  }
-  // if use explicit Id if one was defined in the configuration file
-  // account for the different ways people could spell it ;)
-  if (me.did) {
-    cb(me.did);
-    return;
-  }
+    var me = this;
+    if (!cb) {
+        throw "Callback required";
+    }
+    // if use explicit Id if one was defined in the configuration file
+    // account for the different ways people could spell it ;)
+    if (me.did) {
+        cb(me.did);
+        return;
+    }
   
-  mac.getMac(function(err, macAddress){
-      var result = null;
-      if (err) {
+    mac.getMac(function(err, macAddress) {
+        var result = null;
+        if (err) {
         //Unable to get MAC address
-        result = os.hostname().toLowerCase();
-      } else {
-        result = macAddress.replace(/:/g, '-');
-      }
-      me.did = result;
-      cb(result);
-  });
+            result = os.hostname().toLowerCase();
+        } else {
+            result = macAddress.replace(/:/g, '-');
+        }
+        me.did = result;
+        cb(result);
+    });
 };
 IoTKitUtils.prototype.getIPs = function() {
-  var addresses = [];
-  var interfaces = os.networkInterfaces();
-  for (var k in interfaces) {
-      if (interfaces.hasOwnProperty(k)) {
-          for (var k2 in interfaces[k]) {
-              if (interfaces[k].hasOwnProperty(k2)) {
-                  var address = interfaces[k][k2];
-                  if (address.family === 'IPv4' && !address.internal) {
-                      addresses.push(address.address);
-                  }
-              }
-          }
-      }
-  }
+    var addresses = [];
+    var interfaces = os.networkInterfaces();
+    for (var k in interfaces) {
+        if (interfaces.hasOwnProperty(k)) {
+            for (var k2 in interfaces[k]) {
+                if (interfaces[k].hasOwnProperty(k2)) {
+                    var address = interfaces[k][k2];
+                    if (address.family === 'IPv4' && !address.internal) {
+                        addresses.push(address.address);
+                    }
+                }
+            }
+        }
+    }
 
-  return addresses;
+    return addresses;
   
 };
 
@@ -173,6 +173,6 @@ IoTKitUtils.prototype.getMinutesAndSecondsFromMiliseconds = function(miliseconds
 };
 
 exports.init = function() {
-  var utils = new IoTKitUtils(config);
-  return utils;
+    var utils = new IoTKitUtils(config);
+    return utils;
 };  

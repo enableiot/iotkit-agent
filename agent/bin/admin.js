@@ -35,14 +35,13 @@ var admin= require('commander'),
     logger = require('oisp-sdk-js').lib.logger.init();
 
 admin.version(pkgJson.version)
-    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory){
+    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory) {
         process.userConfigPath = path.resolve(userConfDirectory , "user.js");
         if (fs.existsSync(process.userConfigPath)) {
-            logger.info("\'" + process.userConfigPath + "\'" +
+            logger.info("'" + process.userConfigPath + "'" +
                 ' will be used as user config file.');
-        }
-        else{
-            logger.error("\'" + process.userConfigPath + "\'" +
+        } else{
+            logger.error("'" + process.userConfigPath + "'" +
                 ' not contains user.js config file.');
             process.exit(1);
         }
@@ -56,35 +55,29 @@ components.addCommand(admin);
 configurator.addCommand(admin);
 
 admin.command('*')
-     .description('Error message for non valid command')
-     .action(function(){
-        console.log("\'" + admin.args[0] + "\'" +
+    .description('Error message for non valid command')
+    .action(function() {
+        console.log("'" + admin.args[0] + "'" +
             ' is not a valid command.');
     });
 if(process.argv[2] === 'observation') {
     if(process.argv.length === 5) {
         if(process.argv[4][0] === '-') {
             var args = [];
-            var unknown = [];
             for(var i = 2; i <= 4; i++) {
                 args.push(process.argv[i]);
             }
-            var parsed = {args: args, unknown: unknown};
             admin.rawArgs = process.argv;
             admin.args = args;
-            var result = admin.parseArgs(admin.args, parsed.unknown);
-        }
-        else {
+        } else {
             admin.parse(process.argv);
         }
-    }
-    else {
-        console.log("\'" + process.argv[2] + "\'" +
+    } else {
+        console.log("'" + process.argv[2] + "'" +
             ' should contains component_name value.');
         process.exit(1);
     }
-}
-else {
+} else {
     admin.parse(process.argv);
 }
 /*

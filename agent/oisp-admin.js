@@ -24,4 +24,4 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 "use strict";
-var admin = require("./bin/admin");
+var admin = require("./bin/admin"); // eslint-disable-line

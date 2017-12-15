@@ -94,7 +94,7 @@ Metric.prototype.convertToRestPayload = function() {
      * Since the schema validation of Rest Interface if so hard
      * it is removed the none require parameter
      */
-    this.data.forEach(function (ob){
+    this.data.forEach(function (ob) {
         if (ob.cid) {
             ob.componentId = ob.cid;
             delete ob.cid;
@@ -132,5 +132,5 @@ Metric.prototype.fromMQTTToRestPayload = function(msg) {
     return this;
 };*/
 module.exports.init = function () {
-  return Metric;
+    return Metric;
 };

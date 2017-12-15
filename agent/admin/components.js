@@ -58,9 +58,9 @@ var registerComponents = function (comp, catalogid) {
             if (status === 0) {
                 var agentMessage = Message.init(cloud, logger);
                 var msg = {
-                        "n": comp,
-                        "t": catalogid
-                        };
+                    "n": comp,
+                    "t": catalogid
+                };
                 agentMessage.handler(msg, function (stus) {
                     if (stus.status === 0) {
                         logger.info("Component registered", stus);

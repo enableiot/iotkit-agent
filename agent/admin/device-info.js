@@ -24,6 +24,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 var utils = require("./../lib/utils").init();
 
-utils.getExternalInfo(function(data){
-	console.dir(data);
+utils.getExternalInfo(function(data) {
+    console.dir(data);
 });

@@ -27,16 +27,15 @@ var Sensor = require('../lib/sensors-store'),
     common = require('./common'),
     proxyConnector = require('oisp-sdk-js').lib.proxies;
 
-function IoTKitControl(conf, logger, deviceId, customProxy){
+function IoTKitControl(conf, logger, deviceId, customProxy) {
     var me = this;
     me.logger = logger;
     if (customProxy) {
-	me.proxy = customProxy;
-    }
-    else if (proxyConnector) {
-	var deviceInfo = common.getDeviceConfig();
-	proxyConnector.updateDeviceInfo(deviceInfo);
-	me.proxy = proxyConnector;
+        me.proxy = customProxy;
+    } else if (proxyConnector) {
+        var deviceInfo = common.getDeviceConfig();
+        proxyConnector.updateDeviceInfo(deviceInfo);
+        me.proxy = proxyConnector;
     }
     me.proxy = customProxy || proxyConnector;
     me.deviceId = deviceId;

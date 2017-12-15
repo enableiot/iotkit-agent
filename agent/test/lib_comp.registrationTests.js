@@ -26,7 +26,7 @@ var assert =  require('chai').assert,
     rewire = require('rewire');
 var fileToTest = "../lib/comp.registration.js";
 
-describe(fileToTest, function(){
+describe(fileToTest, function() {
     var toTest = rewire(fileToTest);
     var logger = {
         info : function() {},
@@ -45,37 +45,37 @@ describe(fileToTest, function(){
             x: "Sensor Name",
             t: "SensorType.v1"
         }
-       store.exist = function (data) {
-                assert.isFalse(true, "The message shall not be going through");
-                return true;
-            };
+        store.exist = function (data) {
+            assert.isFalse(true, "The message shall not be going through");
+            return true;
+        };
         var handler = toTest.init(connector, store, logger);
-        handler.registration(wrongMessage, function(process){
+        handler.registration(wrongMessage, function(process) {
             assert.isFalse(process, "Message Shall be not processed  invalid n key");
             wrongMessage = {
                 n: "Sensor Name",
                 tw: "SensorType.v1"
             };
-            handler.registration(wrongMessage, function(process){
+            handler.registration(wrongMessage, function(process) {
                 assert.isFalse(process, "Message Shall be not processed Msg - invalid t key");
                 wrongMessage = {
                     n: 1,
                     t: "SensorType.v1"
                 };
-                handler.registration(wrongMessage, function(process){
+                handler.registration(wrongMessage, function(process) {
                     assert.isFalse(process, "Message Shall be not processed Msg - invalid n Value");
                     wrongMessage = {
                         n: "",
                         t: "SensorType.v1"
                     };
-                    handler.registration(wrongMessage, function(process){
+                    handler.registration(wrongMessage, function(process) {
                         assert.isFalse(process, "Message Shall be not processed Msg - invalid n Value");
                         done();
                     });
                 });
             });
         });
-   });
+    });
     it('Shall Return True if it a valid Registration Message if the Component already exist>', function(done) {
         var okMessage = {
             n: "Sensor Name",
@@ -92,13 +92,13 @@ describe(fileToTest, function(){
             }
         };
         var handler = toTest.init(connector, store, logger);
-        handler.registration(okMessage, function(process){
+        handler.registration(okMessage, function(process) {
             assert.isTrue(process, "Message Shall be processed Msg ");
             okMessage.n = "n123";
-            handler.registration(okMessage, function(process){
+            handler.registration(okMessage, function(process) {
                 assert.isTrue(process, "Message Shall be processed Msg ");
                 okMessage.t = "t123";
-                handler.registration(okMessage, function(process){
+                handler.registration(okMessage, function(process) {
                     assert.isTrue(process, "Message Shall be processed Msg ");
                     done();
                 });
@@ -149,9 +149,9 @@ describe(fileToTest, function(){
         };
 
         var handler = toTest.init(connector, store, logger);
-        handler.registration(okMessage, function(process){
-           assert.equal(process.status, 0, "Message Shall be processed Msg ");
-           done();
+        handler.registration(okMessage, function(process) {
+            assert.equal(process.status, 0, "Message Shall be processed Msg ");
+            done();
         });
 
     });
