@@ -27,61 +27,61 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
-            jshint: 'buildscripts/jshint',
-            jsfiles: ['Gruntfile.js',
+            eslint: 'buildscripts/eslint',
+            jsfiles: ['bin/*.js',
+                      'config/*.js',
                       'lib/*.js',
                       'modules/*.js',
-		      'bin/*.js',
-		      '*.js']
+                      '*.js'
+            ],
+            testfiles: ['test/*.js']
         },
-        jshint: {
-			options: {
-				jshintrc: '<%= dirs.jshint %>/config.json',
-				ignores: ['lib/deprected/*.js']
-			},
-			local: {
-				src: ['<%= dirs.jsfiles %>'],
-				options: {
-					force: true
-				}
-			},
-		},
+        eslint: {
+            local: {
+                src: ['<%= dirs.jsfiles %>'],
+                options: {
+                    configFile: '<%= dirs.eslint %>/config.json'
+                }
+            },
+            tests: {
+                src: ['<%= dirs.testfiles %>'],
+                options: {
+                    configFile: '<%= dirs.eslint %>/test-config.json'
+                }
+            }
+        },
         mocha_istanbul: {
-           local: {
-               src: 'test/', // the folder, not the files
-               options: {
-                   ui: 'bdd',
-                   coverage: true,
-                   recursive: true,
-                   reporter: 'list',
-                   timeout: 20000,
-                   mask: '*Tests.js',
-                   check: {
-                    lines: 60,
-                    statements: 60,
-                    function: 60
+            local: {
+                src: 'test/', // the folder, not the files
+                options: {
+                    ui: 'bdd',
+                    coverage: true,
+                    recursive: true,
+                    reporter: 'list',
+                    timeout: 20000,
+                    mask: '*Tests.js',
+                    check: {
+                        lines: 60,
+                        statements: 60,
+                        function: 60
                     },
-                   root: '.', // define where the cover task should consider the root of libraries that are covered by tests
-                   coverageFolder: 'dist/coverage',
-                   reportFormats: ['lcov']
-               }
-           },
+                    root: '.', // define where the cover task should consider the root of libraries that are covered by tests
+                    coverageFolder: 'dist/coverage',
+                    reportFormats: ['lcov']
+                }
+            },
 
         }
     });
 
-    grunt.event.on('coverage', function(lcovFileContents, done){
+    grunt.event.on('coverage', function(lcovFileContents, done) {
         // Check below
         done();
     });
 
+    grunt.loadNpmTasks('gruntify-eslint');
     grunt.loadNpmTasks('grunt-mocha-istanbul');
 
-    // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-
     // Default task(s).
-    grunt.registerTask('default', ['jshint:local', 'mocha_istanbul:local']);
-
+    grunt.registerTask('default', ['eslint:local', 'eslint:tests', 'mocha_istanbul:local']);
 };
-
