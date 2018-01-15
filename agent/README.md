@@ -3,7 +3,7 @@
 This project includes two programs:
 
 ### oisp-admin
-This is a command line "wrapper" for the [REST API](https://github.com/enableiot/iotkit-api/wiki/Api-Home), enabling you to test connectivity, activate a device, register time series and send observations all from the command line.
+This is a command line "wrapper" for the [REST API](https://github.com/Open-IoT-Service-Platform/platform-launcher/wiki/REST-API), enabling you to test connectivity, activate a device, register time series and send observations all from the command line.
 
 ### oisp-agent
 This is a "agent" program intended to run as a services. You can send a very simple message, such as:
@@ -12,27 +12,17 @@ This is a "agent" program intended to run as a services. You can send a very sim
 {"n": "temp", "v": 26.9}
 ```
 
-to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to the cloud server. 
-
-We have an [Arduino library](https://github.com/enableiot/iotkit-samples/tree/master/arduino) which can send this message to the agent, and you can write your own in other languages.
+to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to the cloud server.
 
 ## Installing using git
 If the program is not installed, you can install it following these steps:
 
 ```
-# git clone https://github.com/enableiot/iotkit-agent.git
-# cd iotkit-agent/agent
+# git clone https://github.com/Open-IoT-Service-Platform/oisp-iot-agent.git
+# cd oisp-iot-agent/agent
 # npm install
 # ./oisp-agent.js test
 ```
-
-## Installing using npm
-
-Follow these steps to install the oisp-agent using in a Linux environment using npm.
-
-To install the oisp-agent using npm, just run:
-
-    npm install oisp-agent
   
 #### Testing the connection with OISP
 
@@ -66,7 +56,7 @@ To start the oisp-agent service simply execute the start script:
 
 ## Usage
 
-For instructions how to use the oisp-agent please see the [iotkit-samples repo](https://github.com/enableiot/iotkit-samples).
+For examples of how to use the 'oisp-agent' please see the [Examples](https://github.com/Open-IoT-Service-Platform/oisp-iot-agent/tree/master/agent/examples) provided.
 
 ## Test
 
@@ -123,7 +113,6 @@ Commands:
 
 ## General notes
 
-* The oisp-agent default protocol is **REST**. To change it to MQTT, use command 'protocol'.
 * The 'catalog' command shows the list of components associated with the account where the device is active.
 * In order to define the **host**, you don't need to specify the protocol (https/http).
 
@@ -166,7 +155,6 @@ make clean
 ````
 #### Known limitations
  
-* You will need to switch to MQTT protocol to exercise the Actuation functionality.
 * Components registered through the OISP Cloud API will not be known by the oisp-agent.
 
 ## License
