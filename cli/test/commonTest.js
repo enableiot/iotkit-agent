@@ -151,6 +151,9 @@ global.fakeUserAdminData = {
         adminDataFile.accounts[0].alerts = [];
         adminDataFile.accounts[0].alerts.push(alert);
     },
+    deleteAllAlerts: function(index) {
+        adminDataFile.accounts[0].alerts = [];
+    },
     addAlert: function(index, alert) {
         this.replaceAllAlerts(index, alert);
     },

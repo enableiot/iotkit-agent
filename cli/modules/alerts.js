@@ -51,6 +51,26 @@ var getListOfAlerts = function(accountId) {
     });
 };
 
+var deleteListOfAlerts = function(accountId) {
+    logger.info("Starting deleteListOfAlerts ...");
+    var userAdminDataObj = userAdminData.loadUserAdminBaseData();
+    var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
+    if (targetAccount === null) {
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
+    }
+    userAdminDataObj.accountId = targetAccount.id;
+    api.alerts.deleteListOfAlerts(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.deleteAllAlerts(targetAccount.index);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError".code]);
+        }
+    });
+};
+
 var getAlertDetails = function(accountId, alertId) {
     logger.info("Starting getDetailOfAlerts");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
@@ -187,6 +207,10 @@ module.exports = {
             .command('alerts.get <accountId>')
             .description('|Get all alerts of the account.|GET:/v1/api/accounts/{accountId}/alerts')
             .action(getListOfAlerts);
+        program
+            .command('alerts.delete <accountId>')
+            .description('Delete all alerts of the account.|DELETE:/v1/api/accounts/{account}/alerts')
+            .action(deleteListOfAlerts);
         program
             .command('alerts.get.details <accountId> <alertId>')
             .description('|Get specific alert details connected with the account.|GET:/v1/api/account/{accountId}/alerts/{alertId}')

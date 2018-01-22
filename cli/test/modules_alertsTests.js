@@ -66,6 +66,35 @@ describe(fileToTest, function() {
         toTest.__get__("getListOfAlerts")(account.id);
     });
 
+    it('Shall delete alerts for specified account and remove data in cli-data file(deleteListOfAlerts)  >', function(done) {
+        adminDataFile = {};
+
+        dataFile = {
+            userToken: "Thisis myToken",
+            username: "test@example.com",
+            accounts:[
+                account
+            ]
+        }
+ 
+        var test = function(object, callback) {
+            object.token = token;
+            assert.equal(object.accountId, account.id);
+            assert.equal(object.userToken, token, "userToken is wrong");
+            assert.equal(object.username, username, "username is wrong");
+            callback(null, alertObject);
+            assert.deepEqual(adminDataFile, dataFile);
+            fakeUserAdminData.deleteAlert();
+            done();
+        }
+        toTest.__set__("userAdminData", fakeUserAdminData);
+        toTest.__set__('userAdminTools', fakeLibTools);
+        fakeApi.alerts.deleteListOfAlerts = test;
+        toTest.__set__("api", fakeApi);
+        toTest.__set__('common', fakeCommon);
+        toTest.__get__("deleteListOfAlerts")(account.id);
+    });
+
     it('Shall get alert detail and store in cli-data file(getAlertDetails)  >', function(done) {
         adminDataFile = {};
 
