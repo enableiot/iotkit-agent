@@ -118,6 +118,7 @@
 				},
 				"alerts": {
 					"getListOfAlerts": "/v1/api/accounts/{accountId}/alerts/",
+					"deleteListOfAlerts": "/v1/api/accounts/{accountId}/alerts/",
 					"getAlertDetails": "/v1/api/accounts/{accountId}/alerts/{alertId}",
 					"closeAlert": "/v1/api/accounts/{accountId}/alerts/{alertId}/reset",
 					"updateAlertStatus": "/v1/api/accounts/{accountId}/alerts/{alertId}/status/{statusName}",

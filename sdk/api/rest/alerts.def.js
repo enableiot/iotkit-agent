@@ -31,6 +31,7 @@ var ConnectionOptions = require('./iot.connection.def.js');
 var GET_METHOD = 'GET';
 var PUT_METHOD = 'PUT';
 var POST_METHOD = 'POST';
+var DELETE_METHOD = 'DELETE';
 
 var apiconf = config.connector.rest;
 
@@ -47,6 +48,18 @@ function GetListOfAlertsOption(data) {
 GetListOfAlertsOption.prototype = new ConnectionOptions();
 GetListOfAlertsOption.prototype.constructor = GetListOfAlertsOption;
 IoTKiT.GetListOfAlertsOption = GetListOfAlertsOption;
+
+
+function DeleteListOfAlertsOption(data) {
+    this.pathname = common.buildPath(apiconf.path.alerts.deleteListOfAlerts, data.accountId);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = DELETE_METHOD;
+    this.body = null;
+}
+DeleteListOfAlertsOption.prototype = new ConnectionOptions();
+DeleteListOfAlertsOption.prototype.constructor = DeleteListOfAlertsOption;
+IoTKiT.DeleteListOfAlertsOption = DeleteListOfAlertsOption;
 
 function GetAlertDetailsOption(data) {
     this.pathname = common.buildPath(apiconf.path.alerts.getAlertDetails, [data.accountId, data.alertId]);
