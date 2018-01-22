@@ -185,7 +185,7 @@ module.exports = {
         errorHandler = errorHdl;
         program
             .command('alerts.get <accountId>')
-            .description('|Get all alerts of the accound.|GET:/v1/api/accounts/{accoundId}/alerts')
+            .description('|Get all alerts of the account.|GET:/v1/api/accounts/{accountId}/alerts')
             .action(getListOfAlerts);
         program
             .command('alerts.get.details <accountId> <alertId>')
