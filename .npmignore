@@ -1,8 +1,0 @@
-tests/
-images/
-buildscripts/
-*.idea/*
-*.orig
-*/coverage/*
-*/dist/*
-*.log

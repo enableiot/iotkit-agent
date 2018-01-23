@@ -1,0 +1,5 @@
+buildscripts/
+examples/
+test/
+Gruntfile.js
+*.service
