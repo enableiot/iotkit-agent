@@ -252,6 +252,16 @@ module.exports = {
         common.writeConfig(userAdminConfFile, data);
     },
 
+    // @brief delete an alert in the respective account data. Assumes that account/alert exists
+    // @param accountIndex index of account in user-admin-data
+    // @param alertIndex index of the alert to replace
+    deleteOneAlert: function(accountIndex, alertIndex) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        data.accounts[accountIndex].alerts.splice(alertIndex, 1);
+        common.writeConfig(userAdminConfFile, data);
+    },
+
     // @brief Change alert status to - "Closed". Alert won't be active any more.
     // @param accountIndex index of account in user-admin-data
     // @param alertIndex index of the alert to replace
