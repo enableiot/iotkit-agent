@@ -72,6 +72,17 @@ GetAlertDetailsOption.prototype = new ConnectionOptions();
 GetAlertDetailsOption.prototype.constructor = GetAlertDetailsOption;
 IoTKiT.GetAlertDetailsOption = GetAlertDetailsOption;
 
+function DeleteAlertOption(data) {
+    this.pathname = common.buildPath(apiconf.path.alerts.deleteAlert, [data.accountId, data.alertId]);
+    this.token = data.userToken;
+    ConnectionOptions.call(this);
+    this.method = DELETE_METHOD;
+    this.body = null;
+}
+DeleteAlertOption.prototype = new ConnectionOptions();
+DeleteAlertOption.prototype.constructor = DeleteAlertOption;
+IoTKiT.DeleteAlertOption = DeleteAlertOption;
+
 function CloseAlertOption(data) {
     this.pathname = common.buildPath(apiconf.path.alerts.closeAlert, [data.accountId, data.alertId]);
     this.token = data.userToken;

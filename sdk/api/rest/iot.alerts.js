@@ -50,6 +50,17 @@ module.exports.getAlertDetails = function(data, callback) {
     return httpClient.httpRequest(getAlertDetailsOpt, callback);
 };
 
+/** @description delete specific alert connected with the account through API:DELETE/v1/api/accounts/{accountId}/alerts/{alertId}
+ *  @param data.userToken contains access token
+ *  @param data.accountId contains the accountId
+ *  @param data.alertId contains the alertId
+ */
+
+module.exports.deleteAlert = function(data, callback) {
+    var deleteAlertOpt = new userAdminDef.alerts.DeleteAlertOption(data);
+    return httpClient.httpRequest(deleteAlertOpt, callback);
+};
+
 /** @description Change alert status to - "Closed". Alert won't be active any more through API:PUT/v1/api/accounts/{accountId}/alerts/{alertId}/reset
  *  @param data.userToken contains access token
  *  @param data.accountId contains the accountId
