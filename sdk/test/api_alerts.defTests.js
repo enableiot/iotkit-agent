@@ -109,6 +109,40 @@ describe(fileToTest, function() {
         assert.equal(deTest.method, "GET", "The verb is incorrect");
         done();
     });
+    it('Shall Return the DeleteAlertOption for Request  >', function(done) {
+        var config = {
+            connector: {
+                rest: {
+                    protocol: "http",
+                    host: "myapi",
+                    port: 1000,
+                    alerts: {
+                        getAlertDetails: '/v1/api/accounts/{accountId}/alerts/{alertId}'
+                    }
+                }
+            },
+
+        };
+        toTest.__set__('config', config);
+        var data = {
+            accountId: 20000,
+            alertId: 75,
+            body: {
+                a: 1,
+                b: 2,
+                c: [1,2,3]
+            }
+        };
+
+        var deTest = new toTest.DeleteAlertOption(data);
+        var urD = url.parse(deTest.url);
+        assert.equal(urD.hostname, GlobalConfig.connector.rest.host, "the host data is missing");
+        assert.equal(urD.port,  GlobalConfig.connector.rest.port, "the port were missing");
+        assert.equal(urD.pathname, "/v1/api/accounts/20000/alerts/75", "path improper formed");
+        assert.equal(deTest.body, null);
+        assert.equal(deTest.method, "DELETE", "The verb is incorrect");
+        done();
+    });
     it('Shall Return the CloseAlertOption for Request  >', function(done) {
         var config = {
             connector: {

@@ -51,6 +51,26 @@ var getListOfAlerts = function(accountId) {
     });
 };
 
+var deleteListOfAlerts = function(accountId) {
+    logger.info("Starting deleteListOfAlerts ...");
+    var userAdminDataObj = userAdminData.loadUserAdminBaseData();
+    var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
+    if (targetAccount === null) {
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
+    }
+    userAdminDataObj.accountId = targetAccount.id;
+    api.alerts.deleteListOfAlerts(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.deleteAllAlerts(targetAccount.index);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError".code]);
+        }
+    });
+};
+
 var getAlertDetails = function(accountId, alertId) {
     logger.info("Starting getDetailOfAlerts");
     var userAdminDataObj = userAdminData.loadUserAdminBaseData();
@@ -78,6 +98,34 @@ var getAlertDetails = function(accountId, alertId) {
         }
     });
 };
+
+var deleteAlert = function(accountId, alertId) {
+    logger.info("Starting deleteAlert");
+    var userAdminDataObj = userAdminData.loadUserAdminBaseData();
+    var targetAccount = userAdminTools.findAccountId(accountId, userAdminDataObj.accounts);
+    if (targetAccount === null) {
+        logger.error(common.errors["accountIdError"].message);
+        errorHandler(null, common.errors["accountIdError"].code);
+    }
+    var targetAlert = userAdminTools.findAlertId(alertId, userAdminDataObj.accounts[targetAccount.index]);
+    if (null === targetAlert) {
+        logger.info("no alert found in local file");
+        userAdminDataObj.alertId = alertId;
+    } else {
+        logger.info("alert found in local file");
+        userAdminDataObj.alertId = targetAlert.id;
+    }
+    userAdminDataObj.accountId = targetAccount.id;
+    api.alerts.deleteAlert(userAdminDataObj, function(err, response) {
+        if (!err && response) {
+            logger.info("Info retrieved: ", response);
+            userAdminData.deleteOneAlert(targetAccount.index, targetAlert.index);
+        } else {
+            logger.error(common.errors["responseError"].message + ": " + err);
+            errorHandler(null, common.errors["responseError".code]);
+        }
+    });
+}
 
 var closeAlert = function(accountId, alertId) {
     logger.info("Starting closeAlert");
@@ -185,12 +233,20 @@ module.exports = {
         errorHandler = errorHdl;
         program
             .command('alerts.get <accountId>')
-            .description('|Get all alerts of the accound.|GET:/v1/api/accounts/{accoundId}/alerts')
+            .description('|Get all alerts of the account.|GET:/v1/api/accounts/{accountId}/alerts')
             .action(getListOfAlerts);
+        program
+            .command('alerts.delete <accountId>')
+            .description('Delete all alerts of the account.|DELETE:/v1/api/accounts/{account}/alerts')
+            .action(deleteListOfAlerts);
         program
             .command('alerts.get.details <accountId> <alertId>')
             .description('|Get specific alert details connected with the account.|GET:/v1/api/account/{accountId}/alerts/{alertId}')
             .action(getAlertDetails);
+        program
+            .command('alert.delete <accountId> <alertId>')
+            .description('|Delete specific allert connected with the account. |DELETE:/v1/api/account/{accountid}/alerts/{alertId}')
+            .action(deleteAlert)
         program
             .command('alerts.put.close <accoutId> <alertId>')
             .description('|Change alert status to - "Closed" Alert won\'t be active any more.|PUT:/v1/api/account/{accountId}/alerts/{alertId}/reset')

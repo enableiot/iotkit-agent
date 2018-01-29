@@ -66,6 +66,35 @@ describe(fileToTest, function() {
         toTest.__get__("getListOfAlerts")(account.id);
     });
 
+    it('Shall delete alerts for specified account and remove data in cli-data file(deleteListOfAlerts)  >', function(done) {
+        adminDataFile = {};
+
+        dataFile = {
+            userToken: "Thisis myToken",
+            username: "test@example.com",
+            accounts:[
+                account
+            ]
+        }
+ 
+        var test = function(object, callback) {
+            object.token = token;
+            assert.equal(object.accountId, account.id);
+            assert.equal(object.userToken, token, "userToken is wrong");
+            assert.equal(object.username, username, "username is wrong");
+            callback(null, alertObject);
+            assert.deepEqual(adminDataFile, dataFile);
+            fakeUserAdminData.deleteAlert();
+            done();
+        }
+        toTest.__set__("userAdminData", fakeUserAdminData);
+        toTest.__set__('userAdminTools', fakeLibTools);
+        fakeApi.alerts.deleteListOfAlerts = test;
+        toTest.__set__("api", fakeApi);
+        toTest.__set__('common', fakeCommon);
+        toTest.__get__("deleteListOfAlerts")(account.id);
+    });
+
     it('Shall get alert detail and store in cli-data file(getAlertDetails)  >', function(done) {
         adminDataFile = {};
 
@@ -107,6 +136,48 @@ describe(fileToTest, function() {
         toTest.__set__("api", fakeApi);
         toTest.__set__('common', fakeCommon);
         toTest.__get__("getAlertDetails")(account.id, alertId)
+    });
+
+    it('Shall delete specific alert and remove in cli-data file(deleteAlert)  >', function(done) {
+        adminDataFile = {};
+
+        var dataFile = {
+            userToken: token,
+            username: username,
+            accounts: [
+                {
+                    name: "AccountName",
+                    id: "321ef007-8449-477f-9ea0-d702d77e64b9",
+                    alerts:[
+                    ],
+                    devices: [{
+                        "deviceId": device.deviceId,
+                        "name": device.name,
+                        "components":[
+                            component
+                        ]
+                    }
+                    ]
+                }
+            ]
+        };
+
+        var test = function(object, callback) {
+            object.token = token;
+            assert.equal(object.accountId, account.id);
+            assert.equal(object.userToken, token, "userToken is wrong");
+            assert.equal(object.username, username, "username is wrong");
+            callback(null, alertObject);
+            assert.deepEqual(adminDataFile, dataFile);
+            fakeUserAdminData.deleteAlert();
+            done();
+        }
+        toTest.__set__("userAdminData", fakeUserAdminData);
+        toTest.__set__('userAdminTools', fakeLibTools);
+        fakeApi.alerts.deleteAlert = test;
+        toTest.__set__("api", fakeApi);
+        toTest.__set__('common', fakeCommon);
+        toTest.__get__("deleteAlert")(account.id, alertId)
     });
 
     it('Shall change alert status to "Closed" Alert won\'t be active any more(closeAlert)  >', function(done) {

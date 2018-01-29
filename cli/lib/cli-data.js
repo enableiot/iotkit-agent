@@ -225,7 +225,18 @@ module.exports = {
         data["accounts"][accountIndex].alerts = alerts;
         common.writeConfig(userAdminConfFile, data);
     },
-
+    //@brief delete all alerts in the related account
+    //@brief accountId account id in user-admin-data
+    deleteAllAlerts: function(accountIndex) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        if (! data["accounts"]) {
+            logger.info("Warning: no accounts found. Nothing updated.");
+            return;
+        }
+        data["accounts"][accountIndex].alerts = "";
+        common.writeConfig(userAdminConfFile, data);
+    },
     // @brief replaces an alert in the respective account data. Assumes that account/alert exists
     // @param accountIndex index of account in user-admin-data
     // @param alertIndex index of the alert to replace
@@ -238,6 +249,16 @@ module.exports = {
         } else {
             data.accounts[accountIndex].alerts[alertIndex] = alertObject;
         }
+        common.writeConfig(userAdminConfFile, data);
+    },
+
+    // @brief delete an alert in the respective account data. Assumes that account/alert exists
+    // @param accountIndex index of account in user-admin-data
+    // @param alertIndex index of the alert to replace
+    deleteOneAlert: function(accountIndex, alertIndex) {
+        var userAdminConfFile = this.getConfigFileName();
+        var data = common.readConfig(userAdminConfFile);
+        data.accounts[accountIndex].alerts.splice(alertIndex, 1);
         common.writeConfig(userAdminConfFile, data);
     },
 

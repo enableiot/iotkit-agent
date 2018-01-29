@@ -37,6 +37,7 @@ describe(fileToTest, function() {
 
     var Option = {
         GetListOfAlertsOption: {},
+        DeleteListOfAlertsOption: {},
         GetAlertDetailsOption: {},
         CloseAlertOption: {},
         UpdateAlertStatusOption: {},
