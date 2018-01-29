@@ -242,6 +242,7 @@ var loggerLevel = {
     error: true,
     debug: true
 };
+
 module.exports = {
     addCommand : function (program) {
         program

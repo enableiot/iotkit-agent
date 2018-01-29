@@ -60,3 +60,13 @@ if (process.env.LOG_LEVEL === "debug" || process.env.LOG_LEVEL === "info" ||
 
 
 module.exports = config;
+
+module.exports.getGlobalConfigName = function() {
+    var fullFileName = path.join(__dirname, localConf);
+    if (fs.existsSync(fullFileName)) {
+        return fullFileName;
+    } else {
+        logger.error("Failed to find global config file");
+        process.exit(0);
+    }
+};

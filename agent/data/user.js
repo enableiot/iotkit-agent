@@ -23,21 +23,10 @@
  */
 
 
-var fs = require('fs'),
-    path = require('path'),
-    localConf = path.resolve(fs.realpathSync(process.argv[1]), "../config/global.json");
+var config = require("oisp-sdk-js").config;
 
-if (!fs.existsSync(localConf)) {
-    localConf = path.resolve(__dirname,"config/global.json");
-}
-
-var config = {};
-
-if (fs.existsSync(localConf)) {
-    config = require(localConf);
-} else {
-    console.error("Failed to find config file in ", localConf);
-    console.error("Run your command from directory", path.dirname(fs.realpathSync(process.argv[1])));
+if (!config) {
+    console.error("Failed to load config!");
     process.exit(0);
 }
 
@@ -56,4 +45,3 @@ module.exports = config;
  *
  * Please write your changes for config below.
  */
-

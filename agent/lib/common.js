@@ -79,7 +79,6 @@ module.exports.isAbsolutePath = function(location) {
 };
 
 module.exports.getFileFromDataDirectory = function(filename) {
-    //var config = this.readConfig(path.join(__dirname,"../config/global.json"));
     var fullFileName = '';
     if(config) {
         var dataDirectory = config['data_directory'];
@@ -97,7 +96,7 @@ module.exports.getDeviceConfigName = function() {
     if (fs.existsSync(fullFileName)) {
         return fullFileName;
     } else {
-        var defaultConfig = path.resolve(__dirname, "../data/device.json");
+        var defaultConfig = path.resolve(__dirname, "./data/device.json");
         if(!fs.existsSync(fullFileName) && fs.existsSync(defaultConfig)) {
             return defaultConfig;
         } else{
@@ -115,22 +114,20 @@ module.exports.getDeviceConfig = function() {
 module.exports.getConfig = function() {
     if(process.userConfigPath) {
         return require(process.userConfigPath);
-    }else{
-        //var config = this.readConfig(path.join(__dirname,"../config/global.json"));
-        /*var userConfig = module.exports.getFileFromDataDirectory('user.js');
-        if(fs.existsSync(userConfig)){
+    } else {
+        var userConfig = module.exports.getFileFromDataDirectory('user.js');
+        if(fs.existsSync(userConfig)) {
             return require(userConfig);
+        } else {
+            return config;
         }
-        else{*/
-        return config;
-        //}
     }
 };
 
 module.exports.initializeDataDirectory = function() {
     var conf = this.getConfig();
     if(!conf["data_directory"]) {
-        var defaultDirectory = path.resolve('/etc/oisp-agent/');
+        var defaultDirectory = path.resolve('./data/');
         this.saveToGlobalConfig("data_directory", defaultDirectory);
 
         var deviceConfig = path.resolve(defaultDirectory, "device.json");
@@ -165,7 +162,7 @@ module.exports.writeConfig = function(fileName, data) {
 };
 
 module.exports.saveToGlobalConfig = function(key, value) {
-    var fileName = path.resolve(__dirname, '../config/global.json');
+    var fileName = config.getGlobalConfigName();
     this.saveToConfig(fileName, key, value);
 };
 
