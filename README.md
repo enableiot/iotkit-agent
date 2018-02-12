@@ -19,7 +19,7 @@ If the program is not installed, you can install it following these steps:
 
 ```
 # git clone https://github.com/Open-IoT-Service-Platform/oisp-iot-agent.git
-# cd oisp-iot-agent/agent
+# cd oisp-iot-agent
 # npm install
 # ./oisp-agent.js test
 ```
