@@ -2,9 +2,9 @@ FROM node:4.8.3
 
 ADD . /app
 
-VOLUME /app/agent/data
+VOLUME /app/data
 
-WORKDIR /app/agent
+WORKDIR /app
 
 RUN npm cache clean
 
