@@ -1,7 +1,7 @@
 {
-  "name": "oisp-agent",
+  "name": "@open-iot-service-platform/oisp-iot-agent",
   "version": "2.0.0alpha1",
-  "description": "OISP agent for devices",
+  "description": "OISP IoT agent for devices",
   "main": "server.js",
   "dependencies": {
     "cli-table": "^0.3.0",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/enableiot/iotkit-agent.git"
+    "url": "git://github.com/Open-IoT-Service-Platform/oisp-iot-agent.git"
   },
   "keywords": [
     "oisp",
@@ -34,9 +34,9 @@
   "author": "Intel, CPG",
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/enableiot/iotkit-agent/issues"
+    "url": "https://github.com/Open-IoT-Service-Platform/oisp-iot-agent/issues"
   },
-  "homepage": "https://github.com/enableiot/iotkit-agent",
+  "homepage": "https://github.com/Open-IoT-Service-Platform/oisp-iot-agent",
   "devDependencies": {
     "grunt": "^0.4.4",
     "grunt-cli": "^1.2.0",
