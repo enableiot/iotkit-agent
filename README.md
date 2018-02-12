@@ -1,4 +1,4 @@
-# OISP Agent
+# OISP IoT Agent
 
 This project includes two programs:
 
