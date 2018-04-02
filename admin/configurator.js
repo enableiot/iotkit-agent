@@ -242,7 +242,7 @@ var loggerLevel = {
     error: true,
     debug: true
 };
-
+/*istanbul ignore next*/
 module.exports = {
     addCommand : function (program) {
         program
