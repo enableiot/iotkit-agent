@@ -33,7 +33,7 @@ if (!config) {
 module.exports = config;
 
 /* Example usage:
- * config.default_connector = "mqtt";
+ * config.default_connector = "rest+ws";
  * config.connector.rest.timeout = 60000;
  *
  * config.connector.rest.proxy.host = "example.com";

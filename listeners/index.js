@@ -25,7 +25,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "use strict";
 
 module.exports = {
-    MQTT: require('./mqtt'),
     REST: require('./rest'),
     TCP: require('./tcp')
 };

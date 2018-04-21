@@ -247,13 +247,13 @@ module.exports = {
     addCommand : function (program) {
         program
             .command('protocol <protocol>')
-            .description('Set the protocol to \'mqtt\' or \'rest\' or \'rest+ws\'')
+            .description('Set the protocol to \'rest\' or \'rest+ws\'')
             .action(function(protocol) {
-                if (protocol === 'mqtt' || protocol === 'rest' || protocol === 'rest+ws') {
+                if (protocol === 'rest' || protocol === 'rest+ws') {
                     common.saveToUserConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {
-                    logger.error("invalid protocol: %s - please use 'mqtt' or 'rest' or 'rest+ws'", protocol);
+                    logger.error("invalid protocol: %s - please use 'rest' or 'rest+ws'", protocol);
                     // do not clear the previous protocol
                 }
             });
