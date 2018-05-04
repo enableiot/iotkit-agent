@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 process.env.NODE_ENV = 'test';
 var assert = require('assert'),
     utils = require("../lib/utils").init(),
-    logger = require("@open-iot-service-platform/oisp-sdk-js").lib.logger.init(utils),
+    logger = require('../lib/logger').init(utils),
     schemaValidation = require('../lib/schema-validator'),
     configurator = require('../admin/configurator');
 

@@ -24,7 +24,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 "use strict";
 var utils = require("../lib/utils").init(),
-    logger = require("@open-iot-service-platform/oisp-sdk-js").lib.logger.init(),
+    logger = require('../lib/logger').init(),
     Cloud = require("../lib/cloud.proxy"),
     Control = require ("../lib/control.proxy"),
     Message = require('../lib/agent-message'),

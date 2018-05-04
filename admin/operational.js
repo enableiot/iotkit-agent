@@ -22,7 +22,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var logger = require("@open-iot-service-platform/oisp-sdk-js").lib.logger.init(),
+var logger = require('../lib/logger').init(),
     Cloud = require("../lib/cloud.proxy"),
     utils = require("../lib/utils").init(),
     common = require("../lib/common"),
@@ -76,7 +76,7 @@ function testConnection () {
             }
             if(conf.default_connector === 'rest+ws') {
                 var deviceInfo = common.getDeviceConfig();
-                var WS = Websocket.singleton(conf, deviceInfo, logger);
+                var WS = Websocket.singleton(conf, deviceInfo);
                 WS.client.on('connect', function(connection) {
                     connection.on('close', function(reasonCode, description) {
                         logger.info('Websocket connection closed. Reason: ' + reasonCode + ' ' + description);

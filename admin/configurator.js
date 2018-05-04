@@ -22,7 +22,7 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-var logger = require("@open-iot-service-platform/oisp-sdk-js").lib.logger.init(),
+var logger = require('../lib/logger').init(),
     common = require('../lib/common'),
     utils = require("../lib/utils").init(),
     path = require('path'),

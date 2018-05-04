@@ -25,7 +25,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 var Cloud = require("../lib/cloud.proxy"),
     Message = require('../lib/agent-message'),
     utils = require("../lib/utils").init(),
-    logger = require("@open-iot-service-platform/oisp-sdk-js").lib.logger.init(),
+    logger = require('../lib/logger').init(),
     Component = require('../lib/data/Components'),
     common = require('../lib/common'),
     schemaValidation = require('../lib/schema-validator');

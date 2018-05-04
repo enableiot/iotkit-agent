@@ -32,7 +32,7 @@ var admin= require('commander'),
     configurator = require('../admin/configurator'),
     fs = require('fs'),
     path = require('path'),
-    logger = require('@open-iot-service-platform/oisp-sdk-js').lib.logger.init();
+    logger = require('../lib/logger').init();
 
 admin.version(pkgJson.version)
     .option('-C, --config [path]', "Set the config file path", function(userConfDirectory) {

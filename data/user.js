@@ -45,3 +45,4 @@ module.exports = config;
  *
  * Please write your changes for config below.
  */
+config.default_connector="rest+ws";
