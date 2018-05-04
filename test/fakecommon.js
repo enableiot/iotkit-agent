@@ -90,6 +90,7 @@ global.fakeos = {
 
 global.fakeCommon = {
     initializeDataDirectory: function() {},
+    initializeDeviceConfig: function() {},
     getDeviceConfig: function() {
         return testdeviceConfig;
     },

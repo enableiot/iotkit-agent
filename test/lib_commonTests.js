@@ -216,28 +216,6 @@ describe(fileToTest, function() {
         done();
     });
 
-    it('shall exit process with 0 >', function(done) {
-        config = {
-            data_directory: "/file/exists/not"
-        }
-        fakeProcess = {
-            exit: function(input) {
-                assert.equal(input, 0, 'process exit parameter error');
-            }
-        }
-        var localLogger = Object.assign({}, logger);
-        localLogger.error = function(inputerr) {
-            assert.equal(inputerr, "Failed to find device config file", "Wrong or no Error in log")
-        }
-        toTest.__set__("config", config);
-        toTest.__set__("__dirname", "/file/exists/maybe/not");
-        toTest.__set__("fs", fakeFs);
-        toTest.__set__("process", fakeProcess);
-        toTest.__set__("logger", localLogger)
-        toTest.getDeviceConfigName();
-        done();
-    });
-
     it('shall get device config >', function(done) {
         config = {
             data_directory: "/file/exists/"

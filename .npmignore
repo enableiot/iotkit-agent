@@ -1,5 +1,7 @@
 buildscripts/
 examples/
 test/
+dist/
+data/*.json
 Gruntfile.js
 *.service
