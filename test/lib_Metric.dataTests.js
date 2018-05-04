@@ -32,10 +32,10 @@ describe(fileToTest, function() {
     it('Shall Return Metric empty Object >', function(done) {
         var Metric  = toTest.init();
         var mMet = new Metric();
-        assert.property(mMet, "accountId" , "The account id is required by MQTT AA");
-        assert.property(mMet, "did", "The did (device) is require by MQTT AA");
-        assert.property(mMet, "on", "The on (epoch time) is require by MQTT AA");
-        assert.property(mMet, "count", "The count is require by MQTT AA");
+        assert.property(mMet, "accountId" , "The account id is required AA");
+        assert.property(mMet, "did", "The did (device) is required AA");
+        assert.property(mMet, "on", "The on (epoch time) is required AA");
+        assert.property(mMet, "count", "The count is required AA");
         assert.operator(mMet.on, '>=', startData, "The on is not the expected");
         assert.isArray(mMet.data, "The Data Array were not proper initialized");
         done();
@@ -73,97 +73,6 @@ describe(fileToTest, function() {
         assert.equal(d.value, message.value, "The length of data is not the expected");
         assert.equal(d.on, message.on, "The length of data is not the expected");
         assert.equal(d.cid, message.componentId, "The length of data is not the expected");
-
-        done();
-    });
-    it('Shall Convert Metric Obj to MQTT >', function(done) {
-        var Metric  = toTest.init();
-        var mMetricon = new Metric();
-        var message = {
-            accountId: "myAccount2",
-            componentId: "111-2223-5556-77877",
-            deviceId: "myDeviceID_clear",
-            on: "10101010",
-            v: "10.32",
-            loc: [10, 20, 30]
-        };
-        mMetricon.set(message);
-        mMetricon.convertToMQTTPayload();
-        assert.equal(mMetricon.on, message.on, "The on is not the expected");
-        assert.isArray(mMetricon.data, "The Data Array were not proper initialized");
-        assert.lengthOf(mMetricon.data, 1, "The length of data is not the expected");
-        d = mMetricon.data[0];
-        assert.equal(d.value, message.v, "The length of data is not the expected");
-        assert.equal(d.on, message.on, "The length of data is not the expected");
-        assert.equal(d.cid, message.componentId, "The length of data is not the expected");
-        assert.notProperty(d, "attributes", "The attributes are not expected");
-        assert.notProperty(d, "globalCid", "Temporal Property not remove");
-        assert.lengthOf(mMetricon.data, mMetricon.count, "The length of data is not the expected");
-
-        message = {
-            accountId: "myAccount2",
-            componentId: "111-2223-5556-77877",
-            deviceId: "myDeviceID_clear",
-            v: "122.32",
-            attributes: "shome value"
-        };
-        delete  mMetricon;
-        mMetricon = new Metric();
-        mMetricon.set(message);
-        mMetricon.convertToMQTTPayload();
-        assert.operator(mMetricon.on, '>=', startData, "The on is not the expected");
-        assert.isArray(mMetricon.data, "The Data Array were not proper initialized");
-        assert.lengthOf(mMetricon.data, 1, "The length of data is not the expected");
-        assert.notProperty(mMetricon, "globalCid", "The attributes are not expected");
-        d = mMetricon.data[0];
-        assert.isString(d.value, "The value of the data is not string");
-        assert.equal(d.value, message.v, "The data is not the expected");
-        assert.operator(d.on, '>=', startData, "The on is not the expected");
-        assert.equal(d.cid, message.componentId, "The length of data is not the expected");
-        assert.equal(d.attributes, message.attributes, "The attributes are not expected");
-        assert.notProperty(d, "globalCid", "Temporal Property not remove");
-        assert.lengthOf(mMetricon.data, mMetricon.count, "The length of data is not the expected");
-
-        done();
-    });
-    it('Shall Convert Metric Obj to MQTT with a multiple data>', function(done) {
-        var Metric  = toTest.init();
-        var mMetricon = new Metric();
-        var message = {
-            accountId: "myAccount2",
-            deviceId: "myDeviceID_clear",
-            data: [ {
-                componentId: "111-2223-5556-77877",
-                on: "101020202",
-                v: "10.32",
-                loc: [10, 20, 30]
-            }, {
-                componentId: "0909090917",
-                on: "101013213213202",
-                v: "10.32",
-                attributes: "some value"
-            }]
-        };
-        mMetricon.set(message);
-        assert.operator(mMetricon.on, '>=', startData, "The on is not the expected");
-        assert.isArray(mMetricon.data, "The Data Array were not proper initialized");
-        assert.lengthOf(mMetricon.data, mMetricon.count, "The length of data is not the expected");
-        var d = mMetricon.data[0];
-        var d1 = message.data[0];
-        assert.equal(d.value, d1.v, "The length of data is not the expected");
-        assert.equal(d.on, d1.on, "The length of data is not the expected");
-        assert.equal(d.cid, d1.componentId, "The length of data is not the expected");
-        assert.equal(d.loc, d1.loc, "The loc are not expected");
-        assert.notProperty(d, "attributes", "Temporal Property not remove");
-        assert.notProperty(d, "globalCid", "Temporal Property not remove");
-        d = mMetricon.data[1];
-        var d2 = message.data[1];
-        assert.equal(d.value, d2.v, "The length of data is not the expected");
-        assert.equal(d.on, d2.on, "The length of data is not the expected");
-        assert.equal(d.cid, d2.componentId, "The length of data is not the expected");
-        assert.equal(d.attributes, d2.attributes, "The loc are not expected");
-        assert.notProperty(d, "loc", "Temporal Property not remove");
-        assert.notProperty(d, "globalCid", "Temporal Property not remove");
 
         done();
     });
@@ -219,45 +128,4 @@ describe(fileToTest, function() {
         assert.notProperty(d, "globalCid", "Temporal Property not remove");
         done();
     });
-    /*it('Shall Convert Metric Obj to MQTT using Data Array>', function(done) {
-        var Metric  = toTest.init();
-        var mMetricon = new Metric();
-        var message = {
-            accountId: "myAccount",
-            on : 111122223334544566,
-            deviceId: "myDeviceID",
-            data: [{v: "myDDDD",
-                    componentId: "000-2223-5556-77877",
-                    on: 2222345565
-                    },
-                    {value: "valueDDDD",
-                     cid: "000-2223-5556-77877",
-                     loc: [1,2,4,5,6],
-                     attributes: {v:'xx'}
-                    }
-                    ]
-        };
-        var mMet = mMetricon.convertToMQTTPayload(message);
-        assert.equal(mMet.on, message.on, "The on is not the expected");
-        assert.isArray(mMet.data, "The Data Array were not proper initialized");
-        assert.lengthOf(mMet.data, message.data.length, "The length of data is not the expected");
-        d = mMet.data[0];
-        assert.equal(d.value, message.data[0].v, "The length of data is not the expected");
-        assert.equal(d.on, message.data[0].on, "The length of data is not the expected");
-        assert.equal(d.cid, message.data[0].componentId, "The length of data is not the expected");
-        assert.notProperty(d, "attributes", "The attributes are not expected");
-        assert.notProperty(d, "loc", "The loc are not expected");
-        assert.lengthOf(mMet.data, mMet.count, "The length of data is not the expected");
-        d = mMet.data[1];
-        assert.equal(d.value, message.data[1].value, "The length of data is not the expected");
-        assert.equal(d.on, message.on, "The length of data is not the expected");
-        assert.equal(d.cid, message.data[1].cid, "The length of data is not the expected");
-        assert.property(d, "attributes", "The attributes are not expected");
-        assert.property(d, "loc", "The loc are not expected");
-        assert.deepEqual(d.loc, message.data[1].loc, "The loc are not expected");
-        assert.deepEqual(d.attributes, message.data[1].attributes, "The loc are not expected");
-        assert.lengthOf(mMet.data, mMet.count, "The length of data is not the expected");
-
-        done();
-    });*/
 });
