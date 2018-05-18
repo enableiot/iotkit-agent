@@ -27,8 +27,9 @@ var logger = require('../lib/logger').init(),
     utils = require("../lib/utils").init(),
     common = require("../lib/common"),
     configurator = require('../admin/configurator'),
-    Websocket = require('@open-iot-service-platform/oisp-sdk-js').api.ws.connector,
-    wsErrors = require('@open-iot-service-platform/oisp-sdk-js').api.ws.errors,
+    config = require('../config'),
+    Websocket = require('@open-iot-service-platform/oisp-sdk-js')(config).api.ws.connector,
+    wsErrors = require('@open-iot-service-platform/oisp-sdk-js')(config).api.ws.errors,
     exec = require('child_process').exec,
     exitMessageCode = {
         "OK": 0,
@@ -54,12 +55,11 @@ var activate = function (code) {
 };
 
 function testConnection () {
-    var conf = common.getConfig();
     var host;
-    if(conf.default_connector === 'rest+ws') {
-        host = conf.connector['rest'].host;
+    if(config.default_connector === 'rest+ws') {
+        host = config.connector['rest'].host;
     } else {
-        host = conf.connector[conf.default_connector].host;
+        host = config.connector[config.default_connector].host;
     }
     utils.getDeviceId(function (id) {
         var cloud = Cloud.init(logger, id);
@@ -74,9 +74,9 @@ function testConnection () {
                 logger.error("Connection failed to %s", host);
                 exitCode = exitMessageCode.ERROR;
             }
-            if(conf.default_connector === 'rest+ws') {
+            if(config.default_connector === 'rest+ws') {
                 var deviceInfo = common.getDeviceConfig();
-                var WS = Websocket.singleton(conf, deviceInfo);
+                var WS = Websocket.singleton(config, deviceInfo);
                 WS.client.on('connect', function(connection) {
                     connection.on('close', function(reasonCode, description) {
                         logger.info('Websocket connection closed. Reason: ' + reasonCode + ' ' + description);
@@ -105,7 +105,7 @@ function testConnection () {
                 setTimeout(function() {
                     logger.error("Timeout exceeded. Program will exit.");
                     process.exit(exitCode);
-                }, conf.connector.ws.testTimeout);
+                }, config.connector.ws.testTimeout);
             }
 
         });

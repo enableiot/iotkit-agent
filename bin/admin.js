@@ -29,23 +29,8 @@ var admin= require('commander'),
     pkgJson = require('../package.json'),
     auth = require('../admin/operational'),
     components = require('../admin/components'),
-    configurator = require('../admin/configurator'),
-    fs = require('fs'),
-    path = require('path'),
-    logger = require('../lib/logger').init();
+    configurator = require('../admin/configurator');
 
-admin.version(pkgJson.version)
-    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory) {
-        process.userConfigPath = path.resolve(userConfDirectory , "user.js");
-        if (fs.existsSync(process.userConfigPath)) {
-            logger.info("'" + process.userConfigPath + "'" +
-                ' will be used as user config file.');
-        } else{
-            logger.error("'" + process.userConfigPath + "'" +
-                ' not contains user.js config file.');
-            process.exit(1);
-        }
-    });
 /*
 /*
  * Add commando as option

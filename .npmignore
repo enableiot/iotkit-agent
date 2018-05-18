@@ -5,3 +5,4 @@ dist/
 data/*.json
 Gruntfile.js
 *.service
+config/config.json

@@ -28,9 +28,7 @@ global.logger = {
     debug: function() {}
 };
 
-global.testuserConfig = {};
-
-global.testglobalConfig = {};
+global.testConfig = {};
 
 global.testdeviceConfig = {
     device_id: '',
@@ -96,14 +94,8 @@ global.fakeCommon = {
     },
     readFileToJson: function(fullPath) {},
     writeToJson: function() {},
-    getConfig: function() {
-        return Testvalue.config;
-    },
-    saveToGlobalConfig: function(key, value) {
-        testglobalConfig[key] = value;
-    },
-    saveToUserConfig: function(key, value) {
-        testuserConfig[key] = value;
+    saveToConfig: function(key, value) {
+        testConfig[key] = value;
     },
     saveToDeviceConfig: function(key, value) {
         testdeviceConfig[key] = value;

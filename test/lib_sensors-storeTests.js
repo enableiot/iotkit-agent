@@ -40,8 +40,7 @@ describe(fileToTest, function() {
     describe("Stora shall Read/Write from source", function () {
         var common = {
             readFileToJson : function () {},
-            writeToJson: function() {},
-            getConfig: function() {}
+            writeToJson: function() {}
         };
         var toTest;
         before(function(done) {
@@ -75,10 +74,6 @@ describe(fileToTest, function() {
             }
 
             var storeName = "deviceTest.json";
-
-            common.getConfig = function() {
-                return config;
-            };
 
             common.readFileToJson = function (fullPath) {
                 var str = "/data/" + storeName;

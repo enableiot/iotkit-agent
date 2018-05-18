@@ -32,9 +32,7 @@ var utils = require("../lib/utils").init(),
     Listener = require("../listeners/"),
     admin= require('commander'),
     pkgJson = require('../package.json'),
-    path = require('path'),
-    fs = require('fs'),
-    conf = require('@open-iot-service-platform/oisp-sdk-js').config;
+    conf = require('../config');
 
 process.on("uncaughtException", function(err) {
     logger.error("UncaughtException:", err.message);
@@ -43,19 +41,7 @@ process.on("uncaughtException", function(err) {
     process.exit(1);
 });
 
-admin.version(pkgJson.version)
-    .option('-C, --config [path]', "Set the config file path", function(userConfDirectory) {
-        process.userConfigPath = path.resolve(userConfDirectory , "user.js");
-        if (fs.existsSync(process.userConfigPath)) {
-            logger.info("'" + process.userConfigPath + "'" +
-                ' will be used as user config file.');
-            conf = require(process.userConfigPath);
-        } else{
-            logger.error("'" + process.userConfigPath + "'" +
-                ' not contains user.js config file.');
-            process.exit(1);
-        }
-    });
+admin.version(pkgJson.version);
 
 admin.parse(process.argv);
 

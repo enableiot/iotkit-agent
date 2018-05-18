@@ -21,30 +21,48 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-"use strict";
-var winston = require('winston'),
-    path = require('path'),
-    conf = require("../config").logger;
 
-exports.init = function() {
+var fs = require('fs');
+var path = require('path');
+var localConf = "./config.json";
 
-    var logTransports = [
-        new (winston.transports.Console)({ 
-            level: conf.LEVEL || 'debug',
-            colorize: true,
-            timestamp: true
-        }),
-        new (winston.transports.File)({
-            filename: path.join((process.platform ==='win32' ? process.env.temp : conf.PATH), 'oisp-sdk.log'),
-            level: conf.LEVEL || 'info',
-            timestamp: true,
-            maxsize: conf.MAX_SIZE, //128 MB
-            maxFiles: 1
-        })
-    ];
+var config = {};
 
-    return new (winston.Logger)({
-        transports: logTransports,
-        exitOnError: false
-    });
-};  
+if (fs.existsSync(path.join(__dirname, localConf))) {
+    config = require(localConf);
+} else {
+    process.exit(0);
+}
+
+/* override for local development if NODE_ENV is defined to local */
+if (process.env.NODE_ENV && (process.env.NODE_ENV.toLowerCase().indexOf("local") !== -1)) {
+    config.connector.ws.host = "localhost";
+    config.connector.ws.port = 5000;
+    config.connector.ws.secure = false;
+    config.connector.rest.host = "localhost";
+    config.connector.rest.port = 80;
+    config.connector.rest.protocol= "http";
+    config.logger.PATH = './';
+
+    delete process.env["http_proxy"];
+    delete process.env["https_proxy"];
+}
+
+/* override the log level */
+if (process.env.LOG_LEVEL === "debug" || process.env.LOG_LEVEL === "info" || 
+    process.env.LOG_LEVEL === "warn" || process.env.LOG_LEVEL === "error" ) {
+
+    config.logger.LEVEL = process.env.LOG_LEVEL
+}
+
+
+module.exports = config;
+
+module.exports.getConfigName = function() {
+    var fullFileName = path.join(__dirname, localConf);
+    if (fs.existsSync(fullFileName)) {
+        return fullFileName;
+    } else {
+        process.exit(0);
+    }
+};

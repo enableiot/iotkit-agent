@@ -3,6 +3,7 @@ FROM node:4.8.3
 ADD . /app
 
 VOLUME /app/data
+VOLUME /app/config
 
 WORKDIR /app
 
