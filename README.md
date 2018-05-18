@@ -1,120 +1,76 @@
+
 # OISP IoT Agent
 
-This project includes two programs:
+This project consists of two components:
 
 ### oisp-admin
 This is a command line "wrapper" for the [REST API](https://github.com/Open-IoT-Service-Platform/platform-launcher/wiki/REST-API), enabling you to test connectivity, activate a device, register time series and send observations all from the command line.
 
 ### oisp-agent
-This is a "agent" program intended to run as a services. You can send a very simple message, such as:
+This is a "agent" program intended to run as a service. You can send a very simple message, such as:
 
 ```
 {"n": "temp", "v": 26.9}
 ```
 
-to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to the cloud server.
+to a UDP socket on port 41234. The agent will add the security token, add a time stamp, convert "temp" to the component (time series) ID, and send a POST over SSL to an OISP instance.
 
 ## Installing using git
-If the program is not installed, you can install it following these steps:
-
+``` bash
+git clone https://github.com/Open-IoT-Service-Platform/oisp-iot-agent.git
+cd oisp-iot-agent
+npm install
 ```
-# git clone https://github.com/Open-IoT-Service-Platform/oisp-iot-agent.git
-# cd oisp-iot-agent
-# npm install
-# ./oisp-agent.js test
+
+#### Configuration
+Before using the agent you need to configure it so it knows how to communicate with your OISP instance. The agent looks for the configuration file 'config.json' in the 'config' directory. A template is provided in the 'config' directory which you can copy and modify using your favourite text editor.
+
+``` bash
+cp config/config.json.template config/config.json
 ```
   
-#### Testing the connection with OISP
-
+#### Testing the connection
 Run the following command to test the connection: 
-
-    ./oisp-admin.js test
-
-*Note*: For more information about oisp-admin commands, go to section [Notes about "admin" commands](#6-notes-about-admin-commands).
+``` bash
+./oisp-admin.js test
+```
 
 #### Configuring and Activating the Agent
 
 Set a unique Device Id with this command:
-
-    ./oisp-admin.js set-device-id <device_id>
+``` bash
+./oisp-admin.js set-device-id <device_id>
+```
 
 You can also set a different Device name with this command:
-
-    ./oisp-admin.js set-device-name <device_name>
+``` bash
+./oisp-admin.js set-device-name <device_name>
+```
 
 After the device registration, copy the activation code in _My Account_ UI, tab _Details_ (in _Account_ menu) and execute the activation command:
-
-    ./oisp-admin.js activate <activation_code>     
-
+``` bash
+./oisp-admin.js activate <activation_code>     
+```
 To verify activation, go back to your OISP dashboard and verify the status of the device previously registered.
 
 #### Starting the Agent
 
 To start the oisp-agent service simply execute the start script:
-
-    ./oisp-agent.js
-
+``` bash
+./oisp-agent.js
+```
 ## Usage
 
-For examples of how to use the 'oisp-agent' please see the [Examples](https://github.com/Open-IoT-Service-Platform/oisp-iot-agent/tree/master/agent/examples) provided.
+For examples of how to use the 'oisp-agent' please see the [Examples](https://github.com/Open-IoT-Service-Platform/oisp-iot-agent/tree/master/examples) provided.
 
 ## Test
 
 The oisp-agent project uses [gruntjs](http://gruntjs.com/) [mocha](http://visionmedia.github.io/mocha/) as its test framework. 
 To run all tests:
-
-> Install all dev-dependencies, running:
-
-    npm install 
-    node_modules/.bin/grunt
-
-## Notes about "admin" commands
-
-The oisp-agent provides a set of commands (and basic options) to perform configuration over the device, as well as, some basic actions, like activation, initialization, etc.
-
-The following is the list of commands and options:
-
-Commands:
-
-* `test`                                Tries to reach the server (using the current protocol).
-* `activate <activation_code>`          Activates the device.
-* `register <comp_name> <catalogid>`    Registers a component in the device.
-* `reset-components`                    Clears the component list.
-* `observation <comp_name> <value>`     Sends an observation for the device, for the specific component.
-* `catalog`                             Displays the Catalog from the device's account.
-* `components`                          Displays components registered for this device.
-* `initialize`                          Resets both the token and the component's list.
-* `update`                              Send update device request to dashboard
-* `protocol <protocol>`                 Set the protocol to 'mqtt' or 'rest'
-* `host <host> [<port>]`                Sets the cloud hostname for the current protocol.
-* `device-id`                           Displays the device id.
-* `set-device-id <id>`                  Overrides the device id.
-* `clear-device-id`                     Reverts to using the default device id.
-* `save-code <activation_code>`         Adds the activation code to the device.
-* `reset-code`                          Clears the activation code of the device.
-* `proxy <host> <port>`                 Sets proxy For REST protocol.
-* `reset-proxy`                         Clears proxy For REST protocol.
-* `set-logger-level <level>`            Set the logger level to 'debug', 'info', 'warn', 'error'
-* `set-data-directory <path>`           Sets path of directory that contains sensor data.
-* `reset-data-directory`                Resets to default the path of directory that contains sensor data.
-* `move-data-directory <path>`          Change directory where data will be stored
-* `gateway-id                           Displays the geteway id.
-* `set-gateway-id <id>                  Overrides the geteway id.
-* `set-device-name <name>               Change device name
-* `reset-device-name                    Resets to default device name.
-* `set-udp-port <udp_port>              Overrides the port UDP listener binds to
-
-  Options:
-
-    -h, --help           output usage information
-    -V, --version        output the version number
-    -C, --config [path]  Set the config file path
-
-
-## General notes
-
-* The 'catalog' command shows the list of components associated with the account where the device is active.
-* In order to define the **host**, you don't need to specify the protocol (https/http).
+``` bash
+npm install 
+./node_modules/grunt-cli/bin/grunt
+```
 
 ## Certificates
 
