@@ -53,6 +53,30 @@ After the device registration, copy the activation code in _My Account_ UI, tab 
 ```
 To verify activation, go back to your OISP dashboard and verify the status of the device previously registered.
 
+#### Adding Sensors and Actuators
+
+View in _My Account_ the _Catalog_ tab. You see predefined Sensors and Actuators but can also define your own types. For instance a default sensor is the _temperature.v1.0_ sensor. It can be added by the following command with the name _temp_:
+``` bash
+./oisp-admin.js register <name> <type>
+```
+e.g.
+``` bash
+./oisp-admin.js register temp temperature.v1.0
+```
+
+#### Sending Metrics
+
+After that, values for the component _temp_ can be sent by either the _oisp-admin_ to test, e.g.
+```
+./oisp-admin.js observation temp 22.1
+```
+
+or when the oisp-agent is launched, by sending
+```
+{"n": "temp", "v": 22.1}
+```
+to a UDP socket on port 41234.
+
 #### Starting the Agent
 
 To start the oisp-agent service simply execute the start script:
