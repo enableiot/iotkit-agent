@@ -6,3 +6,6 @@ data/*.json
 Gruntfile.js
 *.service
 config/config.json
+Dockerfile
+Makefile
+CONTRIBUTING

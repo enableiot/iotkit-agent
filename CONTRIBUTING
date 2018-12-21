@@ -1,0 +1,74 @@
+Contributing
+============
+
+This is an open source project and we actively encourage contributions.
+
+The recommended method to contribute is to fork the repository and submit pull
+requests to the main project. You can open issues if you find bugs or have
+questions or suggestions. If you want to work on a large feature then we suggest you file an
+issue first so we can avoid dissapointments come merge time!
+
+Basic rules
+-----------
+- Your code must build
+- Commits must have a sign-off line by at least yourself
+- Only commit to the development branch
+- Try to split commits up logically or we will ask you to rebase them
+- All Grunt tests must pass
+
+
+Coding Style
+------------
+
+Coding style for all code is defined by ESLint config which can be found in 'buildscripts/eslint'.
+
+
+Author Rules
+------------
+
+If you create a file, then add yourself as the Author at the top. If you did a
+large contribution to it (or if you want to ;-)), then feel free to add yourself
+to the contributors list in that file. You can also add your own copyright
+statement to the file but cannot add a license of your own. If you're borrowing
+code that comes from a project with another license, make sure to explicitly
+note this in your PR.
+
+Code signing
+------------
+
+The sign-off is a simple line at the end of the explanation for the
+patch, which certifies that you wrote it or otherwise have the right to pass it
+on as an open-source patch.  The rules are pretty simple: if you can certify
+the below:
+
+        Developer's Certificate of Origin 1.1
+
+        By making a contribution to this project, I certify that:
+
+        (a) The contribution was created in whole or in part by me and I
+            have the right to submit it under the open source license
+            indicated in the file; or
+
+        (b) The contribution is based upon previous work that, to the best
+            of my knowledge, is covered under an appropriate open source
+            license and I have the right under that license to submit that
+            work with modifications, whether created in whole or in part
+            by me, under the same open source license (unless I am
+            permitted to submit under a different license), as indicated
+            in the file; or
+
+        (c) The contribution was provided directly to me by some other
+            person who certified (a), (b) or (c) and I have not modified
+            it.
+
+        (d) I understand and agree that this project and the contribution
+            are public and that a record of the contribution (including all
+            personal information I submit with it, including my sign-off) is
+            maintained indefinitely and may be redistributed consistent with
+            this project or the open source license(s) involved.
+
+Finally you add a line such as:
+
+	Signed-off-by: Random J Developer <random@developer.example.org>
+
+Use your real name! Pseudonyms or anonymous contributions will not be accepted.
