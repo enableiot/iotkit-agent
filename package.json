@@ -14,7 +14,7 @@
     "mqtt": "^0.3.8",
     "uuid": "^3.0.0",
     "winston": "^2.4.0",
-    "@open-iot-service-platform/oisp-sdk-js": "^1.0.0beta2"
+    "@open-iot-service-platform/oisp-sdk-js": "^1.0.0"
   },
   "bin": {
     "oisp-admin": "./oisp-admin.js",
