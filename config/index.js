@@ -31,7 +31,8 @@ var config = {};
 if (fs.existsSync(path.join(__dirname, localConf))) {
     config = require(localConf);
 } else {
-    process.exit(0);
+    console.log("No config file found in " + __dirname + ". Did you forget to prepare the config.json?");
+    process.exit(1);
 }
 
 /* override for local development if NODE_ENV is defined to local */
