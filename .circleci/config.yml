@@ -1,0 +1,168 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2.1
+executors:
+  vm-executor:
+    machine:
+      enabled: true
+      image: ubuntu-1604:201903-01
+    working_directory: ~/repo
+    environment:
+      shell: /bin/bash
+      TERM: xterm
+      TZ: "Europe/Berlin"
+  docker-executor:
+    docker:
+      - image: circleci/node:8.0
+    working_directory: ~/repo
+    environment:
+      shell: /bin/bash
+      TERM: xterm
+commands:
+  setup-build-environment:
+    description: "Setup build Environment"
+    steps:
+      - run:
+          name: Setup build environment
+          command: |
+            cd platform-launcher/platform-setup
+            sudo ./setup-ubuntu16.04.sh
+  checkout-e2e:
+    description: "Checkout E2E test"
+    parameters:
+      oisp-tag:
+        type: string
+    steps:
+      - run:
+          name: Checkout E2E test with tag << parameters.oisp-tag >>
+          shell: /bin/bash
+          command: |
+            git clone https://github.com/${CIRCLE_PROJECT_USERNAME}/platform-launcher.git
+            cd platform-launcher
+            git checkout << parameters.oisp-tag >>
+            git submodule init
+            git submodule update
+  pull-images:
+    description: "Pull all images"
+    parameters:
+      oisp-tag:
+        type: string
+    steps:
+      - run:
+          name: Pull all images
+          shell: /bin/bash
+          command: |
+            cd platform-launcher
+            docker login  -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+            export DOCKER_TAG="<< parameters.oisp-tag >>"
+            yes | make pull || exit 0 # missing containers will be build later
+  e2e-test:
+    description: "Wait for platform to become ready"
+    parameters:
+      oisp-tag:
+        type: string
+    steps:
+      - run:
+          name: Wait for platform to become ready
+          shell: /bin/bash
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v8.16.0
+            nvm alias default v8.16.0
+            export DOCKER_TAG="<< parameters.oisp-tag >>"
+            cd platform-launcher
+            make build
+            make test # TODO: needed to ensure that the platform is ready. Should be replaced by something lightweight
+  checkout-testbranch:
+    description: "Checks out branch of repository which is to be tested"
+    parameters:
+      repo:
+        type: string
+    steps:
+      - run:
+          name: Checks out branch of to be tested repository
+          command: |
+            CLONE_REPO=https://github.com/${CIRCLE_PROJECT_USERNAME}/<< parameters.repo >>.git
+            CLONE_BRANCH=${CIRCLE_BRANCH}
+            if [ ! -z "${CIRCLE_PULL_REQUEST}" ]; then
+              PR=${CIRCLE_PR_NUMBER}
+              PR_REPO=${CIRCLE_PR_REPONAME}
+              PROJECT_USERNAME=${CIRCLE_PROJECT_USERNAME}
+              URL="https://api.github.com/repos/${PROJECT_USERNAME}/${PR_REPO}/pulls/${PR}"
+              GITHUBDATA=$(curl "$URL")
+              CLONE_REPO=$(echo $GITHUBDATA | jq '.head.repo.clone_url' | tr -d '"')
+              CLONE_BRANCH=$(echo $GITHUBDATA | jq '.head.ref' | tr -d '"')
+              echo Detected Pull Request with clone REPO ${CLONE_REPO} and branch ${CLONE_BRANCH}
+            fi
+            cd platform-launcher
+            rm -rf ${CIRCLE_PROJECT_REPONAME}
+            git clone ${CLONE_REPO}
+            cd ${CIRCLE_PROJECT_REPONAME}
+            git checkout origin/${CLONE_BRANCH}
+  test-admin:
+    description: "Test admin tool"
+    steps:
+      - run:
+          name: Test admin tool
+          shell: /bin/bash
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v8.16.0
+            nvm alias default v8.16.0
+            cd platform-launcher/oisp-iot-agent
+            npm install
+            cp config/config.json.template config/config.json
+            ./oisp-admin.js test
+jobs:
+  e2e-test:
+    executor: vm-executor
+    steps:
+      - checkout-e2e:
+          oisp-tag: "v1.1-beta1"
+      - checkout-testbranch:
+          repo: "oisp-iot-agent"
+      - setup-build-environment
+      - pull-images:
+          oisp-tag: "v1.1-beta1"
+      - e2e-test:
+          oisp-tag: "v1.1-beta1"
+      - test-admin
+  build-check:
+    executor: docker-executor
+    steps:
+      - checkout
+      - run:
+          name: Check whether most recent commit is signedoff
+          shell: /bin/bash
+          command: |
+            MESSAGE=`git log -1 --pretty=%B`
+            echo "Checking whether signed"
+            if [[ "${MESSAGE}" == *Signed-off-by:*@* ]]; then
+              echo "Commit is signedoff"
+            else
+              echo "Commit is not signedoff"
+              exit 1
+            fi
+      - run:
+          shell: /bin/bash
+          name: Install dependencies
+          command: |
+            NODE_ENV=local npm install
+      - run:
+          shell: /bin/bash
+          name: Run linting and tests
+          command: |
+            cp config/config.json.template config/config.json
+            node_modules/grunt-cli/bin/grunt
+workflows:
+  version: 2.1
+  workflow:
+    jobs:
+      - build-check
+      - e2e-test:
+          requires:
+            - build-check
