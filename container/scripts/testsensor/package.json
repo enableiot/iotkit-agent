@@ -1,0 +1,14 @@
+{
+  "name": "testsensor",
+  "version": "0.0.1",
+  "description": "Testsensor for OISP-agent",
+  "main": "testsensor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcel Wagner",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "dgram": "^1.0.1"
+  }
+}

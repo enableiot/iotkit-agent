@@ -32,16 +32,16 @@ commands:
   checkout-e2e:
     description: "Checkout E2E test"
     parameters:
-      oisp-tag:
+      oisp-git-hash:
         type: string
     steps:
       - run:
-          name: Checkout E2E test with tag << parameters.oisp-tag >>
+          name: Checkout E2E test with tag << parameters.oisp-git-hash >>
           shell: /bin/bash
           command: |
-            git clone https://github.com/${CIRCLE_PROJECT_USERNAME}/platform-launcher.git
+            git clone https://github.com/Open-IoT-Service-Platform/platform-launcher.git
             cd platform-launcher
-            git checkout << parameters.oisp-tag >>
+            git checkout << parameters.oisp-git-hash >>
             git submodule init
             git submodule update
   pull-images:
@@ -57,11 +57,11 @@ commands:
             cd platform-launcher
             docker login  -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
             export DOCKER_TAG="<< parameters.oisp-tag >>"
-            yes | make pull || exit 0 # missing containers will be build later
+            yes | make pull
   e2e-test:
     description: "Wait for platform to become ready"
     parameters:
-      oisp-tag:
+      oisp-docker-tag:
         type: string
     steps:
       - run:
@@ -72,10 +72,9 @@ commands:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install v8.16.0
             nvm alias default v8.16.0
-            export DOCKER_TAG="<< parameters.oisp-tag >>"
             cd platform-launcher
-            make build
-            make test # TODO: needed to ensure that the platform is ready. Should be replaced by something lightweight
+            export DOCKER_TAG=<< parameters.oisp-docker-tag >>
+            make test-prep-only
   checkout-testbranch:
     description: "Checks out branch of repository which is to be tested"
     parameters:
@@ -117,20 +116,36 @@ commands:
             npm install
             cp config/config.json.template config/config.json
             ./oisp-admin.js test
+  test-agent:
+    description: "Test agent"
+    steps:
+      - run:
+          name: Test agent
+          shell: /bin/bash
+          command: |
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v8.16.0
+            nvm alias default v8.16.0
+            cd platform-launcher/oisp-iot-agent
+            npm install
+            cp config/config.json.template config/config.json
+            make test
 jobs:
   e2e-test:
     executor: vm-executor
     steps:
       - checkout-e2e:
-          oisp-tag: "v1.1-beta1"
+          oisp-git-hash: "5e0076bced308973a36936950dd9acdf0ee8a1bc"
       - checkout-testbranch:
           repo: "oisp-iot-agent"
       - setup-build-environment
       - pull-images:
-          oisp-tag: "v1.1-beta1"
+          oisp-tag: "nightly-2019-07-17"
       - e2e-test:
-          oisp-tag: "v1.1-beta1"
+          oisp-docker-tag: "nightly-2019-07-17"
       - test-admin
+      - test-agent
   build-check:
     executor: docker-executor
     steps:

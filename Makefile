@@ -3,37 +3,58 @@
 # targets
 #----------------------------------------------------------------------------------------------------------------------
 
-IMAGE_NAME="oisp/oisp-agent"
-CONTAINER_NAME="oisp-agent"
+IMAGE_NAME = oisp/oisp-iot-agent
+CONTAINER_NAME = oisp-iot-agent
+GETAGENTENVDIR = container/test
+GETSAMPLES = ./getSamples.sh
+CONFIGFILE = ${GETAGENTENVDIR}/testconfig.sh
+
+DEVICENAME:=agenttestdevice
+SHELL := /bin/bash
+OISP_PREP_FILE ?= ../tests/oisp-prep-only.conf
+USERNAME = $(shell cat ${OISP_PREP_FILE} | jq .username)
+PASSWORD = $(shell cat ${OISP_PREP_FILE} | jq .password)
+ACCOUNTID = $(shell cat ${OISP_PREP_FILE} | jq .accountId)
+COMPONENT_NAME = "temp"
 
 build:
 	@$(call msg,"Building oisp-agent ...");
-	@/bin/bash -c "docker build . -t ${IMAGE_NAME}"
-
-configure:
-	@$(call msg,"Configure oisp-agent (using bash) ...");
-	@/bin/bash -c "docker run -t -i --rm --network=host -v ${PWD}/data:/app/data -p 1884:1884 -p 8000:8000 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} --entrypoint='/bin/bash' ${IMAGE_NAME}"
+	@docker build . -t ${IMAGE_NAME}
 
 start:
-	@$(call msg,"Starting oisp-agent ...");
-	@/bin/bash -c "docker run -d -t -i --rm --network=host -v ${PWD}/data:/app/data -p 1884:1884 -p 8000:8000 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
-
-start-local:
-	@$(call msg,"Starting oisp-agent (local) ...");
-	@/bin/bash -c "docker run -d -t -i -e NODE_ENV=local --rm --network=host -v ${PWD}/data:/app/data -p 1884:1884 -p 8000:8000 -p 41234:41234 -p 7070:7070 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
+	@$(call msg,"Starting oisp-agent container...");
+	@echo USERNAME=${USERNAME} PASSWORD=${PASSWORD}
+	@source ${CONFIGFILE}  && \
+		echo Starting container with the following settings: OISP_DEVICE_ACTIVATION_CODE="$${OISP_DEVICE_ACTIVATION_CODE}" \
+		OISP_DEVICE_ID="$${OISP_DEVICE_ID}" && \
+		docker run  \
+					-d -t -i --network=host --rm \
+					--env OISP_DEVICE_ACTIVATION_CODE=$${OISP_DEVICE_ACTIVATION_CODE} \
+					--env OISP_DEVICE_ID=$${OISP_DEVICE_ID} \
+					--env	OISP_DEVICE_NAME=$${OISP_DEVICE_NAME} \
+					--env	OISP_FORCE_REACTIVATION=$${OISP_FORCE_REACTIVATION} \
+					--name ${CONTAINER_NAME} ${IMAGE_NAME}
 
 stop:
 	@$(call msg,"Stopping oisp-agent ...");
-	@/bin/bash -c "docker stop ${CONTAINER_NAME}"
+	@docker stop ${CONTAINER_NAME} || echo "${CONTAINER_NAME} cannot be stopped."
+	@docker rm  -f ${CONTAINER_NAME} || echo "${CONTAINER_NAME} cannot be removed."
+	@make -C container stop
 
-update:
-	@$(call msg,"Git Update ...");
-	@git pull
 
-clean:
+clean: stop
 	@$(call msg,"Cleaning ...");
-	@/bin/bash -c "docker rm ${CONTAINER_NAME}"
-	@/bin/bash -c "docker rmi ${IMAGE_NAME}"
+	@docker rm -f ${CONTAINER_NAME} || echo "${CONTAINER_NAME} cannot be deleted"
+	@/bin/bash -c "docker rmi -f ${IMAGE_NAME}" || echo "${IMAGE_NAME} cannot be deleted"
+	@rm -f .prepare-testconfig
+
+.prepare-testconfig:
+		@cp config/config.json.template config/config.json
+		cd ${GETAGENTENVDIR} && make build && source ./getActivationCode.sh ${USERNAME} ${PASSWORD} ${DEVICENAME}
+		@touch $@
+
+test: .prepare-testconfig build start
+	@make COMPONENT_NAME=${COMPONENT_NAME} ACCOUNTID=${ACCOUNTID} DEVICENAME=${DEVICENAME} -C container test
 
 #----------------------------------------------------------------------------------------------------------------------
 # helper functions

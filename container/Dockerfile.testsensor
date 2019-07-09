@@ -1,0 +1,23 @@
+FROM node:8.16.0-alpine
+
+ADD ./scripts/testsensor /app
+
+RUN addgroup -g 1001 -S agent && \
+    adduser -u 1001 -S agent -G agent
+
+RUN chown -R agent /app
+
+WORKDIR /app
+
+USER agent
+
+RUN npm --force cache clean
+
+RUN npm install
+
+EXPOSE 1884
+EXPOSE 8000
+EXPOSE 41234
+EXPOSE 7070
+
+ENTRYPOINT node /app/testsensor.js
