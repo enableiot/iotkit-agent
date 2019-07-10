@@ -59,7 +59,7 @@ var setLastActuationsPullTime = function(time) {
 };
 
 var getLastActuationsPullTime = function(cb) {
-    cb(utils.getValueFromDeviceConfig(configFileKey.lastActuationsPull));
+    utils.getValueFromDeviceConfig(configFileKey.lastActuationsPull, cb);
 };
 
 var getGatewayId = function(cb) {
