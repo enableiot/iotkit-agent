@@ -1,6 +1,6 @@
 {
   "name": "@open-iot-service-platform/oisp-iot-agent",
-  "version": "2.0.0beta1",
+  "version": "2.0.0",
   "description": "OISP IoT agent for devices",
   "main": "server.js",
   "dependencies": {
@@ -14,7 +14,7 @@
     "mqtt": "^0.3.8",
     "uuid": "^3.0.0",
     "winston": "^2.4.0",
-    "@open-iot-service-platform/oisp-sdk-js": "^1.0.0"
+    "@open-iot-service-platform/oisp-sdk-js": "^1.0.1"
   },
   "bin": {
     "oisp-admin": "./oisp-admin.js",
