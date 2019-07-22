@@ -12,8 +12,8 @@ results
 node_modules
 *.idea/*
 *.orig
-*/coverage/*
-*/dist/*
+coverage
+dist
 *~
 data/*.json
 config/config.json

@@ -24,7 +24,6 @@
 
 module.exports = function(grunt) {
     // Project configuration.
-    var buildID = grunt.option('buildID') || 'local';
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
@@ -38,24 +37,6 @@ module.exports = function(grunt) {
                       'listeners/**/*.js'
             ],
             testfiles: ['test/*.js']
-        },
-        license_finder: {
-            default_options: {
-                options: {
-                    production: false,
-                    directory: process.cwd(),
-                    csv: true,
-                    out: 'licenses.csv'
-                }
-            },
-            production : {
-                options: {
-                    production: true,
-                    directory: process.cwd(),
-                    csv: true,
-                    out: 'licenses_production.csv'
-                }
-            }
         },
         eslint: {
             local: {
@@ -71,55 +52,26 @@ module.exports = function(grunt) {
                 }
             }
         },
-        compress: {
-            teamcity: {
+        nyc: {
+            all: {
                 options: {
-                    archive: 'dist/'+'<%= pkg.name %>_' + buildID + ".tgz",
-                    mode: 'tgz'
-                },
-                files: [{cwd: '.',
-                         expand: true,
-                         src: ['**/*.js', '**/*.sh', 'config.json', '!node_modules/**', '!dist/**', '!test/**', '!Gruntfile.js'],
-                    /* this is the root folder of untar file */
-                         dest: '<%= pkg.name %>/'
-                }
-                ]
-            }
-        },
-        mocha_istanbul: {
-            local: {
-                src: 'test/', // the folder, not the files
-                options: {
-                    ui: 'bdd',
-                    coverage: true,
+                    include: ['admin/**', 'bin/**', 'lib/**', 'listeners/**'],
                     recursive: true,
-                    reporter: 'list',
-                    timeout: 20000,
-                    mask: '*Tests.js',
-                    check: {
-                        lines: 60,
-                        statements: 60,
-                        function: 60
-                    },
-                    root: '.', // define where the cover task should consider the root of libraries that are covered by tests
-                    coverageFolder: 'dist/coverage',
-                    reportFormats: ['lcov']
-                }
+                    reporter: ['lcov', 'text-summary'],
+                    reportDir: 'dist/coverage',
+                    tempDir: 'dist/temp',
+                    all: true
+                },
+                cmd: false,
+                args: ['mocha'],
+                rawArgs: ['--colors']
             }
         }
     });
 
-    grunt.event.on('coverage', function(lcovFileContents, done) {
-        // Check below
-        done();
-    });
-
-    grunt.loadNpmTasks('grunt-mocha-istanbul');
-    grunt.loadNpmTasks('grunt-license-finder');
     grunt.loadNpmTasks('gruntify-eslint');
-    grunt.loadNpmTasks('grunt-contrib-compress');
+    grunt.loadNpmTasks('grunt-simple-nyc');
 
     // Default task(s).
-    grunt.registerTask('default', ['eslint:local', 'eslint:tests', 'mocha_istanbul:local']);
-    grunt.registerTask('packaging', ['compress:teamcity']);
+    grunt.registerTask('default', ['eslint:local', 'eslint:tests', 'nyc:all']);
 }
