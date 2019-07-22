@@ -10,9 +10,9 @@
 		"udp_address": "0.0.0.0"
 	},
 	"logger": {
-		"LEVEL": "info",
-		"PATH": "/tmp/",
-		"MAX_SIZE": 134217728
+		"level": "info",
+		"path": "/tmp/",
+		"max_size": 134217728
 	},
 	"default_connector": "rest+ws",
 	"connector": {
