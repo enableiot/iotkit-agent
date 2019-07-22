@@ -35,7 +35,7 @@
     "json-socket": "^0.3.0",
     "mqtt": "^3.0.0",
     "uuid": "^3.3.2",
-    "winston": "^2.4.0",
+    "winston": "^3.2.1",
     "@open-iot-service-platform/oisp-sdk-js": "^1.0.1"
   },
   "devDependencies": {
