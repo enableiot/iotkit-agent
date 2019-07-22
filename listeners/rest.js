@@ -51,7 +51,7 @@ exports.init = function(conf, logger, onMessage) {
 
     rest.listen(httpServerPort);
 
-    logger.info("REST listener started on port: ", httpServerPort);
+    logger.info("REST listener started on port: %d", httpServerPort);
     return rest;
 };
 

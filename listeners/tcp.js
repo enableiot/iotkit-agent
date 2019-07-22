@@ -44,9 +44,9 @@ exports.init = function(conf, logger, onMessage) {
     server.listen(tcpServerPort, tcpServerHost);
 
     server.on('connection', function(socket) {
-        logger.debug('TCP connection from %s:%d',   socket.remoteAddress, socket.remotePort);
+        logger.debug('TCP connection from %s:%d', socket.remoteAddress, socket.remotePort);
         if(socket.remoteAddress !== "127.0.0.1") {
-            logger.debug("Ignoring remote message from", socket.remoteAddress);
+            logger.debug("Ignoring remote message from %s", socket.remoteAddress);
             return;
         }
 
@@ -57,7 +57,7 @@ exports.init = function(conf, logger, onMessage) {
         });
     });
 
-    logger.info("TCP listener started on port:  ", tcpServerPort);
+    logger.info("TCP listener started on port: %d", tcpServerPort);
 
     return server;
 
