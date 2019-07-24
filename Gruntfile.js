@@ -55,7 +55,7 @@ module.exports = function(grunt) {
         nyc: {
             all: {
                 options: {
-                    include: ['admin/**', 'bin/**', 'lib/**', 'listeners/**'],
+                    include: ['admin/**', 'lib/**', 'listeners/**'],
                     recursive: true,
                     reporter: ['lcov', 'text-summary'],
                     reportDir: 'dist/coverage',
