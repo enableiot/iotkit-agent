@@ -25,7 +25,7 @@ echo onboarding with OISP_DEVICE_ACTIVATION_CODE=${OISP_DEVICE_ACTIVATION_CODE} 
 TOKEN=$(cat ${DATADIR}/device.json | jq ".device_token")
 echo Token found: $TOKEN
 if [ "$TOKEN" = "\"\"" ] || [ "$TOKEN" = "false" ] || [ ! -z "$OISP_FORCE_REACTIVATION" ]; then
-    if [ ! -z "$OSIP_DEVICE_ACTIVATION_CODE" ]; then
+    if [ -z "$OISP_DEVICE_ACTIVATION_CODE" ]; then
         fail "No Device Activation Code given but no token found or reactivation is forced"
     fi
     ${ADMIN} test || fail "No connectivity to OISP"

@@ -12,6 +12,10 @@
 ROOTDIR=/app
 MNTDIR=/volume
 
+function fail {
+    echo $1
+    exit 1
+}
 
 if [ ! -d ${MNTDIR}/data ]; then
   mkdir ${MNTDIR}/data
@@ -20,12 +24,15 @@ if [ ! -f ${MNTDIR}/data/device.json ];then
   cp ${ROOTDIR}/data/device.json ${MNTDIR}/data
 fi
 
+if [ -f ${MNTDIR}/config/config.json ];then
+  cp ${MNTDIR}/config/config.json ${ROOTDIR}/config/config.json
+fi
+
 rm -rf ${ROOTDIR}/data
-#ln -s ${MNTDIR}/config ${ROOTDIR}/config
 ln -s ${MNTDIR}/data ${ROOTDIR}/data
 
 # activate if needed
-(cd ${ROOTDIR}/container/scripts/agent; ./onboard.sh) || exit 1
+(cd ${ROOTDIR}/container/scripts/agent; ./onboard.sh) || fail "Onboarding failed. Bye!"
 
 echo Now starting agent
-(cd ${ROOTDIR}; ./oisp-agent.js) || exit 1
+(cd ${ROOTDIR}; ./oisp-agent.js) || fail "Agent startup failed. Bye!"
