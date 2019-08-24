@@ -9,6 +9,8 @@
   "author": "Marcel Wagner",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "dgram": "^1.0.1"
+    "dgram": "^1.0.1",
+    "probability-distributions": "^0.9.1",
+    "winston": "^3.2.1"
   }
 }
