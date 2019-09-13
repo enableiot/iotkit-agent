@@ -82,7 +82,7 @@ module.exports = {
             .command('protocol <protocol>')
             .description('Set the protocol to \'rest\' or \'rest+ws\'')
             .action(function(protocol) {
-                if (protocol === 'rest' || protocol === 'rest+ws') {
+                if (protocol === 'mqtt' || protocol === 'rest' || protocol === 'rest+ws') {
                     common.saveToConfig(configFileKey.defaultConnector, protocol);
                     logger.info("protocol set to: " + protocol);
                 } else {

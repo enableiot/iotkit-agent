@@ -77,6 +77,8 @@ or when the oisp-agent is launched, by sending
 ```
 to a UDP socket on port 41234.
 
+Dependent of the configuration, the agent sends data with REST or MQTT. If MQTT is configured, agent and admin always try to use MQTT for data submission. All other calls, like activation of devices or registration of components is always done with REST. Therefore, until further notice the default protocol should always be "rest+ws". The control channel which can receive commands from OISP will always be WS. MQTT control messages are Work in Progress and available soon.
+
 #### Starting the Agent
 
 To start the oisp-agent service simply execute the start script:
