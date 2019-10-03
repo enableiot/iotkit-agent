@@ -31,12 +31,12 @@
     "es6-shim": "0.35.5",
     "express": "^4.17.1",
     "getmac": "^1.4.6",
-    "json-schema": "^0.2.3",
+    "json-schema": "^0.2.5",
     "json-socket": "^0.3.0",
     "mqtt": "^3.0.0",
     "uuid": "^3.3.2",
     "winston": "^3.2.1",
-    "@open-iot-service-platform/oisp-sdk-js": "^1.1.0"
+    "@open-iot-service-platform/oisp-sdk-js": "^1.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",

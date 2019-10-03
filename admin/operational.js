@@ -70,11 +70,6 @@ function testConnection () {
                 logger.info("Environment: %s", res.currentSetting);
                 logger.info("Build: %s", res.build);
                 logger.debug("Full response %j", res );
-                if (res.mqtt === 1) {
-                    logger.info("MQTT ok")
-                } else {
-                    logger.warn("MQTT failed or not configured");
-                }
             } else {
                 logger.error("Connection failed to %s", host);
                 exitCode = exitMessageCode.ERROR;

@@ -136,14 +136,14 @@ jobs:
     executor: vm-executor
     steps:
       - checkout-e2e:
-          oisp-git-hash: "5e0076bced308973a36936950dd9acdf0ee8a1bc"
+          oisp-git-hash: "v1.1.1-beta.1"
       - checkout-testbranch:
           repo: "oisp-iot-agent"
       - setup-build-environment
       - pull-images:
-          oisp-tag: "nightly-2019-07-17"
+          oisp-tag: "v1.1.1-beta.1"
       - e2e-test:
-          oisp-docker-tag: "nightly-2019-07-17"
+          oisp-docker-tag: "v1.1.1-beta.1"
       - test-admin
       - test-agent
   build-check:
