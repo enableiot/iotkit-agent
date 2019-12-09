@@ -69,7 +69,7 @@ function testConnection () {
                 logger.info("Connected to %s", host);
                 logger.info("Environment: %s", res.currentSetting);
                 logger.info("Build: %s", res.build);
-                logger.debug("Full response %j", res );
+                logger.debug("Full response: ", res );
             } else {
                 logger.error("Connection failed to %s", host);
                 exitCode = exitMessageCode.ERROR;
