@@ -202,14 +202,13 @@ describe('oisp-agent/lib/schemaValidation', function() {
         };
         var wrongmessage = [{
             property: '',
-            message: 'bbb - string value found, but a boolean is required',
-            customMessage: ' bbb - string value found, but a boolean is required'
+            message: 'string value found, but a boolean is required',
         }];
         //console.log(schemaValidation.validate(obj, schema));
-        assert.deepEqual(schemaValidation.validate(obj, schema), wrongmessage, 'not get expected messege');
+        assert.deepEqual(schemaValidation.validate(obj, schema), wrongmessage, 'Expected message not returned');
         done();
     });
-
+    
     it('should return if validation of data and schema meets errors',
         function(
             done) {
