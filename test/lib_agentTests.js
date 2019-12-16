@@ -202,7 +202,7 @@ describe('oisp-agent/lib/schemaValidation', function() {
         };
         var wrongmessage = [{
             property: '',
-            message: 'string value found, but a boolean is required',
+            message: 'bbb - string value found, but a boolean is required',
         }];
         //console.log(schemaValidation.validate(obj, schema));
         assert.deepEqual(schemaValidation.validate(obj, schema), wrongmessage, 'Expected message not returned');
