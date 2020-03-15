@@ -22,4 +22,4 @@ COMPONENTNAME=$3
 echo Executing with ACCOUNT_NAME=${ACCOUNTID} DEVICEID=${DEVICEID} COMPONENTNAME=${COMPONENTNAME} 1>&2
 # get token
 ${CLIBIN} devices.get ${ACCOUNTID}
-${CLIBIN} data.post.search ${ACCOUNTID} ${DEVICEID} ${COMPONENTNAME} 0 $(date +%s) | grep series |  sed 's/.*Info.*retrieved:  \({.*}\)/\1/' | jq '.series[0].points | length'
+${CLIBIN} data.post.search ${ACCOUNTID} ${DEVICEID} ${COMPONENTNAME} 0 $(( $(date +%s) * 1000 )) | grep series |  sed 's/.*Info.*retrieved:  \({.*}\)/\1/' | jq '.series[0].points | length'

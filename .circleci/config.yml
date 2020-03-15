@@ -15,7 +15,7 @@ executors:
       TZ: "Europe/Berlin"
   docker-executor:
     docker:
-      - image: circleci/node:8.0
+      - image: circleci/node:10.19.0
     working_directory: ~/repo
     environment:
       shell: /bin/bash
@@ -27,8 +27,12 @@ commands:
       - run:
           name: Setup build environment
           command: |
-            cd platform-launcher/platform-setup
-            sudo ./setup-ubuntu16.04.sh
+            cd platform-launcher/util && \
+            bash setup-ubuntu18.04.sh
+            # create 8GB swap
+            sudo dd if=/dev/zero of=/swapfile bs=1M count=8000
+            sudo mkswap /swapfile
+            sudo swapon /swapfile
   checkout-e2e:
     description: "Checkout E2E test"
     parameters:
@@ -57,7 +61,8 @@ commands:
             cd platform-launcher
             docker login  -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
             export DOCKER_TAG="<< parameters.oisp-tag >>"
-            yes | make pull
+            docker-compose pull
+            docker pull oisp/debugger:${DOCKER_TAG}
   e2e-test:
     description: "Wait for platform to become ready"
     parameters:
@@ -69,12 +74,17 @@ commands:
           shell: /bin/bash
           command: |
             export NVM_DIR="/opt/circleci/.nvm"
+            export PATH=/snap/bin:$PATH
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install v8.16.0
             nvm alias default v8.16.0
             cd platform-launcher
             export DOCKER_TAG=<< parameters.oisp-docker-tag >>
+            make import-images DEBUG=true
+            export NODOCKERLOGIN=true
+            make deploy-oisp-test
             make test-prep-only
+
   checkout-testbranch:
     description: "Checks out branch of repository which is to be tested"
     parameters:
@@ -108,13 +118,18 @@ commands:
           name: Test admin tool
           shell: /bin/bash
           command: |
+            wget https://github.com/txn2/kubefwd/releases/download/1.13.0/kubefwd_amd64.deb
+            sudo dpkg -i kubefwd_amd64.deb
+            sudo -E KUBECONFIG=/home/circleci/k3s/kubeconfig.yaml kubefwd svc -n oisp -l "app in (frontend, websocket-server, mqtt-server)"&
+            sleep 10
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install v8.16.0
             nvm alias default v8.16.0
             cd platform-launcher/oisp-iot-agent
+            sudo rm -rf /home/circleci/.npm
             npm install
-            cp config/config.json.template config/config.json
+            cp config/config.json.circleci config/config.json
             ./oisp-admin.js test
   test-agent:
     description: "Test agent"
@@ -123,27 +138,31 @@ commands:
           name: Test agent
           shell: /bin/bash
           command: |
+            wget https://github.com/txn2/kubefwd/releases/download/1.13.0/kubefwd_amd64.deb
+            sudo dpkg -i kubefwd_amd64.deb
+            sudo -E KUBECONFIG=/home/circleci/k3s/kubeconfig.yaml kubefwd svc -n oisp -l "app in (frontend, websocket-server, mqtt-server)"&
+            sleep 10
             export NVM_DIR="/opt/circleci/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install v8.16.0
             nvm alias default v8.16.0
             cd platform-launcher/oisp-iot-agent
             npm install
-            cp config/config.json.template config/config.json
+            cp config/config.json.circleci config/config.json
             make test
 jobs:
   e2e-test:
     executor: vm-executor
     steps:
       - checkout-e2e:
-          oisp-git-hash: "v1.1.1-beta.1"
+          oisp-git-hash: "e022b7f0c2f21acdda40f34c2d8ee3bab76ca667"
       - checkout-testbranch:
           repo: "oisp-iot-agent"
       - setup-build-environment
       - pull-images:
-          oisp-tag: "v1.1.1-beta.1"
+          oisp-tag: "nightly-2020-03-27"
       - e2e-test:
-          oisp-docker-tag: "v1.1.1-beta.1"
+          oisp-docker-tag: "nightly-2020-03-27"
       - test-admin
       - test-agent
   build-check:

@@ -37,6 +37,7 @@ var default_sensorSpecs = [
 	componentName: "temp",
 	componentType: "temperature.v1.0",
 	type: "number",
+  sleep: 5000,
 	sigma: 0.3,
 	startValue: 20
     }
@@ -63,6 +64,10 @@ if (process.env.TEST_SAMPLES) {
 }
 
 var registerComponent = function(spec) {
+    spec.compRegistering++;
+    if (spec.compRegistering > 5) {
+      return;
+    }
     var component = { "t": spec.componentType, "n": spec.componentName }
     var comp_message = new Buffer(JSON.stringify(component));
     spec.agents.forEach(function(agent){
@@ -93,6 +98,7 @@ var getRandomInteger = function(min, max) {
 //initialize all values
 sensorSpecs.forEach(function(spec) {
     values[spec.name] = spec.startValue;
+    spec.compRegistering = 0;
 });
 
 //first register the temp component
@@ -102,6 +108,10 @@ sensorSpecs.forEach(function(spec) {
 });
 
 sensorSpecs.forEach(function(spec){
+    var sleeptime = 5000;
+    if (spec.sleep != undefined) {
+      sleeptime = spec.sleep;
+    }
     setTimeout(
 	function(){ setInterval(function() {
 	    //to be on the save side re-register. Agent will realize if already existing
@@ -125,5 +135,5 @@ sensorSpecs.forEach(function(spec){
 		    process.exit(0);
 		}
 	    })
-	}, 5 * 1000)}, 10000)
+	}, sleeptime)}, 10000)
 });

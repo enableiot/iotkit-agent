@@ -19,6 +19,7 @@ build:
 clean:
 	@$(call msg,"Cleaning environent for oisp-cli ...")
 	rm -f testconfig.sh
+	rm -rf node_modules
 
 test:
 	@./agent-test.sh CLIBIN=${CLIBIN} CLIDIR=${CLIDIR}

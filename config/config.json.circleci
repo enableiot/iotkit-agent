@@ -1,0 +1,54 @@
+{
+	"data_directory": "./data",
+	"listeners": {
+		"rest_port": 8000,
+		"udp_port": 41234,
+		"tcp_port": 7070
+	},
+	"receivers": {
+		"udp_port": 41235,
+		"udp_address": "0.0.0.0"
+	},
+	"logger": {
+		"level": "info",
+		"path": "/tmp/",
+		"max_size": 134217728
+	},
+	"default_connector": "rest+ws",
+	"connector": {
+		"rest": {
+			"host": "frontend",
+			"port": 4001,
+			"protocol": "http",
+			"strictSSL": false,
+			"timeout": 30000,
+			"proxy": {
+				"host": false,
+				"port": false
+			}
+		},
+		"ws": {
+			"host": "websocket-server",
+			"port": 5000,
+			"minRetryTime": 2500,
+			"maxRetryTime": 600000,
+			"testTimeout": 40000,
+			"pingPongIntervalMs": 30000,
+			"enablePingPong": true,
+			"secure": false,
+			"proxy": {
+				"host": false,
+				"port": false
+			}
+		},
+		"mqtt": {
+			"host": "mqtt-server",
+			"port": 8883,
+			"qos": 1,
+			"retain": false,
+			"secure": true,
+			"strictSSL": true,
+			"retries": 5
+		}
+	}
+}

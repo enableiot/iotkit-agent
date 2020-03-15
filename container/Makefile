@@ -27,7 +27,7 @@ stop:
 clean: stop
 	@$(call msg,"Cleaning ...");
 	@/bin/bash -c "docker rmi ${IMAGE_NAME}" || echo "${IMAGE_NAME} cannot be deleted"
-	make -C scripts/getagentenv clean
+	@make -C test clean
 
 test: build start
 	@make -C test test

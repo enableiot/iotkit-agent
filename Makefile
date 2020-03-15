@@ -47,9 +47,12 @@ clean: stop
 	@docker rm -f ${CONTAINER_NAME} || echo "${CONTAINER_NAME} cannot be deleted"
 	@/bin/bash -c "docker rmi -f ${IMAGE_NAME}" || echo "${IMAGE_NAME} cannot be deleted"
 	@rm -f .prepare-testconfig
+	@make -C container clean
+	@./oisp-admin.js  reset-data-directory
+	@rm -f config/config.json
 
 .prepare-testconfig:
-		@cp config/config.json.template config/config.json
+		@cp config/config.json.circleci config/config.json
 		cd ${GETAGENTENVDIR} && make build && source ./getActivationCode.sh ${USERNAME} ${PASSWORD} ${DEVICENAME}
 		@touch $@
 

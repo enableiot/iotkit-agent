@@ -24,7 +24,7 @@ ADMIN=../../../oisp-admin.js
 echo onboarding with OISP_DEVICE_ACTIVATION_CODE=${OISP_DEVICE_ACTIVATION_CODE} OISP_DEVICE_ID=${OISP_DEVICE_ID} OISP_FORCE_REACTIVATION=${OISP_FORCE_REACTIVATION} OISP_DEVICE_NAME=${OISP_DEVICE_NAME}
 TOKEN=$(cat ${DATADIR}/device.json | jq ".device_token")
 echo Token found: $TOKEN
-if [ "$TOKEN" = "\"\"" ] || [ "$TOKEN" = "false" ] || [ ! -z "$OISP_FORCE_REACTIVATION" ]; then
+if [ -z "$TOKEN" ] || [ "$TOKEN" = "\"\"" ] || [ "$TOKEN" = "false" ] || [ ! -z "$OISP_FORCE_REACTIVATION" ]; then
     if [ -z "$OISP_DEVICE_ACTIVATION_CODE" ]; then
         fail "No Device Activation Code given but no token found or reactivation is forced"
     fi
