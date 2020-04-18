@@ -22,3 +22,4 @@ container/test/node_modules
 container/test/package-lock.json
 container/script/testsensor/node_modules
 container/script/testsensor/package-lock.json
+package-lock.json
