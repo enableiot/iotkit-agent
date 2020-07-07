@@ -48,6 +48,7 @@ commands:
             git checkout << parameters.oisp-git-hash >>
             git submodule init
             git submodule update
+            yes | make update
   pull-images:
     description: "Pull all images"
     parameters:
@@ -155,14 +156,14 @@ jobs:
     executor: vm-executor
     steps:
       - checkout-e2e:
-          oisp-git-hash: "e022b7f0c2f21acdda40f34c2d8ee3bab76ca667"
+          oisp-git-hash: "439b491feeb51ecf00d65f074cb3eb3f5c937963"
       - checkout-testbranch:
           repo: "oisp-iot-agent"
       - setup-build-environment
       - pull-images:
-          oisp-tag: "nightly-2020-03-27"
+          oisp-tag: "nightly-2020-07-06"
       - e2e-test:
-          oisp-docker-tag: "nightly-2020-03-27"
+          oisp-docker-tag: "nightly-2020-07-06"
       - test-admin
       - test-agent
   build-check:
